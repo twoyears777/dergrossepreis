@@ -399,6 +399,9 @@ body{font-family:var(--sans);color:#f1ede4;background:var(--grain),radial-gradie
 .ransom{display:inline-flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.06em;line-height:1}
 .ransom .rl{display:inline-block;padding:.08em .14em .1em;font-weight:700;box-shadow:0 2px 3px #0005;line-height:1}
 .ransom .rsp{display:inline-block;width:.35em}
+.ransom .rw{display:inline-flex;flex-wrap:nowrap;gap:.06em;align-items:center}
+.ransom{row-gap:.12em}
+#gameTitle{font-size:clamp(1.6rem,5.5vh,3.2rem)}
 
 /* Kopfzeile */
 .marquee{background:none;box-shadow:none;padding:0;border-radius:0}
@@ -787,3 +790,14 @@ body.viewer .end-actions{display:none}
   .game-facts{grid-template-columns:1fr 1fr}
 }
 .gname .own{margin-left:10px;vertical-align:middle;font-size:.7rem;padding:2px 6px}
+
+/* Spiel-Detail: Rollen und Risiken */
+.note.risk{background:var(--grain-soft),#ead2cc}
+.note.risk h3{color:var(--stamp)}
+dl.roles{margin-bottom:16px}
+.role-table{width:100%;border-collapse:collapse;margin:6px 0 12px;font-family:var(--sans);font-size:.95rem}
+.role-table th,.role-table td{padding:8px 10px;text-align:center;border-bottom:1px dashed #1d1d1b33}
+.role-table thead th{font-family:var(--strong);font-weight:700;border-bottom:2px solid var(--ink)}
+.role-table tbody th{font-family:var(--strong);font-weight:700;text-align:left}
+/* Startseite: mehr Luft unter dem Titel */
+#home .menu-title{margin-bottom:7vh}

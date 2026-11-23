@@ -11,9 +11,10 @@ const R_FONTS=['Georgia,"Times New Roman",serif','Futura,"Avenir Next","Arial Bl
 const R_PAPER=[['#ece6da','#1d1d1b'],['#1d1d1b','#ece6da'],['#c9a77c','#1d1d1b'],['#f2df6b','#1d1d1b'],['#e3b2ab','#1d1d1b'],['#ffffff','#b8432f'],['#d9ded0','#1d1d1b']];
 function ransom(el,text){
   text=String(text||'');el.textContent='';el.classList.add('ransom');el.setAttribute('aria-label',text);
-  let h=7;
+  let h=7,word=null;
   [...text].forEach((ch,i)=>{
-    if(ch===' '){const sp=document.createElement('span');sp.className='rsp';el.appendChild(sp);return;}
+    if(ch===' '){const sp=document.createElement('span');sp.className='rsp';el.appendChild(sp);word=null;return;}
+    if(!word){word=document.createElement('span');word.className='rw';el.appendChild(word);}
     h=(h*31+ch.charCodeAt(0)*13+i*7)%99991;
     const sEl=document.createElement('span');sEl.className='rl';sEl.setAttribute('aria-hidden','true');
     const pc=R_PAPER[(h>>3)%R_PAPER.length];
@@ -21,7 +22,7 @@ function ransom(el,text){
     sEl.style.transform=`rotate(${((h%11)-5)*1.3}deg) translateY(${(h%5)-2}px)`;
     if(h%6===0)sEl.style.fontStyle='italic';
     sEl.style.animationDelay=(i*0.035)+'s';
-    sEl.textContent=ch;el.appendChild(sEl);
+    sEl.textContent=ch;word.appendChild(sEl);
   });
 }
 const $=s=>document.querySelector(s);
@@ -1043,6 +1044,14 @@ function renderColl(){
     li.appendChild(b);list.appendChild(li);
   });
 }
+function rolesHtml(r){
+  let h='';
+  if(r.liste&&r.liste.length)h+='<dl class="roles">'+r.liste.map(x=>`<dt>${esc(x.name)}</dt><dd>${esc(x.text)}</dd>`).join('')+'</dl>';
+  if(r.tabelle)h+='<table class="role-table"><thead><tr>'+r.tabelle.kopf.map(k=>`<th scope="col">${esc(k)}</th>`).join('')+'</tr></thead><tbody>'+
+    r.tabelle.zeilen.map(z=>'<tr>'+z.map((c,i)=>i?`<td>${esc(c)}</td>`:`<th scope="row">${esc(c)}</th>`).join('')+'</tr>').join('')+'</tbody></table>';
+  if(r.hinweis)h+=`<p>${esc(r.hinweis)}</p>`;
+  return h;
+}
 function openGame(id){
   const g=GAMES.find(x=>x.id===id);if(!g)return;
   const ages=g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).filter(Boolean).join(', ');
@@ -1058,8 +1067,10 @@ function openGame(id){
     </ul>
     <div class="game-notes">
       ${sec('Material',g.material.length?'<ul>'+g.material.map(m=>`<li>${esc(m)}</li>`).join('')+'</ul>':'<p>Kein Material nötig.</p>')}
+      ${g.rollen?sec('Rollen',rolesHtml(g.rollen)):''}
       ${sec('So geht’s','<ol>'+g.ablauf.map(s=>`<li>${esc(s)}</li>`).join('')+'</ol>')}
       ${g.varianten&&g.varianten.length?sec('Varianten','<ul>'+g.varianten.map(s=>`<li>${esc(s)}</li>`).join('')+'</ul>'):''}
+      ${g.risiken&&g.risiken.length?`<section class="note risk"><h3>Gefahren und Risiken</h3><ul>${g.risiken.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></section>`:''}
       ${g.hinweis?`<section class="note tip"><h3>Tipp</h3><p>${esc(g.hinweis)}</p></section>`:''}
     </div>`;
   ransom($('#gameTitle'),g.name);

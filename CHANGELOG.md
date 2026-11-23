@@ -1,5 +1,11 @@
 # Changelog – Der große Preis
 
+## 1.13.0 – 23.11.2026
+- Spielesammlung: neuer Bereich „Gefahren und Risiken“ bei jedem Spiel
+- Neue Spiele: Zeitungsschlagen und Nachts in Palermo (mit Rollenliste zum Abschreiben)
+- Musterspiel entfernt
+- Startseite: mehr Platz unter dem Titel
+
 ## 1.12.0 – 23.11.2026
 - Neu auf der Startseite: Spielesammlung mit Filtern für Alter, Personenzahl, drinnen/draußen und Material
 - Detailseite für jedes Spiel mit Ablauf, Material, Varianten und Tipp

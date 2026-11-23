@@ -3,8 +3,14 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.12.0';
+const APP_VERSION='1.13.0';
 const CHANGELOG=[
+  {v:'1.13.0',d:'23.11.2026',items:[
+    'Spielesammlung: neuer Bereich „Gefahren und Risiken“ bei jedem Spiel',
+    'Neue Spiele: Zeitungsschlagen und Nachts in Palermo (mit Rollenliste zum Abschreiben)',
+    'Musterspiel entfernt',
+    'Startseite: mehr Platz unter dem Titel'
+  ]},
   {v:'1.12.0',d:'23.11.2026',items:[
     'Neu auf der Startseite: Spielesammlung mit Filtern für Alter, Personenzahl, drinnen/draußen und Material',
     'Detailseite für jedes Spiel mit Ablauf, Material, Varianten und Tipp',
@@ -220,7 +226,8 @@ const TEMPLATES=[
 
 /* ---------- Spielesammlung ----------
    Jedes Spiel: Name, Kurzbeschreibung, Altersgruppen, Spielerzahl (min/max),
-   Ort, Material, Dauer, Ablauf in Schritten, optional Varianten und Hinweise. */
+   Ort, Material, Dauer, Ablauf in Schritten, Gefahren und Risiken,
+   optional Rollen (Liste + Verteilungstabelle), Varianten und Tipp. */
 const AGE_GROUPS=[
   {id:'kinder',label:'Kinder (6–12)'},
   {id:'jugend',label:'Jugendliche (13–17)'},
@@ -233,21 +240,63 @@ const SIZE_GROUPS=[
   {id:'xl',label:'40 und mehr',min:40,max:9999}
 ];
 const GAMES=[
-  {id:'zip-zap-boing',muster:true,
-   name:'Zip Zap Boing',
-   kurz:'Schnelles Reaktionsspiel im Kreis, bei dem ein unsichtbarer Impuls weitergegeben wird.',
-   alter:['kinder','jugend','erwachsene'],
-   spieler:{min:6,max:30},
-   ort:['drinnen','draussen'],
-   material:[],
-   dauer:'5–15 Minuten',
+  {id:'zeitungsschlagen',
+   name:'Zeitungsschlagen',
+   kurz:'Mit einer zusammengerollten Zeitung wird um einen Platz im Stuhlkreis gekämpft.',
+   alter:['jugend'],
+   spieler:{min:8,max:15},
+   ort:['drinnen'],
+   material:['Stühle für alle außer einer Person','Eine Zeitung, fest zusammengerollt und am besten mit Klebeband umwickelt','Ein Hocker oder ein umgedrehter Mülleimer'],
+   dauer:'ca. 10 Minuten',
    ablauf:[
-     'Alle stellen sich in einen Kreis.',
-     'Eine Person startet und gibt den Impuls mit „Zip“ und einer Handbewegung an die Person links oder rechts neben sich weiter.',
-     'Mit „Zap“ und einem Zeigen geht der Impuls quer durch den Kreis zu einer beliebigen Person.',
-     'Mit „Boing“ und erhobenen Händen blockt man einen Zip ab. Der Impuls springt zurück und die Richtung wechselt.',
-     'Wer zögert, das falsche Wort sagt oder den Impuls nicht annimmt, scheidet aus oder stellt sich in die Mitte und ruft beim nächsten Fehler mit.'
+     'Alle sitzen im Stuhlkreis. Eine Person hat keinen Platz und steht in der Mitte.',
+     'In der Mitte steht ein Hocker oder ein umgedrehter Mülleimer. Die Person in der Mitte hält die Zeitungsrolle.',
+     'Sie schlägt nacheinander drei Personen auf die Oberschenkel. Die dritte Person ist dran.',
+     'Jetzt legt die Person aus der Mitte die Zeitung auf den Hocker und läuft zum Platz der dritten Person.',
+     'Sobald die Zeitung auf dem Hocker liegt, darf die dritte Person aufspringen, die Zeitung schnappen und versuchen, die andere Person zu treffen, bevor diese sitzt.',
+     'Schafft die Person es, sich zu setzen, geht die dritte Person mit der Zeitung in die Mitte. Wird sie vorher getroffen, muss sie wieder in die Mitte.',
+     'Rollt die Zeitung vom Hocker, muss die Person aus der Mitte sie zurücklegen. Vorher darf sie sich nicht setzen.'
    ],
-   varianten:['Neue Wörter einführen, zum Beispiel „Whoosh“ für zwei Plätze überspringen.','Ohne Ausscheiden spielen und nur das Tempo steigern.'],
-   hinweis:'Gut als Einstieg in eine Gruppenstunde, weil sofort alle dabei sind.'}
+   risiken:[
+     'Geschlagen wird nur auf die Oberschenkel, nie auf Kopf oder Oberkörper.',
+     'Manche schlagen sehr fest zu. Die Spielleitung achtet darauf und greift ein.',
+     'Für einige ist der Körperkontakt grundsätzlich unangenehm. Grenzen erkennen und akzeptieren ist hier wichtig, auch wenn das heißt, dass nicht alle mitmachen.',
+     'Niemand wird zum Mitspielen gedrängt. Zuschauen ist in Ordnung.'
+   ],
+   hinweis:'Den Hocker in der Mitte darf man im Kreis frei verschieben.'},
+
+  {id:'nachts-in-palermo',
+   name:'Nachts in Palermo',
+   kurz:'Nachts schlägt die Mafia zu, tagsüber versucht die Stadt herauszufinden, wer dahintersteckt.',
+   alter:['jugend','erwachsene'],
+   spieler:{min:8,max:25},
+   ort:['drinnen'],
+   material:['Kleine Zettel und ein Stift, um die Rollen aufzuschreiben'],
+   dauer:'20–45 Minuten',
+   rollen:{
+     liste:[
+       {name:'Mafia',text:'Wacht nachts auf und wählt gemeinsam und ohne Worte ein Opfer.'},
+       {name:'Kommissar',text:'Zeigt nachts auf eine Person. Die Spielleitung verrät mit Daumen hoch oder runter, ob sie zur Mafia gehört.'},
+       {name:'Arzt',text:'Zeigt nachts auf eine Person, die in dieser Nacht nicht ausscheiden kann.'},
+       {name:'Bürger',text:'Schlafen nachts und versuchen tagsüber, die Mafia zu entlarven.'}
+     ],
+     tabelle:{kopf:['Personen','Mafia','Kommissar','Arzt'],zeilen:[['8–10','2','1','–'],['11–15','3','1','1'],['16–20','4','1','1'],['21–25','5','1','1']]},
+     hinweis:'Alle übrigen Zettel sind Bürger. Die Spielleitung bekommt keinen Zettel, sie erzählt.'
+   },
+   ablauf:[
+     'Die Rollen auf Zettel schreiben (siehe „Rollen“), falten und ziehen lassen. Alle schauen ihre Rolle geheim an.',
+     'Nacht: Alle schließen die Augen. Die Spielleitung weckt nacheinander die Mafia, den Kommissar und den Arzt. Die Mafia zeigt auf ihr Opfer, der Kommissar auf eine verdächtige Person, der Arzt auf die Person, die er schützt.',
+     'Tag: Alle öffnen die Augen. Die Spielleitung erzählt, was in der Nacht passiert ist und wer ausgeschieden ist – außer der Arzt hat diese Person geschützt.',
+     'Die Stadt diskutiert, wer zur Mafia gehören könnte, und stimmt ab. Wer die meisten Stimmen bekommt, wird verhaftet und deckt die eigene Rolle auf.',
+     'Danach beginnt die nächste Nacht.',
+     'Die Stadt gewinnt, wenn alle Mafiosi verhaftet sind. Die Mafia gewinnt, sobald sie genauso viele sind wie alle anderen zusammen.',
+     'Wer ausgeschieden ist, bleibt still im Raum und verrät nichts.'
+   ],
+   risiken:[
+     'Wer früh ausscheidet, sitzt lange herum. Lieber mehrere kurze Runden spielen als eine lange.',
+     'Beschuldigungen dürfen nicht persönlich werden. Die Spielleitung achtet darauf, dass nicht immer dieselbe Person als Erste rausgewählt wird.',
+     'Die Erzählung der Nacht auf die Gruppe abstimmen: spannend, aber nicht zu gruselig.',
+     'Ausgeschiedene nicht ausschließen. Sie dürfen zum Beispiel als „Geister“ still zuschauen.'
+   ],
+   hinweis:'Je lebendiger die Spielleitung die Nacht erzählt, desto mehr Spaß macht das Spiel.'}
 ];
