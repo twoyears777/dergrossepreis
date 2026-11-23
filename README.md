@@ -9,6 +9,9 @@ Quiz-Gameshow für Jugendgruppen. Das iPad wird an den Beamer angeschlossen, die
 
 Fragen, Gruppen und Punkte werden auf dem Gerät gespeichert (in der Home-Bildschirm-App, nicht in Safari).
 
+## Planung
+Wohin es geht und welche Ideen gesammelt sind, steht in der [ROADMAP.md](ROADMAP.md).
+
 ## Aufbau
 - `index.html` – Aufbau der Seiten
 - `css/app.css` – Aussehen
