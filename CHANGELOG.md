@@ -1,5 +1,13 @@
 # Changelog – Der große Preis
 
+## 1.11.0 – 23.11.2026
+- Startseite heißt jetzt „Die Spiele“
+- Screenshot-Collage aus dem Spiel statt der Illustration
+- Neue Bereiche „Genau das, was du brauchst!“ und „Unsere Vision“
+- „So funktioniert's“ erklärt die Zuschaueransicht am Laptop
+- Neu im Spielmenü: „Erklärung“ mit Spielablauf, Feldtypen, Sonderregeln und Tipps fürs Spielleiten
+- Tipp zum Teilen von Vorlagen auf der Vorlagen-Seite
+
 ## 1.10.0 – 23.11.2026
 - Sicherung: Hinweis im Spielmenü, wenn Änderungen noch nicht als Datei gesichert sind
 - Sicherung erstellen und einspielen unter „Einstellungen“ – enthält Spielbrett und alle eigenen Vorlagen

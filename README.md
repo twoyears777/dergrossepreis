@@ -14,7 +14,7 @@ Fragen, Gruppen und Punkte werden auf dem Gerät gespeichert (in der Home-Bildsc
 - `css/app.css` – Aussehen
 - `js/data.js` – Versionsnummer, Changelog und Vorlagen
 - `js/app.js` – Spiellogik
-- `img/hero.svg` – Illustration auf der Startseite
+- `img/` – Screenshots für die Startseite
 - `sw.js` – Offline-Modus und automatische Updates
 - `tests/run_tests.py` – automatische Tests (laufen bei jedem Push auf GitHub)
 

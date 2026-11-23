@@ -44,8 +44,9 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['css/app.css', 'js/data.js', 'js/app.js', 'img/hero.svg']:
+    for f in ['css/app.css', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-frage.jpg', 'img/shot-action.jpg', 'img/shot-sieger.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
+        check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
 def browser_checks(p):
     errs = []
@@ -58,16 +59,26 @@ def browser_checks(p):
     print('Startseite & Menüs')
     m.goto(URL); m.wait_for_timeout(400)
     check('Startseite sichtbar', m.locator('#home.show').count() == 1)
+    check('Titel „Die Spiele“', m.get_attribute('#home .menu-title', 'aria-label') == 'Die Spiele')
+    check('Screenshot-Collage mit 4 Bildern', m.locator('.collage .shot img').count() == 4)
+    loaded = m.evaluate("Promise.all([...document.querySelectorAll('.collage img')].map(i=>{i.loading='eager';return i.decode().then(()=>i.naturalWidth>0,()=>false)}))")
+    check('Screenshots laden', all(loaded), loaded)
+    heads = m.locator('#home .hblock h2').all_inner_texts()
+    check('Bereiche auf der Startseite', heads == ['Genau das, was du brauchst!', "So funktioniert's", 'Unsere Vision'], heads)
     m.click('#homeVer'); m.wait_for_timeout(200)
     check('Changelog öffnet', m.locator('#clDialog.show').count() == 1)
     check('Changelog ohne Datum', not re.search(r'\d{1,2}\.\d{1,2}\.\d{4}', m.inner_text('#clBody')))
     m.click('#clX')
     m.click('#gcPreis'); m.wait_for_timeout(200)
     labels = m.locator('#gmList .mbtn').all_inner_texts()
-    check('Spielmenü-Einträge', labels == ['Neues Spiel mit aktuellem Spielbrett', 'Neues Spiel mit leerem Spielbrett', 'Vorlagen', 'Einstellungen'], labels)
+    check('Spielmenü-Einträge', labels == ['Neues Spiel mit aktuellem Spielbrett', 'Neues Spiel mit leerem Spielbrett', 'Vorlagen', 'Erklärung', 'Einstellungen'], labels)
+    m.locator('.mbtn', has_text='Erklärung').click(); m.wait_for_timeout(200)
+    check('Erklärung öffnet', m.locator('#helpScreen.show').count() == 1 and 'Sonderregeln' in m.inner_text('#helpScreen'))
+    m.click('#btnHelpBack')
     m.locator('.mbtn', has_text='Vorlagen').click(); m.wait_for_timeout(200)
     names = [n.strip() for n in m.locator('#tplList .trow .mbtn').all_inner_texts()]
     check('drei Standard-Vorlagen', names == ['Gemischtes Quiz', 'Bibel-Quiz', 'Weihnachtsquiz'], names)
+    check('Teilen-Tipp bei Vorlagen', 'Tipp:' in m.inner_text('#tplList'))
     m.click('#btnTplBack')
 
     print('Spielablauf')

@@ -592,7 +592,7 @@ $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new
 
 /* ---------- Tastatur ---------- */
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&!VIEW&&(screenName==='tpl'||screenName==='set')&&!$('#dialog').classList.contains('show')){showScreen('gmenu');return;}
+  if(e.key==='Escape'&&!VIEW&&(screenName==='tpl'||screenName==='set'||screenName==='help')&&!$('#dialog').classList.contains('show')){showScreen('gmenu');return;}
   if(e.key==='Escape'&&!VIEW){if($('#clDialog').classList.contains('show'))$('#clDialog').classList.remove('show');else if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#btnEndMenu').click();}
 });
 addEventListener('resize',()=>{const cv=$('#confetti');cv.width=innerWidth;cv.height=innerHeight;});
@@ -708,6 +708,8 @@ function showScreen(n){
   $('#gmenu').classList.toggle('show',n==='gmenu');
   $('#tplScreen').classList.toggle('show',n==='tpl');
   $('#setScreen').classList.toggle('show',n==='set');
+  $('#helpScreen').classList.toggle('show',n==='help');
+  if(n==='help')ransom($('#helpTitle'),'Erklärung');
   if(n==='gmenu')renderGMenu();
   if(n==='tpl')renderTpl();
   if(n==='set')renderSet();
@@ -833,6 +835,7 @@ function renderGMenu(){
   menuBtn(list,'Neues Spiel mit leerem Spielbrett',()=>confirmReplace(()=>{
     const teams=keepTeams(),settings=S.settings;S=emptyGame();S.teams=teams.length?teams:S.teams;S.settings=settings;save();selCat=0;openSettings();}));
   menuBtn(list,'Vorlagen',()=>showScreen('tpl'),'sub');
+  menuBtn(list,'Erklärung',()=>showScreen('help'),'sub');
   if(running)menuBtn(list,'Spiel beenden',()=>finishGame());
   menuBtn(list,'Einstellungen',()=>showScreen('set'),'sub');
 }
@@ -857,6 +860,9 @@ function renderTpl(){
   tb('Vorlagen importieren',()=>$('#tplFile').click());
   if(hiddenTpl().length)tb('Standard-Vorlagen wiederherstellen',()=>{lsSet(HID_KEY,'[]');renderTpl();toast('Standard-Vorlagen sind wieder da.');});
   list.appendChild(tools);
+  const tip=document.createElement('p');tip.className='mhint';
+  tip.textContent='Tipp: Speichere ein fertiges Spielbrett als Vorlage und exportiere es. Die Datei kannst du anderen schicken, die sie über „Vorlagen importieren“ bei sich einspielen.';
+  list.appendChild(tip);
 }
 function renderSet(){
   ransom($('#setTitle'),'Einstellungen');
@@ -867,12 +873,13 @@ function renderSet(){
 }
 $('#btnTplBack').onclick=()=>showScreen('gmenu');
 $('#btnSetBack').onclick=()=>showScreen('gmenu');
+$('#btnHelpBack').onclick=()=>showScreen('gmenu');
 $('#btnEditBoard').onclick=()=>openSettings();
 $('#btnBackup').onclick=()=>backupNow();
 $('#btnRestore').onclick=()=>$('#tplFile').click();
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
-$('#btnGuide').onclick=()=>{try{$('#guide').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#guide').scrollIntoView();}};
+$('#btnGuide').onclick=()=>{try{$('#info').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#info').scrollIntoView();}};
 function finishGame(){
   if(!S.teams.length){toast('Es gibt noch keine Gruppen.');return;}
   const total=S.categories.length*S.points.length,left=total-Object.keys(S.used).length;
@@ -956,7 +963,7 @@ onMsg(m=>{
   else if(m.t==='hello'||m.t==='ping'){viewerSeen=m.vis===false?0:Date.now();updViewerStatus();if(m.t==='hello')pushState();}
   else if(m.t==='bye'){viewerSeen=0;updViewerStatus();}
 });
-ransom(document.querySelector('#home .menu-title'),'Welches Spiel?');
+ransom(document.querySelector('#home .menu-title'),'Die Spiele');
 ['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' – was ist neu?';$(id).onclick=()=>showChangelog(false);});
 if(VIEW){
   document.title='Zuschauer – '+(S.title||'Der große Preis');

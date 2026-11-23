@@ -37,7 +37,7 @@
 
 <!-- ================= STARTMENÜ ================= -->
 <div class="screen" id="home">
-  <h1 class="menu-title chrome">Welches Spiel?</h1>
+  <h1 class="menu-title">Die Spiele</h1>
   <div class="gamegrid">
     <button class="gcard" id="gcPreis">
       <span class="wbar">Der große Preis</span>
@@ -48,54 +48,55 @@
       <span class="gbody"><span>Kommen bald.</span></span>
     </div>
   </div>
-  <button class="guide-link" id="btnGuide">Neu hier? So funktioniert's ↓</button>
+  <button class="guide-link" id="btnGuide">Mehr erfahren ↓</button>
 
-  <section class="guide" id="guide" aria-labelledby="guideTitle">
-    <figure class="photo">
-      <img class="hero-svg" src="img/hero.svg" alt="Eine Jugendgruppe von hinten jubelt vor einer Leinwand, auf der das Spiel mit einem ACTION-Feld läuft" width="1200" height="600">
-    </figure>
-    <h2 id="guideTitle">So funktioniert's</h2>
-    <ol class="steps">
-      <li class="note">
-        <span class="snum">1</span>
-        <h3>Spielbrett vorbereiten</h3>
-        <p>Wähle „Der große Preis“ und nimm eine Vorlage oder starte ein leeres Spiel. Unter „Spielbrett bearbeiten“ trägst du Gruppen, Kategorien und Fragen ein. Alles bleibt auf deinem Gerät gespeichert.</p>
-      </li>
-      <li class="note">
-        <span class="snum">2</span>
-        <h3>Auf den Beamer bringen</h3>
-        <p>Am einfachsten spiegelst du iPad oder Handy per HDMI-Adapter oder AirPlay. Mit einem Laptop geht es eleganter: „Zuschaueransicht zeigen“ öffnet ein zweites Fenster für den Beamer, und die Lösungen siehst nur du.</p>
-      </li>
-      <li class="note">
-        <span class="snum">3</span>
-        <h3>Spielen</h3>
-        <p>Die Gruppe am Zug wählt ein Feld. Du deckst auf, zeigst die Lösung und tippst „Geschafft“ oder „Nicht geschafft“. Danach ist automatisch die nächste Gruppe dran. Der Pfeil oben links nimmt die letzte Wertung zurück, die Zielflagge beendet das Spiel mit Siegerehrung.</p>
-      </li>
-      <li class="note">
-        <span class="snum">4</span>
-        <h3>Als App aufs iPad</h3>
-        <p>In Safari auf Teilen und dann „Zum Home-Bildschirm“ tippen. Öffne die App einmal mit Internet, danach läuft sie auch ohne. Neue Versionen lädt sie automatisch, sobald WLAN da ist.</p>
-      </li>
-    </ol>
-
-    <div class="guide-extra">
-      <div class="note types">
-        <h3>Die Feldtypen</h3>
-        <dl>
-          <dt>Frage</dt><dd>Die Lösung bleibt verdeckt, bis du sie zeigst. Weiß die Gruppe es nicht, kann eine andere die halbe Punktzahl holen.</dd>
-          <dt>Multiple Choice</dt><dd>Antwort antippen, um sie einzuloggen. Dann mit Trommelwirbel auflösen.</dd>
-          <dt>Schätzfrage</dt><dd>Jede Gruppe gibt eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.</dd>
-          <dt>Aufgabe</dt><dd>Die Gruppe am Zug muss etwas schaffen, zum Beispiel 10 Liegestütze.</dd>
-          <dt>ACTION</dt><dd>Sieht aus wie ein normales Feld. Beim Aufdecken spielen alle Gruppen mit, und du wählst den Gewinner.</dd>
-        </dl>
-      </div>
-      <div class="note tip">
-        <h3>Tipp: Quizze teilen</h3>
-        <p>Speichere ein fertiges Spielbrett im Spielmenü als Vorlage und exportiere es als Datei. Die kannst du Kolleginnen und Kollegen schicken, die sie bei sich einfach importieren.</p>
-        <p>Der Export ist auch deine Sicherung, falls du das Gerät wechselst.</p>
-      </div>
+  <div class="info" id="info">
+    <div class="collage" role="group" aria-label="Screenshots aus dem Spiel">
+      <figure class="shot"><img src="img/shot-brett.jpg" alt="Spielbrett mit fünf Kategorien, Punktefeldern und dem Punktestand der Gruppen" width="960" height="600" loading="lazy"></figure>
+      <figure class="shot"><img src="img/shot-frage.jpg" alt="Aufgelöste Multiple-Choice-Frage, die richtige Antwort ist grün markiert" width="960" height="600" loading="lazy"></figure>
+      <figure class="shot"><img src="img/shot-action.jpg" alt="ACTION-Animation aus ausgeschnittenen Buchstaben" width="960" height="600" loading="lazy"></figure>
+      <figure class="shot"><img src="img/shot-sieger.jpg" alt="Siegerehrung mit Treppchen aus Pappe und Konfetti" width="960" height="600" loading="lazy"></figure>
     </div>
-  </section>
+
+    <section class="hblock" aria-labelledby="needTitle">
+      <h2 id="needTitle">Genau das, was du brauchst!</h2>
+      <ul class="perks">
+        <li class="note"><h3>Sofort startklar</h3><p>Vorlage auswählen, Gruppen eintragen, losspielen. Ein Quizabend steht in wenigen Minuten.</p></li>
+        <li class="note"><h3>Deine eigenen Quizze</h3><p>Schreib eigene Fragen und Aufgaben, speichere sie als Vorlage und gib sie an andere weiter.</p></li>
+        <li class="note"><h3>Läuft ohne Internet</h3><p>Einmal geöffnet, funktioniert alles auch im Jugendraum ohne WLAN.</p></li>
+        <li class="note"><h3>Kein Konto, keine Daten</h3><p>Keine Anmeldung. Alles bleibt auf deinem Gerät, nichts wird hochgeladen.</p></li>
+        <li class="note"><h3>Gemacht für den Beamer</h3><p>Große Schrift, klare Felder und eine Siegerehrung, die den ganzen Raum mitnimmt.</p></li>
+        <li class="note"><h3>Abwechslung eingebaut</h3><p>Fragen, Multiple Choice, Schätzfragen, Aufgaben und Überraschungsfelder machen aus einem Quiz eine Show.</p></li>
+      </ul>
+    </section>
+
+    <section class="hblock" id="guide" aria-labelledby="guideTitle">
+      <h2 id="guideTitle">So funktioniert's</h2>
+      <p class="lead">Mit einem Laptop am Beamer bekommst du zwei Bildschirme: deinen zum Steuern und den Beamer für alle anderen.</p>
+      <ol class="steps">
+        <li class="note"><span class="snum">1</span><h3>Beamer als zweiten Bildschirm einstellen</h3><p>Laptop anschließen und die Anzeige auf „Erweitern“ stellen, nicht auf „Spiegeln“. Unter Windows geht das mit Windows-Taste + P, am Mac in den Systemeinstellungen unter „Displays“.</p></li>
+        <li class="note"><span class="snum">2</span><h3>Zuschaueransicht öffnen</h3><p>Öffne „Der große Preis“ im Browser und tippe unter „Einstellungen“ auf „Zuschaueransicht zeigen“. Im Spiel geht das auch über das Bildschirm-Symbol oben rechts. Es öffnet sich ein zweites Fenster.</p></li>
+        <li class="note"><span class="snum">3</span><h3>Fenster auf den Beamer ziehen</h3><p>Zieh das neue Fenster auf den Beamer und klick dort auf das Vollbild-Symbol. Sobald beide verbunden sind, heißt der Knopf „Zuschaueransicht verbunden“.</p></li>
+      </ol>
+      <div class="note why">
+        <h3>Darum ist das so praktisch</h3>
+        <ul>
+          <li>Du siehst Lösungen und die richtige Antwort vorab, der Raum erst, wenn du sie zeigst.</li>
+          <li>Alle Knöpfe bleiben auf deinem Bildschirm. Auf dem Beamer läuft nur die Show.</li>
+          <li>Schätzzahlen tippst du ein, ohne dass jemand mitliest.</li>
+          <li>Du brauchst nur einen Laptop und einen Browser, keine zusätzliche Technik und keine App.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="hblock" aria-labelledby="visionTitle">
+      <h2 id="visionTitle">Unsere Vision</h2>
+      <div class="note vision">
+        <p>Ehrenamtliche in der Jugendarbeit haben wenig Zeit und selten viel Technik. Deshalb soll ein guter Spieleabend so einfach werden wie möglich: das Spiel am Handy bedienen, schnell mit dem Beamer verbinden und auch spontan auf gutes Material zurückgreifen können.</p>
+        <p>Bis dahin ist es noch ein Stück. Im Moment optimieren wir alles für Laptop und PC, denn dort lässt sich am besten ausprobieren, was im Gruppenraum wirklich funktioniert. Wenn das rund läuft, ist das Handy dran, damit es dort genauso gut klappt.</p>
+      </div>
+    </section>
+  </div>
 
   <div class="menu-foot"><button class="verlink" id="homeVer"></button></div>
 </div>
@@ -112,6 +113,56 @@
   <h1 class="menu-title" id="tplTitle">Vorlagen</h1>
   <div class="menu-list" id="tplList"></div>
   <button class="back-link" id="btnTplBack">← Zurück</button>
+</div>
+
+<div class="screen" id="helpScreen">
+  <h1 class="menu-title" id="helpTitle">Erklärung</h1>
+  <div class="help">
+    <div class="note">
+      <h3>Worum es geht</h3>
+      <p>Mehrere Gruppen treten gegeneinander an. Auf dem Spielbrett gibt es Kategorien mit Feldern von 10 bis 100 Punkten. Je mehr Punkte, desto schwerer. Wer am Ende die meisten Punkte hat, gewinnt.</p>
+    </div>
+    <div class="note">
+      <h3>So läuft eine Runde</h3>
+      <ol>
+        <li>Die Gruppe am Zug wählt ein Feld, zum Beispiel „Sport für 40“.</li>
+        <li>Die Frage oder Aufgabe erscheint.</li>
+        <li>Schafft die Gruppe es, bekommt sie die Punkte. Sonst bleibt das Feld ohne Punkte.</li>
+        <li>Danach ist die nächste Gruppe dran. Gespielte Felder sind aus dem Spiel.</li>
+        <li>Sind alle Felder gespielt oder beendet die Spielleitung das Spiel früher, folgt die Siegerehrung.</li>
+      </ol>
+    </div>
+    <div class="note">
+      <h3>Die Feldtypen</h3>
+      <dl>
+        <dt>Frage</dt><dd>Die Gruppe am Zug antwortet. Die Lösung bleibt verdeckt, bis die Spielleitung sie zeigt.</dd>
+        <dt>Multiple Choice</dt><dd>Vier Antworten zur Auswahl. Die Gruppe legt sich auf eine fest, dann wird mit Trommelwirbel aufgelöst.</dd>
+        <dt>Schätzfrage</dt><dd>Alle Gruppen geben eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.</dd>
+        <dt>Aufgabe</dt><dd>Die Gruppe am Zug muss etwas schaffen, zum Beispiel 10 Liegestütze in 30 Sekunden.</dd>
+        <dt>ACTION</dt><dd>Sieht aus wie ein normales Feld. Beim Aufdecken spielen alle Gruppen mit, und die Gewinner bekommen die volle Punktzahl.</dd>
+      </dl>
+    </div>
+    <div class="note">
+      <h3>Sonderregeln</h3>
+      <ul>
+        <li><b>Halbe Punktzahl:</b> Weiß die Gruppe am Zug keine Antwort, darf eine andere Gruppe antworten und bekommt die halbe Punktzahl. Das gilt bei Fragen und Multiple Choice.</li>
+        <li><b>Minuspunkte:</b> Auf Wunsch gibt es bei „Nicht geschafft“ Punktabzug. Dann werden die hohen Felder riskant.</li>
+        <li><b>Gleichstand:</b> Haben am Ende mehrere Gruppen gleich viele Punkte, teilen sie sich den Sieg.</li>
+      </ul>
+    </div>
+    <div class="note tip">
+      <h3>Tipps fürs Spielleiten</h3>
+      <ul>
+        <li>Drei bis sechs Gruppen funktionieren gut. So kommt jede oft genug dran.</li>
+        <li>Fragen kurz und eindeutig formulieren, damit es keinen Streit um die Antwort gibt.</li>
+        <li>Bei Schätzfragen die Einheit nennen, zum Beispiel „in Metern“.</li>
+        <li>ACTION-Felder sparsam verteilen. Ein oder zwei pro Spielbrett reichen.</li>
+        <li>Aufgaben so wählen, dass alle mitmachen können und niemand bloßgestellt wird.</li>
+        <li>Leichte Fragen auf 10 und 20, knifflige auf 60 und 100.</li>
+      </ul>
+    </div>
+  </div>
+  <button class="back-link" id="btnHelpBack">← Zurück</button>
 </div>
 
 <div class="screen" id="setScreen">
