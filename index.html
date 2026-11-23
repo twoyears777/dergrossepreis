@@ -84,7 +84,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 }
 .team.active .turn{display:block;animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{50%{transform:translateX(-50%) scale(1.1)}}
-.team.leader .name::before{content:"👑 "}
+.team.leader .name::before{content:""}
 .float{position:absolute;top:0;left:50%;font-size:clamp(1.2rem,4vh,2.6rem);font-weight:800;pointer-events:none;animation:floatUp 1.4s ease-out forwards;font-family:var(--fd)}
 @keyframes floatUp{from{opacity:1;transform:translate(-50%,0) scale(.8)}to{opacity:0;transform:translate(-50%,-9vh) scale(1.4)}}
 .noteams{color:var(--muted);align-self:center;font-size:1rem}
@@ -153,7 +153,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .estrow .ed{font-size:clamp(.75rem,2vh,1.1rem);color:#d4d0ff;min-height:1.2em}
 .estrow.solved{cursor:pointer}
 .estrow.sel{background:color-mix(in srgb,var(--c) 35%,#0b0a33);box-shadow:0 0 26px var(--c);transform:scale(1.04)}
-.estrow.sel .en::before{content:"🏆 "}
+.estrow.sel .en::before{content:""}
 .mcedit{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .mcedit label{display:flex;align-items:center;gap:8px}
 .mcedit input[type=radio]{width:22px;height:22px;accent-color:#22c97a;flex:none}
@@ -181,7 +181,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .qfoot.act .qother{order:3}
 .chip.big{font-size:clamp(.9rem,2.6vh,1.4rem);padding:.55em 1.2em;transition:transform .12s}
 .chip.sel{background:var(--c);color:#130a3a;transform:scale(1.08);box-shadow:0 0 18px var(--c)}
-.chip.sel::before{content:"🏆 "}
+.chip.sel::before{content:""}
 .bigbtn:disabled{cursor:default}
 
 /* ---------- ACTION-Animation ---------- */
@@ -215,7 +215,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 /* Multiple Choice einloggen */
 .mcopt.locked{background:linear-gradient(180deg,#ffc94d,#f08c00);border-color:#ffe9a8;color:#2a1600;animation:lockPulse 1.2s ease-in-out infinite}
 .mcopt.locked .ml{color:#2a1600}
-.mcopt.locked::after{content:"🔒 eingeloggt";margin-left:auto;font-size:.5em;font-family:var(--fb);white-space:nowrap}
+.mcopt.locked::after{content:"eingeloggt";margin-left:auto;font-size:.5em;font-family:var(--fb);white-space:nowrap}
 @keyframes lockPulse{50%{box-shadow:0 0 28px #ffb703}}
 #qExtra.suspense .mcopt{animation:susp .18s infinite alternate}
 #qExtra.suspense .mcopt.locked{animation:suspLock .3s infinite alternate}
@@ -279,9 +279,9 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 #btnViewer .vdot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:#ff4d6d;box-shadow:0 0 0 2px #1a0d57}
 #btnViewer.on .vdot{background:#22c97a}
 body.mod .qanswer.secret{display:block;opacity:.6;border-style:dotted;animation:none}
-body.mod .qanswer.secret::before{content:"🔒 nur für dich: ";font-size:.55em;color:#fff;vertical-align:middle}
+body.mod .qanswer.secret::before{content:"nur für dich: ";font-size:.55em;color:#fff;vertical-align:middle}
 body.mod .mcopt.hint-right:not(.right){box-shadow:inset 0 0 0 3px #22c97a}
-body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"✓ richtig (nur für dich)";margin-left:auto;font-size:.5em;color:#7dffc0;font-family:var(--fb)}
+body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur für dich)";margin-left:auto;font-size:.5em;color:#7dffc0;font-family:var(--fb)}
 body.viewer .ctrls,body.viewer .qtools,body.viewer .qbig,body.viewer .qother,body.viewer .half-pick{display:none!important}
 body.viewer .tile,body.viewer .team{pointer-events:none}
 body.viewer .qfoot{border-top:none;padding-top:0}
@@ -371,7 +371,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 .seg button.on.action{background:linear-gradient(90deg,#ff3d3d,#ff9f1c);color:#fff}
 .check{display:flex;align-items:center;gap:.6rem;font-weight:600;cursor:pointer}
 .check input{width:22px;height:22px;accent-color:var(--gold)}
-.ta.mono{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;min-height:140px}
+.ta.mono{font-family:var(--fb);font-size:.8rem;min-height:140px}
 .status{font-size:.85rem;color:var(--ok);min-height:1.2em;margin-top:8px}
 
 /* ---------- Dialog & Toast ---------- */
@@ -397,8 +397,9 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 :root{
   --serif:Georgia,"Times New Roman",serif;
   --sans:Futura,"Avenir Next","Gill Sans","Trebuchet MS",sans-serif;
-  --type:"American Typewriter","Courier New",Courier,monospace;
-  --hand:"Marker Felt",Noteworthy,"Chalkboard SE","Comic Sans MS",cursive;
+  --strong:Futura,"Futura Bold","Avenir Next","Arial Black","Helvetica Neue",Arial,sans-serif;
+  --type:var(--strong);
+  --hand:var(--strong);
   --fd:var(--serif);--fb:var(--sans);
   --ground:#2b303c;--ground2:#232731;
   --paper:#ece6da;--paper2:#e4dccb;--kraft:#c9a77c;--ink:#1d1d1b;--ink2:#4a4842;
@@ -665,7 +666,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 .note dt{font-family:var(--sans);font-weight:700;white-space:nowrap}
 .note dd{margin:0;color:#2c2b27}
 
-.photo{position:relative;margin:0 auto 64px;width:min(820px,100%);background:#f7f3ea;padding:14px 14px 0;box-shadow:0 14px 34px #0008;transform:rotate(-1.2deg)}
+.photo{position:relative;margin:0 auto 64px;width:min(820px,100%);background:#f7f3ea;padding:14px 14px 42px;box-shadow:0 14px 34px #0008;transform:rotate(-1.2deg)}
 .photo::before,.photo::after{content:"";position:absolute;top:-14px;width:120px;height:28px;background:var(--tape);z-index:1;
   clip-path:polygon(0 12%,4% 0,96% 8%,100% 0,98% 50%,100% 100%,3% 92%,0 100%,2% 50%)}
 .photo::before{left:-28px;transform:rotate(-32deg)}
@@ -677,6 +678,65 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
   .note dl{grid-template-columns:1fr;gap:2px}
   .note dd{margin-bottom:8px}
 }
+
+/* ---------- 1.9: Icons, Menü, kräftige Schrift ---------- */
+.ico{width:58%;height:58%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.icon-btn{display:grid;place-items:center}
+.tdel .ico{width:22px;height:22px;margin:auto}
+.mbtn{padding:18px 22px}
+.mbtn b{font-family:var(--strong);font-weight:700;font-size:1.12rem}
+.mbtn.sub::after{content:"›";margin-left:auto;font-family:var(--strong);font-weight:700;font-size:1.6rem;line-height:1;color:var(--ink2)}
+.mbtn .own{margin-left:10px}
+.cat,.team .turn,.qcat,.qbadge,.wbar,.verlink,#actionFx .sub,.mcopt .ml,.mcopt.locked::after,.mbtn .own,.cl h3 small,.won,.wx,#doneFx .dsub,
+.mcopt.right::after,body.mod .mcopt.hint-right:not(.right):not(.locked)::after,.gcard .wbar,.dbox .wbar,.cer-label{font-family:var(--strong);font-weight:700}
+.cat{letter-spacing:-.01em}
+.won{transform:rotate(-3deg)}
+.gcard .gbody{padding:20px 24px 26px}
+
+/* ---------- 1.9: Siegerehrung ---------- */
+#endScreen{background:var(--grain),radial-gradient(ellipse 70% 60% at 50% 30%,#40475a 0%,var(--ground) 55%,var(--ground2) 100%);backdrop-filter:none;padding:0;flex-direction:column}
+.ceremony{position:relative;width:min(1280px,100%);height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:9vh 3vw 0;gap:2.4vh;cursor:pointer}
+.cer-label{position:absolute;top:3.5vh;left:50%;transform:translateX(-50%) rotate(-2deg);background:var(--tape);color:var(--ink);font-size:clamp(.9rem,2.4vh,1.4rem);padding:.35em 1.4em;white-space:nowrap;
+  clip-path:polygon(0 12%,4% 0,96% 8%,100% 0,98% 50%,100% 100%,3% 92%,0 100%,2% 50%)}
+.cer-winner{min-height:15vh;display:flex;align-items:center;justify-content:center;font-size:clamp(2.2rem,11vh,7.5rem);visibility:hidden}
+.cer-winner.on{visibility:visible}
+.cer-winner .rl{animation:dropIn .5s cubic-bezier(.2,1.5,.4,1) both}
+.others{display:flex;flex-wrap:wrap;gap:1.2vw;justify-content:center;opacity:0;transition:opacity .6s;min-height:4vh;margin-bottom:3.5vh}
+.others.on{opacity:1}
+.clip{--c:#888;background:#fbf8f1;color:var(--ink);padding:.45em 1em;font-family:var(--serif);font-weight:700;font-size:clamp(.85rem,2.2vh,1.2rem);box-shadow:0 3px 8px #0005;border-left:6px solid var(--c)}
+.clip:nth-child(odd){transform:rotate(-1.5deg)}
+.clip:nth-child(even){transform:rotate(1.2deg)}
+.clip b{color:var(--stamp);margin-right:.3em}
+.clip span{margin-left:.6em;color:var(--ink2)}
+.podium3{display:flex;align-items:flex-end;justify-content:center;gap:1.6vw;width:100%}
+.step{--c:#888;display:flex;flex-direction:column;align-items:center;width:min(300px,27vw);opacity:0;transform:translateY(80px)}
+.step.on{opacity:1;transform:none;transition:transform .8s cubic-bezier(.2,1.25,.4,1),opacity .35s}
+.step.empty{visibility:hidden}
+.slip{position:relative;z-index:1;background:var(--paper);color:var(--ink);padding:2vh 1.2vw 1.4vh;margin-bottom:-1vh;min-width:76%;text-align:center;box-shadow:0 8px 18px #0007;transform:rotate(-2deg)}
+.slip::before{content:"";position:absolute;top:-1vh;left:50%;width:46%;height:2vh;transform:translateX(-50%) rotate(-3deg);background:color-mix(in srgb,var(--c) 75%,transparent);
+  clip-path:polygon(0 12%,4% 0,96% 8%,100% 0,98% 50%,100% 100%,3% 92%,0 100%,2% 50%)}
+.s1 .slip{transform:rotate(1.5deg)}
+.s3 .slip{transform:rotate(2.5deg)}
+.step.gold .slip{background:var(--marker)}
+.slip .nm{display:block;font-family:var(--strong);font-weight:700;font-size:clamp(1rem,3.2vh,1.9rem);line-height:1.15;overflow-wrap:anywhere}
+.slip .pt{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(1.4rem,5vh,3.2rem);line-height:1.1}
+.block{width:100%;display:flex;justify-content:center;padding-top:2.2vh;color:#5a4120;font-family:var(--strong);font-weight:700;font-size:clamp(3rem,12vh,8rem);line-height:1;
+  background:repeating-linear-gradient(90deg,#0000 0 7px,#00000012 7px 8px),linear-gradient(180deg,#d8b98e 0%,#c49c68 100%);
+  box-shadow:inset 0 6px 0 #e7cfa6,inset 0 -10px 18px #0003,0 0 0 1px #00000018}
+.block span{text-shadow:0 1px 0 #e9d4b0}
+.step.p1 .block{height:34vh}
+.step.p2 .block{height:24vh}
+.step.p3 .block{height:16vh}
+.step.p4 .block{height:11vh}
+.s1.drum .slip{animation:wiggle .18s infinite alternate}
+.end-actions{position:absolute;right:2.2vw;bottom:2.4vh;z-index:3;opacity:0;pointer-events:none;transition:opacity .4s}
+.end-actions.on{opacity:1;pointer-events:auto}
+body.viewer .end-actions{display:none}
+#endScreen.mod-only{align-items:center;justify-content:center}
+#endScreen.mod-only .ceremony{display:none}
+#endScreen.mod-only .end-actions{position:static;opacity:1;pointer-events:auto}
+#endScreen.mod-only .primary{font-size:1.3rem;padding:1em 2em}
+@media (prefers-reduced-motion:reduce){.step,.step.on{transform:none;transition:opacity .3s}.cer-winner .rl{animation:none}.s1.drum .slip{animation:none}}
 @media (prefers-reduced-motion:reduce){
   .qcard,#actionFx .word .rl,#doneFx .dword .rl{animation:none}
 }
@@ -688,15 +748,15 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 <div id="game">
   <header>
     <div class="ctrls left">
-      <button class="icon-btn" id="btnHome" title="Menü">⌂</button>
-      <button class="icon-btn" id="btnUndo" title="Letzte Wertung rückgängig">↶</button>
-      <button class="icon-btn" id="btnFinish" title="Spiel beenden und Siegerehrung zeigen">🏁</button>
+      <button class="icon-btn" id="btnHome" title="Menü" aria-label="Menü"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-5h4v5"/></svg></button>
+      <button class="icon-btn" id="btnUndo" title="Letzte Wertung rückgängig" aria-label="Rückgängig"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+      <button class="icon-btn" id="btnFinish" title="Spiel beenden und Siegerehrung zeigen" aria-label="Spiel beenden"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/></svg></button>
     </div>
     <div class="marquee"><div id="title" class="chrome">Der große Preis</div></div>
     <div class="ctrls">
-      <button class="icon-btn" id="btnViewer" title="Zuschaueransicht (Beamer)">📺<span class="vdot"></span></button>
-      <button class="icon-btn" id="btnFull" title="Vollbild">⛶</button>
-      <button class="icon-btn" id="btnSettings" title="Einstellungen">⚙︎</button>
+      <button class="icon-btn" id="btnViewer" title="Zuschaueransicht (Beamer)" aria-label="Zuschaueransicht"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg><span class="vdot"></span></button>
+      <button class="icon-btn" id="btnFull" title="Vollbild" aria-label="Vollbild"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+      <button class="icon-btn" id="btnSettings" title="Spielbrett bearbeiten" aria-label="Spielbrett bearbeiten"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
     </div>
   </header>
   <div id="scores"></div>
@@ -706,15 +766,14 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 <!-- ================= STARTMENÜ ================= -->
 <div class="screen" id="home">
   <h1 class="menu-title chrome">Welches Spiel?</h1>
-  <p class="menu-sub">Such dir aus, was heute gespielt wird.</p>
   <div class="gamegrid">
     <button class="gcard" id="gcPreis">
       <span class="wbar">Der große Preis</span>
-      <span class="gbody"><span class="gi">🏆</span><span>Die Quiz-Gameshow mit Kategorien, Punkten, Fragen, Schätzfragen und ACTION-Feldern.</span></span>
+      <span class="gbody"><span>Die Quiz-Gameshow mit Kategorien, Punkten, Fragen, Schätzfragen und ACTION-Feldern.</span></span>
     </button>
     <div class="gcard soon">
       <span class="wbar">Weitere Spiele</span>
-      <span class="gbody"><span class="gi">🎲</span><span>Kommen bald.</span></span>
+      <span class="gbody"><span>Kommen bald.</span></span>
     </div>
   </div>
   <button class="guide-link" id="btnGuide">Neu hier? So funktioniert's ↓</button>
@@ -780,7 +839,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 <g transform="translate(639.0,144.0) rotate(-5)"><rect x="0" y="0" width="72" height="96" fill="#f2df6b"/><text x="36.0" y="74" font-family="Georgia,serif" font-weight="700" font-size="76" text-anchor="middle" fill="#1d1d1b">O</text></g>
 <g transform="translate(717.0,138.0) rotate(3)"><rect x="0" y="0" width="72" height="96" fill="#e3b2ab"/><text x="36.0" y="74" font-family="Rockwell,Arial Black,sans-serif" font-weight="700" font-size="76" text-anchor="middle" fill="#1d1d1b">N</text></g>
 <g transform="translate(795.0,132.0) rotate(8)"><rect x="0" y="0" width="72" height="96" fill="#ece6da"/><text x="36.0" y="74" font-family="Georgia,serif" font-weight="700" font-size="76" text-anchor="middle" fill="#1d1d1b">!</text></g>
-<g transform="translate(514.0,312) rotate(-2)"><rect width="172" height="26" fill="#e8dec4" opacity=".9"/><text x="86" y="18" font-family="Courier New,monospace" font-size="14" text-anchor="middle" fill="#1d1d1b">⚡ SONDERFELD ⚡</text></g>
+<g transform="translate(514.0,312) rotate(-2)"><rect width="172" height="26" fill="#e8dec4" opacity=".9"/><text x="86" y="18" font-family="Futura,Arial Black,sans-serif" font-weight="700" font-size="14" text-anchor="middle" fill="#1d1d1b">SONDERFELD</text></g>
 <rect x="238" y="157" width="11" height="4" fill="#c9a77c" opacity="0.86" transform="rotate(103 238 157)"/>
 <rect x="1006" y="145" width="9" height="5" fill="#4f7fae" opacity="0.58" transform="rotate(17 1006 145)"/>
 <rect x="796" y="198" width="10" height="4" fill="#4f7fae" opacity="0.69" transform="rotate(110 796 198)"/>
@@ -833,7 +892,6 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 <path d="M915.5,579.0 Q885.8,502.8 875.0,426.5" stroke="url(#h-front)" stroke-width="45.9" stroke-linecap="round" fill="none"/><ellipse cx="875.0" cy="415.7" rx="23.0" ry="28.4" fill="url(#h-front)"/><path d="M915.5,579.0 Q885.8,502.8 875.0,426.5" stroke="#f2e9d0" stroke-opacity=".10" stroke-width="2" fill="none" transform="translate(12.2,0)"/><path d="M1104.5,579.0 Q1134.2,496.0 1145.0,413.0" stroke="url(#h-front)" stroke-width="45.9" stroke-linecap="round" fill="none"/><ellipse cx="1145.0" cy="402.2" rx="23.0" ry="28.4" fill="url(#h-front)"/><path d="M1104.5,579.0 Q1134.2,496.0 1145.0,413.0" stroke="#f2e9d0" stroke-opacity=".10" stroke-width="2" fill="none" transform="translate(-12.2,0)"/><path d="M848.0,600 C850.7,608.8 902.0,554.8 977.6,546.6 L1042.4,546.6 C1118.0,554.8 1169.3,608.8 1172.0,600 Z" fill="url(#h-front)"/><rect x="989.8" y="497.4" width="40.5" height="64.3" fill="url(#h-front)"/><ellipse cx="1010.0" cy="497.4" rx="40.4" ry="45.9" fill="url(#h-front)"/><path d="M973.3,481.3 A40.4,45.9 0 0 1 1046.7,481.3" stroke="#f2e9d0" stroke-opacity=".22" stroke-width="2.5" fill="none"/><path d="M875.0,581.8 C915.5,554.8 969.5,546.6 1010.0,546.6 C1050.5,546.6 1104.5,554.8 1145.0,581.8" stroke="#f2e9d0" stroke-opacity=".12" stroke-width="2" fill="none"/>
 <path d="M1064.0,600 C1066.6,612.5 1116.0,560.5 1188.8,552.7 L1251.2,552.7 C1324.0,560.5 1373.4,612.5 1376.0,600 Z" fill="url(#h-front)"/><rect x="1200.5" y="505.2" width="39.0" height="61.9" fill="url(#h-front)"/><ellipse cx="1220.0" cy="505.2" rx="38.9" ry="44.2" fill="url(#h-front)"/><path d="M1184.6,489.8 A38.9,44.2 0 0 1 1255.4,489.8" stroke="#f2e9d0" stroke-opacity=".22" stroke-width="2.5" fill="none"/><path d="M1090.0,586.5 C1129.0,560.5 1181.0,552.7 1220.0,552.7 C1259.0,552.7 1311.0,560.5 1350.0,586.5" stroke="#f2e9d0" stroke-opacity=".12" stroke-width="2" fill="none"/>
 </svg>
-      <figcaption>Wenn ein ACTION-Feld aufgeht, ist der Raum wach.</figcaption>
     </figure>
     <h2 id="guideTitle">So funktioniert's</h2>
     <ol class="steps">
@@ -850,7 +908,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
       <li class="note">
         <span class="snum">3</span>
         <h3>Spielen</h3>
-        <p>Die Gruppe am Zug wählt ein Feld. Du deckst auf, zeigst die Lösung und tippst „Geschafft“ oder „Nicht geschafft“. Danach ist automatisch die nächste Gruppe dran. ↶ nimmt die letzte Wertung zurück, 🏁 beendet das Spiel mit Siegerehrung.</p>
+        <p>Die Gruppe am Zug wählt ein Feld. Du deckst auf, zeigst die Lösung und tippst „Geschafft“ oder „Nicht geschafft“. Danach ist automatisch die nächste Gruppe dran. Der Pfeil oben links nimmt die letzte Wertung zurück, die Zielflagge beendet das Spiel mit Siegerehrung.</p>
       </li>
       <li class="note">
         <span class="snum">4</span>
@@ -863,11 +921,11 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
       <div class="note types">
         <h3>Die Feldtypen</h3>
         <dl>
-          <dt>❓ Frage</dt><dd>Die Lösung bleibt verdeckt, bis du sie zeigst. Weiß die Gruppe es nicht, kann eine andere die halbe Punktzahl holen.</dd>
-          <dt>🔤 Multiple Choice</dt><dd>Antwort antippen, um sie einzuloggen. Dann mit Trommelwirbel auflösen.</dd>
-          <dt>🔢 Schätzfrage</dt><dd>Jede Gruppe gibt eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.</dd>
-          <dt>🎯 Aufgabe</dt><dd>Die Gruppe am Zug muss etwas schaffen, zum Beispiel 10 Liegestütze.</dd>
-          <dt>⚡ ACTION</dt><dd>Sieht aus wie ein normales Feld. Beim Aufdecken spielen alle Gruppen mit, und du wählst den Gewinner.</dd>
+          <dt>Frage</dt><dd>Die Lösung bleibt verdeckt, bis du sie zeigst. Weiß die Gruppe es nicht, kann eine andere die halbe Punktzahl holen.</dd>
+          <dt>Multiple Choice</dt><dd>Antwort antippen, um sie einzuloggen. Dann mit Trommelwirbel auflösen.</dd>
+          <dt>Schätzfrage</dt><dd>Jede Gruppe gibt eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.</dd>
+          <dt>Aufgabe</dt><dd>Die Gruppe am Zug muss etwas schaffen, zum Beispiel 10 Liegestütze.</dd>
+          <dt>ACTION</dt><dd>Sieht aus wie ein normales Feld. Beim Aufdecken spielen alle Gruppen mit, und du wählst den Gewinner.</dd>
         </dl>
       </div>
       <div class="note tip">
@@ -882,20 +940,32 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 </div>
 
 <div class="screen" id="gmenu">
-  <h1 class="menu-title chrome" id="gmTitle">Der große Preis</h1>
+  <h1 class="menu-title" id="gmTitle">Der große Preis</h1>
   <div class="menu-list" id="gmList"></div>
-  <div class="menu-list">
-    <button class="mbtn" id="btnOpenViewer"><span class="mi">📺</span><span><b>Zuschaueransicht zeigen</b><small id="viewerStatus">Öffnet ein zweites Fenster für den Beamer</small></span></button>
-    <p class="mhint" id="dualHint">Ohne Zuschaueransicht spiegelst du einfach dein Gerät auf den Beamer. Mit Zuschaueransicht zeigt der Beamer nur die Show, und du siehst Lösungen und Knöpfe vorab. Beide Fenster müssen im selben Browser auf demselben Gerät laufen (z. B. Laptop mit Beamer als zweitem Bildschirm). Im Beamer-Fenster einmal ⛶ für Vollbild klicken.</p>
-  </div>
   <button class="back-link" id="btnGmBack">← Anderes Spiel</button>
   <div class="menu-foot"><button class="verlink" id="gmVer"></button></div>
   <input type="file" id="tplFile" accept=".json,application/json,text/plain" hidden>
 </div>
 
+<div class="screen" id="tplScreen">
+  <h1 class="menu-title" id="tplTitle">Vorlagen</h1>
+  <div class="menu-list" id="tplList"></div>
+  <button class="back-link" id="btnTplBack">← Zurück</button>
+</div>
+
+<div class="screen" id="setScreen">
+  <h1 class="menu-title" id="setTitle">Einstellungen</h1>
+  <div class="menu-list">
+    <button class="mbtn" id="btnEditBoard"><b>Spielbrett bearbeiten</b></button>
+    <button class="mbtn" id="btnOpenViewer"><b id="viewerLabel">Zuschaueransicht zeigen</b></button>
+    <p class="mhint" id="dualHint">Ohne Zuschaueransicht spiegelst du einfach dein Gerät auf den Beamer. Mit Zuschaueransicht zeigt der Beamer nur die Show, und du siehst Lösungen und Knöpfe vorab. Beide Fenster müssen im selben Browser auf demselben Gerät laufen (z. B. Laptop mit Beamer als zweitem Bildschirm). Im Beamer-Fenster einmal auf das Vollbild-Symbol klicken.</p>
+  </div>
+  <button class="back-link" id="btnSetBack">← Zurück</button>
+</div>
+
 <!-- ================= ZUSCHAUER ================= -->
-<div id="vSplash"><div class="marquee"><div class="chrome vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los ✦</div></div>
-<button class="icon-btn" id="vFull" title="Vollbild">⛶</button>
+<div id="vSplash"><div class="marquee"><div class="chrome vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los</div></div>
+<button class="icon-btn" id="vFull" title="Vollbild" aria-label="Vollbild"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 
 <!-- ================= FRAGE ================= -->
 <div class="overlay" id="qOverlay">
@@ -912,13 +982,13 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
       <div class="qanswer" id="qAnswer"></div>
     </div>
     <div class="qtools">
-      <button class="pill" id="btnShowAnswer">👁 Lösung zeigen</button>
+      <button class="pill" id="btnShowAnswer">Lösung zeigen</button>
     </div>
     <div class="qfoot">
       <div class="qturn" id="qTurn"></div>
       <div class="qbig">
-        <button class="bigbtn ok" id="btnOk">✓ Geschafft</button>
-        <button class="bigbtn bad" id="btnBad">✗ Nicht geschafft</button>
+        <button class="bigbtn ok" id="btnOk">Geschafft</button>
+        <button class="bigbtn bad" id="btnBad">Nicht geschafft</button>
       </div>
       <div class="qother" id="qOther"></div>
       <div class="half-pick" id="halfPick"></div>
@@ -927,20 +997,18 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 </div>
 
 <!-- ================= ACTION-Effekt ================= -->
-<div id="actionFx"><div class="rays"></div><div class="vignette"></div><div class="flash"></div><div class="word">ACTION!</div><div class="sub">⚡ SONDERFELD ⚡</div></div>
+<div id="actionFx"><div class="rays"></div><div class="vignette"></div><div class="flash"></div><div class="word">ACTION!</div><div class="sub">SONDERFELD</div></div>
 <div id="doneFx"><div class="dburst"></div><div class="dword"></div><div class="dsub"></div></div>
 
 <!-- ================= SIEGEREHRUNG ================= -->
 <div class="overlay" id="endScreen">
-  <div class="qcard">
-    <div class="qcat bungee" id="endSub">Alle Felder gespielt!</div>
-    <div class="qtext bungee" id="endTitle" style="color:var(--gold)">Gewinner</div>
-    <div class="podium" id="podium"></div>
-    <div class="row" style="justify-content:center">
-      <button class="pill" id="btnEndClose">Zum Spielbrett</button>
-      <button class="pill" id="btnEndNew">🔄 Neue Runde (Punkte auf 0)</button>
-    </div>
+  <div class="ceremony" id="ceremony" title="Antippen zeigt sofort alles">
+    <div class="cer-label" id="endSub">Spiel beendet</div>
+    <div class="cer-winner" id="endTitle"></div>
+    <div class="others" id="others"></div>
+    <div class="podium3"><div class="step s2" id="st2"><div class="slip"><span class="nm"></span><span class="pt"></span></div><div class="block"><span></span></div></div><div class="step s1" id="st1"><div class="slip"><span class="nm"></span><span class="pt"></span></div><div class="block"><span></span></div></div><div class="step s3" id="st3"><div class="slip"><span class="nm"></span><span class="pt"></span></div><div class="block"><span></span></div></div></div>
   </div>
+  <div class="end-actions" id="endActions"><button class="primary" id="btnEndMenu">Zurück zum Startmenü</button></div>
 </div>
 <canvas id="confetti"></canvas>
 
@@ -953,7 +1021,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
     </div>
 
     <div class="sec">
-      <h2>🎬 Allgemein</h2>
+      <h2>Allgemein</h2>
       <div class="row" style="align-items:flex-end">
         <label class="f" style="flex:2;min-width:240px">Titel der Show
           <input class="inp" id="sTitle" maxlength="60">
@@ -970,24 +1038,24 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
     </div>
 
     <div class="sec">
-      <h2>👥 Gruppen</h2>
+      <h2>Gruppen</h2>
       <p class="hint">Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.</p>
       <div id="sTeams"></div>
       <button class="btn" id="btnAddTeam">+ Gruppe hinzufügen</button>
     </div>
 
     <div class="sec">
-      <h2>❓ Kategorien, Fragen &amp; Aufgaben</h2>
-      <p class="hint">❓ Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. 🔤 Multiple Choice: Antippen der Antwort zeigt sofort, ob sie stimmt. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. 🔢 Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. 🎯 Aufgabe: Nur die Gruppe am Zug spielt. ⚡ ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt's die Überraschung.</p>
+      <h2>Kategorien, Fragen &amp; Aufgaben</h2>
+      <p class="hint">Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.</p>
       <div class="tabs" id="sTabs"></div>
       <div id="sCat"></div>
     </div>
 
     <div class="sec">
-      <h2>💾 Spiel &amp; Daten</h2>
+      <h2>Spiel &amp; Daten</h2>
       <p class="hint">Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.</p>
       <div class="row">
-        <button class="btn" id="btnReset">🔄 Neue Runde (Punkte &amp; Felder zurücksetzen)</button>
+        <button class="btn" id="btnReset">Neue Runde (Punkte &amp; Felder zurücksetzen)</button>
       </div>
       <div style="margin-top:18px">
         <div class="row" style="margin-bottom:8px">
@@ -1001,11 +1069,11 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
     </div>
 
     <div class="sec">
-      <h2>📜 Version &amp; Updates</h2>
+      <h2>Version &amp; Updates</h2>
       <p class="hint">Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.</p>
       <div class="row">
-        <button class="btn" id="btnChangelog">📜 Changelog anzeigen</button>
-        <button class="btn" id="btnCheckUpd">🔄 Jetzt nach Updates suchen</button>
+        <button class="btn" id="btnChangelog">Changelog anzeigen</button>
+        <button class="btn" id="btnCheckUpd">Jetzt nach Updates suchen</button>
       </div>
       <div class="ver" id="verInfo"></div>
     </div>
@@ -1019,8 +1087,18 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 
 <script>
 (function(){
-const APP_VERSION='1.8.1';
+const APP_VERSION='1.9.0';
 const CHANGELOG=[
+  {v:'1.9.0',d:'23.11.2026',items:[
+    'Neue Siegerehrung: Treppchen aus Pappe, Platz 3, 2 und 1 werden nacheinander enthüllt, der Sieger mit Trommelwirbel',
+    'Mit Zuschaueransicht siehst du bei der Siegerehrung nur den Knopf „Zurück zum Startmenü“',
+    'Spielmenü aufgeräumt: „Vorlagen“ und „Einstellungen“ als eigene Unterseiten, keine Untertitel mehr',
+    '„Neues Spiel mit aktuellem Spielbrett“ und „Neues Spiel mit leerem Spielbrett“',
+    'Keine Emojis mehr – Knöpfe mit schlichten Symbolen',
+    'Kräftigere Schrift statt Schreibmaschine und Handschrift',
+    'Startseite ohne Untertitel, Illustration ohne Bildunterschrift',
+    'Changelog zeigt nur noch die Versionsnummern'
+  ]},
   {v:'1.8.1',d:'23.11.2026',items:[
     'Startseite: Illustration einer Gruppe beim Spielen vor der Anleitung'
   ]},
@@ -1028,7 +1106,7 @@ const CHANGELOG=[
     'Anleitung auf der Startseite: in vier Schritten vom Spielbrett bis zum Beamer, dazu alle Feldtypen erklärt'
   ]},
   {v:'1.7.1',d:'23.11.2026',items:[
-    'Neu: Spiel vorzeitig beenden mit Siegerehrung – über 🏁 oben links im Spiel oder im Spielmenü',
+    'Neu: Spiel vorzeitig beenden mit Siegerehrung – über die Zielflagge oben links im Spiel oder im Spielmenü',
     'Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer'
   ]},
   {v:'1.7.0',d:'23.11.2026',items:[
@@ -1038,25 +1116,25 @@ const CHANGELOG=[
   ]},
   {v:'1.6.0',d:'23.11.2026',items:[
     'Neues Design im 2000er-Look: Aqua-Gel-Felder, Chrom-Schrift, Fenster mit Titelleiste',
-    'Fragen öffnen sich als Fenster – das ✕ oben rechts schließt sie (Feld bleibt offen)',
+    'Fragen öffnen sich als Fenster – das Kreuz oben rechts schließt sie (Feld bleibt offen)',
     'Keine Schriften mehr von Google-Servern – besser für Datenschutz und offline'
   ]},
   {v:'1.5.1',d:'23.11.2026',items:[
     'Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer',
     'Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“',
-    'Changelog hat jetzt ein ✕ zum Schließen (auch Tippen daneben schließt)'
+    'Changelog hat jetzt ein Kreuz zum Schließen (auch Tippen daneben schließt)'
   ]},
   {v:'1.5.0',d:'23.11.2026',items:[
     'Versionsnummer unten im Menü – antippen öffnet den Changelog',
     'Aufgaben bekommen eine eigene Intro-Animation („AUFGABE!“)',
-    'Nach Aufgaben und ACTION-Feldern gibt es eine Ergebnis-Animation: „GESCHAFFT!“, „🏆 GEWONNEN!“ oder „LEIDER NICHT!“',
-    'Multiple Choice: Antwort antippen loggt sie ein (änderbar), „🔓 Auflösen“ deckt sie mit Trommelwirbel auf',
+    'Nach Aufgaben und ACTION-Feldern gibt es eine Ergebnis-Animation: „GESCHAFFT!“, „GEWONNEN!“ oder „LEIDER NICHT!“',
+    'Multiple Choice: Antwort antippen loggt sie ein (änderbar), „Auflösen“ deckt sie mit Trommelwirbel auf',
     'Eigene Vorlagen: aktuelles Spielbrett als Vorlage speichern, Vorlagen löschen, als Datei exportieren und wieder importieren',
     'Gelöschte Standard-Vorlagen lassen sich wiederherstellen',
     'Menü aufgeräumt: „Spielbrett bearbeiten“ und „Zuschaueransicht“ unter „Einstellungen“'
   ]},
   {v:'1.4.1',d:'23.11.2026',items:[
-    'Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „📺 Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer',
+    'Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer',
     'Sobald die Zuschaueransicht verbunden ist, siehst nur du die Lösungen – wird sie geschlossen, verhält sich die App wieder wie gespiegelt'
   ]},
   {v:'1.4.0',d:'23.11.2026',items:[
@@ -1064,11 +1142,11 @@ const CHANGELOG=[
     'Vorlagen: „Gemischtes Quiz“ und neu „Bibel-Quiz“',
     'Zwei-Bildschirm-Modus: Der Beamer zeigt nur die Show, du siehst Lösungen, richtige MC-Antwort und alle Knöpfe vorab',
     'Zuschaueransicht mit Startbild („Gleich geht\'s los!“), ACTION-Animation, Punkte-Animation und Siegerehrung',
-    'Bei Schätzfragen sieht der Beamer nur „✓ abgegeben“, bis du auflöst',
-    '⌂-Knopf im Spiel führt zurück ins Menü'
+    'Bei Schätzfragen sieht der Beamer nur „abgegeben“, bis du auflöst',
+    'Haus-Knopf im Spiel führt zurück ins Menü'
   ]},
   {v:'1.3.0',d:'23.11.2026',items:[
-    'Neue Fragetypen: ❓ Klassisch, 🔤 Multiple Choice und 🔢 Schätzfrage',
+    'Neue Fragetypen: Klassisch, Multiple Choice und Schätzfrage',
     'Multiple Choice: bis zu 4 Antworten (A–D). Antippen zeigt sofort richtig (grün) oder falsch (rot)',
     'Schätzfrage: Jede Gruppe trägt ihre Zahl ein, „Auflösen“ zeigt die Lösung und markiert automatisch die Gruppe, die am nächsten dran ist (bei Gleichstand mehrere)',
     'Beispielbrett: Schätzen-Kategorie als Schätzfragen, zwei Multiple-Choice-Fragen in Allgemeinwissen'
@@ -1084,7 +1162,7 @@ const CHANGELOG=[
     'Automatische Updates: Neue Versionen werden im WLAN im Hintergrund geladen',
     'Changelog in den Einstellungen und „Was ist neu“-Hinweis nach einem Update',
     'Neu: „Halbe Punktzahl für …“ – eine andere Gruppe bekommt die halben Punkte',
-    'Neu: Feldtyp ⚡ ACTION mit Überraschungs-Animation beim Aufdecken',
+    'Neu: Feldtyp ACTION mit Überraschungs-Animation beim Aufdecken',
     'Countdown-Timer entfernt',
     'Beispielbrett nur noch mit Fragen (ohne Spiele/Aufgaben)'
   ]},
@@ -1098,7 +1176,7 @@ if(VIEW)document.body.classList.add('viewer');
 const OLD_COLORS=['#ff4d6d','#3ddc97','#4dabff','#ffd23f','#c77dff','#ff9f1c','#2ee6e6','#ff70d0'];
 const COLORS=['#c8505f','#5b8e7d','#4f7fae','#d9a33a','#8e6bb0','#d27f3a','#3f9a9c','#c26a95'];
 const PAPERS=['#ece6da','#e6d6bc','#dfd9cd','#ead8d2','#d9ded0'];
-const R_FONTS=['Georgia,"Times New Roman",serif','Futura,"Avenir Next","Arial Black",sans-serif','"American Typewriter","Courier New",monospace','Didot,"Bodoni 72","Times New Roman",serif','Rockwell,"Arial Black",Impact,sans-serif'];
+const R_FONTS=['Georgia,"Times New Roman",serif','Futura,"Avenir Next","Arial Black",sans-serif','"Helvetica Neue","Arial Black",Arial,sans-serif','Didot,"Bodoni 72","Times New Roman",serif','Rockwell,"Arial Black",Impact,sans-serif'];
 const R_PAPER=[['#ece6da','#1d1d1b'],['#1d1d1b','#ece6da'],['#c9a77c','#1d1d1b'],['#f2df6b','#1d1d1b'],['#e3b2ab','#1d1d1b'],['#ffffff','#b8432f'],['#d9ded0','#1d1d1b']];
 function ransom(el,text){
   text=String(text||'');el.textContent='';el.classList.add('ransom');el.setAttribute('aria-label',text);
@@ -1284,7 +1362,7 @@ function ask(msg,yesLabel,onYes,opt){
 /* ---------- Spielbrett ---------- */
 function renderScores(){
   const box=$('#scores');box.innerHTML='';
-  if(!S.teams.length){box.innerHTML='<div class="noteams">Noch keine Gruppen – lege sie in den ⚙︎ Einstellungen an.</div>';return;}
+  if(!S.teams.length){box.innerHTML='<div class="noteams">Noch keine Gruppen – lege sie unter „Spielbrett bearbeiten“ an.</div>';return;}
   const max=Math.max(...S.teams.map(t=>t.score));
   S.teams.forEach((t,i)=>{
     const d=document.createElement('button');
@@ -1301,7 +1379,7 @@ function renderBoard(){
   document.title=S.title||'Der große Preis';
   const b=$('#board');b.innerHTML='';
   const nc=S.categories.length,nr=S.points.length;
-  if(!nc){b.style.gridTemplateColumns='1fr';b.style.gridTemplateRows='1fr';b.innerHTML='<div class="empty-board">Noch keine Kategorien.<br>Tippe oben rechts auf ⚙︎</div>';renderScores();return;}
+  if(!nc){b.style.gridTemplateColumns='1fr';b.style.gridTemplateRows='1fr';b.innerHTML='<div class="empty-board">Noch keine Kategorien.<br>Tippe oben rechts auf das Zahnrad</div>';renderScores();return;}
   b.style.gridTemplateColumns=`repeat(${nc},minmax(0,1fr))`;
   b.style.gridTemplateRows=`auto repeat(${nr},minmax(0,1fr))`;
   S.categories.forEach((c,ci)=>{const h=document.createElement('div');h.className='cat';h.textContent=c.name||'—';h.style.transform=`rotate(${((ci*5)%5-2)*.7}deg)`;b.appendChild(h);});
@@ -1311,9 +1389,9 @@ function renderBoard(){
     if(u){
       const ws=(u.teams||(u.team?[u.team]:[])).map(id=>S.teams.find(x=>x.id===id)).filter(Boolean);
       const team=ws[0];
-      if(ws.length>1)t.innerHTML=`<span class="won" style="--c:#ffd23f">🏆 ${ws.map(w=>esc(w.name)).join(', ')}</span>`;
+      if(ws.length>1)t.innerHTML=`<span class="won" style="--c:#f2df6b">${ws.map(w=>esc(w.name)).join(', ')}</span>`;
       else t.innerHTML=team?`<span class="won" style="--c:${team.color}">${u.half?'½ ':''}${esc(team.name)}</span>`:'<span class="won none">—</span>';
-      t.onclick=()=>toast('Feld schon gespielt. Mit ↶ kannst du die letzte Wertung rückgängig machen.');
+      t.onclick=()=>toast('Feld schon gespielt. Mit dem Pfeil oben links machst du die letzte Wertung rückgängig.');
     }else{t.textContent=p;t.onclick=()=>openQ(ci,ri);}
     b.appendChild(t);
   }));
@@ -1329,7 +1407,7 @@ function floatScore(teamId,delta){
 
 /* ---------- Frage öffnen ---------- */
 let cur=null,fxBusy=false;
-const TYPE_LABEL={frage:'Frage',mc:'Multiple Choice',schaetz:'Schätzfrage',aufgabe:'Aufgabe',action:'⚡ Action'};
+const TYPE_LABEL={frage:'Frage',mc:'Multiple Choice',schaetz:'Schätzfrage',aufgabe:'Aufgabe',action:'Action'};
 // Zahl aus deutscher oder englischer Schreibweise lesen: "1.440", "42,195", "384 400"
 function parseNum(v){
   let x=String(v||'').replace(/\s|\u00a0/g,'').replace(/[^0-9,.\-]/g,'');
@@ -1339,7 +1417,7 @@ function parseNum(v){
   return parseFloat(x);
 }
 const fmtNum=n=>isNaN(n)?'':n.toLocaleString('de-DE',{maximumFractionDigits:3});
-const INTRO={action:{word:'ACTION!',sub:'⚡ SONDERFELD ⚡'},aufgabe:{word:'AUFGABE!',sub:'🎯 JETZT SEID IHR DRAN 🎯'}};
+const INTRO={action:{word:'ACTION!',sub:'SONDERFELD'},aufgabe:{word:'AUFGABE!',sub:'JETZT SEID IHR DRAN'}};
 function playIntro(kind){
   const fx=$('#actionFx'),d=INTRO[kind]||INTRO.action;
   ransom(fx.querySelector('.word'),d.word);fx.querySelector('.sub').textContent=d.sub;
@@ -1373,7 +1451,7 @@ function showQ(ci,ri){
   qa.textContent=isQ?it.answer:isEst?(fmtNum(parseNum(it.answer))||it.answer)+(it.unit?' '+it.unit:''):'';
   qa.classList.toggle('secret',!!qa.textContent);
   $('#btnShowAnswer').style.display=(isQ&&it.answer)||isMC?'':'none';
-  $('#btnShowAnswer').textContent=isDual()?'📺 Lösung zeigen':'👁 Lösung zeigen';$('#btnShowAnswer').disabled=false;
+  $('#btnShowAnswer').textContent=isDual()?'Lösung auf dem Beamer zeigen':'Lösung zeigen';$('#btnShowAnswer').disabled=false;
 
   const team=S.teams[S.turn];
   const hasTeams=S.teams.length>0;
@@ -1384,7 +1462,7 @@ function showQ(ci,ri){
   const ex=$('#qExtra');ex.innerHTML='';ex.className='';
 
   const setWinBtn=()=>{const n=cur.sel.size;$('#btnOk').disabled=!n;$('#btnOk').style.opacity=n?1:.4;
-    $('#btnOk').textContent=n?`🏆 +${p} für ${n===1?S.teams.find(t=>cur.sel.has(t.id)).name:n+' Gruppen'}`:'🏆 Gewinner antippen';pushState();};
+    $('#btnOk').textContent=n?`+${p} für ${n===1?S.teams.find(t=>cur.sel.has(t.id)).name:n+' Gruppen'}`:'Gewinner antippen';pushState();};
   cur.setWinBtn=setWinBtn;
 
   // Multiple Choice: Antwortkacheln
@@ -1411,7 +1489,7 @@ function showQ(ci,ri){
 
   if(isAct){
     // ACTION: alle Gruppen spielen mit, Gewinner-Gruppe(n) auswählen
-    $('#qTurn').innerHTML=`🏆 Wer hat gewonnen? Jede Gewinner-Gruppe bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
+    $('#qTurn').innerHTML=`Wer hat gewonnen? Jede Gewinner-Gruppe bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
     pick.classList.add('show');
     S.teams.forEach(t=>{const b=document.createElement('button');b.className='chip big';b.style.setProperty('--c',t.color);b.textContent=t.name;
       b.onclick=()=>{if(cur.sel.has(t.id))cur.sel.delete(t.id);else cur.sel.add(t.id);b.classList.toggle('sel',cur.sel.has(t.id));setWinBtn();};
@@ -1419,14 +1497,14 @@ function showQ(ci,ri){
     setWinBtn();
     $('#btnBad').textContent='Niemand hat gewonnen';
   }else if(isEst){
-    $('#qTurn').innerHTML=`🔢 Jede Gruppe schätzt – wer am nächsten dran ist, bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
+    $('#qTurn').innerHTML=`Jede Gruppe schätzt – wer am nächsten dran ist, bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
     $('#btnOk').disabled=!hasTeams;$('#btnOk').style.opacity=hasTeams?1:.4;
-    $('#btnOk').textContent='🔍 Auflösen';
+    $('#btnOk').textContent='Auflösen';
     $('#btnBad').textContent='Niemand bekommt Punkte';
   }else{
     $('#qTurn').innerHTML=(team?`Am Zug: <b style="color:${team.color}">${esc(team.name)}</b>`:'Keine Gruppen angelegt')+(isMC?' · Antwort antippen zum Einloggen':'');
-    $('#btnOk').textContent=team?`✓ Geschafft (+${p} für ${team.name})`:'✓ Geschafft';
-    $('#btnBad').textContent=S.settings.minus&&team?`✗ Nicht geschafft (−${p})`:'✗ Nicht geschafft';
+    $('#btnOk').textContent=team?`Geschafft (+${p} für ${team.name})`:'Geschafft';
+    $('#btnBad').textContent=S.settings.minus&&team?`Nicht geschafft (−${p})`:'Nicht geschafft';
     $('#btnOk').disabled=!hasTeams;$('#btnOk').style.opacity=hasTeams?1:.4;
     // Halbe Punktzahl bei klassischen Fragen und Multiple Choice
     if((isQ||isMC)&&S.teams.length>1){
@@ -1438,7 +1516,7 @@ function showQ(ci,ri){
       S.teams.forEach((t,i)=>{if(i===S.turn)return;const b=document.createElement('button');b.className='chip';b.style.setProperty('--c',t.color);b.textContent=`${t.name} +${half}`;b.onclick=()=>award([{teamId:t.id,delta:half}],true);pick.appendChild(b);});
     }
   }
-  const back=document.createElement('button');back.className='chip ghost';back.textContent='↩ Zurück, Feld bleibt offen';back.onclick=closeQ;other.appendChild(back);
+  const back=document.createElement('button');back.className='chip ghost';back.textContent='Zurück, Feld bleibt offen';back.onclick=closeQ;other.appendChild(back);
 
   $('#qOverlay').classList.add('show');
   pushState();
@@ -1448,7 +1526,7 @@ $('#qX').onclick=()=>closeQ();
 function lockMC(i){
   cur.picked=i;cur.stage='locked';
   [...$('#qExtra').children].forEach(b=>{const on=+b.dataset.i===i;b.classList.toggle('locked',on);b.classList.toggle('picked',on);});
-  $('#btnShowAnswer').textContent='🔓 Auflösen';sfx('tick');pushState();
+  $('#btnShowAnswer').textContent='Auflösen';sfx('tick');pushState();
 }
 function startRevealMC(){
   if(!cur||cur.stage!=='locked')return;
@@ -1477,11 +1555,11 @@ function solveEstimate(){
   rows.forEach(r=>{r.classList.add('solved');const inp=r.querySelector('input');inp.readOnly=true;inp.blur();});
   if(!isNaN(target)){
     const valid=guesses.filter(g=>!isNaN(g.v));
-    valid.forEach(g=>{const d=Math.abs(g.v-target);g.row.querySelector('.ed').textContent=d===0?'🎯 Volltreffer!':'daneben um '+fmtNum(d);});
+    valid.forEach(g=>{const d=Math.abs(g.v-target);g.row.querySelector('.ed').textContent=d===0?'Volltreffer!':'daneben um '+fmtNum(d);});
     if(valid.length){const min=Math.min(...valid.map(g=>Math.abs(g.v-target)));
       valid.filter(g=>Math.abs(g.v-target)===min).forEach(g=>{cur.sel.add(g.id);g.row.classList.add('sel');});}
   }
-  $('#qTurn').innerHTML=cur.sel.size?'🏆 Am nächsten dran! (Zum Ändern eine Gruppe antippen)':'Tippe die Gewinner-Gruppe an';
+  $('#qTurn').innerHTML=cur.sel.size?'Am nächsten dran! (Zum Ändern eine Gruppe antippen)':'Tippe die Gewinner-Gruppe an';
   cur.setWinBtn();sfx('reveal');
 }
 function playDone(o){
@@ -1551,23 +1629,51 @@ function checkEnd(){
   const played=Object.keys(S.used).filter(k=>{const [c,r]=k.split('-').map(Number);return c<S.categories.length&&r<S.points.length;}).length;
   if(total>0&&played>=total&&S.teams.length)setTimeout(showEnd,700);
 }
+let endT=[],endData=null;
+function clearEndTimers(){endT.forEach(clearTimeout);endT=[];}
 function showEnd(){
   if(!S.teams.length)return;
+  clearEndTimers();
   const total=S.categories.length*S.points.length,played=Object.keys(S.used).length;
-  $('#endSub').textContent=played>=total?'Alle Felder gespielt!':'Spiel beendet';
+  $('#endSub').textContent=played>=total?'Alle Felder gespielt':'Spiel beendet';
   const rank=[...S.teams].sort((a,b)=>b.score-a.score);
-  const top=rank[0].score,winners=rank.filter(t=>t.score===top);
-  ransom($('#endTitle'),winners.length>1?'Unentschieden!':winners[0].name);
-  const p=$('#podium');p.innerHTML='';
   let place=0,last=null;
-  rank.forEach((t,i)=>{if(t.score!==last){place=i+1;last=t.score;}
-    const r=document.createElement('div');r.className='prow'+(place===1?' first':'');r.style.setProperty('--c',t.color);
-    r.innerHTML=`<span class="rk">${place}.</span><span class="nm">${esc(t.name)}</span><span class="bungee">${t.score}</span>`;p.appendChild(r);});
-  $('#endScreen').classList.add('show');sfx('fanfare');confetti();
+  const placed=rank.map((t,i)=>{if(t.score!==last){place=i+1;last=t.score;}return{t,place};});
+  const winners=placed.filter(x=>x.place===1).map(x=>x.t);
+  endData={placed,winners};
+  const modOnly=!VIEW&&isDual();
+  const es=$('#endScreen');es.classList.toggle('mod-only',modOnly);
+  [1,2,3].forEach(n=>{const el=$('#st'+n),x=placed[n-1];el.classList.remove('on','drum');el.classList.toggle('empty',!x);
+    if(x){el.style.setProperty('--c',x.t.color);el.querySelector('.nm').textContent=x.t.name;el.querySelector('.pt').textContent=x.t.score;
+      el.querySelector('.block span').textContent=x.place;el.classList.toggle('gold',x.place===1);
+      el.classList.remove('p1','p2','p3','p4');el.classList.add('p'+Math.min(x.place,4));}});
+  const w=$('#endTitle');w.innerHTML='';w.classList.remove('on');
+  const oth=$('#others');oth.innerHTML='';oth.classList.remove('on');
+  placed.slice(3).forEach(x=>{const d=document.createElement('div');d.className='clip';d.style.setProperty('--c',x.t.color);
+    d.innerHTML=`<b>${x.place}.</b>${esc(x.t.name)}<span>${x.t.score}</span>`;oth.appendChild(d);});
+  $('#endActions').classList.toggle('on',modOnly);
+  es.classList.add('show');
   if(!VIEW){endShown=true;pushState();}
+  const seq=(ms,fn)=>endT.push(setTimeout(fn,ms));
+  const up=n=>{const el=$('#st'+n);if(!el.classList.contains('empty')){el.classList.add('on');sfx('tick');}};
+  seq(900,()=>up(3));
+  seq(2200,()=>up(2));
+  seq(3300,()=>{$('#st1').classList.add('on','drum');sfx('drum');});
+  seq(4700,()=>revealWinner(modOnly));
+  seq(5600,()=>{oth.classList.add('on');$('#endActions').classList.add('on');});
 }
-$('#btnEndClose').onclick=()=>{$('#endScreen').classList.remove('show');endShown=false;pushState();};
-$('#btnEndNew').onclick=()=>{$('#endScreen').classList.remove('show');endShown=false;resetRound();};
+function revealWinner(modOnly){
+  if(!endData)return;
+  $('#st1').classList.remove('drum');$('#st1').classList.add('on');
+  const w=$('#endTitle');
+  if(!w.classList.contains('on')){ransom(w,endData.winners.length>1?'Unentschieden!':endData.winners[0].name);w.classList.add('on');sfx('fanfare');if(!modOnly)confetti();}
+}
+$('#ceremony').onclick=()=>{
+  if(!$('#endScreen').classList.contains('show'))return;
+  clearEndTimers();[1,2,3].forEach(n=>{const el=$('#st'+n);el.classList.remove('drum');if(!el.classList.contains('empty'))el.classList.add('on');});
+  revealWinner(false);$('#others').classList.add('on');$('#endActions').classList.add('on');
+};
+$('#btnEndMenu').onclick=()=>{clearEndTimers();$('#endScreen').classList.remove('show');endShown=false;closeQ();showScreen('home');};
 function resetRound(){S.teams.forEach(t=>t.score=0);S.used={};S.history=[];S.turn=0;save();renderBoard();}
 
 function confetti(){
@@ -1593,7 +1699,7 @@ $('#btnFull').onclick=()=>{
 
 /* ================= EINSTELLUNGEN ================= */
 let selCat=0;
-function openSettings(){closeQ();$('#home').classList.remove('show');$('#gmenu').classList.remove('show');screenName='settings';
+function openSettings(){closeQ();document.querySelectorAll('.screen').forEach(x=>x.classList.remove('show'));screenName='settings';
   renderSettings();$('#settings').classList.add('show');$('#settings').scrollTop=0;pushState();}
 function closeSettings(){$('#settings').classList.remove('show');screenName='board';applyMode();renderBoard();}
 $('#btnSettings').onclick=openSettings;$('#btnBack').onclick=closeSettings;
@@ -1659,7 +1765,7 @@ function renderCats(){
     const it=c.items[ri]||(c.items[ri]=blank());
     const row=document.createElement('div');row.className='item';
     row.innerHTML=`<div class="pv">${p}</div><div class="flds">
-      <div class="seg"><button class="frage">❓ Klassisch</button><button class="mc">🔤 Multiple Choice</button><button class="schaetz">🔢 Schätzfrage</button><button class="aufgabe">🎯 Aufgabe</button><button class="action">⚡ ACTION</button></div>
+      <div class="seg"><button class="frage">Klassisch</button><button class="mc">Multiple Choice</button><button class="schaetz">Schätzfrage</button><button class="aufgabe">Aufgabe</button><button class="action">ACTION</button></div>
       <textarea class="ta tx" rows="2"></textarea>
       <input class="inp an">
       <div class="mcedit">${[0,1,2,3].map(i=>`<label><input type="radio" name="mc-${selCat}-${ri}" value="${i}" title="Richtige Antwort"><span class="ml">${'ABCD'[i]}</span><input class="inp opt" placeholder="Antwort ${'ABCD'[i]}"></label>`).join('')}</div>
@@ -1712,14 +1818,14 @@ $('#btnExport').onclick=()=>{
   const data={title:S.title,points:S.points,settings:S.settings,teams:S.teams.map(t=>({name:t.name,color:t.color})),categories:S.categories};
   const txt=JSON.stringify(data,null,1);$('#ioText').value=txt;
   const st=$('#ioStatus');
-  try{navigator.clipboard.writeText(txt).then(()=>{st.textContent='✓ Export in die Zwischenablage kopiert.';},()=>{st.textContent='Export erzeugt – bitte Text oben markieren und kopieren.';});}
+  try{navigator.clipboard.writeText(txt).then(()=>{st.textContent='Export in die Zwischenablage kopiert.';},()=>{st.textContent='Export erzeugt – bitte Text oben markieren und kopieren.';});}
   catch(e){st.textContent='Export erzeugt – bitte Text oben markieren und kopieren.';}
 };
 function doImport(txt){
   const st=$('#ioStatus');
   try{const d=JSON.parse(txt);if(!d||!Array.isArray(d.categories))throw 0;
     ask('Import übernehmen? Kategorien, Fragen und Gruppen werden ersetzt, die Punkte auf 0 gesetzt.','Importieren',()=>{
-      S=normalize(Object.assign({},d,{used:{},history:[],turn:0}));S.teams.forEach(t=>t.score=0);save();selCat=0;renderSettings();st.textContent='✓ Import erfolgreich.';});
+      S=normalize(Object.assign({},d,{used:{},history:[],turn:0}));S.teams.forEach(t=>t.score=0);save();selCat=0;renderSettings();st.textContent='Import erfolgreich.';});
   }catch(e){st.style.color='#ff8fa3';st.textContent='Das sieht nicht nach einem gültigen Export aus.';setTimeout(()=>st.style.color='',3000);}
 }
 $('#btnImport').onclick=()=>doImport($('#ioText').value.trim());
@@ -1727,7 +1833,8 @@ $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new
 
 /* ---------- Tastatur ---------- */
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&!VIEW){if($('#clDialog').classList.contains('show'))$('#clDialog').classList.remove('show');else if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#endScreen').classList.remove('show');}
+  if(e.key==='Escape'&&!VIEW&&(screenName==='tpl'||screenName==='set')&&!$('#dialog').classList.contains('show')){showScreen('gmenu');return;}
+  if(e.key==='Escape'&&!VIEW){if($('#clDialog').classList.contains('show'))$('#clDialog').classList.remove('show');else if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#btnEndMenu').click();}
 });
 addEventListener('resize',()=>{const cv=$('#confetti');cv.width=innerWidth;cv.height=innerHeight;});
 
@@ -1736,7 +1843,7 @@ function showChangelog(onlyNew,since){
   const last=onlyNew?since:null;
   const list=onlyNew&&last?CHANGELOG.filter(e=>cmpVer(e.v,last)>0):CHANGELOG;
   $('#clTitle').textContent=onlyNew?'Neu in Version '+APP_VERSION:'Changelog';
-  $('#clBody').innerHTML=list.map(e=>`<h3>Version ${esc(e.v)} <small>vom ${esc(e.d)}</small></h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
+  $('#clBody').innerHTML=list.map(e=>`<h3>Version ${esc(e.v)}</h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
   $('#clDialog').classList.add('show');
 }
 $('#clClose').onclick=$('#clX').onclick=()=>$('#clDialog').classList.remove('show');
@@ -1783,7 +1890,7 @@ $('#btnCheckUpd').onclick=()=>{
   verText('suche …');
   swReg.update().then(()=>{setTimeout(()=>{
     if(swReg.installing||swReg.waiting){verText('Update wird geladen …');}
-    else{verText('aktuell ✓');toast('Du hast die neueste Version.');}
+    else{verText('aktuell');toast('Du hast die neueste Version.');}
   },1500);}).catch(()=>{verText('Update-Suche fehlgeschlagen');});
 };
 
@@ -1816,13 +1923,13 @@ function applyMode(){
   document.body.classList.toggle('mod',dual);
   $('#btnViewer').classList.toggle('on',dual);
   $('#btnViewer').title=dual?'Zuschaueransicht verbunden':'Zuschaueransicht zeigen';
-  if(cur&&!(cur.type==='mc'&&cur.stage==='locked'))$('#btnShowAnswer').textContent=dual?'📺 Lösung zeigen':'👁 Lösung zeigen';
-  if(was!==dual&&!VIEW)toast(dual?'📺 Zuschaueransicht verbunden – Lösungen siehst jetzt nur du.':'📺 Zuschaueransicht getrennt.');
+  if(cur&&!(cur.type==='mc'&&cur.stage==='locked'))$('#btnShowAnswer').textContent=dual?'Lösung auf dem Beamer zeigen':'Lösung zeigen';
+  if(was!==dual&&!VIEW)toast(dual?'Zuschaueransicht verbunden – Lösungen siehst jetzt nur du.':'Zuschaueransicht getrennt.');
 }
 function viewerConnected(){return Date.now()-viewerSeen<7000;}
 function updViewerStatus(){
   applyMode();
-  const st=$('#viewerStatus');if(st)st.textContent=viewerConnected()?'✅ Verbunden – der Beamer zeigt nur die Show':'Öffnet ein zweites Fenster für den Beamer';
+  const st=$('#viewerLabel');if(st)st.textContent=viewerConnected()?'Zuschaueransicht verbunden':'Zuschaueransicht zeigen';
 }
 function openViewer(){
   if(viewerConnected()){send({t:'focus'});toast('Die Zuschaueransicht ist schon offen.');return;}
@@ -1840,7 +1947,12 @@ function showScreen(n){
   screenName=n;
   $('#home').classList.toggle('show',n==='home');
   $('#gmenu').classList.toggle('show',n==='gmenu');
+  $('#tplScreen').classList.toggle('show',n==='tpl');
+  $('#setScreen').classList.toggle('show',n==='set');
   if(n==='gmenu')renderGMenu();
+  if(n==='tpl')renderTpl();
+  if(n==='set')renderSet();
+  document.querySelectorAll('.screen.show').forEach(x=>x.scrollTop=0);
   pushState();
 }
 function hasContent(){return S.categories.some(c=>c.items.some(it=>(it.text||'').trim()));}
@@ -1874,7 +1986,7 @@ function boardToTpl(name){
 }
 function saveAsTemplate(){
   ask('Unter welchem Namen soll das aktuelle Spielbrett als Vorlage gespeichert werden?','Speichern',name=>{
-    const a=ownTpl();a.push(boardToTpl(name));lsSet(TPL_KEY,JSON.stringify(a));renderGMenu();toast('Vorlage „'+name+'“ gespeichert.');
+    const a=ownTpl();a.push(boardToTpl(name));lsSet(TPL_KEY,JSON.stringify(a));renderTpl();toast('Vorlage „'+name+'“ gespeichert.');
   },{input:true,value:S.title||'',placeholder:'z. B. Weihnachtsquiz 2026'});
 }
 function deleteTemplate(tp){
@@ -1890,7 +2002,7 @@ function exportTemplates(){
   if(!a.length){toast('Du hast noch keine eigenen Vorlagen. Speichere zuerst ein Spielbrett als Vorlage.');return;}
   const txt=JSON.stringify({app:'grosser-preis',typ:'vorlagen',version:APP_VERSION,exportiert:new Date().toISOString(),vorlagen:a.map(({id,...t})=>t)},null,1);
   const d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  if(downloadFile(`grosser-preis-vorlagen-${stamp}.json`,txt))toast(`📤 ${a.length} Vorlage${a.length>1?'n':''} exportiert.`);
+  if(downloadFile(`grosser-preis-vorlagen-${stamp}.json`,txt))toast(`${a.length} Vorlage${a.length>1?'n':''} exportiert.`);
   else{try{navigator.clipboard.writeText(txt);toast('Download nicht möglich – Vorlagen in die Zwischenablage kopiert.');}catch(e){toast('Export nicht möglich.');}}
 }
 function importTemplates(txt){
@@ -1907,51 +2019,61 @@ function importTemplates(txt){
     const n=normalize({title:t.title||t.name,points:t.points,categories:cats,teams:[]});
     own.push({id:'own-'+uid(),name:String(t.name||t.title||'Importierte Vorlage'),title:n.title,points:n.points,
       desc:String(t.desc||n.categories.map(c=>c.name).join(', ')),cats:n.categories});});
-  lsSet(TPL_KEY,JSON.stringify(own));renderGMenu();
-  toast(`📥 ${arr.length} Vorlage${arr.length>1?'n':''} importiert.`);
+  lsSet(TPL_KEY,JSON.stringify(own));renderTpl();
+  toast(`${arr.length} Vorlage${arr.length>1?'n':''} importiert.`);
 }
 $('#tplFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>importTemplates(String(r.result));r.readAsText(f);e.target.value='';};
+function menuBtn(list,title,fn,cls){
+  const b=document.createElement('button');b.className='mbtn'+(cls?' '+cls:'');
+  const t=document.createElement('b');t.textContent=title;b.appendChild(t);b.onclick=fn;list.appendChild(b);return b;
+}
 function renderGMenu(){
   ransom($('#gmTitle'),S.title||'Der große Preis');
-  const total=S.categories.length*S.points.length,played=Object.keys(S.used).length,anyScore=S.teams.some(t=>t.score);
+  const played=Object.keys(S.used).length,anyScore=S.teams.some(t=>t.score);
   const running=played>0||anyScore;
   const list=$('#gmList');list.innerHTML='';
-  const add=(icon,title,sub,fn,cls)=>{const b=document.createElement('button');b.className='mbtn'+(cls?' '+cls:'');
-    b.innerHTML=`<span class="mi">${icon}</span><span><b>${esc(title)}</b><small>${esc(sub)}</small></span>`;b.onclick=fn;list.appendChild(b);};
-  const lbl=t=>{const d=document.createElement('div');d.className='mlabel';d.textContent=t;list.appendChild(d);};
-  if(running)add('▶','Weiterspielen',`${played} von ${total} Feldern gespielt`,startGame,'primary-m');
-  add('🆕','Neues Spiel',`Mit deinem Spielbrett „${S.title||'Der große Preis'}“ – Punkte auf 0, alle Felder offen`,()=>{
+  if(running)menuBtn(list,'Weiterspielen',startGame,'primary-m');
+  menuBtn(list,'Neues Spiel mit aktuellem Spielbrett',()=>{
     if(running)ask('Neues Spiel starten? Alle Punkte gehen auf 0 und alle Felder werden wieder geöffnet. Fragen & Gruppen bleiben.','Neues Spiel',()=>{resetRound();startGame();});
     else{resetRound();startGame();}
   },running?'':'primary-m');
-  add('⬜','Leeres Spiel','Leeres Spielbrett – Kategorien und Fragen selbst eintragen',()=>confirmReplace(()=>{
+  menuBtn(list,'Neues Spiel mit leerem Spielbrett',()=>confirmReplace(()=>{
     const teams=keepTeams(),settings=S.settings;S=emptyGame();S.teams=teams.length?teams:S.teams;S.settings=settings;save();selCat=0;openSettings();}));
-  lbl('Vorlagen');
+  menuBtn(list,'Vorlagen',()=>showScreen('tpl'),'sub');
+  if(running)menuBtn(list,'Spiel beenden',()=>finishGame());
+  menuBtn(list,'Einstellungen',()=>showScreen('set'),'sub');
+}
+function renderTpl(){
+  ransom($('#tplTitle'),'Vorlagen');
+  const list=$('#tplList');list.innerHTML='';
   const tps=allTemplates();
   if(!tps.length){const e=document.createElement('p');e.className='mhint';e.textContent='Keine Vorlagen vorhanden.';list.appendChild(e);}
   tps.forEach(tp=>{
     const row=document.createElement('div');row.className='trow';
     const b=document.createElement('button');b.className='mbtn';
-    b.innerHTML=`<span class="mi">${tp.own?'⭐':'📋'}</span><span><b>${esc(tp.name)}${tp.own?'<span class="own">EIGENE</span>':''}</b><small>${esc(tp.desc||'')}</small></span>`;
+    b.innerHTML=`<b>${esc(tp.name)}${tp.own?'<span class="own">eigene</span>':''}</b>`;
     b.onclick=()=>confirmReplace(()=>{applyTemplate(tp);startGame();toast('Vorlage „'+tp.name+'“ geladen.');});
-    const d=document.createElement('button');d.className='tdel';d.title='Vorlage löschen';d.textContent='🗑';
-    d.onclick=()=>ask(`Vorlage „${tp.name}“ löschen?`+(tp.own?' Sie ist dann weg (außer du hast sie exportiert).':' Du kannst Standard-Vorlagen später wiederherstellen.'),'Löschen',()=>{deleteTemplate(tp);renderGMenu();toast('Vorlage gelöscht.');});
+    const d=document.createElement('button');d.className='tdel';d.title='Vorlage löschen';d.setAttribute('aria-label','Vorlage „'+tp.name+'“ löschen');d.innerHTML='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg>';
+    d.onclick=()=>ask(`Vorlage „${tp.name}“ löschen?`+(tp.own?' Sie ist dann weg (außer du hast sie exportiert).':' Du kannst Standard-Vorlagen später wiederherstellen.'),'Löschen',()=>{deleteTemplate(tp);renderTpl();toast('Vorlage gelöscht.');});
     row.append(b,d);list.appendChild(row);
   });
   const tools=document.createElement('div');tools.className='ttools';
   const tb=(txt,fn)=>{const x=document.createElement('button');x.className='btn';x.textContent=txt;x.onclick=fn;tools.appendChild(x);};
-  tb('💾 Aktuelles Brett als Vorlage speichern',saveAsTemplate);
-  tb('📤 Eigene Vorlagen exportieren',exportTemplates);
-  tb('📥 Vorlagen importieren',()=>$('#tplFile').click());
-  if(hiddenTpl().length)tb('↺ Standard-Vorlagen wiederherstellen',()=>{lsSet(HID_KEY,'[]');renderGMenu();toast('Standard-Vorlagen sind wieder da.');});
+  tb('Aktuelles Brett als Vorlage speichern',saveAsTemplate);
+  tb('Eigene Vorlagen exportieren',exportTemplates);
+  tb('Vorlagen importieren',()=>$('#tplFile').click());
+  if(hiddenTpl().length)tb('Standard-Vorlagen wiederherstellen',()=>{lsSet(HID_KEY,'[]');renderTpl();toast('Standard-Vorlagen sind wieder da.');});
   list.appendChild(tools);
-  lbl('Einstellungen');
-  if(running)add('🏁','Spiel beenden','Jetzt aufhören und die Siegerehrung zeigen',()=>finishGame());
-  add('✏️','Spielbrett bearbeiten','Kategorien, Fragen, Gruppen, Punkte & Sound',openSettings);
+}
+function renderSet(){
+  ransom($('#setTitle'),'Einstellungen');
   const hint=$('#dualHint');
-  if(standalone){hint.classList.add('warn');hint.textContent='⚠️ Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.';}
+  if(standalone){hint.classList.add('warn');hint.textContent='Achtung: Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.';}
   updViewerStatus();
 }
+$('#btnTplBack').onclick=()=>showScreen('gmenu');
+$('#btnSetBack').onclick=()=>showScreen('gmenu');
+$('#btnEditBoard').onclick=()=>openSettings();
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
 $('#btnGuide').onclick=()=>{try{$('#guide').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#guide').scrollIntoView();}};
@@ -1976,7 +2098,7 @@ function vApply(m){
   renderBoard();
   if(m.q&&m.screen==='board')vShowQ(m.q);else{$('#qOverlay').classList.remove('show');vKey=null;}
   if(m.end&&!vEnd)showEnd();
-  else if(!m.end&&vEnd)$('#endScreen').classList.remove('show');
+  else if(!m.end&&vEnd){clearEndTimers();$('#endScreen').classList.remove('show');}
   vEnd=!!m.end;
 }
 function vFx(m){
@@ -2019,12 +2141,12 @@ function vShowQ(q){
   if(it.type==='schaetz'){
     const solved=q.stage==='solved',target=parseNum(it.answer);
     [...ex.children].forEach(r=>{const g=q.guesses[r.dataset.id]||'',v=parseNum(g);
-      r.querySelector('.ev').textContent=solved?(g.trim()?g:'–'):(g.trim()?'✓ abgegeben':'…');
-      r.querySelector('.ed').textContent=solved&&!isNaN(v)&&!isNaN(target)?(Math.abs(v-target)===0?'🎯 Volltreffer!':'daneben um '+fmtNum(Math.abs(v-target))):'';
+      r.querySelector('.ev').textContent=solved?(g.trim()?g:'–'):(g.trim()?'abgegeben':'…');
+      r.querySelector('.ed').textContent=solved&&!isNaN(v)&&!isNaN(target)?(Math.abs(v-target)===0?'Volltreffer!':'daneben um '+fmtNum(Math.abs(v-target))):'';
       r.classList.toggle('sel',q.sel.includes(r.dataset.id));});
-    $('#qTurn').innerHTML=solved?(names?'🏆 Am nächsten dran: '+esc(names):''):`🔢 Jede Gruppe schätzt – wer am nächsten dran ist, bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
+    $('#qTurn').innerHTML=solved?(names?'Am nächsten dran: '+esc(names):''):`Jede Gruppe schätzt – wer am nächsten dran ist, bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
   }else if(it.type==='action'){
-    $('#qTurn').innerHTML=names?'🏆 Gewinner: '+esc(names):`🏆 Alle Gruppen spielen mit – es geht um <b style="color:var(--gold)">${p}</b> Punkte`;
+    $('#qTurn').innerHTML=names?'Gewinner: '+esc(names):`Alle Gruppen spielen mit – es geht um <b style="color:var(--gold)">${p}</b> Punkte`;
   }else{
     const team=S.teams[S.turn];
     $('#qTurn').innerHTML=team?`Am Zug: <b style="color:${team.color}">${esc(team.name)}</b>`:'';
@@ -2041,7 +2163,7 @@ onMsg(m=>{
 ransom(document.querySelector('#home .menu-title'),'Welches Spiel?');
 ['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' – was ist neu?';$(id).onclick=()=>showChangelog(false);});
 if(VIEW){
-  document.title='📺 Zuschauer – '+(S.title||'Der große Preis');
+  document.title='Zuschauer – '+(S.title||'Der große Preis');
   ransom($('#vsTitle'),S.title||'Der große Preis');
   $('#vSplash').classList.add('show');
   renderBoard();
