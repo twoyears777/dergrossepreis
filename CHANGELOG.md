@@ -1,5 +1,14 @@
 # Changelog – Der große Preis
 
+## 1.5.0 – 23.11.2026
+- Versionsnummer unten im Menü – antippen öffnet den Changelog
+- Aufgaben bekommen eine eigene Intro-Animation („AUFGABE!“)
+- Nach Aufgaben und ACTION-Feldern gibt es eine Ergebnis-Animation: „GESCHAFFT!“, „🏆 GEWONNEN!“ oder „LEIDER NICHT!“
+- Multiple Choice: Antwort antippen loggt sie ein (änderbar), „🔓 Auflösen“ deckt sie mit Trommelwirbel auf
+- Eigene Vorlagen: aktuelles Spielbrett als Vorlage speichern, Vorlagen löschen, als Datei exportieren und wieder importieren
+- Gelöschte Standard-Vorlagen lassen sich wiederherstellen
+- Menü aufgeräumt: „Spielbrett bearbeiten“ und „Zuschaueransicht“ unter „Einstellungen“
+
 ## 1.4.1 – 23.11.2026
 - Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „📺 Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer
 - Sobald die Zuschaueransicht verbunden ist, siehst nur du die Lösungen – wird sie geschlossen, verhält sich die App wieder wie gespiegelt
