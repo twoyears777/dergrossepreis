@@ -1,5 +1,11 @@
 # Changelog – Der große Preis
 
+## 1.2.0 – 23.11.2026
+- Aufgabe & ACTION: nur noch Text mit Erklärung, ohne Lösung oder Hinweis
+- Aufgabe: Punkte nur für die Gruppe, die dran ist (keine halbe Punktzahl für andere)
+- ACTION: Alle Gruppen spielen mit, du wählst den Gewinner (auch mehrere bei Gleichstand), jede Gewinner-Gruppe bekommt die volle Punktzahl
+- Halbe Punktzahl für eine andere Gruppe gibt es nur noch bei Fragen
+
 ## 1.1.0 – 23.11.2026
 - Läuft jetzt über GitHub Pages und als App auf dem Home-Bildschirm, auch komplett offline
 - Automatische Updates: Neue Versionen werden im WLAN im Hintergrund geladen

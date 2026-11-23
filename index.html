@@ -147,6 +147,13 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .qcard.action{background:linear-gradient(170deg,#e0262e,#8a0f3a 55%,#3a0a3f);border-color:#ffb703;box-shadow:0 0 0 8px #ff6a0033,0 0 90px #ff3d0088,inset 0 0 60px #0006}
 .half-pick{display:none;flex-wrap:wrap;gap:.6rem;justify-content:center;align-items:center;background:#0005;border-radius:14px;padding:.8vh 1vw}
 .half-pick.show{display:flex}
+.qfoot.act #halfPick{order:1;background:transparent;padding:0}
+.qfoot.act .qbig{order:2}
+.qfoot.act .qother{order:3}
+.chip.big{font-size:clamp(.9rem,2.6vh,1.4rem);padding:.55em 1.2em;transition:transform .12s}
+.chip.sel{background:var(--c);color:#130a3a;transform:scale(1.08);box-shadow:0 0 18px var(--c)}
+.chip.sel::before{content:"🏆 "}
+.bigbtn:disabled{cursor:default}
 
 /* ---------- ACTION-Animation ---------- */
 #actionFx{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;overflow:hidden;background:#12020a}
@@ -353,7 +360,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 
     <div class="sec">
       <h2>❓ Kategorien, Fragen &amp; Aufgaben</h2>
-      <p class="hint">„Lösung / Hinweis“ bleibt im Spiel verdeckt, bis du auf „Lösung zeigen“ tippst. ⚡ ACTION-Felder sehen auf dem Spielbrett ganz normal aus – erst beim Antippen gibt's die Überraschung.</p>
+      <p class="hint">❓ Frage: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Gibt es die Antwort nicht, kann eine andere Gruppe die halbe Punktzahl bekommen. 🎯 Aufgabe: Nur die Gruppe am Zug spielt. ⚡ ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt's die Überraschung.</p>
       <div class="tabs" id="sTabs"></div>
       <div id="sCat"></div>
     </div>
@@ -396,8 +403,14 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 
 <script>
 (function(){
-const APP_VERSION='1.1.0';
+const APP_VERSION='1.2.0';
 const CHANGELOG=[
+  {v:'1.2.0',d:'23.11.2026',items:[
+    'Aufgabe & ACTION: nur noch Text mit Erklärung, ohne Lösung oder Hinweis',
+    'Aufgabe: Punkte nur für die Gruppe, die dran ist (keine halbe Punktzahl für andere)',
+    'ACTION: Alle Gruppen spielen mit, du wählst den Gewinner (auch mehrere bei Gleichstand), jede Gewinner-Gruppe bekommt die volle Punktzahl',
+    'Halbe Punktzahl für eine andere Gruppe gibt es nur noch bei Fragen'
+  ]},
   {v:'1.1.0',d:'23.11.2026',items:[
     'Läuft jetzt über GitHub Pages und als App auf dem Home-Bildschirm – auch komplett offline',
     'Automatische Updates: Neue Versionen werden im WLAN im Hintergrund geladen',
@@ -555,8 +568,10 @@ function renderBoard(){
     const k=ci+'-'+ri,u=S.used[k],t=document.createElement('button');
     t.className='tile bungee'+(u?' used':'');
     if(u){
-      const team=S.teams.find(x=>x.id===u.team);
-      t.innerHTML=team?`<span class="won" style="--c:${team.color}">${u.half?'½ ':''}${esc(team.name)}</span>`:'<span class="won none">—</span>';
+      const ws=(u.teams||(u.team?[u.team]:[])).map(id=>S.teams.find(x=>x.id===id)).filter(Boolean);
+      const team=ws[0];
+      if(ws.length>1)t.innerHTML=`<span class="won" style="--c:#ffd23f">🏆 ${ws.map(w=>esc(w.name)).join(', ')}</span>`;
+      else t.innerHTML=team?`<span class="won" style="--c:${team.color}">${u.half?'½ ':''}${esc(team.name)}</span>`:'<span class="won none">—</span>';
       t.onclick=()=>toast('Feld schon gespielt. Mit ↶ kannst du die letzte Wertung rückgängig machen.');
     }else{t.textContent=p;t.onclick=()=>openQ(ci,ri);}
     b.appendChild(t);
@@ -594,58 +609,83 @@ function showQ(ci,ri){
   const bd=$('#qBadge');bd.className='qbadge '+it.type;bd.textContent=TYPE_LABEL[it.type]||'FRAGE';
   const qt=$('#qText');qt.textContent=it.text||'(Für dieses Feld ist noch nichts hinterlegt.)';
   qt.classList.toggle('long',(it.text||'').length>120);
-  const qa=$('#qAnswer');qa.textContent=it.answer;qa.classList.remove('show');
-  $('#btnShowAnswer').style.display=it.answer?'':'none';
-  $('#btnShowAnswer').textContent=it.type==='frage'?'👁 Lösung zeigen':'👁 Hinweis zeigen';
+  const isQ=it.type==='frage',isAct=it.type==='action';
+  cur.type=it.type;cur.sel=new Set();
+  const qa=$('#qAnswer');qa.textContent=isQ?it.answer:'';qa.classList.remove('show');
+  $('#btnShowAnswer').style.display=isQ&&it.answer?'':'none';
 
   const team=S.teams[S.turn];
   const hasTeams=S.teams.length>0;
   const half=Math.round(p/2);
-  $('#qTurn').innerHTML=team?`Am Zug: <b style="color:${team.color}">${esc(team.name)}</b>`:'Keine Gruppen angelegt';
-  $('#btnOk').textContent=team?`✓ Geschafft (+${p} für ${team.name})`:'✓ Geschafft';
-  $('#btnBad').textContent=S.settings.minus&&team?`✗ Nicht geschafft (−${p})`:'✗ Nicht geschafft';
-  $('#btnOk').disabled=!hasTeams;$('#btnOk').style.opacity=hasTeams?1:.4;
-
+  const foot=$('#qOverlay .qfoot');foot.classList.toggle('act',isAct);
   const other=$('#qOther');other.innerHTML='';
   const pick=$('#halfPick');pick.innerHTML='';pick.classList.remove('show');
-  if(S.teams.length>1){
-    const hb=document.createElement('button');hb.className='chip';hb.style.setProperty('--c','#ffd23f');
-    hb.textContent=`½ Halbe Punktzahl (${half}) für …`;
-    hb.onclick=()=>pick.classList.toggle('show');
-    other.appendChild(hb);
-    const l=document.createElement('span');l.textContent='Welche Gruppe bekommt '+half+' Punkte?';pick.appendChild(l);
-    S.teams.forEach((t,i)=>{if(i===S.turn)return;const b=document.createElement('button');b.className='chip';b.style.setProperty('--c',t.color);b.textContent=`${t.name} +${half}`;b.onclick=()=>award(t.id,half,true);pick.appendChild(b);});
+
+  if(isAct){
+    // ACTION: alle Gruppen spielen mit, Gewinner-Gruppe(n) auswählen
+    $('#qTurn').innerHTML=`🏆 Wer hat gewonnen? Jede Gewinner-Gruppe bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
+    pick.classList.add('show');
+    S.teams.forEach(t=>{const b=document.createElement('button');b.className='chip big';b.style.setProperty('--c',t.color);b.textContent=t.name;
+      b.onclick=()=>{if(cur.sel.has(t.id))cur.sel.delete(t.id);else cur.sel.add(t.id);b.classList.toggle('sel',cur.sel.has(t.id));updActBtn();};
+      pick.appendChild(b);});
+    const updActBtn=()=>{const n=cur.sel.size;$('#btnOk').disabled=!n;$('#btnOk').style.opacity=n?1:.4;
+      $('#btnOk').textContent=n?`🏆 +${p} für ${n===1?S.teams.find(t=>cur.sel.has(t.id)).name:n+' Gruppen'}`:'🏆 Gewinner antippen';};
+    updActBtn();
+    $('#btnBad').textContent='Niemand hat gewonnen';
+  }else{
+    $('#qTurn').innerHTML=team?`Am Zug: <b style="color:${team.color}">${esc(team.name)}</b>`:'Keine Gruppen angelegt';
+    $('#btnOk').textContent=team?`✓ Geschafft (+${p} für ${team.name})`:'✓ Geschafft';
+    $('#btnBad').textContent=S.settings.minus&&team?`✗ Nicht geschafft (−${p})`:'✗ Nicht geschafft';
+    $('#btnOk').disabled=!hasTeams;$('#btnOk').style.opacity=hasTeams?1:.4;
+    // Halbe Punktzahl nur bei Fragen
+    if(isQ&&S.teams.length>1){
+      const hb=document.createElement('button');hb.className='chip';hb.style.setProperty('--c','#ffd23f');
+      hb.textContent=`½ Halbe Punktzahl (${half}) für …`;
+      hb.onclick=()=>pick.classList.toggle('show');
+      other.appendChild(hb);
+      const l=document.createElement('span');l.textContent='Welche Gruppe bekommt '+half+' Punkte?';pick.appendChild(l);
+      S.teams.forEach((t,i)=>{if(i===S.turn)return;const b=document.createElement('button');b.className='chip';b.style.setProperty('--c',t.color);b.textContent=`${t.name} +${half}`;b.onclick=()=>award([{teamId:t.id,delta:half}],true);pick.appendChild(b);});
+    }
   }
   const back=document.createElement('button');back.className='chip ghost';back.textContent='↩ Zurück, Feld bleibt offen';back.onclick=closeQ;other.appendChild(back);
 
   $('#qOverlay').classList.add('show');
 }
 function closeQ(){$('#qOverlay').classList.remove('show');cur=null;}
-function award(teamId,delta,half){
+function award(list,half){
   if(!cur)return;
   const k=cur.ci+'-'+cur.ri,prevTurn=S.turn;
-  if(teamId&&delta){const t=S.teams.find(x=>x.id===teamId);if(t)t.score+=delta;}
-  S.used[k]={team:delta>0?teamId:null,delta:delta,half:!!half};
-  S.history.push({k,teamId,delta,prevTurn});
+  list=list.filter(a=>a.teamId&&a.delta);
+  list.forEach(a=>{const t=S.teams.find(x=>x.id===a.teamId);if(t)t.score+=a.delta;});
+  const winners=list.filter(a=>a.delta>0).map(a=>a.teamId);
+  S.used[k]={team:winners[0]||null,teams:winners,delta:list.length?list[0].delta:0,half:!!half};
+  S.history.push({k,awards:list,prevTurn});
   if(S.teams.length)S.turn=(S.turn+1)%S.teams.length;
   save();closeQ();renderBoard();
-  sfx(delta>0?'win':'lose');
-  if(teamId&&delta)floatScore(teamId,delta);
+  sfx(winners.length?'win':'lose');
+  list.forEach(a=>floatScore(a.teamId,a.delta));
   checkEnd();
 }
-$('#btnOk').onclick=()=>{const t=S.teams[S.turn];if(t)award(t.id,S.points[cur.ri]);};
-$('#btnBad').onclick=()=>{const t=S.teams[S.turn];if(S.settings.minus&&t)award(t.id,-S.points[cur.ri]);else award(null,0);};
+$('#btnOk').onclick=()=>{
+  if(!cur)return;const p=S.points[cur.ri];
+  if(cur.type==='action'){if(!cur.sel.size)return;award([...cur.sel].map(id=>({teamId:id,delta:p})));return;}
+  const t=S.teams[S.turn];if(t)award([{teamId:t.id,delta:p}]);
+};
+$('#btnBad').onclick=()=>{
+  if(!cur)return;const t=S.teams[S.turn];
+  if(cur.type!=='action'&&S.settings.minus&&t)award([{teamId:t.id,delta:-S.points[cur.ri]}]);else award([]);
+};
 $('#btnShowAnswer').onclick=()=>{$('#qAnswer').classList.add('show');sfx('tick');};
 
 /* ---------- Rückgängig ---------- */
 $('#btnUndo').onclick=()=>{
   const h=S.history[S.history.length-1];if(!h)return;
-  const t=S.teams.find(x=>x.id===h.teamId);
+  const aw=(h.awards||(h.teamId?[{teamId:h.teamId,delta:h.delta}]:[])).map(a=>({t:S.teams.find(x=>x.id===a.teamId),delta:a.delta})).filter(a=>a.t&&a.delta);
   const [ci,ri]=h.k.split('-').map(Number);
   const cat=S.categories[ci]?S.categories[ci].name:'';
-  const what=t&&h.delta?`${h.delta>0?'+':''}${h.delta} für ${t.name}`:'keine Punkte';
+  const what=aw.length?aw.map(a=>`${a.delta>0?'+':''}${a.delta} für ${a.t.name}`).join(', '):'keine Punkte';
   ask(`Letzte Wertung rückgängig machen?\n${cat} · ${S.points[ri]} (${what})`,'Rückgängig',()=>{
-    S.history.pop();if(t)t.score-=h.delta;delete S.used[h.k];
+    S.history.pop();aw.forEach(a=>a.t.score-=a.delta);delete S.used[h.k];
     if(h.prevTurn<S.teams.length)S.turn=h.prevTurn;
     save();renderBoard();toast('Rückgängig gemacht – Feld ist wieder offen.');
   });
@@ -767,10 +807,11 @@ function renderCats(){
     const segBtns=[...row.querySelectorAll('.seg button')],tx=row.querySelector('.tx'),an=row.querySelector('.an');
     const PH={
       frage:['Frage, z. B. „Wie viele Beine hat eine Spinne?“','Lösung (verdeckt, wird auf Klick gezeigt)'],
-      aufgabe:['Aufgabe, z. B. „Macht eine Menschenpyramide!“','Hinweis (optional, verdeckt)'],
-      action:['ACTION-Feld: Was soll passieren? (wird erst nach der Animation gezeigt)','Hinweis (optional, verdeckt)']};
+      aufgabe:['Aufgabe & Erklärung, z. B. „Eine Person macht 10 Liegestütze. Schafft sie es, gibt es die Punkte.“',''],
+      action:['ACTION-Spiel & Erklärung – alle Gruppen spielen mit, am Ende wählst du den Gewinner (erst nach der Animation sichtbar)','']};
     const sync=()=>{segBtns.forEach(b=>b.classList.toggle('on',b.className.split(' ')[0]===it.type));
-      tx.placeholder=PH[it.type][0];an.placeholder=PH[it.type][1];};
+      tx.placeholder=PH[it.type][0];an.placeholder=PH[it.type][1];
+      an.style.display=it.type==='frage'?'':'none';tx.rows=it.type==='frage'?2:4;};
     tx.value=it.text;an.value=it.answer;sync();
     segBtns.forEach(b=>b.onclick=()=>{it.type=b.className.split(' ')[0];sync();save();});
     tx.oninput=()=>{it.text=tx.value;save();};
