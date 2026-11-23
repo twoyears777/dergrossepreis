@@ -236,8 +236,6 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .modeseg button b{display:block;font-size:1rem}
 .modeseg button small{display:block;color:var(--muted);font-size:.82rem;margin-top:4px;line-height:1.35}
 .modeseg button.on{border-color:var(--gold);background:#2a1d6a;box-shadow:0 0 18px #ffd23f33}
-#dualBox{display:none;flex-direction:column;gap:8px}
-#dualBox.show{display:flex}
 .mhint{color:var(--muted);font-size:.85rem;line-height:1.45;padding:0 4px}
 .mhint.warn{color:#ffcf7a}
 .back-link{margin-top:22px;color:var(--muted);background:none;font-weight:700;font-size:1rem}
@@ -245,7 +243,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 @media (max-width:560px){.modeseg{grid-template-columns:1fr}}
 
 /* ---------- Zwei Bildschirme ---------- */
-#btnViewer{display:none;position:relative}
+#btnViewer{position:relative}
 #btnViewer .vdot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:#ff4d6d;box-shadow:0 0 0 2px #1a0d57}
 #btnViewer.on .vdot{background:#22c97a}
 body.mod .qanswer.secret{display:block;opacity:.6;border-style:dotted;animation:none}
@@ -404,15 +402,9 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
   <h1 class="menu-title bungee" id="gmTitle">Der große Preis</h1>
   <div class="menu-list" id="gmList"></div>
   <div class="menu-list">
-    <div class="mlabel">Anzeige</div>
-    <div class="modeseg" id="modeSeg">
-      <button data-dual="0"><b>📱 Ein Bildschirm</b><small>iPad/Handy wird auf den Beamer gespiegelt</small></button>
-      <button data-dual="1"><b>🖥️ Zwei Bildschirme</b><small>Du siehst Lösungen & Knöpfe, der Beamer nur die Show</small></button>
-    </div>
-    <div id="dualBox">
-      <button class="mbtn" id="btnOpenViewer"><span class="mi">📺</span><span><b>Zuschaueransicht öffnen</b><small id="viewerStatus">Noch nicht verbunden</small></span></button>
-      <p class="mhint" id="dualHint">Öffnet ein zweites Fenster für den Beamer. Beide Fenster müssen im selben Browser auf demselben Gerät laufen (z. B. Laptop mit Beamer als zweitem Bildschirm oder iPad mit Stage Manager). Am Beamer-Fenster einmal auf ⛶ klicken für Vollbild.</p>
-    </div>
+    <div class="mlabel">Beamer</div>
+    <button class="mbtn" id="btnOpenViewer"><span class="mi">📺</span><span><b>Zuschaueransicht zeigen</b><small id="viewerStatus">Öffnet ein zweites Fenster für den Beamer</small></span></button>
+    <p class="mhint" id="dualHint">Ohne Zuschaueransicht spiegelst du einfach dein Gerät auf den Beamer. Mit Zuschaueransicht zeigt der Beamer nur die Show, und du siehst Lösungen und Knöpfe vorab. Beide Fenster müssen im selben Browser auf demselben Gerät laufen (z. B. Laptop mit Beamer als zweitem Bildschirm). Im Beamer-Fenster einmal ⛶ für Vollbild klicken.</p>
   </div>
   <button class="back-link" id="btnGmBack">← Anderes Spiel</button>
 </div>
@@ -543,8 +535,12 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 
 <script>
 (function(){
-const APP_VERSION='1.4.0';
+const APP_VERSION='1.4.1';
 const CHANGELOG=[
+  {v:'1.4.1',d:'23.11.2026',items:[
+    'Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „📺 Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer',
+    'Sobald die Zuschaueransicht verbunden ist, siehst nur du die Lösungen – wird sie geschlossen, verhält sich die App wieder wie gespiegelt'
+  ]},
   {v:'1.4.0',d:'23.11.2026',items:[
     'Neues Startmenü: erst das Spiel auswählen, dann Weiterspielen, Neues Spiel, Leeres Spiel oder eine Vorlage',
     'Vorlagen: „Gemischtes Quiz“ und neu „Bibel-Quiz“',
@@ -663,7 +659,7 @@ function sample(){
   return {
     title:'Der große Preis',
     points:[10,20,40,60,100],
-    settings:{minus:false,sound:true,dual:false},
+    settings:{minus:false,sound:true},
     teams:[
       {id:uid(),name:'Gruppe A',color:COLORS[0],score:0},
       {id:uid(),name:'Gruppe B',color:COLORS[1],score:0},
@@ -800,7 +796,7 @@ function openQ(ci,ri){
   const it=S.categories[ci].items[ri]||blank();
   if(it.type==='action'){
     send({t:'fx',k:'action'});
-    if(S.settings.dual){showQ(ci,ri);sfx('action');return;}
+    if(isDual()){showQ(ci,ri);sfx('action');return;}
     fxBusy=true;ac();
     const fx=$('#actionFx');
     // Animation neu starten
@@ -823,10 +819,9 @@ function showQ(ci,ri){
   cur.type=it.type;cur.sel=new Set();cur.stage='';
   const qa=$('#qAnswer');qa.classList.remove('show');
   qa.textContent=isQ?it.answer:isEst?(fmtNum(parseNum(it.answer))||it.answer)+(it.unit?' '+it.unit:''):'';
-  const dual=S.settings.dual&&!VIEW;
-  qa.classList.toggle('secret',dual&&!!qa.textContent);
+  qa.classList.toggle('secret',!!qa.textContent);
   $('#btnShowAnswer').style.display=(isQ&&it.answer)||isMC?'':'none';
-  $('#btnShowAnswer').textContent=dual?'📺 Lösung zeigen':'👁 Lösung zeigen';
+  $('#btnShowAnswer').textContent=isDual()?'📺 Lösung zeigen':'👁 Lösung zeigen';
 
   const team=S.teams[S.turn];
   const hasTeams=S.teams.length>0;
@@ -846,7 +841,7 @@ function showQ(ci,ri){
     it.options.forEach((o,i)=>{if(!o.trim())return;
       const b=document.createElement('button');b.className='mcopt';b.dataset.i=i;
       b.innerHTML=`<span class="ml">${'ABCD'[i]}</span><span>${esc(o)}</span>`;
-      if(dual&&i===it.correct)b.classList.add('hint-right');
+      if(i===it.correct)b.classList.add('hint-right');
       b.onclick=()=>{if(cur.stage==='revealed')return;b.classList.add('picked');cur.picked=i;revealMC(i===it.correct);};
       ex.appendChild(b);});
   }
@@ -1224,20 +1219,25 @@ function pushState(){
   clearTimeout(pushT);
   pushT=setTimeout(()=>send({t:'state',S:S,screen:screenName,q:qState(),end:endShown}),30);
 }
+function isDual(){return !VIEW&&viewerConnected();}
 function applyMode(){
-  const dual=!!S.settings.dual&&!VIEW;
+  const dual=isDual();
+  const was=document.body.classList.contains('mod');
   document.body.classList.toggle('mod',dual);
-  $('#btnViewer').style.display=dual?'':'none';
+  $('#btnViewer').classList.toggle('on',dual);
+  $('#btnViewer').title=dual?'Zuschaueransicht verbunden':'Zuschaueransicht zeigen';
+  if(cur)$('#btnShowAnswer').textContent=dual?'📺 Lösung zeigen':'👁 Lösung zeigen';
+  if(was!==dual&&!VIEW)toast(dual?'📺 Zuschaueransicht verbunden – Lösungen siehst jetzt nur du.':'📺 Zuschaueransicht getrennt.');
 }
 function viewerConnected(){return Date.now()-viewerSeen<7000;}
 function updViewerStatus(){
-  const on=viewerConnected();
-  $('#btnViewer').classList.toggle('on',on);
-  const st=$('#viewerStatus');if(st)st.textContent=on?'✅ Verbunden':'Noch nicht verbunden';
+  applyMode();
+  const st=$('#viewerStatus');if(st)st.textContent=viewerConnected()?'✅ Verbunden – der Beamer zeigt nur die Show':'Öffnet ein zweites Fenster für den Beamer';
 }
 function openViewer(){
+  if(viewerConnected()){send({t:'focus'});toast('Die Zuschaueransicht ist schon offen.');return;}
   try{
-    const w=window.open(location.href.split('#')[0]+'#zuschauer','gp_zuschauer');
+    const w=window.open(location.href.split('#')[0]+'#zuschauer','gp_zuschauer','popup=yes,width=1280,height=720');
     if(!w)toast('Das Fenster wurde blockiert – bitte Pop-ups für diese Seite erlauben.');
     else toast('Zuschaueransicht geöffnet – Fenster auf den Beamer ziehen.');
   }catch(e){toast('Fenster konnte nicht geöffnet werden.');}
@@ -1258,7 +1258,7 @@ function confirmReplace(fn){
   if(hasContent())ask('Dein aktuelles Spielbrett wird ersetzt. Tipp: Wenn du es behalten willst, vorher in den Einstellungen exportieren.','Ersetzen',fn);else fn();
 }
 function startGame(){showScreen('board');applyMode();renderBoard();
-  if(S.settings.dual&&!viewerConnected())toast('Tipp: Über 📺 oben rechts öffnest du die Zuschaueransicht.');}
+}
 function keepTeams(){return S.teams.map(t=>Object.assign({},t,{score:0}));}
 function applyTemplate(tp){
   const teams=keepTeams(),settings=S.settings;
@@ -1283,14 +1283,10 @@ function renderGMenu(){
   TEMPLATES.forEach(tp=>add('📋','Vorlage: '+tp.name,tp.desc,()=>confirmReplace(()=>{applyTemplate(tp);startGame();toast('Vorlage „'+tp.name+'“ geladen.');})));
   lbl('Mehr');
   add('✏️','Spielbrett bearbeiten','Kategorien, Fragen, Gruppen & Einstellungen',openSettings);
-  // Anzeige-Modus
-  document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on',(b.dataset.dual==='1')===!!S.settings.dual));
-  $('#dualBox').classList.toggle('show',!!S.settings.dual);
   const hint=$('#dualHint');
-  if(standalone){hint.classList.add('warn');hint.textContent='⚠️ Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für zwei Bildschirme die Seite direkt im Browser öffnen.';}
+  if(standalone){hint.classList.add('warn');hint.textContent='⚠️ Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.';}
   updViewerStatus();
 }
-document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{S.settings.dual=b.dataset.dual==='1';save();applyMode();renderGMenu();});
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
 $('#btnHome').onclick=()=>{closeQ();showScreen('gmenu');};
@@ -1365,8 +1361,9 @@ function vShowQ(q){
 /* ---------- Start ---------- */
 onMsg(m=>{
   if(!m||!m.t)return;
-  if(VIEW){if(m.t==='state')vApply(m);else if(m.t==='fx')vFx(m);}
+  if(VIEW){if(m.t==='state')vApply(m);else if(m.t==='fx')vFx(m);else if(m.t==='focus'){try{window.focus();}catch(e){}}}
   else if(m.t==='hello'||m.t==='ping'){viewerSeen=Date.now();updViewerStatus();if(m.t==='hello')pushState();}
+  else if(m.t==='bye'){viewerSeen=0;updViewerStatus();}
 });
 $('#homeVer').textContent='Version '+APP_VERSION;
 if(VIEW){
@@ -1375,6 +1372,7 @@ if(VIEW){
   $('#vSplash').classList.add('show');
   renderBoard();
   send({t:'hello'});setInterval(()=>send({t:'ping'}),3000);
+  addEventListener('pagehide',()=>send({t:'bye'}));
   let idleT;const wake=()=>{document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>document.body.classList.add('idle'),2500);};
   ['mousemove','touchstart','keydown'].forEach(ev=>addEventListener(ev,wake));wake();
   $('#vFull').onclick=()=>{const el=document.documentElement;try{const f=el.requestFullscreen||el.webkitRequestFullscreen;if(f){const r=f.call(el);if(r&&r.catch)r.catch(()=>{});}}catch(e){}};

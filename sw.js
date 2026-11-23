@@ -1,7 +1,7 @@
 /* Der große Preis – Service Worker
    Macht die App offline-fähig und lädt Updates automatisch.
    WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in index.html). */
-const VERSION = '1.4.0';
+const VERSION = '1.4.1';
 const CACHE = 'grosser-preis-' + VERSION;
 const FONT_CACHE = 'grosser-preis-fonts';
 const FILES = [

@@ -1,5 +1,9 @@
 # Changelog – Der große Preis
 
+## 1.4.1 – 23.11.2026
+- Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „📺 Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer
+- Sobald die Zuschaueransicht verbunden ist, siehst nur du die Lösungen – wird sie geschlossen, verhält sich die App wieder wie gespiegelt
+
 ## 1.4.0 – 23.11.2026
 - Neues Startmenü: erst das Spiel auswählen, dann Weiterspielen, Neues Spiel, Leeres Spiel oder eine Vorlage
 - Vorlagen: „Gemischtes Quiz“ und neu „Bibel-Quiz“
