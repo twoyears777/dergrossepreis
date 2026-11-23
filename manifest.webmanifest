@@ -1,17 +1,30 @@
 {
-  "name": "Der große Preis",
-  "short_name": "Großer Preis",
-  "description": "Quiz-Gameshow für Jugendgruppen – Spielbrett für Beamer & iPad",
+  "name": "Manna",
+  "short_name": "Manna",
+  "description": "Spiele und Werkzeuge für die Jugendarbeit – Quiz-Gameshow, eigene Spiele, Countdown und Spielesammlung für Beamer und Laptop",
   "lang": "de",
   "start_url": "./",
   "scope": "./",
   "display": "fullscreen",
   "orientation": "landscape",
-  "background_color": "#07041f",
-  "theme_color": "#1a0d57",
+  "background_color": "#232731",
+  "theme_color": "#2b303c",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

@@ -1,4 +1,4 @@
-/* Der große Preis – App-Logik
+/* Manna – App-Logik (Startseite, „Der große Preis“, Eigenes Spiel, Countdown, Spielesammlung)
    Lädt nach js/data.js. Beide Dateien teilen sich den globalen Gültigkeitsbereich. */
 
 const KEY='grosserPreis_v1';
@@ -714,8 +714,10 @@ $('#btnViewer').onclick=openViewer;
 $('#btnOpenViewer').onclick=openViewer;
 
 /* ---------- Menüs ---------- */
+const PREIS_SCREENS=['gmenu','tpl','set','help','settings','board'];
 function showScreen(n){
   screenName=n;
+  if(!VIEW)document.title=PREIS_SCREENS.includes(n)?(S.title||'Der große Preis'):'Manna';
   $('#home').classList.toggle('show',n==='home');
   $('#gmenu').classList.toggle('show',n==='gmenu');
   $('#tplScreen').classList.toggle('show',n==='tpl');
@@ -794,7 +796,7 @@ function backupWrite(games,bilder){
   const txt=JSON.stringify({app:'grosser-preis',typ:'sicherung',version:APP_VERSION,exportiert:new Date().toISOString(),
     spielbrett:{title:S.title,points:S.points,categories:S.categories,teams:S.teams.map(t=>({name:t.name,color:t.color})),settings:S.settings},
     vorlagen:ownTpl().map(({id,...t})=>t),eigeneSpiele:games.map(({id,...g})=>g),bilder},null,1);
-  const ok=downloadFile(`grosser-preis-sicherung-${dateStamp()}.json`,txt);
+  const ok=downloadFile(`manna-sicherung-${dateStamp()}.json`,txt);
   if(!ok){try{navigator.clipboard.writeText(txt);toast('Download nicht möglich – Sicherung in die Zwischenablage kopiert.');}catch(e){toast('Sicherung nicht möglich.');return;}}
   else toast('Sicherung gespeichert. Auf dem iPad findest du sie in der Dateien-App unter Downloads.');
   lsSet(BACKUP_KEY,String(Date.now()));try{localStorage.removeItem(UNSAVED_KEY);}catch(e){}
@@ -811,7 +813,7 @@ function exportTemplates(){
   if(!a.length){toast('Du hast noch keine eigenen Vorlagen. Speichere zuerst ein Spielbrett als Vorlage.');return;}
   const txt=JSON.stringify({app:'grosser-preis',typ:'vorlagen',version:APP_VERSION,exportiert:new Date().toISOString(),vorlagen:a.map(({id,...t})=>t)},null,1);
   const d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-  if(downloadFile(`grosser-preis-vorlagen-${stamp}.json`,txt))toast(`${a.length} Vorlage${a.length>1?'n':''} exportiert.`);
+  if(downloadFile(`manna-vorlagen-${stamp}.json`,txt))toast(`${a.length} Vorlage${a.length>1?'n':''} exportiert.`);
   else{try{navigator.clipboard.writeText(txt);toast('Download nicht möglich – Vorlagen in die Zwischenablage kopiert.');}catch(e){toast('Export nicht möglich.');}}
 }
 function importTemplates(txt){
@@ -929,6 +931,7 @@ function vApply(m){
   S=m.S;screenName=m.screen;
   ransom($('#vsTitle'),S.title||'Der große Preis');
   $('#vSplash').classList.toggle('show',!['board','timer','ownplay'].includes(m.screen));
+  $('#vSplash').classList.toggle('brand-mode',!PREIS_SCREENS.includes(m.screen));
   $('#ownPlay').classList.toggle('show',m.screen==='ownplay');
   if(m.screen==='ownplay'&&m.own){OR=m.own;opRender();}
   $('#vTimer').classList.toggle('show',m.screen==='timer');
@@ -998,12 +1001,11 @@ onMsg(m=>{
   else if(m.t==='hello'||m.t==='ping'){viewerSeen=m.vis===false?0:Date.now();updViewerStatus();if(m.t==='hello')pushState();}
   else if(m.t==='bye'){viewerSeen=0;updViewerStatus();}
 });
-ransom(document.querySelector('#home .menu-title'),'Die Spiele');
 ['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' – was ist neu?';$(id).onclick=()=>showChangelog(false);});
 if(VIEW){
-  document.title='Zuschauer – '+(S.title||'Der große Preis');
+  document.title='Manna – Zuschaueransicht';
   ransom($('#vsTitle'),S.title||'Der große Preis');
-  $('#vSplash').classList.add('show');
+  $('#vSplash').classList.add('show','brand-mode');
   renderBoard();
   const vis=()=>document.visibilityState!=='hidden';
   send({t:'hello',vis:vis()});setInterval(()=>send({t:'ping',vis:vis()}),3000);
@@ -1263,7 +1265,7 @@ function readImage(file){
 function exportOwn(games){
   ownImagesFor(games).then(bilder=>{
     const txt=JSON.stringify({app:'grosser-preis',typ:'eigenes-spiel',version:APP_VERSION,exportiert:new Date().toISOString(),spiele:games.map(({id,...g})=>g),bilder});
-    const name=games.length===1?'eigenes-spiel-'+fileSlug(games[0].name):'eigene-spiele';
+    const name=games.length===1?'manna-spiel-'+fileSlug(games[0].name):'manna-spiele';
     if(downloadFile(`${name}-${dateStamp()}.json`,txt))toast('Spiel exportiert. Die Datei kannst du sichern oder anderen schicken.');
     else toast('Export nicht möglich.');
   });

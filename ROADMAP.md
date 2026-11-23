@@ -1,4 +1,4 @@
-# Roadmap
+# Roadmap – Manna
 
 ## Das Ziel
 Eine App fürs iPhone für Jugendleiterinnen und Jugendleiter: Handy an den Beamer anschließen und eine Spieleshow haben, oder unterwegs spontan das passende Gruppenspiel finden.

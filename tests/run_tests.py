@@ -1,4 +1,4 @@
-"""Automatische Tests für „Der große Preis“.
+"""Automatische Tests für Manna („Der große Preis“ und Werkzeuge).
 
 Startet einen lokalen Webserver, öffnet die App in Chromium und spielt die
 wichtigsten Abläufe durch. Beendet sich mit Fehlercode, wenn etwas nicht stimmt.
@@ -65,7 +65,7 @@ def browser_checks(p):
     print('Startseite & Menüs')
     m.goto(URL); m.wait_for_timeout(400)
     check('Startseite sichtbar', m.locator('#home.show').count() == 1)
-    check('Titel „Die Spiele“', m.get_attribute('#home .menu-title', 'aria-label') == 'Die Spiele')
+    check('Marke „Manna“ auf der Startseite', m.get_attribute('#homeBrand', 'aria-label') == 'Manna' and m.evaluate("document.querySelector('#homeBrand img').naturalWidth>0") and m.title() == 'Manna')
     check('Screenshot-Collage mit 4 Bildern', m.locator('.collage .shot img').count() == 4)
     loaded = m.evaluate("Promise.all([...document.querySelectorAll('.collage img')].map(i=>{i.loading='eager';return i.decode().then(()=>i.naturalWidth>0,()=>false)}))")
     check('Screenshots laden', all(loaded), loaded)

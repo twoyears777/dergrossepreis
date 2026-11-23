@@ -1,4 +1,9 @@
-# Changelog – Der große Preis
+# Changelog – Manna
+
+## 1.16.0 – 23.11.2026
+- Neuer Name: Manna, mit neuem Logo und App-Symbol
+- Die Startseite und die Zuschaueransicht im Startmenü zeigen jetzt das Manna-Logo
+- Sicherungen und Exporte heißen jetzt „manna-…“, alte Dateien lassen sich weiter einspielen
 
 ## 1.15.0 – 23.11.2026
 - Neu auf der Startseite: Eigenes Spiel

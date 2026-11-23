@@ -1,6 +1,6 @@
-# Der große Preis 🎉
+# Manna
 
-Quiz-Gameshow für Jugendgruppen. Das iPad wird an den Beamer angeschlossen, die Gruppen wählen abwechselnd ein Feld, und die Punkte werden live gezählt.
+Spiele und Werkzeuge für die Jugendarbeit: die Quiz-Gameshow „Der große Preis“, eigene Spiele mit Folien und Punktestand, ein Countdown und eine Spielesammlung. Gemacht für Laptop und Beamer, mit Zuschaueransicht auf dem zweiten Bildschirm.
 
 ## Installieren (iPad)
 1. Die GitHub-Pages-Adresse in **Safari** öffnen (`https://twoyears777.github.io/dergrossepreis/`).

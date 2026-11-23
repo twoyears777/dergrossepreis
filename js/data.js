@@ -3,8 +3,13 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.15.0';
+const APP_VERSION='1.16.0';
 const CHANGELOG=[
+  {v:'1.16.0',d:'23.11.2026',items:[
+    'Neuer Name: Manna, mit neuem Logo und App-Symbol',
+    'Die Startseite und die Zuschaueransicht im Startmenü zeigen jetzt das Manna-Logo',
+    'Sicherungen und Exporte heißen jetzt „manna-…“, alte Dateien lassen sich weiter einspielen'
+  ]},
   {v:'1.15.0',d:'23.11.2026',items:[
     'Neu auf der Startseite: Eigenes Spiel',
     'Eigene Spiele anlegen mit Gruppen, frei wählbarer Rundenzahl und Punktevergabe (gleich viele pro Runde oder jede Runde einen mehr, nur Sieger oder mehrere Plätze)',

@@ -6,12 +6,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Großer Preis">
-<meta name="theme-color" content="#1a0d57">
+<meta name="apple-mobile-web-app-title" content="Manna">
+<meta name="theme-color" content="#2b303c">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" href="icon-192.png">
-<title>Der große Preis</title>
+<link rel="icon" type="image/svg+xml" href="img/manna-mark.svg">
+<link rel="alternate icon" type="image/png" href="icon-192.png">
+<title>Manna</title>
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -61,7 +62,7 @@
 
 <!-- ================= STARTMENÜ ================= -->
 <div class="screen" id="home">
-  <h1 class="menu-title">Die Spiele</h1>
+  <h1 class="brand" id="homeBrand" aria-label="Manna"><img class="brand-mark" src="img/manna-mark.svg" alt=""><span class="brand-word" aria-hidden="true">anna</span></h1>
   <div class="gamegrid">
     <button class="gcard" id="gcPreis">
       <span class="wbar">Der große Preis</span>
@@ -204,7 +205,7 @@
     <div class="coll-head"><span id="collCount"></span><button class="btn" id="btnFilterReset">Filter zurücksetzen</button></div>
     <ul class="games" id="gameList"></ul>
   </div>
-  <button class="back-link" id="btnCollBack">← Die Spiele</button>
+  <button class="back-link" id="btnCollBack">← Startseite</button>
 </div>
 
 <div class="screen" id="gameScreen">
@@ -230,13 +231,13 @@
       <button class="mbtn" id="tmViewer"><b id="tmViewerLabel">Zuschaueransicht zeigen</b></button>
     </div>
   </div>
-  <button class="back-link" id="btnTimerBack">← Die Spiele</button>
+  <button class="back-link" id="btnTimerBack">← Startseite</button>
 </div>
 
 <div class="screen" id="ownScreen">
   <h1 class="menu-title" id="ownTitle">Eigenes Spiel</h1>
   <div class="menu-list" id="ownList"></div>
-  <button class="back-link" id="btnOwnBack">← Die Spiele</button>
+  <button class="back-link" id="btnOwnBack">← Startseite</button>
   <input type="file" id="ownFile" accept=".json,application/json,text/plain" hidden>
 </div>
 
@@ -271,7 +272,7 @@
 
 <!-- ================= ZUSCHAUER ================= -->
 <div id="vTimer"><div class="tm-stage" id="vtmStage"></div></div>
-<div id="vSplash"><div class="marquee"><div class="chrome vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los</div></div>
+<div id="vSplash"><div class="brand vs-brand" aria-label="Manna"><img class="brand-mark" src="img/manna-mark.svg" alt=""><span class="brand-word" aria-hidden="true">anna</span></div><div class="marquee"><div class="chrome vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los</div></div>
 <button class="icon-btn" id="vFull" title="Vollbild" aria-label="Vollbild"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 
 <!-- ================= FRAGE ================= -->
@@ -387,7 +388,7 @@
   </div>
 </div>
 
-<div id="dialog"><div class="dbox"><div class="wbar"><span>Der große Preis</span></div><p id="dMsg"></p><input class="inp" id="dInput" maxlength="60" style="display:none;margin-bottom:18px"><div class="row"><button class="btn" id="dNo">Abbrechen</button><button class="primary" id="dYes">OK</button></div></div></div>
+<div id="dialog"><div class="dbox"><div class="wbar"><span>Manna</span></div><p id="dMsg"></p><input class="inp" id="dInput" maxlength="60" style="display:none;margin-bottom:18px"><div class="row"><button class="btn" id="dNo">Abbrechen</button><button class="primary" id="dYes">OK</button></div></div></div>
 <div id="clDialog" class="overlay" style="z-index:91;background:#000a"><div class="dbox wide"><div class="wbar"><span id="clTitle">Changelog</span><button class="wx" id="clX" title="Schließen" aria-label="Schließen">✕</button></div><div class="cl" id="clBody"></div><div class="row" style="margin-top:18px"><button class="primary" id="clClose">Alles klar</button></div></div></div>
 <div id="updBar"><span id="updText">Neue Version geladen!</span><button id="updNow">Jetzt aktualisieren</button><button class="x" id="updX" title="Später">✕</button></div>
 <div id="toast"></div>
