@@ -202,7 +202,7 @@
   <h1 class="menu-title" id="collTitle">Spielesammlung</h1>
   <div class="coll">
     <div class="filters" id="filters" role="group" aria-label="Filter"></div>
-    <div class="coll-head"><span id="collCount"></span><button class="btn" id="btnFilterReset">Filter zurücksetzen</button></div>
+    <div class="coll-head"><span id="collCount"></span><span class="coll-tools"><button class="btn" id="btnFilterReset">Filter zurücksetzen</button><button class="primary" id="btnGameNew">Spiel erstellen</button></span></div>
     <ul class="games" id="gameList"></ul>
   </div>
   <button class="back-link" id="btnCollBack">← Startseite</button>
@@ -252,6 +252,16 @@
     <button class="primary" id="btnOeStart">Spiel starten</button>
   </div>
   <input type="file" id="oeImgFile" accept="image/*" hidden>
+</div>
+
+<div class="screen" id="geScreen">
+  <h1 class="menu-title" id="geTitle">Spiel erstellen</h1>
+  <div class="oe" id="geBody"></div>
+  <div class="oe-bar">
+    <button class="back-link" id="btnGeBack">← Zurück</button>
+    <span class="oe-bar-gap"></span>
+    <button class="primary" id="btnGeSave">Spiel speichern</button>
+  </div>
 </div>
 
 <div class="screen" id="setScreen">

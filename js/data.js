@@ -3,8 +3,14 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.16.0';
+const APP_VERSION='1.17.0';
 const CHANGELOG=[
+  {v:'1.17.0',d:'23.11.2026',items:[
+    'Spielesammlung: neuer Knopf „Spiel erstellen“ mit Eingabemaske für alle Angaben eines Spiels',
+    'Eigene Spiele erscheinen sofort in der Sammlung, markiert als „eigenes“, und lassen sich bearbeiten und löschen',
+    '„Spiel einsenden“ öffnet eine fertige E-Mail. Eingesendete Spiele werden geprüft und kommen dann für alle in die Sammlung',
+    'Die Sicherung enthält jetzt auch selbst erstellte Spiele'
+  ]},
   {v:'1.16.0',d:'23.11.2026',items:[
     'Neuer Name: Manna, mit neuem Logo und App-Symbol',
     'Die Startseite und die Zuschaueransicht im Startmenü zeigen jetzt das Manna-Logo',

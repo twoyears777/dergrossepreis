@@ -946,3 +946,19 @@ body.viewer #ownPlay{padding-bottom:3vh}
 #vSplash .vs-brand{display:none;font-size:clamp(4rem,20vh,12rem);margin:0}
 #vSplash.brand-mode .vs-brand{display:inline-flex}
 #vSplash.brand-mode .marquee{display:none}
+
+/* ---------- Spiel erstellen & einsenden ---------- */
+.coll-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.coll-head .primary{padding:.6em 1.2em;font-weight:700}
+.ge-people{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.ug-box{background:var(--grain-soft),#efe2b8;width:100%;margin-top:34px}
+.ug-box p{margin-bottom:10px}
+.ug-sent{font-family:var(--strong)!important;font-weight:700;color:var(--ink)!important}
+.ug-acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.ug-acts .btn{color:var(--ink);border-color:#1d1d1b55}
+.ug-acts .btn:hover{background:#1d1d1b10}
+a.primary{display:inline-flex;align-items:center;text-decoration:none;cursor:pointer}
+.ug-acts .primary{padding:.65em 1.3em;font-weight:700}
+.ug-send{margin-top:16px;border-top:1px dashed #1d1d1b40;padding-top:14px}
+.ug-send textarea{min-height:180px;font-size:.9rem;margin-bottom:10px}
+@media (max-width:620px){.ge-people{grid-template-columns:1fr}}

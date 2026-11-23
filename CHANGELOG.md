@@ -1,5 +1,11 @@
 # Changelog – Manna
 
+## 1.17.0 – 23.11.2026
+- Spielesammlung: neuer Knopf „Spiel erstellen“ mit Eingabemaske für alle Angaben eines Spiels
+- Eigene Spiele erscheinen sofort in der Sammlung, markiert als „eigenes“, und lassen sich bearbeiten und löschen
+- „Spiel einsenden“ öffnet eine fertige E-Mail. Eingesendete Spiele werden geprüft und kommen dann für alle in die Sammlung
+- Die Sicherung enthält jetzt auch selbst erstellte Spiele
+
 ## 1.16.0 – 23.11.2026
 - Neuer Name: Manna, mit neuem Logo und App-Symbol
 - Die Startseite und die Zuschaueransicht im Startmenü zeigen jetzt das Manna-Logo

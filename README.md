@@ -9,6 +9,9 @@ Spiele und Werkzeuge für die Jugendarbeit: die Quiz-Gameshow „Der große Prei
 
 Fragen, Gruppen und Punkte werden auf dem Gerät gespeichert (in der Home-Bildschirm-App, nicht in Safari).
 
+## Eingesendete Spiele
+Wie Spiele aus „Spiel einsenden“ geprüft und eingebaut werden, steht in [EINSENDUNGEN.md](EINSENDUNGEN.md).
+
 ## Planung
 Wohin es geht und welche Ideen gesammelt sind, steht in der [ROADMAP.md](ROADMAP.md).
 
