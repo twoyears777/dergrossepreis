@@ -1,0 +1,165 @@
+/* Der große Preis – Daten
+   Version, Changelog, Feld-Modell und Vorlagen.
+   Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
+
+/* ---------- Version & Changelog ---------- */
+const APP_VERSION='1.9.0';
+const CHANGELOG=[
+  {v:'1.9.0',d:'23.11.2026',items:[
+    'Neue Siegerehrung: Treppchen aus Pappe, Platz 3, 2 und 1 werden nacheinander enthüllt, der Sieger mit Trommelwirbel',
+    'Mit Zuschaueransicht siehst du bei der Siegerehrung nur den Knopf „Zurück zum Startmenü“',
+    'Spielmenü aufgeräumt: „Vorlagen“ und „Einstellungen“ als eigene Unterseiten, keine Untertitel mehr',
+    '„Neues Spiel mit aktuellem Spielbrett“ und „Neues Spiel mit leerem Spielbrett“',
+    'Keine Emojis mehr – Knöpfe mit schlichten Symbolen',
+    'Kräftigere Schrift statt Schreibmaschine und Handschrift',
+    'Startseite ohne Untertitel, Illustration ohne Bildunterschrift',
+    'Changelog zeigt nur noch die Versionsnummern'
+  ]},
+  {v:'1.8.1',d:'23.11.2026',items:[
+    'Startseite: Illustration einer Gruppe beim Spielen vor der Anleitung'
+  ]},
+  {v:'1.8.0',d:'23.11.2026',items:[
+    'Anleitung auf der Startseite: in vier Schritten vom Spielbrett bis zum Beamer, dazu alle Feldtypen erklärt'
+  ]},
+  {v:'1.7.1',d:'23.11.2026',items:[
+    'Neu: Spiel vorzeitig beenden mit Siegerehrung – über die Zielflagge oben links im Spiel oder im Spielmenü',
+    'Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer'
+  ]},
+  {v:'1.7.0',d:'23.11.2026',items:[
+    'Neues Design: Collage-Look mit Zeitungsschnipseln, Papier und Klebeband – ruhiger und entspannter',
+    'Überschriften wie aus ausgeschnittenen Buchstaben zusammengeklebt',
+    'Gedämpfte Gruppenfarben statt Neon (bestehende Standardfarben werden automatisch angepasst)'
+  ]},
+  {v:'1.6.0',d:'23.11.2026',items:[
+    'Neues Design im 2000er-Look: Aqua-Gel-Felder, Chrom-Schrift, Fenster mit Titelleiste',
+    'Fragen öffnen sich als Fenster – das Kreuz oben rechts schließt sie (Feld bleibt offen)',
+    'Keine Schriften mehr von Google-Servern – besser für Datenschutz und offline'
+  ]},
+  {v:'1.5.1',d:'23.11.2026',items:[
+    'Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer',
+    'Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“',
+    'Changelog hat jetzt ein Kreuz zum Schließen (auch Tippen daneben schließt)'
+  ]},
+  {v:'1.5.0',d:'23.11.2026',items:[
+    'Versionsnummer unten im Menü – antippen öffnet den Changelog',
+    'Aufgaben bekommen eine eigene Intro-Animation („AUFGABE!“)',
+    'Nach Aufgaben und ACTION-Feldern gibt es eine Ergebnis-Animation: „GESCHAFFT!“, „GEWONNEN!“ oder „LEIDER NICHT!“',
+    'Multiple Choice: Antwort antippen loggt sie ein (änderbar), „Auflösen“ deckt sie mit Trommelwirbel auf',
+    'Eigene Vorlagen: aktuelles Spielbrett als Vorlage speichern, Vorlagen löschen, als Datei exportieren und wieder importieren',
+    'Gelöschte Standard-Vorlagen lassen sich wiederherstellen',
+    'Menü aufgeräumt: „Spielbrett bearbeiten“ und „Zuschaueransicht“ unter „Einstellungen“'
+  ]},
+  {v:'1.4.1',d:'23.11.2026',items:[
+    'Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer',
+    'Sobald die Zuschaueransicht verbunden ist, siehst nur du die Lösungen – wird sie geschlossen, verhält sich die App wieder wie gespiegelt'
+  ]},
+  {v:'1.4.0',d:'23.11.2026',items:[
+    'Neues Startmenü: erst das Spiel auswählen, dann Weiterspielen, Neues Spiel, Leeres Spiel oder eine Vorlage',
+    'Vorlagen: „Gemischtes Quiz“ und neu „Bibel-Quiz“',
+    'Zwei-Bildschirm-Modus: Der Beamer zeigt nur die Show, du siehst Lösungen, richtige MC-Antwort und alle Knöpfe vorab',
+    'Zuschaueransicht mit Startbild („Gleich geht\'s los!“), ACTION-Animation, Punkte-Animation und Siegerehrung',
+    'Bei Schätzfragen sieht der Beamer nur „abgegeben“, bis du auflöst',
+    'Haus-Knopf im Spiel führt zurück ins Menü'
+  ]},
+  {v:'1.3.0',d:'23.11.2026',items:[
+    'Neue Fragetypen: Klassisch, Multiple Choice und Schätzfrage',
+    'Multiple Choice: bis zu 4 Antworten (A–D). Antippen zeigt sofort richtig (grün) oder falsch (rot)',
+    'Schätzfrage: Jede Gruppe trägt ihre Zahl ein, „Auflösen“ zeigt die Lösung und markiert automatisch die Gruppe, die am nächsten dran ist (bei Gleichstand mehrere)',
+    'Beispielbrett: Schätzen-Kategorie als Schätzfragen, zwei Multiple-Choice-Fragen in Allgemeinwissen'
+  ]},
+  {v:'1.2.0',d:'23.11.2026',items:[
+    'Aufgabe & ACTION: nur noch Text mit Erklärung, ohne Lösung oder Hinweis',
+    'Aufgabe: Punkte nur für die Gruppe, die dran ist (keine halbe Punktzahl für andere)',
+    'ACTION: Alle Gruppen spielen mit, du wählst den Gewinner (auch mehrere bei Gleichstand), jede Gewinner-Gruppe bekommt die volle Punktzahl',
+    'Halbe Punktzahl für eine andere Gruppe gibt es nur noch bei Fragen'
+  ]},
+  {v:'1.1.0',d:'23.11.2026',items:[
+    'Läuft jetzt über GitHub Pages und als App auf dem Home-Bildschirm – auch komplett offline',
+    'Automatische Updates: Neue Versionen werden im WLAN im Hintergrund geladen',
+    'Changelog in den Einstellungen und „Was ist neu“-Hinweis nach einem Update',
+    'Neu: „Halbe Punktzahl für …“ – eine andere Gruppe bekommt die halben Punkte',
+    'Neu: Feldtyp ACTION mit Überraschungs-Animation beim Aufdecken',
+    'Countdown-Timer entfernt',
+    'Beispielbrett nur noch mit Fragen (ohne Spiele/Aufgaben)'
+  ]},
+  {v:'1.0.0',d:'23.11.2026',items:[
+    'Erste Version: Spielbrett mit 5 Kategorien, Live-Punktestand, Gruppen, Fragen & Aufgaben, Siegerehrung'
+  ]}
+];
+
+/* ---------- Feld-Modell ---------- */
+const TYPES=['frage','mc','schaetz','aufgabe','action'];
+const blank=()=>({type:'frage',text:'',answer:'',options:['','','',''],correct:0,unit:''});
+const F=(text,answer)=>Object.assign(blank(),{type:'frage',text,answer});
+const MC=(text,options,correct)=>Object.assign(blank(),{type:'mc',text,options,correct});
+const EST=(text,answer,unit)=>Object.assign(blank(),{type:'schaetz',text,answer:String(answer),unit:unit||''});
+
+/* ---------- Vorlagen ---------- */
+const TEMPLATES=[
+  {id:'mix',name:'Gemischtes Quiz',title:'Der große Preis',desc:'Allgemeinwissen, Bibel, Sport, Schätzen, Natur & Tiere – mit allen Fragetypen',
+   categories:()=>[
+      {name:'Allgemeinwissen',items:[
+        F('Wie viele Beine hat eine Spinne?','8'),
+        MC('Wie heißt die Hauptstadt von Australien?',['Sydney','Canberra','Melbourne','Perth'],1),
+        F('Wie viele Bundesländer hat Deutschland?','16'),
+        MC('Welches chemische Element hat das Symbol „Au“?',['Silber','Aluminium','Gold','Argon'],2),
+        F('In welchem Jahr fiel die Berliner Mauer?','1989')]},
+      {name:'Bibel',items:[
+        F('Wer baute die Arche?','Noah'),
+        F('Wie viele Jünger hatte Jesus?','12'),
+        F('In welcher Stadt wurde Jesus geboren?','Bethlehem'),
+        F('Wie hieß der Riese, den David besiegt hat?','Goliat'),
+        F('Wie viele Bücher hat die Bibel (evangelische Ausgabe)?','66')]},
+      {name:'Sport',items:[
+        F('Wie viele Spieler hat eine Fußballmannschaft auf dem Feld?','11'),
+        F('Wie oft wurde die deutsche Männer-Nationalmannschaft Fußball-Weltmeister?','4-mal (1954, 1974, 1990, 2014)'),
+        F('Wie lang ist ein Marathon?','42,195 km'),
+        F('In welcher Sportart gibt es einen „Birdie“?','Golf'),
+        F('In welcher deutschen Stadt fanden 1972 die Olympischen Sommerspiele statt?','München')]},
+      {name:'Schätzen',items:[
+        EST('Wie viele Minuten hat ein Tag?',1440,'Minuten'),
+        EST('Wie hoch ist der Eiffelturm (in Metern)?',330,'m'),
+        EST('Wie viele Millionen Einwohner hat Deutschland?',84,'Millionen'),
+        EST('Wie viele Knochen hat ein erwachsener Mensch?',206,'Knochen'),
+        EST('Wie viele Kilometer ist der Mond von der Erde entfernt?',384400,'km')]},
+      {name:'Natur & Tiere',items:[
+        F('Welches ist das größte Säugetier der Welt?','Blauwal'),
+        F('Wie nennt man ein Känguru-Baby?','Joey'),
+        F('Wie viele Herzen hat ein Oktopus?','3'),
+        F('Welcher Planet ist der Sonne am nächsten?','Merkur'),
+        F('Welches Tier schläft bis zu 22 Stunden am Tag?','Koala')]}
+    ]},
+  {id:'bibel',name:'Bibel-Quiz',title:'Der große Bibel-Preis',desc:'Altes & Neues Testament, Personen, Wunder & Gleichnisse, Bibel-Schätzfragen',
+   categories:()=>[
+      {name:'Altes Testament',items:[
+        F('Wer baute die Arche?','Noah'),
+        F('An wie vielen Tagen erschuf Gott die Welt, bevor er am siebten Tag ruhte?','6'),
+        F('Wer führte das Volk Israel aus Ägypten?','Mose'),
+        MC('Wie hieß die Frau von Abraham?',['Rebekka','Sara','Rahel','Lea'],1),
+        MC('Wie viele Plagen kamen über Ägypten?',['7','10','12','40'],1)]},
+      {name:'Neues Testament',items:[
+        F('In welcher Stadt wurde Jesus geboren?','Bethlehem'),
+        F('Wie viele Jünger hatte Jesus?','12'),
+        MC('Wie viele Evangelien gibt es im Neuen Testament?',['3','4','5','12'],1),
+        F('Welcher Jünger hat Jesus verraten?','Judas (Iskariot)'),
+        F('Wie heißt das letzte Buch der Bibel?','Die Offenbarung (des Johannes)')]},
+      {name:'Personen',items:[
+        F('Wer besiegte den Riesen Goliat?','David'),
+        MC('Wie hieß der Bruder von Mose?',['Aaron','Josua','Kaleb','Elia'],0),
+        F('Wer war der erste König Israels?','Saul'),
+        F('Welcher Jünger ging Jesus auf dem Wasser entgegen?','Petrus'),
+        F('Wie hieß der Zöllner, der auf einen Baum kletterte, um Jesus zu sehen?','Zachäus')]},
+      {name:'Wunder & Gleichnisse',items:[
+        F('Was verwandelte Jesus bei der Hochzeit zu Kana?','Wasser in Wein'),
+        MC('Wie viele Brote hatte Jesus bei der Speisung der Fünftausend?',['2','5','7','12'],1),
+        F('Welche Tiere hütete der verlorene Sohn, als es ihm ganz schlecht ging?','Schweine'),
+        F('Welchen Freund weckte Jesus nach vier Tagen im Grab wieder auf?','Lazarus'),
+        F('In welchem Gleichnis hilft ein Mann einem Überfallenen, an dem andere vorbeigegangen sind?','Der barmherzige Samariter')]},
+      {name:'Bibel-Schätzfragen',items:[
+        EST('Wie viele Bücher hat die Bibel (evangelische Ausgabe)?',66,'Bücher'),
+        EST('Wie viele Tage und Nächte regnete es bei der Sintflut?',40,'Tage'),
+        EST('Wie viele Psalmen gibt es?',150,'Psalmen'),
+        EST('Wie viele Männer wurden bei der Speisung mit fünf Broten und zwei Fischen satt?',5000,'Männer'),
+        EST('Wie alt wurde Methusalem laut Bibel?',969,'Jahre')]}
+   ]}
+];

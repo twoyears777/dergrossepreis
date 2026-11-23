@@ -7,6 +7,10 @@ const FONT_CACHE = 'grosser-preis-fonts';
 const FILES = [
   './',
   './index.html',
+  './css/app.css',
+  './js/data.js',
+  './js/app.js',
+  './img/hero.svg',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
