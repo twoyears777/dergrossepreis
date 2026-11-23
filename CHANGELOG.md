@@ -1,5 +1,13 @@
 # Changelog – Der große Preis
 
+## 1.4.0 – 23.11.2026
+- Neues Startmenü: erst das Spiel auswählen, dann Weiterspielen, Neues Spiel, Leeres Spiel oder eine Vorlage
+- Vorlagen: „Gemischtes Quiz“ und neu „Bibel-Quiz“
+- Zwei-Bildschirm-Modus: Der Beamer zeigt nur die Show, du siehst Lösungen, richtige MC-Antwort und alle Knöpfe vorab
+- Zuschaueransicht mit Startbild („Gleich geht's los!“), ACTION-Animation, Punkte-Animation und Siegerehrung
+- Bei Schätzfragen sieht der Beamer nur „✓ abgegeben“, bis du auflöst
+- ⌂-Knopf im Spiel führt zurück ins Menü
+
 ## 1.3.0 – 23.11.2026
 - Neue Fragetypen: ❓ Klassisch, 🔤 Multiple Choice und 🔢 Schätzfrage
 - Multiple Choice: bis zu 4 Antworten (A–D). Antippen zeigt sofort richtig (grün) oder falsch (rot)
