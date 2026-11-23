@@ -1,5 +1,10 @@
 # Changelog – Der große Preis
 
+## 1.14.0 – 23.11.2026
+- Neues Werkzeug auf der Startseite: Countdown
+- Zeit per Schnellauswahl oder Plus/Minus einstellen, Start, Pause und Zurücksetzen
+- Mit Zuschaueransicht: Der Beamer zeigt erst nur den Hintergrund, dann den Countdown und am Ende „Zeit vorbei!“
+
 ## 1.13.0 – 23.11.2026
 - Spielesammlung: neuer Bereich „Gefahren und Risiken“ bei jedem Spiel
 - Neue Spiele: Zeitungsschlagen und Nachts in Palermo (mit Rollenliste zum Abschreiben)

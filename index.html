@@ -43,6 +43,10 @@
       <span class="wbar">Der große Preis</span>
       <span class="gbody"><span>Die Quiz-Gameshow mit Kategorien, Punkten, Fragen, Schätzfragen und ACTION-Feldern.</span></span>
     </button>
+    <button class="gcard" id="gcTimer">
+      <span class="wbar">Countdown</span>
+      <span class="gbody"><span>Ein großer Timer für den Beamer. Du stellst die Zeit ein und startest, alle sehen sie ablaufen.</span></span>
+    </button>
     <button class="gcard" id="gcColl">
       <span class="wbar">Spielesammlung</span>
       <span class="gbody"><span>Gruppenspiele zum Nachschlagen, filterbar nach Alter, Gruppengröße, Ort und Material.</span></span>
@@ -180,6 +184,27 @@
   <button class="back-link" id="btnGameBack">← Zur Spielesammlung</button>
 </div>
 
+<div class="screen" id="timerScreen">
+  <h1 class="menu-title" id="timerTitle">Countdown</h1>
+  <div class="tm-wrap">
+    <div class="tm-stage" id="tmStage"></div>
+    <div class="tm-controls" id="tmControls">
+      <div class="fchips tm-presets" id="tmPresets" role="group" aria-label="Zeit auswählen"></div>
+      <div class="tm-custom" role="group" aria-label="Eigene Zeit">
+        <div class="tm-step"><button class="btn" data-d="-60" aria-label="Eine Minute weniger">−</button><span id="tmMin">1</span><span class="tm-unit">Min</span><button class="btn" data-d="60" aria-label="Eine Minute mehr">+</button></div>
+        <div class="tm-step"><button class="btn" data-d="-5" aria-label="Fünf Sekunden weniger">−</button><span id="tmSec">00</span><span class="tm-unit">Sek</span><button class="btn" data-d="5" aria-label="Fünf Sekunden mehr">+</button></div>
+      </div>
+      <div class="tm-actions">
+        <button class="primary" id="tmStart">Start</button>
+        <button class="btn" id="tmPause">Pause</button>
+        <button class="btn" id="tmReset">Zurücksetzen</button>
+      </div>
+      <button class="mbtn" id="tmViewer"><b id="tmViewerLabel">Zuschaueransicht zeigen</b></button>
+    </div>
+  </div>
+  <button class="back-link" id="btnTimerBack">← Die Spiele</button>
+</div>
+
 <div class="screen" id="setScreen">
   <h1 class="menu-title" id="setTitle">Einstellungen</h1>
   <div class="menu-list">
@@ -197,6 +222,7 @@
 </div>
 
 <!-- ================= ZUSCHAUER ================= -->
+<div id="vTimer"><div class="tm-stage" id="vtmStage"></div></div>
 <div id="vSplash"><div class="marquee"><div class="chrome vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los</div></div>
 <button class="icon-btn" id="vFull" title="Vollbild" aria-label="Vollbild"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
 

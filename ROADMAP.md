@@ -34,10 +34,14 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Hinweise zu Sicherheit und Körperkontakt, niemand wird bloßgestellt
 - Ziel: im Alltag schneller ein passendes Spiel finden als bisher
 
+### Nebenbei – praktische Werkzeuge für den Alltag
+- ✔ Countdown mit Moderator- und Zuschaueransicht (Version 1.14.0)
+- Ideen: Gruppen einteilen (zufällig, nach Anzahl), Zufallsauswahl (Name ziehen, wer fängt an), Punktezähler für beliebige Spiele, Abendplaner (Ablauf eines Jugendkreises mit Zeiten)
+
 ### Etappe 2 – Spielekiste ausbauen
 - Eigene Spiele ergänzen, Favoriten
 - Teilen und Sicherung wie bei den Vorlagen
-- Beamer-Anzeige: Regeln groß, Timer, Punktezähler für Gruppen
+- Beamer-Anzeige: Regeln groß, Punktezähler für Gruppen
 
 ### Etappe 3 – Handy-tauglich
 - „Der große Preis“ und die Spielekiste fürs iPhone optimieren (Bedienung, Layout, Schriftgrößen)
