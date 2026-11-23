@@ -35,6 +35,30 @@
   <div id="board"></div>
 </div>
 
+<!-- ================= EIGENES SPIEL: SPIELANSICHT ================= -->
+<div id="ownPlay">
+  <header>
+    <div class="ctrls left">
+      <button class="icon-btn" id="btnOpHome" title="Zur Übersicht" aria-label="Zur Übersicht"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-5h4v5"/></svg></button>
+      <button class="icon-btn" id="btnOpUndo" title="Letzte Wertung rückgängig" aria-label="Rückgängig"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+      <button class="icon-btn" id="btnOpFinish" title="Spiel beenden und Siegerehrung zeigen" aria-label="Spiel beenden"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/></svg></button>
+    </div>
+    <div class="op-name" id="opName"></div>
+    <div class="ctrls">
+      <button class="icon-btn vbtn" id="btnOpViewer" title="Zuschaueransicht (Beamer)" aria-label="Zuschaueransicht"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/></svg><span class="vdot"></span></button>
+      <button class="icon-btn" id="btnOpFull" title="Vollbild" aria-label="Vollbild"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+    </div>
+  </header>
+  <div id="opScores"></div>
+  <div class="op-stage" id="opStage"></div>
+  <div class="op-nav" id="opNav">
+    <button class="btn" id="btnOpPrev">Zurück</button>
+    <span class="op-pos" id="opPos"></span>
+    <button class="primary" id="btnOpNext">Weiter</button>
+  </div>
+  <div class="op-award" id="opAward"></div>
+</div>
+
 <!-- ================= STARTMENÜ ================= -->
 <div class="screen" id="home">
   <h1 class="menu-title">Die Spiele</h1>
@@ -42,6 +66,10 @@
     <button class="gcard" id="gcPreis">
       <span class="wbar">Der große Preis</span>
       <span class="gbody"><span>Die Quiz-Gameshow mit Kategorien, Punkten, Fragen, Schätzfragen und ACTION-Feldern.</span></span>
+    </button>
+    <button class="gcard" id="gcOwn">
+      <span class="wbar">Eigenes Spiel</span>
+      <span class="gbody"><span>Eigene Spielrunden mit Folien für den Beamer und einem Punktestand, den alle sehen.</span></span>
     </button>
     <button class="gcard" id="gcTimer">
       <span class="wbar">Countdown</span>
@@ -205,6 +233,26 @@
   <button class="back-link" id="btnTimerBack">← Die Spiele</button>
 </div>
 
+<div class="screen" id="ownScreen">
+  <h1 class="menu-title" id="ownTitle">Eigenes Spiel</h1>
+  <div class="menu-list" id="ownList"></div>
+  <button class="back-link" id="btnOwnBack">← Die Spiele</button>
+  <input type="file" id="ownFile" accept=".json,application/json,text/plain" hidden>
+</div>
+
+<div class="screen" id="ownEdit">
+  <h1 class="menu-title" id="oeTitle">Spiel einrichten</h1>
+  <div class="oe" id="oeBody"></div>
+  <div class="oe-bar">
+    <button class="back-link" id="btnOeBack">← Zurück</button>
+    <span class="oe-bar-gap"></span>
+    <button class="btn" id="btnOeExport">Exportieren</button>
+    <button class="btn" id="btnOeSave">Speichern</button>
+    <button class="primary" id="btnOeStart">Spiel starten</button>
+  </div>
+  <input type="file" id="oeImgFile" accept="image/*" hidden>
+</div>
+
 <div class="screen" id="setScreen">
   <h1 class="menu-title" id="setTitle">Einstellungen</h1>
   <div class="menu-list">
@@ -216,7 +264,7 @@
     <button class="mbtn" id="btnBackup"><b>Sicherung erstellen</b></button>
     <button class="mbtn" id="btnRestore"><b>Sicherung einspielen</b></button>
     <p class="mhint" id="backupInfo"></p>
-    <p class="mhint">Eine Sicherung enthält dein aktuelles Spielbrett und alle eigenen Vorlagen. Beim Einspielen landet beides unter „Vorlagen“, dein aktuelles Spielbrett bleibt unverändert.</p>
+    <p class="mhint">Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.</p>
   </div>
   <button class="back-link" id="btnSetBack">← Zurück</button>
 </div>

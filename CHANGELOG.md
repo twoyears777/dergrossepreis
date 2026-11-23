@@ -1,5 +1,13 @@
 # Changelog – Der große Preis
 
+## 1.15.0 – 23.11.2026
+- Neu auf der Startseite: Eigenes Spiel
+- Eigene Spiele anlegen mit Gruppen, frei wählbarer Rundenzahl und Punktevergabe (gleich viele pro Runde oder jede Runde einen mehr, nur Sieger oder mehrere Plätze)
+- Jede Runde hat eine Titelfolie und eine Erklärung, dazu beliebig viele weitere Folien mit Text und Bild
+- Punkte live zählen, immer sichtbar oben auf dem Bildschirm, mit Rückgängig und Siegerehrung am Ende
+- Eigene Spiele speichern, exportieren, importieren und mit Zuschaueransicht spielen
+- Die Sicherung enthält jetzt auch die eigenen Spiele
+
 ## 1.14.0 – 23.11.2026
 - Neues Werkzeug auf der Startseite: Countdown
 - Zeit per Schnellauswahl oder Plus/Minus einstellen, Start, Pause und Zurücksetzen

@@ -36,13 +36,13 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 
 ### Nebenbei – praktische Werkzeuge für den Alltag
 - ✔ Countdown mit Moderator- und Zuschaueransicht (Version 1.14.0)
-- Geplant: **„Eigenes Spiel“** (statt eines einfachen Punktezählers)
+- ✔ **„Eigenes Spiel“** (Version 1.15.0)
   - Vorher alles einstellen: Gruppen, Anzahl der Runden (frei wählbar), Punktevergabe
   - Punktevergabe: entweder gleich viele Punkte pro Runde oder jede Runde gibt einen Punkt mehr (Runde 1 = 1 Punkt, Runde 2 = 2 Punkte usw.)
   - In den Einstellungen wählbar: nur der Rundensieger bekommt Punkte oder Punkte für mehrere Plätze
   - Jede Runde besteht aus einer Titelfolie (eigener Spieltitel) und einer Erklärungsfolie, bei Bedarf weitere Folien manuell einfügen
-  - Folien mit Bildern per Upload (eher später; Bilder werden im Gerät gespeichert und beim Export mitgenommen)
-  - Perspektivisch: Folien-Editor mit vielen weiteren Funktionen ausbauen
+  - Folien mit Bildern per Upload (Bilder werden im Gerät gespeichert und beim Export mitgenommen)
+  - Perspektivisch: Folien-Editor mit vielen weiteren Funktionen ausbauen (z. B. Runden verschieben, Folien während des Spiels einfügen, Countdown auf einer Folie, Vorlagen für eigene Spiele)
   - Live Punkte zählen, Punkte schön ins Design integriert und immer gut sichtbar
   - Mit Zuschaueransicht wie beim großen Preis, am Ende Siegerehrung
   - Eigene Spiele speichern, exportieren oder direkt starten

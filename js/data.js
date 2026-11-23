@@ -3,8 +3,16 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.14.0';
+const APP_VERSION='1.15.0';
 const CHANGELOG=[
+  {v:'1.15.0',d:'23.11.2026',items:[
+    'Neu auf der Startseite: Eigenes Spiel',
+    'Eigene Spiele anlegen mit Gruppen, frei wählbarer Rundenzahl und Punktevergabe (gleich viele pro Runde oder jede Runde einen mehr, nur Sieger oder mehrere Plätze)',
+    'Jede Runde hat eine Titelfolie und eine Erklärung, dazu beliebig viele weitere Folien mit Text und Bild',
+    'Punkte live zählen, immer sichtbar oben auf dem Bildschirm, mit Rückgängig und Siegerehrung am Ende',
+    'Eigene Spiele speichern, exportieren, importieren und mit Zuschaueransicht spielen',
+    'Die Sicherung enthält jetzt auch die eigenen Spiele'
+  ]},
   {v:'1.14.0',d:'23.11.2026',items:[
     'Neues Werkzeug auf der Startseite: Countdown',
     'Zeit per Schnellauswahl oder Plus/Minus einstellen, Start, Pause und Zurücksetzen',
