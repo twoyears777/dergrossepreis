@@ -6,7 +6,7 @@ So kommen Spiele, die über „Spiel einsenden“ verschickt wurden, in die Spie
 
 1. In der App: Spielesammlung → „Spiel erstellen“ → Maske ausfüllen → „Spiel einsenden“.
 2. Die App öffnet eine E-Mail an das Todoist-Projekt **„Manna Spiele“** (Adresse steht in `js/app.js`, `SUBMIT_ADDR`).
-3. Todoist legt daraus eine Aufgabe an. Betreff: `Neues Spiel: <Name>`. Der Mail-Text steht in der Beschreibung oder in einem Kommentar der Aufgabe.
+3. Todoist legt daraus eine Aufgabe an. Betreff: `Neues Spiel: <Name>`. Der Mail-Text kommt als **HTML-Anhang in einem Kommentar** (Datei „Neues Spiel: <Name>“). Mit dem Todoist-Werkzeug `view-attachment` und der `fileUrl` aus dem Kommentar lesen. Manchmal steht der Text auch in der Beschreibung oder direkt im Kommentar.
 4. Der Betreiber prüft die Aufgabe und setzt das Label **`freigeben`**.
 5. Eine geplante Aufgabe (täglich) baut freigegebene Spiele ein.
 
