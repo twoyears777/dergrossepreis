@@ -49,7 +49,11 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Weitere Ideen: Gruppen einteilen (zufällig, nach Anzahl), Zufallsauswahl (Name ziehen, wer fängt an), Abendplaner (Ablauf eines Jugendkreises mit Zeiten)
 
 ### Etappe 2 – Spielekiste ausbauen
-- Eigene Spiele ergänzen, Favoriten
+- **Spiel erstellen:** Eingabemaske mit Feldern (Name, Kurzbeschreibung, Alter, Personen, Ort, Material, Dauer, Ablauf, Varianten, Gefahren und Risiken, Tipp, optional Rollen)
+- **Spiel einsenden:** Spiele sollen nicht nur lokal bleiben, sondern zentral ankommen
+  - Einfacher Weg ohne Server: Einsenden per E-Mail (fertig formatierter Text plus Datei), Prüfung durch dich, Aufnahme per Update
+  - Großer Weg mit Server: Einsendungen landen in einer Datenbank, du gibst sie frei, freigegebene Spiele erscheinen bei allen ohne Update (braucht Impressum, Datenschutzhinweis, Schutz vor Spam, Klärung mit Arbeitgeber)
+- Favoriten
 - Teilen und Sicherung wie bei den Vorlagen
 - Beamer-Anzeige: Regeln groß, Punktezähler für Gruppen
 
