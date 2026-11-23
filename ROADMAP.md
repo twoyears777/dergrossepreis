@@ -36,7 +36,14 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 
 ### Nebenbei – praktische Werkzeuge für den Alltag
 - ✔ Countdown mit Moderator- und Zuschaueransicht (Version 1.14.0)
-- Ideen: Gruppen einteilen (zufällig, nach Anzahl), Zufallsauswahl (Name ziehen, wer fängt an), Punktezähler für beliebige Spiele, Abendplaner (Ablauf eines Jugendkreises mit Zeiten)
+- Geplant: **„Eigenes Spiel“** (statt eines einfachen Punktezählers)
+  - Vorher alles einstellen: Gruppen, Anzahl der Runden (frei wählbar), Punktevergabe
+  - Punktevergabe: entweder gleich viele Punkte pro Runde oder jede Runde gibt einen Punkt mehr
+  - Jede Runde besteht aus einer Titelfolie (eigener Spieltitel) und einer Erklärungsfolie, bei Bedarf weitere Folien manuell einfügen
+  - Live Punkte zählen, Punkte schön ins Design integriert und immer gut sichtbar
+  - Mit Zuschaueransicht wie beim großen Preis, am Ende Siegerehrung
+  - Eigene Spiele speichern, exportieren oder direkt starten
+- Weitere Ideen: Gruppen einteilen (zufällig, nach Anzahl), Zufallsauswahl (Name ziehen, wer fängt an), Abendplaner (Ablauf eines Jugendkreises mit Zeiten)
 
 ### Etappe 2 – Spielekiste ausbauen
 - Eigene Spiele ergänzen, Favoriten
@@ -62,7 +69,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 ## Ideen-Sammlung
 Ideen, die noch keiner Etappe fest zugeordnet sind. Neue Ideen kommen hier rein.
 
-- **Texte überarbeiten:** Alle Texte klingen noch zu sehr nach KI (Startseite, Erklärung, Spielbeschreibungen, Hinweise, Changelog). Vorschlag: Du schreibst sie einmal selbst in deinen Worten, ich baue sie ein. Dafür vorher eine Liste aller Texte zum Überschreiben erstellen.
+- **Texte überarbeiten:** Alle Texte klingen noch zu sehr nach KI (Startseite, Erklärung, Spielbeschreibungen, Hinweise, Changelog). Kommt **ganz am Ende**: Du schreibst sie einmal selbst in deinen Worten, ich baue sie ein. Dafür vorher eine Liste aller Texte zum Überschreiben erstellen.
 
 - Spielesammlung als zweite Säule neben der Gameshow (→ Etappe 1)
 - Weitere Vorlagen, z. B. Kennenlernabend, Freizeit-Abschlussabend
