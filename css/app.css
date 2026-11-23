@@ -751,3 +751,39 @@ body.viewer .end-actions{display:none}
 .backup-note .primary{background:var(--ink);color:var(--paper);box-shadow:none}
 .backup-note .btn{color:var(--ink);border-color:#1d1d1b55}
 #setScreen .menu-list+.menu-list{margin-top:26px}
+
+/* ---------- Spielesammlung ---------- */
+.coll{width:min(860px,100%);margin-top:14px}
+.filters{background:var(--grain-soft),var(--paper);color:var(--ink);padding:20px 22px 12px;box-shadow:0 6px 16px #0006;border-radius:2px;transform:rotate(-.3deg)}
+.fgroup{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start;padding:8px 0;border-bottom:1px dashed #1d1d1b30}
+.fgroup:last-child{border-bottom:none}
+.flabel{font-family:var(--strong);font-weight:700;padding-top:9px}
+.fchips{display:flex;flex-wrap:wrap;gap:8px}
+.fchip{font-family:var(--sans);font-weight:700;font-size:.95rem;color:var(--ink);background:#fbf8f1;border:2px solid #1d1d1b33;border-radius:2px;padding:.45em .9em;transition:background .12s,border-color .12s}
+.fchip:hover{border-color:var(--ink)}
+.fchip.on{background:var(--marker);border-color:var(--ink)}
+.fchip:focus-visible,.game-row:focus-visible{outline:3px solid var(--marker);outline-offset:3px}
+.coll-head{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 12px;color:#d8d2c4;font-family:var(--strong);font-weight:700}
+.games{list-style:none;padding:0;display:grid;gap:14px}
+.game-row{width:100%;text-align:left;background:var(--paper);color:var(--ink);border:none;border-radius:2px;box-shadow:0 3px 8px #0005;padding:16px 20px;display:grid;gap:6px;transition:transform .12s}
+.game-row:hover{transform:translateX(3px);background:#f6f1e6}
+.games li:nth-child(odd) .game-row{transform:rotate(-.25deg)}
+.gname{font-family:var(--strong);font-weight:700;font-size:1.15rem}
+.gshort{font-family:var(--sans);color:var(--ink2);line-height:1.45}
+.gtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.gtags span{font-family:var(--sans);font-size:.82rem;font-weight:700;background:#1d1d1b12;padding:.2em .6em;border-radius:2px}
+.games-empty{color:#d8d2c4;font-family:var(--serif);font-style:italic;text-align:center;padding:30px 10px}
+.game-sheet{width:min(760px,100%);display:flex;flex-direction:column;align-items:center}
+.game-lead{color:#e6e0d3;font-family:var(--serif);font-style:italic;font-size:1.1rem;text-align:center;max-width:56ch;line-height:1.5;margin:4px 0 22px}
+.game-facts{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;margin-bottom:34px}
+.game-facts li{background:var(--paper);color:var(--ink);padding:12px 14px;box-shadow:0 3px 8px #0005;font-family:var(--sans);font-size:.95rem;line-height:1.35}
+.game-facts li:nth-child(even){transform:rotate(.6deg)}
+.game-facts li:nth-child(odd){transform:rotate(-.5deg)}
+.game-facts b{display:block;font-family:var(--strong);font-size:.8rem;color:var(--stamp);margin-bottom:2px}
+.game-notes{width:100%;display:grid;gap:34px}
+@media (max-width:720px){
+  .fgroup{grid-template-columns:1fr;gap:6px}
+  .flabel{padding-top:0}
+  .game-facts{grid-template-columns:1fr 1fr}
+}
+.gname .own{margin-left:10px;vertical-align:middle;font-size:.7rem;padding:2px 6px}

@@ -593,6 +593,8 @@ $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new
 /* ---------- Tastatur ---------- */
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!VIEW&&(screenName==='tpl'||screenName==='set'||screenName==='help')&&!$('#dialog').classList.contains('show')){showScreen('gmenu');return;}
+  if(e.key==='Escape'&&!VIEW&&screenName==='game'){showScreen('coll');return;}
+  if(e.key==='Escape'&&!VIEW&&screenName==='coll'){showScreen('home');return;}
   if(e.key==='Escape'&&!VIEW){if($('#clDialog').classList.contains('show'))$('#clDialog').classList.remove('show');else if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#btnEndMenu').click();}
 });
 addEventListener('resize',()=>{const cv=$('#confetti');cv.width=innerWidth;cv.height=innerHeight;});
@@ -709,6 +711,9 @@ function showScreen(n){
   $('#tplScreen').classList.toggle('show',n==='tpl');
   $('#setScreen').classList.toggle('show',n==='set');
   $('#helpScreen').classList.toggle('show',n==='help');
+  $('#collScreen').classList.toggle('show',n==='coll');
+  $('#gameScreen').classList.toggle('show',n==='game');
+  if(n==='coll')renderColl();
   if(n==='help')ransom($('#helpTitle'),'Erklärung');
   if(n==='gmenu')renderGMenu();
   if(n==='tpl')renderTpl();
@@ -877,6 +882,7 @@ $('#btnHelpBack').onclick=()=>showScreen('gmenu');
 $('#btnEditBoard').onclick=()=>openSettings();
 $('#btnBackup').onclick=()=>backupNow();
 $('#btnRestore').onclick=()=>$('#tplFile').click();
+$('#gcColl').onclick=()=>showScreen('coll');
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
 $('#btnGuide').onclick=()=>{try{$('#info').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#info').scrollIntoView();}};
@@ -981,3 +987,84 @@ if(VIEW){
   applyMode();renderBoard();showScreen('home');
   setInterval(updViewerStatus,2000);
 }
+
+/* ================= SPIELESAMMLUNG ================= */
+const FILTER_KEY='grosserPreis_filter';
+const FILTER_DEFS=[
+  {key:'alter',label:'Alter',opts:()=>AGE_GROUPS.map(a=>({id:a.id,label:a.label}))},
+  {key:'groesse',label:'Personen',opts:()=>SIZE_GROUPS.map(g=>({id:g.id,label:g.label}))},
+  {key:'ort',label:'Ort',opts:()=>[{id:'drinnen',label:'Drinnen'},{id:'draussen',label:'Draußen'}]},
+  {key:'material',label:'Material',opts:()=>[{id:'ohne',label:'Ohne Material'},{id:'mit',label:'Mit Material'}]}
+];
+let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[]};
+  if(f&&typeof f==='object')Object.keys(e).forEach(k=>{if(Array.isArray(f[k]))e[k]=f[k];});return e;})();
+function saveFilter(){lsSet(FILTER_KEY,JSON.stringify(filter));}
+function gameMatches(g,f){
+  if(f.alter.length&&!f.alter.some(a=>g.alter.includes(a)))return false;
+  if(f.groesse.length&&!f.groesse.some(id=>{const s=SIZE_GROUPS.find(x=>x.id===id);return s&&g.spieler.min<=s.max&&g.spieler.max>=s.min;}))return false;
+  if(f.ort.length&&!f.ort.some(o=>g.ort.includes(o)))return false;
+  if(f.material.length){const has=g.material.length>0;if(!f.material.some(m=>(m==='mit')===has))return false;}
+  return true;
+}
+const personText=g=>g.spieler.max>=9999?`ab ${g.spieler.min} Personen`:`${g.spieler.min}–${g.spieler.max} Personen`;
+const ortText=g=>g.ort.length===2?'drinnen und draußen':(g.ort[0]==='drinnen'?'drinnen':'draußen');
+const matText=g=>g.material.length?'mit Material':'ohne Material';
+function renderColl(){
+  ransom($('#collTitle'),'Spielesammlung');
+  const box=$('#filters');box.innerHTML='';
+  FILTER_DEFS.forEach(def=>{
+    const grp=document.createElement('div');grp.className='fgroup';
+    const lab=document.createElement('span');lab.className='flabel';lab.textContent=def.label;grp.appendChild(lab);
+    const wrap=document.createElement('div');wrap.className='fchips';
+    def.opts().forEach(o=>{
+      const b=document.createElement('button');b.className='fchip';b.textContent=o.label;
+      const on=filter[def.key].includes(o.id);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);
+      b.onclick=()=>{const a=filter[def.key];const i=a.indexOf(o.id);if(i>=0)a.splice(i,1);else a.push(o.id);saveFilter();renderColl();};
+      wrap.appendChild(b);
+    });
+    grp.appendChild(wrap);box.appendChild(grp);
+  });
+  const list=$('#gameList');list.innerHTML='';
+  const hits=GAMES.filter(g=>gameMatches(g,filter)).sort((a,b)=>a.name.localeCompare(b.name,'de'));
+  const active=Object.values(filter).some(a=>a.length);
+  $('#collCount').textContent=hits.length===1?'1 Spiel':hits.length+' Spiele';
+  $('#btnFilterReset').style.visibility=active?'visible':'hidden';
+  if(!hits.length){
+    const li=document.createElement('li');li.className='games-empty';
+    li.textContent='Kein Spiel passt zu diesen Filtern. Nimm einen Filter heraus, um mehr Spiele zu sehen.';
+    list.appendChild(li);return;
+  }
+  hits.forEach(g=>{
+    const li=document.createElement('li');
+    const b=document.createElement('button');b.className='game-row';
+    b.innerHTML=`<span class="gname">${esc(g.name)}${g.muster?'<span class="own">Muster</span>':''}</span><span class="gshort">${esc(g.kurz)}</span>
+      <span class="gtags"><span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span><span>${esc(g.dauer)}</span></span>`;
+    b.onclick=()=>openGame(g.id);
+    li.appendChild(b);list.appendChild(li);
+  });
+}
+function openGame(id){
+  const g=GAMES.find(x=>x.id===id);if(!g)return;
+  const ages=g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).filter(Boolean).join(', ');
+  const sec=(title,html)=>html?`<section class="note"><h3>${title}</h3>${html}</section>`:'';
+  $('#gameSheet').innerHTML=`
+    <h1 class="menu-title" id="gameTitle"></h1>
+    <p class="game-lead">${esc(g.kurz)}</p>
+    <ul class="game-facts">
+      <li><b>Personen</b>${esc(personText(g))}</li>
+      <li><b>Alter</b>${esc(ages)}</li>
+      <li><b>Ort</b>${esc(ortText(g))}</li>
+      <li><b>Dauer</b>${esc(g.dauer)}</li>
+    </ul>
+    <div class="game-notes">
+      ${sec('Material',g.material.length?'<ul>'+g.material.map(m=>`<li>${esc(m)}</li>`).join('')+'</ul>':'<p>Kein Material nötig.</p>')}
+      ${sec('So geht’s','<ol>'+g.ablauf.map(s=>`<li>${esc(s)}</li>`).join('')+'</ol>')}
+      ${g.varianten&&g.varianten.length?sec('Varianten','<ul>'+g.varianten.map(s=>`<li>${esc(s)}</li>`).join('')+'</ul>'):''}
+      ${g.hinweis?`<section class="note tip"><h3>Tipp</h3><p>${esc(g.hinweis)}</p></section>`:''}
+    </div>`;
+  ransom($('#gameTitle'),g.name);
+  showScreen('game');
+}
+$('#btnFilterReset').onclick=()=>{Object.keys(filter).forEach(k=>filter[k]=[]);saveFilter();renderColl();};
+$('#btnCollBack').onclick=()=>showScreen('home');
+$('#btnGameBack').onclick=()=>showScreen('coll');

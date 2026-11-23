@@ -1,5 +1,10 @@
 # Changelog – Der große Preis
 
+## 1.12.0 – 23.11.2026
+- Neu auf der Startseite: Spielesammlung mit Filtern für Alter, Personenzahl, drinnen/draußen und Material
+- Detailseite für jedes Spiel mit Ablauf, Material, Varianten und Tipp
+- Erstes Musterspiel: Zip Zap Boing
+
 ## 1.11.0 – 23.11.2026
 - Startseite heißt jetzt „Die Spiele“
 - Screenshot-Collage aus dem Spiel statt der Illustration

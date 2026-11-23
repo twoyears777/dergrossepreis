@@ -17,11 +17,13 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Siegerehrung, Animationen, Collage-Design
 - Offline-fähig, automatische Updates, automatische Tests
 
-### Etappe 1 – Spielekiste, erste Version
-- Neuer Eintrag auf der Startseite neben „Der große Preis“ (Name noch offen, z. B. „Spielekiste“)
-- ca. 20 erprobte Gruppenspiele mit Kurzbeschreibung, Ablauf, Material, Dauer, Gruppengröße
-- Filter: Gruppengröße, Alter, Dauer, drinnen/draußen, Material, ruhig/wild
-- Zufallsknopf
+### Etappe 1 – Spielesammlung, erste Version (in Arbeit)
+- ✔ Eintrag „Spielesammlung“ auf der Startseite neben „Der große Preis“ (Version 1.12.0)
+- ✔ Übersichtliche Liste mit Filtern: Alter (Kinder 6–12, Jugendliche 13–17, Erwachsene 18+), Personen (3–9, 10–19, 20–39, 40 und mehr), drinnen/draußen, Material ja/nein
+- ✔ Detailseite pro Spiel: Ablauf, Material, Varianten, Tipp
+- ✔ Musterspiel „Zip Zap Boing“
+- ca. 20 erprobte Gruppenspiele mit Kurzbeschreibung, Ablauf, Material, Dauer, Gruppengröße (Inhalte kommen von dir)
+- Später überlegen: Filter für Dauer und ruhig/wild, Zufallsknopf
 - Hinweise zu Sicherheit und Körperkontakt, niemand wird bloßgestellt
 - Ziel: im Alltag schneller ein passendes Spiel finden als bisher
 

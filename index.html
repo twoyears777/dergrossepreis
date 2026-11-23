@@ -43,10 +43,10 @@
       <span class="wbar">Der große Preis</span>
       <span class="gbody"><span>Die Quiz-Gameshow mit Kategorien, Punkten, Fragen, Schätzfragen und ACTION-Feldern.</span></span>
     </button>
-    <div class="gcard soon">
-      <span class="wbar">Weitere Spiele</span>
-      <span class="gbody"><span>Kommen bald.</span></span>
-    </div>
+    <button class="gcard" id="gcColl">
+      <span class="wbar">Spielesammlung</span>
+      <span class="gbody"><span>Gruppenspiele zum Nachschlagen, filterbar nach Alter, Gruppengröße, Ort und Material.</span></span>
+    </button>
   </div>
   <button class="guide-link" id="btnGuide">Mehr erfahren ↓</button>
 
@@ -163,6 +163,21 @@
     </div>
   </div>
   <button class="back-link" id="btnHelpBack">← Zurück</button>
+</div>
+
+<div class="screen" id="collScreen">
+  <h1 class="menu-title" id="collTitle">Spielesammlung</h1>
+  <div class="coll">
+    <div class="filters" id="filters" role="group" aria-label="Filter"></div>
+    <div class="coll-head"><span id="collCount"></span><button class="btn" id="btnFilterReset">Filter zurücksetzen</button></div>
+    <ul class="games" id="gameList"></ul>
+  </div>
+  <button class="back-link" id="btnCollBack">← Die Spiele</button>
+</div>
+
+<div class="screen" id="gameScreen">
+  <article class="game-sheet" id="gameSheet"></article>
+  <button class="back-link" id="btnGameBack">← Zur Spielesammlung</button>
 </div>
 
 <div class="screen" id="setScreen">

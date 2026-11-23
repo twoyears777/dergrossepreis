@@ -15,7 +15,7 @@ Wohin es geht und welche Ideen gesammelt sind, steht in der [ROADMAP.md](ROADMAP
 ## Aufbau
 - `index.html` – Aufbau der Seiten
 - `css/app.css` – Aussehen
-- `js/data.js` – Versionsnummer, Changelog und Vorlagen
+- `js/data.js` – Versionsnummer, Changelog, Vorlagen und Spielesammlung
 - `js/app.js` – Spiellogik
 - `img/` – Screenshots für die Startseite
 - `sw.js` – Offline-Modus und automatische Updates

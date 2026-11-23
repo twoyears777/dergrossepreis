@@ -3,8 +3,13 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.11.0';
+const APP_VERSION='1.12.0';
 const CHANGELOG=[
+  {v:'1.12.0',d:'23.11.2026',items:[
+    'Neu auf der Startseite: Spielesammlung mit Filtern für Alter, Personenzahl, drinnen/draußen und Material',
+    'Detailseite für jedes Spiel mit Ablauf, Material, Varianten und Tipp',
+    'Erstes Musterspiel: Zip Zap Boing'
+  ]},
   {v:'1.11.0',d:'23.11.2026',items:[
     'Startseite heißt jetzt „Die Spiele“',
     'Screenshot-Collage aus dem Spiel statt der Illustration',
@@ -211,4 +216,38 @@ const TEMPLATES=[
         EST('Wie viele Kilometer sind es Luftlinie von Berlin nach Bethlehem?',2900,'km'),
         EST('Wie viele Sekunden hat der Heiligabend?',86400,'Sekunden')]}
    ]}
+];
+
+/* ---------- Spielesammlung ----------
+   Jedes Spiel: Name, Kurzbeschreibung, Altersgruppen, Spielerzahl (min/max),
+   Ort, Material, Dauer, Ablauf in Schritten, optional Varianten und Hinweise. */
+const AGE_GROUPS=[
+  {id:'kinder',label:'Kinder (6–12)'},
+  {id:'jugend',label:'Jugendliche (13–17)'},
+  {id:'erwachsene',label:'Erwachsene (18+)'}
+];
+const SIZE_GROUPS=[
+  {id:'s',label:'3–9',min:3,max:9},
+  {id:'m',label:'10–19',min:10,max:19},
+  {id:'l',label:'20–39',min:20,max:39},
+  {id:'xl',label:'40 und mehr',min:40,max:9999}
+];
+const GAMES=[
+  {id:'zip-zap-boing',muster:true,
+   name:'Zip Zap Boing',
+   kurz:'Schnelles Reaktionsspiel im Kreis, bei dem ein unsichtbarer Impuls weitergegeben wird.',
+   alter:['kinder','jugend','erwachsene'],
+   spieler:{min:6,max:30},
+   ort:['drinnen','draussen'],
+   material:[],
+   dauer:'5–15 Minuten',
+   ablauf:[
+     'Alle stellen sich in einen Kreis.',
+     'Eine Person startet und gibt den Impuls mit „Zip“ und einer Handbewegung an die Person links oder rechts neben sich weiter.',
+     'Mit „Zap“ und einem Zeigen geht der Impuls quer durch den Kreis zu einer beliebigen Person.',
+     'Mit „Boing“ und erhobenen Händen blockt man einen Zip ab. Der Impuls springt zurück und die Richtung wechselt.',
+     'Wer zögert, das falsche Wort sagt oder den Impuls nicht annimmt, scheidet aus oder stellt sich in die Mitte und ruft beim nächsten Fehler mit.'
+   ],
+   varianten:['Neue Wörter einführen, zum Beispiel „Whoosh“ für zwei Plätze überspringen.','Ohne Ausscheiden spielen und nur das Tempo steigern.'],
+   hinweis:'Gut als Einstieg in eine Gruppenstunde, weil sofort alle dabei sind.'}
 ];
