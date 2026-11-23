@@ -54,7 +54,12 @@ Ideen, die noch keiner Etappe fest zugeordnet sind. Neue Ideen kommen hier rein.
 
 - Spielesammlung als zweite Säule neben der Gameshow (→ Etappe 1)
 - Weitere Vorlagen, z. B. Kennenlernabend, Freizeit-Abschlussabend
-- Später denkbar: Finanzierung über Zusatzfunktionen oder fertige Fragenkataloge (erst nach erfolgreichem Test mit anderen Jugendleitern)
+- Später denkbar: Finanzierung – **kein Abo für Ehrenamtliche**, stattdessen Einmalkäufe; Grundausstattung bleibt kostenlos
+  - Vorlagenpakete (Quiz-Themenpakete, günstiger Einstieg)
+  - Geländespiele mit Material zum Ausdrucken (Rollenkarten, Stationen, Geschichte) – Premium-Angebot, muss real getestet sein
+  - Besondere Beamerspiele als einmaliger Extra-Kauf (keine Namen/Logos von TV-Shows verwenden)
+  - Ergänzend denkbar: Träger-Lizenz für Verbände/Kirchenbezirke, freiwilliger „Unterstützen“-Knopf
+  - Vorher: ein Paket mit Kollegen testen (Zahlungsbereitschaft), Arbeitgeber/Gewerbe/Zahlungsanbieter klären
 - Später denkbar: Jugendliche spielen mit dem eigenen Handy mit (Buzzer, Schätzzahlen eintippen)
 
 ---
