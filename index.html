@@ -12,8 +12,6 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <title>Der große Preis</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg1:#07041f;--bg2:#1a0d57;--gold:#ffd23f;--gold2:#ff9f1c;
@@ -23,7 +21,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-  font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--text);
+  font-family:var(--fb);color:var(--text);
   background:
     radial-gradient(ellipse 60% 45% at 50% -8%,#5a34ff 0%,transparent 70%),
     radial-gradient(ellipse 50% 40% at 0% 105%,#c2188a66 0%,transparent 70%),
@@ -33,7 +31,7 @@ body{
 }
 button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 input,textarea,select{font-family:inherit;user-select:text;-webkit-user-select:text}
-.bungee{font-family:Bungee,Impact,"Arial Black",sans-serif;letter-spacing:.02em}
+.bungee{font-family:var(--fd);letter-spacing:.02em}
 
 /* ---------- Spielbrett ---------- */
 #game{height:100vh;height:100dvh;display:flex;flex-direction:column;padding:1.2vh 1.4vw 1.6vh;gap:1.4vh}
@@ -87,7 +85,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .team.active .turn{display:block;animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{50%{transform:translateX(-50%) scale(1.1)}}
 .team.leader .name::before{content:"👑 "}
-.float{position:absolute;top:0;left:50%;font-size:clamp(1.2rem,4vh,2.6rem);font-weight:800;pointer-events:none;animation:floatUp 1.4s ease-out forwards;font-family:Bungee,sans-serif}
+.float{position:absolute;top:0;left:50%;font-size:clamp(1.2rem,4vh,2.6rem);font-weight:800;pointer-events:none;animation:floatUp 1.4s ease-out forwards;font-family:var(--fd)}
 @keyframes floatUp{from{opacity:1;transform:translate(-50%,0) scale(.8)}to{opacity:0;transform:translate(-50%,-9vh) scale(1.4)}}
 .noteams{color:var(--muted);align-self:center;font-size:1rem}
 
@@ -111,7 +109,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .tile:not(.used):hover::after{transform:translateX(120%)}
 .tile:not(.used):active{transform:scale(.97)}
 .tile.used{background:linear-gradient(160deg,#1a1750,#110e38);box-shadow:inset 0 0 12px #0008;cursor:default;text-shadow:none}
-.won{--c:#888;display:inline-block;max-width:92%;font-family:Inter,sans-serif;font-weight:800;font-size:clamp(.6rem,1.8vh,1.1rem);
+.won{--c:#888;display:inline-block;max-width:92%;font-family:var(--fb);font-weight:800;font-size:clamp(.6rem,1.8vh,1.1rem);
   color:var(--c);border:2px solid var(--c);border-radius:999px;padding:.2em .7em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.85}
 .won.none{border-color:#ffffff33;color:#ffffff55}
 .empty-board{grid-column:1/-1;display:grid;place-items:center;color:var(--muted);text-align:center;font-size:1.2rem}
@@ -140,7 +138,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 #qExtra.mc{display:grid;grid-template-columns:1fr 1fr;gap:1.4vh 1.2vw}
 .mcopt{display:flex;align-items:center;gap:1vw;text-align:left;background:#0b0a33bb;border:2px solid #ffffff40;border-radius:16px;padding:1.4vh 1.2vw;
   font-weight:800;font-size:clamp(1rem,3.4vh,2.2rem);transition:transform .15s,background .25s,border-color .25s,opacity .25s}
-.mcopt .ml{font-family:Bungee,sans-serif;color:var(--gold);min-width:1.4em}
+.mcopt .ml{font-family:var(--fd);color:var(--gold);min-width:1.4em}
 .mcopt:not(:disabled):hover{transform:scale(1.02);border-color:var(--gold)}
 .mcopt.right{background:linear-gradient(180deg,#34e08f,#14a862);border-color:#bfffe0;animation:pop .35s}
 .mcopt.right .ml,.mcopt.wrong .ml{color:#fff}
@@ -150,7 +148,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 #qExtra.est{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:1.2vh 1vw}
 .estrow{--c:#fff;display:flex;flex-direction:column;gap:.6vh;align-items:stretch;background:#0b0a33bb;border:2px solid color-mix(in srgb,var(--c) 60%,transparent);border-radius:16px;padding:1vh 1vw;transition:transform .2s,box-shadow .2s}
 .estrow .en{font-weight:800;color:var(--c);font-size:clamp(.85rem,2.4vh,1.3rem)}
-.estrow input{background:#00000055;border:1px solid #ffffff40;border-radius:10px;color:#fff;font-weight:800;text-align:center;font-size:clamp(1.1rem,3.6vh,2.2rem);padding:.3em;width:100%;outline:none;font-family:Bungee,sans-serif}
+.estrow input{background:#00000055;border:1px solid #ffffff40;border-radius:10px;color:#fff;font-weight:800;text-align:center;font-size:clamp(1.1rem,3.6vh,2.2rem);padding:.3em;width:100%;outline:none;font-family:var(--fd)}
 .estrow input:focus{border-color:var(--gold)}
 .estrow .ed{font-size:clamp(.75rem,2vh,1.1rem);color:#d4d0ff;min-height:1.2em}
 .estrow.solved{cursor:pointer}
@@ -159,7 +157,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .mcedit{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .mcedit label{display:flex;align-items:center;gap:8px}
 .mcedit input[type=radio]{width:22px;height:22px;accent-color:#22c97a;flex:none}
-.mcedit .ml{font-family:Bungee,sans-serif;color:var(--gold);width:1.2em}
+.mcedit .ml{font-family:var(--fd);color:var(--gold);width:1.2em}
 .estedit{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .seg{flex-wrap:wrap}
 .seg button.on.mc{background:#2ee6c8;color:#06302a}
@@ -193,7 +191,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
   background:repeating-conic-gradient(#ff2d2d 0 10deg,#ff9f1c 10deg 20deg);animation:spin 3s linear infinite;opacity:.85}
 #actionFx .vignette{position:absolute;inset:0;background:radial-gradient(circle,transparent 20%,#000c 75%)}
 #actionFx .flash{position:absolute;inset:0;background:#fff;opacity:0;animation:flash 1.9s ease-out}
-#actionFx .word{position:relative;font-family:Bungee,Impact,sans-serif;font-size:clamp(4rem,22vh,16rem);color:#ffe14d;
+#actionFx .word{position:relative;font-family:var(--fd);font-size:clamp(4rem,22vh,16rem);color:#ffe14d;
   text-shadow:0 .06em 0 #b33a00,0 .12em 0 #6b1a00,0 0 .4em #ff8a00,0 0 1em #ff2d00;
   -webkit-text-stroke:.03em #6b1a00;animation:slam 1.9s cubic-bezier(.2,1.6,.4,1) both}
 #actionFx .sub{position:absolute;bottom:18vh;font-weight:800;font-size:clamp(1rem,4vh,2.4rem);letter-spacing:.3em;color:#fff;text-shadow:0 2px 10px #000;animation:subIn 1.9s ease-out both}
@@ -208,7 +206,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 #doneFx.show{display:flex}
 #doneFx .dburst{position:absolute;width:250vmax;height:250vmax;left:50%;top:45%;margin:-125vmax 0 0 -125vmax;opacity:.18;
   background:repeating-conic-gradient(#fff 0 8deg,transparent 8deg 22deg);animation:spin 6s linear infinite}
-#doneFx .dword{position:relative;font-family:Bungee,Impact,sans-serif;font-size:clamp(3rem,16vh,11rem);color:#fff;text-align:center;line-height:1.05;
+#doneFx .dword{position:relative;font-family:var(--fd);font-size:clamp(3rem,16vh,11rem);color:#fff;text-align:center;line-height:1.05;
   text-shadow:0 .06em 0 #0006,0 0 .5em #ffffff66;animation:donePop .7s cubic-bezier(.2,1.6,.4,1) both;padding:0 4vw}
 #doneFx.bad .dword{animation:donePop .7s cubic-bezier(.2,1.6,.4,1) both,shake .45s .5s 1}
 #doneFx .dsub{position:relative;font-weight:800;font-size:clamp(1.1rem,5vh,3rem);color:#fff;text-align:center;padding:.3em 1em;border-radius:999px;background:#0005;animation:subIn2 .9s ease-out both}
@@ -217,7 +215,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 /* Multiple Choice einloggen */
 .mcopt.locked{background:linear-gradient(180deg,#ffc94d,#f08c00);border-color:#ffe9a8;color:#2a1600;animation:lockPulse 1.2s ease-in-out infinite}
 .mcopt.locked .ml{color:#2a1600}
-.mcopt.locked::after{content:"🔒 eingeloggt";margin-left:auto;font-size:.5em;font-family:Inter,sans-serif;white-space:nowrap}
+.mcopt.locked::after{content:"🔒 eingeloggt";margin-left:auto;font-size:.5em;font-family:var(--fb);white-space:nowrap}
 @keyframes lockPulse{50%{box-shadow:0 0 28px #ffb703}}
 #qExtra.suspense .mcopt{animation:susp .18s infinite alternate}
 #qExtra.suspense .mcopt.locked{animation:suspLock .3s infinite alternate}
@@ -243,7 +241,7 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
   box-shadow:0 10px 30px #0008,0 0 30px #ffd23f22;transition:transform .15s}
 .gcard:not(.soon):hover{transform:translateY(-4px) scale(1.02)}
 .gcard .gi{font-size:3rem;line-height:1}
-.gcard h3{font-family:Bungee,sans-serif;color:var(--gold);font-size:1.5rem;font-weight:400}
+.gcard h3{font-family:var(--fd);color:var(--gold);font-size:1.5rem;font-weight:400}
 .gcard p{color:#e1ddff;line-height:1.4}
 .gcard.soon{background:#ffffff0c;border:2px dashed #ffffff33;box-shadow:none;opacity:.7}
 .gcard.soon h3{color:#cfcaf7}
@@ -283,12 +281,12 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 body.mod .qanswer.secret{display:block;opacity:.6;border-style:dotted;animation:none}
 body.mod .qanswer.secret::before{content:"🔒 nur für dich: ";font-size:.55em;color:#fff;vertical-align:middle}
 body.mod .mcopt.hint-right:not(.right){box-shadow:inset 0 0 0 3px #22c97a}
-body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"✓ richtig (nur für dich)";margin-left:auto;font-size:.5em;color:#7dffc0;font-family:Inter,sans-serif}
+body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"✓ richtig (nur für dich)";margin-left:auto;font-size:.5em;color:#7dffc0;font-family:var(--fb)}
 body.viewer .ctrls,body.viewer .qtools,body.viewer .qbig,body.viewer .qother,body.viewer .half-pick{display:none!important}
 body.viewer .tile,body.viewer .team{pointer-events:none}
 body.viewer .qfoot{border-top:none;padding-top:0}
 body.viewer .qturn{font-size:clamp(1rem,3vh,1.8rem)}
-.estrow .ev{font-family:Bungee,sans-serif;font-size:clamp(1.1rem,3.6vh,2.2rem);text-align:center;padding:.2em;min-height:1.4em}
+.estrow .ev{font-family:var(--fd);font-size:clamp(1.1rem,3.6vh,2.2rem);text-align:center;padding:.2em;min-height:1.4em}
 #vSplash{position:fixed;inset:0;z-index:44;display:none;flex-direction:column;align-items:center;justify-content:center;gap:5vh;
   background:radial-gradient(ellipse 60% 45% at 50% 30%,#5a34ff 0%,transparent 70%),linear-gradient(180deg,var(--bg2),var(--bg1))}
 body.viewer #vSplash.show{display:flex}
@@ -308,7 +306,7 @@ body.viewer.idle{cursor:none}
 #updBar button{background:#2a1600;color:#ffe066;border-radius:10px;padding:.45em .9em;font-weight:800}
 #updBar .x{background:transparent;color:#2a1600;padding:.3em .5em}
 .cl h3{color:var(--gold);font-size:1rem;margin:14px 0 6px}
-.cl h3 small{color:var(--muted);font-weight:600;font-family:Inter,sans-serif}
+.cl h3 small{color:var(--muted);font-weight:600;font-family:var(--fb)}
 .cl ul{padding-left:1.2em;line-height:1.5;color:#e9e6ff}
 .cl li{margin:2px 0}
 .dbox.wide{max-width:620px;max-height:85vh;overflow:auto;position:relative}
@@ -331,7 +329,7 @@ body.viewer.idle{cursor:none}
 #endScreen .qcard{align-items:center;justify-content:center;text-align:center}
 .podium{display:flex;flex-direction:column;gap:1.2vh;width:min(700px,90%);margin:2vh 0}
 .prow{--c:#fff;display:flex;align-items:center;gap:1rem;background:#0006;border:2px solid var(--c);border-radius:16px;padding:1.2vh 1.4vw;font-size:clamp(1rem,3vh,2rem);font-weight:800}
-.prow .rk{font-family:Bungee,sans-serif;width:2.4em;color:var(--gold)}
+.prow .rk{font-family:var(--fd);width:2.4em;color:var(--gold)}
 .prow .nm{flex:1;text-align:left;color:var(--c)}
 .prow.first{transform:scale(1.06);box-shadow:0 0 40px color-mix(in srgb,var(--c) 60%,transparent)}
 canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:75}
@@ -364,7 +362,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 .tab.on{background:var(--gold);color:#2a1600;border-color:var(--gold)}
 .tab.add{border-style:dashed;color:var(--gold)}
 .item{display:grid;grid-template-columns:78px 1fr;gap:14px;padding:14px 0;border-top:1px solid #ffffff18}
-.item .pv{font-family:Bungee,sans-serif;font-size:1.6rem;color:var(--gold);display:flex;align-items:flex-start;justify-content:center;padding-top:6px}
+.item .pv{font-family:var(--fd);font-size:1.6rem;color:var(--gold);display:flex;align-items:flex-start;justify-content:center;padding-top:6px}
 .item .flds{display:flex;flex-direction:column;gap:8px}
 .seg{display:inline-flex;background:#0b0830;border:1px solid #ffffff2e;border-radius:12px;padding:3px;align-self:flex-start}
 .seg button{background:none;padding:.4em .9em;border-radius:9px;font-weight:700;font-size:.85rem;color:#cfcaf7}
@@ -391,6 +389,197 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
   .item{grid-template-columns:1fr}
   .item .pv{justify-content:flex-start}
 }
+
+/* =====================================================================
+   Y2K-THEME  (2000er TV-Show: Kobalt, Aqua-Gel, Chrom)
+   ===================================================================== */
+:root{
+  --fd:"Arial Rounded MT Bold","Arial Black","Helvetica Neue",Arial,sans-serif;
+  --fb:"Trebuchet MS","Lucida Grande",Verdana,Tahoma,sans-serif;
+  --navy:#081257;--navy2:#040a33;--cobalt:#1b3fd6;
+  --aqua:#14a4f0;--aqua-l:#8fe6ff;
+  --chrome-hi:#ffffff;--chrome-mid:#c9d2e6;--chrome-lo:#7d8bb0;
+  --lime:#9be22d;--pink:#ff4fb8;--gold:#ffe14a;
+  --muted:#b4c2f0;--panel:#ffffff0d;--line:#ffffff26;
+}
+body{font-family:var(--fb);background:
+  radial-gradient(ellipse 80% 55% at 50% -5%,#2a5cff 0%,transparent 62%),
+  linear-gradient(180deg,#0b1d86 0%,var(--navy) 42%,var(--navy2) 100%)}
+.bungee{font-family:var(--fd);letter-spacing:0;font-style:italic}
+
+/* Chrom-Schrift */
+.chrome{font-family:var(--fd);font-style:italic;letter-spacing:-.01em;
+  background:linear-gradient(180deg,#fff 0%,#eef2fa 36%,#8792b5 50%,#d6deef 60%,#fff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 #0a1a6e) drop-shadow(0 0 16px #6fd6ff55)}
+
+/* Titel */
+.marquee{background:none;box-shadow:none;padding:0 .4em;border-radius:0}
+.marquee::before{display:none}
+#title{background:linear-gradient(180deg,#fff 0%,#eef2fa 36%,#8792b5 50%,#d6deef 60%,#fff 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 #0a1a6e) drop-shadow(0 0 16px #6fd6ff55);font-size:clamp(1.5rem,5.4vh,3.8rem)}
+.marquee::after{content:"✦";position:absolute;right:-.3em;top:-.35em;font-size:clamp(1rem,3vh,2rem);color:#fff;
+  text-shadow:0 0 10px #8fe6ff,0 0 20px #8fe6ff;font-style:normal}
+.icon-btn{background:linear-gradient(180deg,#ffffff30,#ffffff10 50%,#00000020 51%,#ffffff12);border:1px solid #ffffff40;border-radius:12px;color:#fff}
+
+/* Punktestand */
+.team{border-radius:20px;border:2px solid color-mix(in srgb,var(--c) 70%,#fff 0%);
+  background:linear-gradient(180deg,#ffffff24 0%,#ffffff0a 48%,#0000001a 52%,#ffffff08 100%);
+  box-shadow:inset 0 1px 0 #ffffff50,0 6px 16px #0006}
+.team .name{font-family:var(--fb);font-weight:700}
+.team .pts{font-family:var(--fd);font-style:italic;color:#fff;text-shadow:0 2px 0 color-mix(in srgb,var(--c) 60%,#000)}
+.team.active{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 45%,#fff) 0%,var(--c) 48%,color-mix(in srgb,var(--c) 72%,#000) 52%,var(--c) 100%);
+  border-color:#fff;box-shadow:inset 0 1px 0 #fff9,0 0 0 3px color-mix(in srgb,var(--c) 40%,transparent),0 0 30px color-mix(in srgb,var(--c) 60%,transparent)}
+.team.active .name{color:#fff;text-shadow:0 1px 0 #0006}
+.team.active .pts{text-shadow:0 2px 0 #0005}
+.team .turn{background:#fff;color:#0a1a6e;font-family:var(--fb);font-weight:700;letter-spacing:0;font-size:clamp(.6rem,1.4vh,.85rem);top:-1.2vh}
+
+/* Kategorien: Chrom-Leisten */
+.cat{background:linear-gradient(180deg,#fff 0%,#e3e8f3 44%,#a9b3cb 56%,#e9edf6 100%);border:1px solid #fff;border-radius:12px;
+  color:#0a1a6e;text-transform:none;font-family:var(--fd);font-style:italic;letter-spacing:0;
+  box-shadow:0 3px 0 #22348c,0 8px 16px #0007;font-size:clamp(.75rem,2.4vh,1.5rem)}
+
+/* Spielfelder: Aqua-Gel */
+.tile{border-radius:18px;border:1px solid #c8f3ff;color:#fff;font-family:var(--fd);font-style:italic;
+  background:linear-gradient(180deg,#8fe6ff 0%,#3cc2f8 44%,#0b8de6 50%,#0a6fd1 100%);
+  box-shadow:inset 0 -8px 16px #0a4fb0aa,0 4px 0 #062f8a,0 10px 20px #0009;
+  text-shadow:0 2px 0 #0a4fb0,0 0 14px #ffffff80;transition:transform .12s,filter .12s}
+.tile::after{content:"";position:absolute;left:5%;right:5%;top:4%;height:42%;transform:none;transition:none;
+  border-radius:14px 14px 40% 40%/14px 14px 22% 22%;background:linear-gradient(180deg,#ffffffd9,#ffffff1a);pointer-events:none}
+.tile:not(.used):hover{transform:translateY(-2px);filter:brightness(1.08)}
+.tile:not(.used):hover::after{transform:none}
+.tile:not(.used):active{transform:translateY(2px);box-shadow:inset 0 -8px 16px #0a4fb0aa,0 2px 0 #062f8a}
+.tile.used{background:#0b1650aa;border:1px dashed #ffffff33;box-shadow:none}
+.tile.used::after{display:none}
+.won{font-family:var(--fb);font-weight:700;font-style:normal;background:#00000030}
+
+/* Fenster (Frage, Siegerehrung, Dialoge) */
+.wbar{display:flex;align-items:center;gap:.8em;padding:.55em .7em .55em 1em;color:#fff;font-family:var(--fd);font-style:italic;
+  background:linear-gradient(180deg,#5a97ff 0%,#2e68f0 46%,#1546d6 54%,#2a64f0 100%);border-bottom:2px solid #0a2a9e;text-shadow:0 1px 0 #0a2a9e}
+.wbar>span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wx{flex:none;width:clamp(30px,4.2vh,42px);height:clamp(30px,4.2vh,42px);border-radius:7px;border:1px solid #fff;color:#fff;font-weight:800;font-size:clamp(.9rem,2vh,1.2rem);
+  background:linear-gradient(180deg,#ffa184 0%,#f0613d 48%,#d23a17 52%,#e8532f 100%);box-shadow:inset 0 1px 0 #ffffff80;font-style:normal}
+.wx:hover{filter:brightness(1.1)}
+.qcard{padding:0;gap:1.6vh;overflow:hidden;border:2px solid #bfe0ff;border-radius:14px;
+  background:radial-gradient(ellipse 90% 70% at 50% 0%,#2353ea 0%,#0d1f86 55%,#071150 100%);
+  box-shadow:0 0 0 4px #0a2a9e66,0 30px 80px #000c}
+.qcard>*:not(.qtop){margin-left:2.4vw;margin-right:2.4vw}
+.qfoot{padding-bottom:2vh}
+.qtop{display:flex;align-items:center;gap:1vw;padding:.9vh .8vw .9vh 1.6vw;
+  background:linear-gradient(180deg,#5a97ff 0%,#2e68f0 46%,#1546d6 54%,#2a64f0 100%);border-bottom:2px solid #0a2a9e}
+.qcat{flex:1;min-width:0;color:#fff;text-transform:none;font-family:var(--fd);font-style:italic;font-size:clamp(.95rem,3vh,1.9rem);
+  text-shadow:0 1px 0 #0a2a9e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qpts{flex:none;background:#fff;color:#1546d6;border-radius:999px;padding:.05em .7em;font-family:var(--fd);font-style:italic;font-size:clamp(1rem,3.4vh,2.2rem);text-shadow:none;box-shadow:inset 0 -3px 0 #c9d2e6}
+.qcard.action{border-color:#ffd0a8;background:radial-gradient(ellipse 90% 70% at 50% 0%,#e0263a 0%,#8a0f3a 55%,#3a0a3f 100%)}
+.qcard.action .qtop{background:linear-gradient(180deg,#ffb27a 0%,#ff6a3d 46%,#e0262e 54%,#ff5a3a 100%);border-bottom-color:#7a0a1a}
+.qbody{gap:2.2vh}
+.qbadge{align-self:center;font-family:var(--fb);font-weight:700;letter-spacing:0;text-transform:none;font-size:clamp(.8rem,2.2vh,1.2rem);
+  padding:.3em 1.1em;transform:rotate(-2deg);box-shadow:0 3px 0 #0006,inset 0 1px 0 #ffffff90}
+.qbadge.frage{background:linear-gradient(180deg,#fff,#d6deef);color:#0a1a6e}
+.qbadge.mc{background:linear-gradient(180deg,#c9f6ff,#5fd2fb);color:#05305a}
+.qbadge.schaetz{background:linear-gradient(180deg,#eadcff,#b78dff);color:#2a0d63}
+.qbadge.aufgabe{background:linear-gradient(180deg,#ffc6e8,#ff4fb8);color:#fff;text-shadow:0 1px 0 #a0106a}
+.qbadge.action{background:linear-gradient(180deg,#fff27a,#ffb703);color:#5a2a00}
+.qtext{font-family:var(--fb);font-weight:700;text-shadow:0 3px 0 #0a1a6e,0 0 20px #0008}
+.qanswer{background:linear-gradient(180deg,#f1ffc8 0%,#c4f25a 48%,#94d81f 52%,#b8ec46 100%);border:2px solid #fff;color:#173300;border-radius:999px;
+  padding:1vh 2.4vw;font-family:var(--fd);font-style:italic;box-shadow:0 4px 0 #3f7a07,0 10px 24px #0008}
+body.mod .qanswer.secret{background:transparent;color:#d9ffa0;border:2px dotted #9be22d;box-shadow:none}
+
+/* Buttons */
+.pill{font-family:var(--fb);font-weight:700;color:#0a1a6e;border:1px solid #fff;
+  background:linear-gradient(180deg,#fff 0%,#e3e8f3 46%,#aeb8d0 54%,#e6ebf5 100%);box-shadow:0 3px 0 #22348c,0 6px 14px #0006}
+.pill:hover{filter:brightness(1.05);background:linear-gradient(180deg,#fff 0%,#e3e8f3 46%,#aeb8d0 54%,#e6ebf5 100%)}
+.pill:disabled{opacity:.5}
+.bigbtn{border-radius:999px;font-family:var(--fb);font-weight:700;border:1px solid #ffffffb0}
+.bigbtn.ok{background:linear-gradient(180deg,#e9ffa8 0%,#ace93c 46%,#6cc414 54%,#8fdc2a 100%);color:#173300;text-shadow:0 1px 0 #ffffff80;box-shadow:0 5px 0 #3f7a07,0 10px 20px #0007}
+.bigbtn.bad{background:linear-gradient(180deg,#ffc0e2 0%,#ff6cbf 46%,#e0157f 54%,#ff4fb0 100%);color:#fff;text-shadow:0 1px 0 #8a0a4a;box-shadow:0 5px 0 #8a0a4a,0 10px 20px #0007}
+.bigbtn:active{box-shadow:0 1px 0 #0006}
+.chip{font-family:var(--fb);font-weight:700;border-radius:999px}
+.primary,.mbtn.primary-m{background:linear-gradient(180deg,#e9ffa8 0%,#ace93c 46%,#6cc414 54%,#8fdc2a 100%);color:#173300;border:1px solid #fff;box-shadow:0 4px 0 #3f7a07}
+.mbtn.primary-m small{color:#2c5a00}
+.btn{font-family:var(--fb);background:linear-gradient(180deg,#ffffff26,#ffffff0c 50%,#0000001a 51%,#ffffff10);border:1px solid #ffffff40;border-radius:999px}
+.btn:hover{background:linear-gradient(180deg,#ffffff36,#ffffff18 50%,#00000010 51%,#ffffff18)}
+
+/* Multiple Choice */
+.mcopt{border-radius:999px;font-family:var(--fb);font-weight:700;background:linear-gradient(180deg,#ffffff22 0%,#ffffff0a 48%,#00000018 52%,#ffffff08 100%);border:2px solid #ffffff50}
+.mcopt .ml{font-family:var(--fd);font-style:italic;color:#fff;display:inline-grid;place-items:center;width:1.7em;height:1.7em;border-radius:50%;min-width:0;flex:none;
+  background:linear-gradient(180deg,#8fe6ff,#0b8de6);box-shadow:inset 0 -3px 0 #0a5fc0;font-size:.85em}
+.mcopt.right{background:linear-gradient(180deg,#e9ffa8 0%,#ace93c 46%,#6cc414 54%,#8fdc2a 100%);color:#173300;border-color:#fff}
+.mcopt.wrong{background:linear-gradient(180deg,#ffc0e2 0%,#ff6cbf 46%,#e0157f 54%,#ff4fb0 100%);border-color:#fff}
+.mcopt.locked{background:linear-gradient(180deg,#fff6b0 0%,#ffd23f 46%,#f0a400 54%,#ffc21f 100%);color:#3a2400;border-color:#fff}
+.mcopt.right .ml,.mcopt.wrong .ml,.mcopt.locked .ml{color:#fff}
+
+/* Schätzfragen */
+.estrow{border-radius:18px;background:linear-gradient(180deg,#ffffff1c,#ffffff06);border-width:2px}
+.estrow .en{font-family:var(--fb)}
+.estrow input,.estrow .ev{font-family:var(--fd);font-style:italic}
+
+/* Menüs */
+.screen{background:radial-gradient(ellipse 80% 55% at 50% -5%,#2a5cff 0%,transparent 62%),linear-gradient(180deg,#0b1d86 0%,var(--navy) 42%,var(--navy2) 100%)}
+.menu-brand{display:none}
+.menu-title{background:linear-gradient(180deg,#fff 0%,#eef2fa 36%,#8792b5 50%,#d6deef 60%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 #0a1a6e) drop-shadow(0 0 16px #6fd6ff55);font-style:italic;margin-top:2vh}
+.menu-sub{color:#cfdcff;font-weight:400}
+.gcard{padding:0;gap:0;border:2px solid #bfe0ff;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#1638c8,#0b1d86);box-shadow:0 0 0 4px #0a2a9e55,0 16px 40px #0009;text-align:left}
+.gcard .gbody{display:flex;gap:16px;align-items:center;padding:20px;color:#e6ecff;line-height:1.45}
+.gcard .gi{font-size:2.6rem}
+.gcard:not(.soon):hover{transform:translateY(-3px)}
+.gcard.soon{background:#0b1650;border:2px dashed #ffffff40;box-shadow:none;opacity:.75}
+.gcard.soon .wbar{background:linear-gradient(180deg,#9aa6c4,#6c789c);border-bottom-color:#4a5578;text-shadow:none}
+.mbtn{border-radius:16px;background:linear-gradient(180deg,#ffffff1f 0%,#ffffff0a 48%,#0000001a 52%,#ffffff08 100%);border:1px solid #ffffff38}
+.mbtn:hover{background:linear-gradient(180deg,#ffffff2c 0%,#ffffff14 48%,#00000012 52%,#ffffff10 100%)}
+.mbtn b{font-family:var(--fb)}
+.mlabel{text-transform:none;letter-spacing:0;font-family:var(--fd);font-style:italic;font-size:1rem;color:#cfe0ff;font-weight:400;margin-top:16px}
+.tdel{border-radius:16px}
+.mbtn .own{background:var(--pink);color:#fff;text-transform:lowercase;font-weight:700}
+.verlink{text-decoration:none;color:#9fb0e8;border:1px solid #ffffff2a;border-radius:999px;padding:6px 14px}
+.verlink:hover{color:#fff;border-color:#ffffff66}
+
+/* Einstellungen */
+#settings{background:linear-gradient(180deg,#0b1d86 0%,var(--navy) 30%,var(--navy2) 100%)}
+.shead{background:linear-gradient(180deg,#0b1d86 70%,#0b1d8600)}
+.shead h1{font-size:1.9rem}
+.sec{border-radius:14px;border:1px solid #ffffff2a;background:#ffffff0b}
+.sec h2{font-family:var(--fd);font-style:italic;font-weight:400}
+.inp,.ta,select.inp{background:#050c3e;border-color:#ffffff33;border-radius:10px}
+.inp:focus,.ta:focus{border-color:var(--aqua-l);box-shadow:0 0 0 3px #14a4f055}
+.tab{border-radius:999px;font-family:var(--fb)}
+.tab.on{background:linear-gradient(180deg,#8fe6ff 0%,#3cc2f8 46%,#0b8de6 54%,#0a6fd1 100%);color:#fff;border-color:#c8f3ff;text-shadow:0 1px 0 #0a4fb0}
+.tab.add{color:var(--aqua-l)}
+.item .pv{font-family:var(--fd);font-style:italic;color:var(--aqua-l)}
+
+/* Dialoge */
+.dbox{padding:0;border:2px solid #bfe0ff;border-radius:14px;overflow:hidden;background:#0d1f86;box-shadow:0 0 0 4px #0a2a9e55,0 24px 60px #000b}
+.dbox>p,.dbox>.inp,.dbox>.row{margin-left:22px;margin-right:22px}
+.dbox>p{margin-top:20px}
+.dbox>.row{margin-bottom:20px}
+.dbox.wide .cl{padding:6px 22px 4px}
+.dbox.wide>.row{margin-top:10px!important}
+.dbox.wide .wbar{position:sticky;top:0;z-index:2}
+.cl h3{font-family:var(--fd);font-style:italic;font-weight:400;color:#fff}
+.cl h3 small{font-family:var(--fb);font-style:normal}
+#toast{background:linear-gradient(180deg,#2e68f0,#1546d6);border:1px solid #bfe0ff;border-radius:999px;font-family:var(--fb)}
+
+/* Zuschauer-Startbild */
+#vSplash{background:radial-gradient(ellipse 70% 50% at 50% 35%,#2a5cff 0%,transparent 65%),linear-gradient(180deg,#0b1d86,var(--navy2))}
+.vs-title{background:linear-gradient(180deg,#fff 0%,#eef2fa 36%,#8792b5 50%,#d6deef 60%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 0 #0a1a6e) drop-shadow(0 0 24px #6fd6ff66)}
+.vs-sub{letter-spacing:.04em;font-family:var(--fb);font-weight:700;color:#cfe0ff}
+
+/* Animationen: Schrift */
+#actionFx .word,#doneFx .dword{font-family:var(--fd);font-style:italic}
+#actionFx .sub,#doneFx .dsub{font-family:var(--fb)}
+
+/* Siegerehrung */
+#endScreen .qcard{padding:3vh 2vw}
+.prow{border-radius:999px;font-family:var(--fb)}
+.prow .rk{font-family:var(--fd);font-style:italic}
+
+@media (prefers-reduced-motion:reduce){
+  .tile,.mcopt,.team{transition:none}
+  #actionFx .rays,#doneFx .dburst{animation:none}
+}
 </style>
 </head>
 <body>
@@ -402,7 +591,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
       <button class="icon-btn" id="btnHome" title="Menü">⌂</button>
       <button class="icon-btn" id="btnUndo" title="Letzte Wertung rückgängig">↶</button>
     </div>
-    <div class="marquee"><div id="title" class="bungee">Der große Preis</div></div>
+    <div class="marquee"><div id="title" class="chrome">Der große Preis</div></div>
     <div class="ctrls">
       <button class="icon-btn" id="btnViewer" title="Zuschaueransicht (Beamer)">📺<span class="vdot"></span></button>
       <button class="icon-btn" id="btnFull" title="Vollbild">⛶</button>
@@ -415,27 +604,23 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 
 <!-- ================= STARTMENÜ ================= -->
 <div class="screen" id="home">
-  <div class="menu-brand bungee">🎮 Spieleabend</div>
-  <h1 class="menu-title bungee">Welches Spiel?</h1>
+  <h1 class="menu-title chrome">Welches Spiel?</h1>
   <p class="menu-sub">Such dir aus, was heute gespielt wird.</p>
   <div class="gamegrid">
     <button class="gcard" id="gcPreis">
-      <span class="gi">🏆</span>
-      <h3>Der große Preis</h3>
-      <p>Die Quiz-Gameshow: Kategorien, Punkte, Fragen, Schätzfragen und ACTION-Felder.</p>
+      <span class="wbar">Der große Preis</span>
+      <span class="gbody"><span class="gi">🏆</span><span>Die Quiz-Gameshow mit Kategorien, Punkten, Fragen, Schätzfragen und ACTION-Feldern.</span></span>
     </button>
     <div class="gcard soon">
-      <span class="gi">🎲</span>
-      <h3>Weitere Spiele</h3>
-      <p>Kommen bald …</p>
+      <span class="wbar">Weitere Spiele</span>
+      <span class="gbody"><span class="gi">🎲</span><span>Kommen bald.</span></span>
     </div>
   </div>
   <div class="menu-foot"><button class="verlink" id="homeVer"></button></div>
 </div>
 
 <div class="screen" id="gmenu">
-  <div class="menu-brand bungee">🏆 Der große Preis</div>
-  <h1 class="menu-title bungee" id="gmTitle">Der große Preis</h1>
+  <h1 class="menu-title chrome" id="gmTitle">Der große Preis</h1>
   <div class="menu-list" id="gmList"></div>
   <div class="menu-list">
     <button class="mbtn" id="btnOpenViewer"><span class="mi">📺</span><span><b>Zuschaueransicht zeigen</b><small id="viewerStatus">Öffnet ein zweites Fenster für den Beamer</small></span></button>
@@ -447,20 +632,19 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 </div>
 
 <!-- ================= ZUSCHAUER ================= -->
-<div id="vSplash"><div class="marquee"><div class="bungee vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los!</div></div>
+<div id="vSplash"><div class="marquee"><div class="chrome vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los ✦</div></div>
 <button class="icon-btn" id="vFull" title="Vollbild">⛶</button>
 
 <!-- ================= FRAGE ================= -->
 <div class="overlay" id="qOverlay">
   <div class="qcard">
     <div class="qtop">
-      <div>
-        <div class="qcat bungee" id="qCat"></div>
-        <span class="qbadge" id="qBadge"></span>
-      </div>
-      <div class="qpts bungee" id="qPts"></div>
+      <span class="qcat" id="qCat"></span>
+      <span class="qpts" id="qPts"></span>
+      <button class="wx" id="qX" title="Schließen – Feld bleibt offen" aria-label="Schließen">✕</button>
     </div>
     <div class="qbody">
+      <span class="qbadge" id="qBadge"></span>
       <div class="qtext" id="qText"></div>
       <div id="qExtra"></div>
       <div class="qanswer" id="qAnswer"></div>
@@ -502,7 +686,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 <div id="settings">
   <div class="swrap">
     <div class="shead">
-      <h1 class="bungee">⚙︎ Einstellungen</h1>
+      <h1 class="chrome">Einstellungen</h1>
       <button class="primary" id="btnBack">▶ Zum Spiel</button>
     </div>
 
@@ -566,15 +750,20 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
   </div>
 </div>
 
-<div id="dialog"><div class="dbox"><p id="dMsg"></p><input class="inp" id="dInput" maxlength="60" style="display:none;margin-bottom:18px"><div class="row"><button class="btn" id="dNo">Abbrechen</button><button class="primary" id="dYes">OK</button></div></div></div>
-<div id="clDialog" class="overlay" style="z-index:91;background:#000a"><div class="dbox wide"><button class="dclose" id="clX" title="Schließen" aria-label="Schließen">✕</button><h2 class="bungee" style="color:var(--gold)" id="clTitle">📜 Changelog</h2><div class="cl" id="clBody"></div><div class="row" style="margin-top:18px"><button class="primary" id="clClose">Alles klar</button></div></div></div>
+<div id="dialog"><div class="dbox"><div class="wbar"><span>Der große Preis</span></div><p id="dMsg"></p><input class="inp" id="dInput" maxlength="60" style="display:none;margin-bottom:18px"><div class="row"><button class="btn" id="dNo">Abbrechen</button><button class="primary" id="dYes">OK</button></div></div></div>
+<div id="clDialog" class="overlay" style="z-index:91;background:#000a"><div class="dbox wide"><div class="wbar"><span id="clTitle">Changelog</span><button class="wx" id="clX" title="Schließen" aria-label="Schließen">✕</button></div><div class="cl" id="clBody"></div><div class="row" style="margin-top:18px"><button class="primary" id="clClose">Alles klar</button></div></div></div>
 <div id="updBar"><span id="updText">Neue Version geladen!</span><button id="updNow">Jetzt aktualisieren</button><button class="x" id="updX" title="Später">✕</button></div>
 <div id="toast"></div>
 
 <script>
 (function(){
-const APP_VERSION='1.5.1';
+const APP_VERSION='1.6.0';
 const CHANGELOG=[
+  {v:'1.6.0',d:'23.11.2026',items:[
+    'Neues Design im 2000er-Look: Aqua-Gel-Felder, Chrom-Schrift, Fenster mit Titelleiste',
+    'Fragen öffnen sich als Fenster – das ✕ oben rechts schließt sie (Feld bleibt offen)',
+    'Keine Schriften mehr von Google-Servern – besser für Datenschutz und offline'
+  ]},
   {v:'1.5.1',d:'23.11.2026',items:[
     'Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer',
     'Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“',
@@ -806,7 +995,7 @@ function renderScores(){
     d.className='team'+(i===S.turn?' active':'')+(max>0&&t.score===max?' leader':'');
     d.style.setProperty('--c',t.color);d.dataset.id=t.id;
     d.title='Tippen: diese Gruppe ist dran';
-    d.innerHTML=`<span class="turn">AM ZUG</span><span class="name">${esc(t.name)}</span><span class="pts bungee">${t.score}</span>`;
+    d.innerHTML=`<span class="turn">am Zug</span><span class="name">${esc(t.name)}</span><span class="pts bungee">${t.score}</span>`;
     d.onclick=()=>{S.turn=i;save();renderScores();};
     box.appendChild(d);
   });
@@ -844,7 +1033,7 @@ function floatScore(teamId,delta){
 
 /* ---------- Frage öffnen ---------- */
 let cur=null,fxBusy=false;
-const TYPE_LABEL={frage:'FRAGE',mc:'MULTIPLE CHOICE',schaetz:'SCHÄTZFRAGE',aufgabe:'AUFGABE',action:'⚡ ACTION'};
+const TYPE_LABEL={frage:'Frage',mc:'Multiple Choice',schaetz:'Schätzfrage',aufgabe:'Aufgabe',action:'⚡ Action'};
 // Zahl aus deutscher oder englischer Schreibweise lesen: "1.440", "42,195", "384 400"
 function parseNum(v){
   let x=String(v||'').replace(/\s|\u00a0/g,'').replace(/[^0-9,.\-]/g,'');
@@ -878,7 +1067,7 @@ function showQ(ci,ri){
   const c=S.categories[ci],it=c.items[ri]||blank(),p=S.points[ri];
   $('#qCat').textContent=c.name;$('#qPts').textContent=p;
   $('#qOverlay .qcard').classList.toggle('action',it.type==='action');
-  const bd=$('#qBadge');bd.className='qbadge '+it.type;bd.textContent=TYPE_LABEL[it.type]||'FRAGE';
+  const bd=$('#qBadge');bd.className='qbadge '+it.type;bd.textContent=TYPE_LABEL[it.type]||'Frage';
   const qt=$('#qText');qt.textContent=it.text||'(Für dieses Feld ist noch nichts hinterlegt.)';
   qt.classList.toggle('long',(it.text||'').length>120);
   const isQ=it.type==='frage',isMC=it.type==='mc',isEst=it.type==='schaetz',isAct=it.type==='action';
@@ -959,6 +1148,7 @@ function showQ(ci,ri){
   pushState();
 }
 function closeQ(){$('#qOverlay').classList.remove('show');cur=null;pushState();}
+$('#qX').onclick=()=>closeQ();
 function lockMC(i){
   cur.picked=i;cur.stage='locked';
   [...$('#qExtra').children].forEach(b=>{const on=+b.dataset.i===i;b.classList.toggle('locked',on);b.classList.toggle('picked',on);});
@@ -1246,8 +1436,8 @@ addEventListener('resize',()=>{const cv=$('#confetti');cv.width=innerWidth;cv.he
 function showChangelog(onlyNew){
   const last=onlyNew?lsGet('grosserPreis_seenVersion'):null;
   const list=onlyNew&&last?CHANGELOG.filter(e=>cmpVer(e.v,last)>0):CHANGELOG;
-  $('#clTitle').textContent=onlyNew?'🎉 Was ist neu in Version '+APP_VERSION+'?':'📜 Changelog';
-  $('#clBody').innerHTML=list.map(e=>`<h3 class="bungee">Version ${esc(e.v)} <small>· ${esc(e.d)}</small></h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
+  $('#clTitle').textContent=onlyNew?'Neu in Version '+APP_VERSION:'Changelog';
+  $('#clBody').innerHTML=list.map(e=>`<h3>Version ${esc(e.v)} <small>vom ${esc(e.d)}</small></h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
   $('#clDialog').classList.add('show');
 }
 $('#clClose').onclick=$('#clX').onclick=()=>$('#clDialog').classList.remove('show');
@@ -1443,7 +1633,7 @@ function renderGMenu(){
   tps.forEach(tp=>{
     const row=document.createElement('div');row.className='trow';
     const b=document.createElement('button');b.className='mbtn';
-    b.innerHTML=`<span class="mi">${tp.own?'⭐':'📋'}</span><span><b>Vorlage: ${esc(tp.name)}${tp.own?'<span class="own">EIGENE</span>':''}</b><small>${esc(tp.desc||'')}</small></span>`;
+    b.innerHTML=`<span class="mi">${tp.own?'⭐':'📋'}</span><span><b>${esc(tp.name)}${tp.own?'<span class="own">EIGENE</span>':''}</b><small>${esc(tp.desc||'')}</small></span>`;
     b.onclick=()=>confirmReplace(()=>{applyTemplate(tp);startGame();toast('Vorlage „'+tp.name+'“ geladen.');});
     const d=document.createElement('button');d.className='tdel';d.title='Vorlage löschen';d.textContent='🗑';
     d.onclick=()=>ask(`Vorlage „${tp.name}“ löschen?`+(tp.own?' Sie ist dann weg (außer du hast sie exportiert).':' Du kannst Standard-Vorlagen später wiederherstellen.'),'Löschen',()=>{deleteTemplate(tp);renderGMenu();toast('Vorlage gelöscht.');});
@@ -1494,7 +1684,7 @@ function vShowQ(q){
     vKey=key;
     $('#qCat').textContent=c.name;$('#qPts').textContent=p;
     $('#qOverlay .qcard').classList.toggle('action',it.type==='action');
-    const bd=$('#qBadge');bd.className='qbadge '+it.type;bd.textContent=TYPE_LABEL[it.type]||'FRAGE';
+    const bd=$('#qBadge');bd.className='qbadge '+it.type;bd.textContent=TYPE_LABEL[it.type]||'Frage';
     const qt=$('#qText');qt.textContent=it.text||'';qt.classList.toggle('long',(it.text||'').length>120);
     qa.classList.remove('show','secret');
     qa.textContent=it.type==='frage'?it.answer:it.type==='schaetz'?(fmtNum(parseNum(it.answer))||it.answer)+(it.unit?' '+it.unit:''):'';
@@ -1540,7 +1730,7 @@ onMsg(m=>{
   else if(m.t==='hello'||m.t==='ping'){viewerSeen=m.vis===false?0:Date.now();updViewerStatus();if(m.t==='hello')pushState();}
   else if(m.t==='bye'){viewerSeen=0;updViewerStatus();}
 });
-['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' · Changelog';$(id).onclick=()=>showChangelog(false);});
+['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' – was ist neu?';$(id).onclick=()=>showChangelog(false);});
 if(VIEW){
   document.title='📺 Zuschauer – '+(S.title||'Der große Preis');
   $('#vsTitle').textContent=S.title||'Der große Preis';

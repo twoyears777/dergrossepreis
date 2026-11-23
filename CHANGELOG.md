@@ -1,5 +1,10 @@
 # Changelog – Der große Preis
 
+## 1.6.0 – 23.11.2026
+- Neues Design im 2000er-Look: Aqua-Gel-Felder, Chrom-Schrift, Fenster mit Titelleiste
+- Fragen öffnen sich als Fenster – das ✕ oben rechts schließt sie (Feld bleibt offen)
+- Keine Schriften mehr von Google-Servern – besser für Datenschutz und offline
+
 ## 1.5.1 – 23.11.2026
 - Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer
 - Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“
