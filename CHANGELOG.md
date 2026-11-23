@@ -1,5 +1,8 @@
 # Changelog – Der große Preis
 
+## 1.8.0 – 23.11.2026
+- Anleitung auf der Startseite: in vier Schritten vom Spielbrett bis zum Beamer, dazu alle Feldtypen erklärt
+
 ## 1.7.1 – 23.11.2026
 - Neu: Spiel vorzeitig beenden mit Siegerehrung – über 🏁 oben links im Spiel oder im Spielmenü
 - Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer

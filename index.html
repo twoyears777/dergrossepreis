@@ -639,6 +639,36 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 .prow .rk{color:var(--stamp);font-family:var(--serif)}
 .prow.first{background:var(--marker);box-shadow:0 6px 14px #0004}
 
+
+/* ---------- Anleitung auf der Startseite ---------- */
+.guide-link{margin-top:3vh;background:none;color:#d8d2c4;font-family:var(--serif);font-style:italic;font-size:1.05rem;text-decoration:underline;text-underline-offset:4px}
+.guide-link:hover{color:#fff}
+.guide{width:min(880px,100%);margin-top:7vh;scroll-margin-top:24px}
+.guide h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,4vh,2.2rem);color:#f1ede4;text-align:center;margin-bottom:28px}
+.steps{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:34px 26px;padding:0}
+.note{position:relative;background:var(--grain-soft),var(--paper);color:var(--ink);border-radius:2px;box-shadow:0 6px 16px #0006;padding:28px 24px 22px}
+.note::before{content:"";position:absolute;top:-11px;left:50%;width:96px;height:22px;transform:translateX(-50%) rotate(-3deg);background:var(--tape);
+  clip-path:polygon(0 12%,4% 0,96% 8%,100% 0,98% 50%,100% 100%,3% 92%,0 100%,2% 50%)}
+.steps .note:nth-child(1){transform:rotate(-.8deg)}
+.steps .note:nth-child(2){transform:rotate(.6deg);background:var(--grain-soft),#e6d6bc}
+.steps .note:nth-child(3){transform:rotate(.5deg);background:var(--grain-soft),#dfd9cd}
+.steps .note:nth-child(4){transform:rotate(-.6deg);background:var(--grain-soft),#d9ded0}
+.snum{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+  border:2px solid var(--stamp);color:var(--stamp);font-family:var(--serif);font-weight:700;font-size:1.2rem;transform:rotate(8deg);opacity:.85}
+.note h3{font-family:var(--serif);font-weight:700;font-size:1.2rem;margin:0 48px 10px 0;line-height:1.25}
+.note p{font-family:var(--sans);font-size:.98rem;line-height:1.55;color:#2c2b27;max-width:62ch}
+.note p+p{margin-top:10px}
+.guide-extra{display:grid;grid-template-columns:3fr 2fr;gap:26px;margin-top:38px;align-items:start}
+.note.types{transform:rotate(.3deg)}
+.note.tip{background:var(--grain-soft),var(--marker);transform:rotate(-1.2deg)}
+.note dl{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;font-size:.95rem;line-height:1.45}
+.note dt{font-family:var(--sans);font-weight:700;white-space:nowrap}
+.note dd{margin:0;color:#2c2b27}
+@media (max-width:720px){
+  .steps,.guide-extra{grid-template-columns:1fr}
+  .note dl{grid-template-columns:1fr;gap:2px}
+  .note dd{margin-bottom:8px}
+}
 @media (prefers-reduced-motion:reduce){
   .qcard,#actionFx .word .rl,#doneFx .dword .rl{animation:none}
 }
@@ -679,6 +709,52 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
       <span class="gbody"><span class="gi">🎲</span><span>Kommen bald.</span></span>
     </div>
   </div>
+  <button class="guide-link" id="btnGuide">Neu hier? So funktioniert's ↓</button>
+
+  <section class="guide" id="guide" aria-labelledby="guideTitle">
+    <h2 id="guideTitle">So funktioniert's</h2>
+    <ol class="steps">
+      <li class="note">
+        <span class="snum">1</span>
+        <h3>Spielbrett vorbereiten</h3>
+        <p>Wähle „Der große Preis“ und nimm eine Vorlage oder starte ein leeres Spiel. Unter „Spielbrett bearbeiten“ trägst du Gruppen, Kategorien und Fragen ein. Alles bleibt auf deinem Gerät gespeichert.</p>
+      </li>
+      <li class="note">
+        <span class="snum">2</span>
+        <h3>Auf den Beamer bringen</h3>
+        <p>Am einfachsten spiegelst du iPad oder Handy per HDMI-Adapter oder AirPlay. Mit einem Laptop geht es eleganter: „Zuschaueransicht zeigen“ öffnet ein zweites Fenster für den Beamer, und die Lösungen siehst nur du.</p>
+      </li>
+      <li class="note">
+        <span class="snum">3</span>
+        <h3>Spielen</h3>
+        <p>Die Gruppe am Zug wählt ein Feld. Du deckst auf, zeigst die Lösung und tippst „Geschafft“ oder „Nicht geschafft“. Danach ist automatisch die nächste Gruppe dran. ↶ nimmt die letzte Wertung zurück, 🏁 beendet das Spiel mit Siegerehrung.</p>
+      </li>
+      <li class="note">
+        <span class="snum">4</span>
+        <h3>Als App aufs iPad</h3>
+        <p>In Safari auf Teilen und dann „Zum Home-Bildschirm“ tippen. Öffne die App einmal mit Internet, danach läuft sie auch ohne. Neue Versionen lädt sie automatisch, sobald WLAN da ist.</p>
+      </li>
+    </ol>
+
+    <div class="guide-extra">
+      <div class="note types">
+        <h3>Die Feldtypen</h3>
+        <dl>
+          <dt>❓ Frage</dt><dd>Die Lösung bleibt verdeckt, bis du sie zeigst. Weiß die Gruppe es nicht, kann eine andere die halbe Punktzahl holen.</dd>
+          <dt>🔤 Multiple Choice</dt><dd>Antwort antippen, um sie einzuloggen. Dann mit Trommelwirbel auflösen.</dd>
+          <dt>🔢 Schätzfrage</dt><dd>Jede Gruppe gibt eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.</dd>
+          <dt>🎯 Aufgabe</dt><dd>Die Gruppe am Zug muss etwas schaffen, zum Beispiel 10 Liegestütze.</dd>
+          <dt>⚡ ACTION</dt><dd>Sieht aus wie ein normales Feld. Beim Aufdecken spielen alle Gruppen mit, und du wählst den Gewinner.</dd>
+        </dl>
+      </div>
+      <div class="note tip">
+        <h3>Tipp: Quizze teilen</h3>
+        <p>Speichere ein fertiges Spielbrett im Spielmenü als Vorlage und exportiere es als Datei. Die kannst du Kolleginnen und Kollegen schicken, die sie bei sich einfach importieren.</p>
+        <p>Der Export ist auch deine Sicherung, falls du das Gerät wechselst.</p>
+      </div>
+    </div>
+  </section>
+
   <div class="menu-foot"><button class="verlink" id="homeVer"></button></div>
 </div>
 
@@ -820,8 +896,11 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 
 <script>
 (function(){
-const APP_VERSION='1.7.1';
+const APP_VERSION='1.8.0';
 const CHANGELOG=[
+  {v:'1.8.0',d:'23.11.2026',items:[
+    'Anleitung auf der Startseite: in vier Schritten vom Spielbrett bis zum Beamer, dazu alle Feldtypen erklärt'
+  ]},
   {v:'1.7.1',d:'23.11.2026',items:[
     'Neu: Spiel vorzeitig beenden mit Siegerehrung – über 🏁 oben links im Spiel oder im Spielmenü',
     'Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer'
@@ -1749,6 +1828,7 @@ function renderGMenu(){
 }
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
+$('#btnGuide').onclick=()=>{try{$('#guide').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#guide').scrollIntoView();}};
 function finishGame(){
   if(!S.teams.length){toast('Es gibt noch keine Gruppen.');return;}
   const total=S.categories.length*S.points.length,left=total-Object.keys(S.used).length;
