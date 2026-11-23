@@ -311,7 +311,9 @@ body.viewer.idle{cursor:none}
 .cl h3 small{color:var(--muted);font-weight:600;font-family:Inter,sans-serif}
 .cl ul{padding-left:1.2em;line-height:1.5;color:#e9e6ff}
 .cl li{margin:2px 0}
-.dbox.wide{max-width:620px;max-height:85vh;overflow:auto}
+.dbox.wide{max-width:620px;max-height:85vh;overflow:auto;position:relative}
+.dclose{position:sticky;top:0;float:right;margin:-8px -8px 0 8px;width:44px;height:44px;border-radius:50%;background:#ffffff1a;border:1px solid #ffffff33;font-size:1.2rem;font-weight:800;z-index:2}
+.dclose:hover{background:#ffffff33}
 .ver{color:var(--muted);font-size:.85rem;margin-top:10px}
 .qfoot{display:flex;flex-direction:column;gap:1.2vh;border-top:1px solid #ffffff2a;padding-top:1.6vh}
 .qturn{text-align:center;font-weight:700;font-size:clamp(.85rem,2.2vh,1.2rem);color:#e9e6ff}
@@ -565,14 +567,19 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 </div>
 
 <div id="dialog"><div class="dbox"><p id="dMsg"></p><input class="inp" id="dInput" maxlength="60" style="display:none;margin-bottom:18px"><div class="row"><button class="btn" id="dNo">Abbrechen</button><button class="primary" id="dYes">OK</button></div></div></div>
-<div id="clDialog" class="overlay" style="z-index:91;background:#000a"><div class="dbox wide"><h2 class="bungee" style="color:var(--gold)" id="clTitle">📜 Changelog</h2><div class="cl" id="clBody"></div><div class="row" style="margin-top:18px"><button class="primary" id="clClose">Alles klar</button></div></div></div>
+<div id="clDialog" class="overlay" style="z-index:91;background:#000a"><div class="dbox wide"><button class="dclose" id="clX" title="Schließen" aria-label="Schließen">✕</button><h2 class="bungee" style="color:var(--gold)" id="clTitle">📜 Changelog</h2><div class="cl" id="clBody"></div><div class="row" style="margin-top:18px"><button class="primary" id="clClose">Alles klar</button></div></div></div>
 <div id="updBar"><span id="updText">Neue Version geladen!</span><button id="updNow">Jetzt aktualisieren</button><button class="x" id="updX" title="Später">✕</button></div>
 <div id="toast"></div>
 
 <script>
 (function(){
-const APP_VERSION='1.5.0';
+const APP_VERSION='1.5.1';
 const CHANGELOG=[
+  {v:'1.5.1',d:'23.11.2026',items:[
+    'Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer',
+    'Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“',
+    'Changelog hat jetzt ein ✕ zum Schließen (auch Tippen daneben schließt)'
+  ]},
   {v:'1.5.0',d:'23.11.2026',items:[
     'Versionsnummer unten im Menü – antippen öffnet den Changelog',
     'Aufgaben bekommen eine eigene Intro-Animation („AUFGABE!“)',
@@ -860,7 +867,6 @@ function openQ(ci,ri){
   const it=S.categories[ci].items[ri]||blank();
   if(it.type==='action'||it.type==='aufgabe'){
     send({t:'fx',k:'intro',kind:it.type});
-    if(isDual()){showQ(ci,ri);sfx(it.type);return;}
     fxBusy=true;ac();
     playIntro(it.type);sfx(it.type);
     setTimeout(()=>{showQ(ci,ri);},1750);
@@ -1021,7 +1027,7 @@ function award(list,half){
   if(S.teams.length)S.turn=(S.turn+1)%S.teams.length;
   save();closeQ();renderBoard();
   sfx(winners.length?'win':'lose');
-  if(done){send({t:'fx',k:'done',o:done});if(!isDual())playDone(done);}
+  if(done){send({t:'fx',k:'done',o:done});playDone(done);}
   list.forEach(a=>floatScore(a.teamId,a.delta));
   setTimeout(()=>list.forEach(a=>send({t:'fx',k:'float',id:a.teamId,delta:a.delta})),120);
   checkEnd();
@@ -1232,7 +1238,7 @@ $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new
 
 /* ---------- Tastatur ---------- */
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&!VIEW){if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#endScreen').classList.remove('show');}
+  if(e.key==='Escape'&&!VIEW){if($('#clDialog').classList.contains('show'))$('#clDialog').classList.remove('show');else if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#endScreen').classList.remove('show');}
 });
 addEventListener('resize',()=>{const cv=$('#confetti');cv.width=innerWidth;cv.height=innerHeight;});
 
@@ -1244,7 +1250,8 @@ function showChangelog(onlyNew){
   $('#clBody').innerHTML=list.map(e=>`<h3 class="bungee">Version ${esc(e.v)} <small>· ${esc(e.d)}</small></h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
   $('#clDialog').classList.add('show');
 }
-$('#clClose').onclick=()=>$('#clDialog').classList.remove('show');
+$('#clClose').onclick=$('#clX').onclick=()=>$('#clDialog').classList.remove('show');
+$('#clDialog').onclick=e=>{if(e.target.id==='clDialog')$('#clDialog').classList.remove('show');};
 $('#btnChangelog').onclick=()=>showChangelog(false);
 function cmpVer(a,b){const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return (x[i]||0)-(y[i]||0);}return 0;}
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
@@ -1530,7 +1537,7 @@ function vShowQ(q){
 onMsg(m=>{
   if(!m||!m.t)return;
   if(VIEW){if(m.t==='state')vApply(m);else if(m.t==='fx')vFx(m);else if(m.t==='focus'){try{window.focus();}catch(e){}}}
-  else if(m.t==='hello'||m.t==='ping'){viewerSeen=Date.now();updViewerStatus();if(m.t==='hello')pushState();}
+  else if(m.t==='hello'||m.t==='ping'){viewerSeen=m.vis===false?0:Date.now();updViewerStatus();if(m.t==='hello')pushState();}
   else if(m.t==='bye'){viewerSeen=0;updViewerStatus();}
 });
 ['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' · Changelog';$(id).onclick=()=>showChangelog(false);});
@@ -1539,7 +1546,9 @@ if(VIEW){
   $('#vsTitle').textContent=S.title||'Der große Preis';
   $('#vSplash').classList.add('show');
   renderBoard();
-  send({t:'hello'});setInterval(()=>send({t:'ping'}),3000);
+  const vis=()=>document.visibilityState!=='hidden';
+  send({t:'hello',vis:vis()});setInterval(()=>send({t:'ping',vis:vis()}),3000);
+  document.addEventListener('visibilitychange',()=>send({t:vis()?'hello':'ping',vis:vis()}));
   addEventListener('pagehide',()=>send({t:'bye'}));
   let idleT;const wake=()=>{document.body.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>document.body.classList.add('idle'),2500);};
   ['mousemove','touchstart','keydown'].forEach(ev=>addEventListener(ev,wake));wake();

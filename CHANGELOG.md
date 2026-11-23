@@ -1,5 +1,10 @@
 # Changelog – Der große Preis
 
+## 1.5.1 – 23.11.2026
+- Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer
+- Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“
+- Changelog hat jetzt ein ✕ zum Schließen (auch Tippen daneben schließt)
+
 ## 1.5.0 – 23.11.2026
 - Versionsnummer unten im Menü – antippen öffnet den Changelog
 - Aufgaben bekommen eine eigene Intro-Animation („AUFGABE!“)
