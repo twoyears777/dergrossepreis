@@ -1,5 +1,11 @@
 # Changelog – Der große Preis
 
+## 1.3.0 – 23.11.2026
+- Neue Fragetypen: ❓ Klassisch, 🔤 Multiple Choice und 🔢 Schätzfrage
+- Multiple Choice: bis zu 4 Antworten (A–D). Antippen zeigt sofort richtig (grün) oder falsch (rot)
+- Schätzfrage: Jede Gruppe trägt ihre Zahl ein, „Auflösen“ zeigt die Lösung und markiert automatisch die Gruppe, die am nächsten dran ist (bei Gleichstand mehrere)
+- Beispielbrett: Schätzen-Kategorie als Schätzfragen, zwei Multiple-Choice-Fragen in Allgemeinwissen
+
 ## 1.2.0 – 23.11.2026
 - Aufgabe & ACTION: nur noch Text mit Erklärung, ohne Lösung oder Hinweis
 - Aufgabe: Punkte nur für die Gruppe, die dran ist (keine halbe Punktzahl für andere)

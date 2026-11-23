@@ -134,6 +134,37 @@ header{display:flex;align-items:center;justify-content:center;position:relative;
 .qbadge{display:inline-block;padding:.35em 1em;border-radius:999px;font-weight:800;letter-spacing:.12em;font-size:clamp(.7rem,2vh,1.1rem)}
 .qbadge.frage{background:#ffd23f;color:#2a1600}
 .qbadge.aufgabe{background:#ff4d9a;color:#fff}
+.qbadge.mc{background:#2ee6c8;color:#06302a}
+.qbadge.schaetz{background:#b388ff;color:#1d0b45}
+#qExtra{width:min(1100px,96%)}
+#qExtra.mc{display:grid;grid-template-columns:1fr 1fr;gap:1.4vh 1.2vw}
+.mcopt{display:flex;align-items:center;gap:1vw;text-align:left;background:#0b0a33bb;border:2px solid #ffffff40;border-radius:16px;padding:1.4vh 1.2vw;
+  font-weight:800;font-size:clamp(1rem,3.4vh,2.2rem);transition:transform .15s,background .25s,border-color .25s,opacity .25s}
+.mcopt .ml{font-family:Bungee,sans-serif;color:var(--gold);min-width:1.4em}
+.mcopt:not(:disabled):hover{transform:scale(1.02);border-color:var(--gold)}
+.mcopt.right{background:linear-gradient(180deg,#34e08f,#14a862);border-color:#bfffe0;animation:pop .35s}
+.mcopt.right .ml,.mcopt.wrong .ml{color:#fff}
+.mcopt.wrong{background:linear-gradient(180deg,#ff6b85,#d92b4b);border-color:#ffc2cd}
+.mcopt.dim{opacity:.35}
+.mcopt.picked{outline:4px solid #fff;outline-offset:3px}
+#qExtra.est{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:1.2vh 1vw}
+.estrow{--c:#fff;display:flex;flex-direction:column;gap:.6vh;align-items:stretch;background:#0b0a33bb;border:2px solid color-mix(in srgb,var(--c) 60%,transparent);border-radius:16px;padding:1vh 1vw;transition:transform .2s,box-shadow .2s}
+.estrow .en{font-weight:800;color:var(--c);font-size:clamp(.85rem,2.4vh,1.3rem)}
+.estrow input{background:#00000055;border:1px solid #ffffff40;border-radius:10px;color:#fff;font-weight:800;text-align:center;font-size:clamp(1.1rem,3.6vh,2.2rem);padding:.3em;width:100%;outline:none;font-family:Bungee,sans-serif}
+.estrow input:focus{border-color:var(--gold)}
+.estrow .ed{font-size:clamp(.75rem,2vh,1.1rem);color:#d4d0ff;min-height:1.2em}
+.estrow.solved{cursor:pointer}
+.estrow.sel{background:color-mix(in srgb,var(--c) 35%,#0b0a33);box-shadow:0 0 26px var(--c);transform:scale(1.04)}
+.estrow.sel .en::before{content:"🏆 "}
+.mcedit{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mcedit label{display:flex;align-items:center;gap:8px}
+.mcedit input[type=radio]{width:22px;height:22px;accent-color:#22c97a;flex:none}
+.mcedit .ml{font-family:Bungee,sans-serif;color:var(--gold);width:1.2em}
+.estedit{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg{flex-wrap:wrap}
+.seg button.on.mc{background:#2ee6c8;color:#06302a}
+.seg button.on.schaetz{background:#b388ff;color:#1d0b45}
+@media (max-width:700px){.mcedit,.estedit{grid-template-columns:1fr}}
 .qbody{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2vh;text-align:center;overflow:auto}
 .qtext{font-weight:800;font-size:clamp(1.3rem,5.4vh,4rem);line-height:1.2;text-shadow:0 3px 12px #0008;white-space:pre-wrap;max-width:95%;user-select:text}
 .qtext.long{font-size:clamp(1.1rem,4vh,3rem)}
@@ -292,6 +323,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
     </div>
     <div class="qbody">
       <div class="qtext" id="qText"></div>
+      <div id="qExtra"></div>
       <div class="qanswer" id="qAnswer"></div>
     </div>
     <div class="qtools">
@@ -360,7 +392,7 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 
     <div class="sec">
       <h2>❓ Kategorien, Fragen &amp; Aufgaben</h2>
-      <p class="hint">❓ Frage: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Gibt es die Antwort nicht, kann eine andere Gruppe die halbe Punktzahl bekommen. 🎯 Aufgabe: Nur die Gruppe am Zug spielt. ⚡ ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt's die Überraschung.</p>
+      <p class="hint">❓ Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. 🔤 Multiple Choice: Antippen der Antwort zeigt sofort, ob sie stimmt. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. 🔢 Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. 🎯 Aufgabe: Nur die Gruppe am Zug spielt. ⚡ ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt's die Überraschung.</p>
       <div class="tabs" id="sTabs"></div>
       <div id="sCat"></div>
     </div>
@@ -403,8 +435,14 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 
 <script>
 (function(){
-const APP_VERSION='1.2.0';
+const APP_VERSION='1.3.0';
 const CHANGELOG=[
+  {v:'1.3.0',d:'23.11.2026',items:[
+    'Neue Fragetypen: ❓ Klassisch, 🔤 Multiple Choice und 🔢 Schätzfrage',
+    'Multiple Choice: bis zu 4 Antworten (A–D). Antippen zeigt sofort richtig (grün) oder falsch (rot)',
+    'Schätzfrage: Jede Gruppe trägt ihre Zahl ein, „Auflösen“ zeigt die Lösung und markiert automatisch die Gruppe, die am nächsten dran ist (bei Gleichstand mehrere)',
+    'Beispielbrett: Schätzen-Kategorie als Schätzfragen, zwei Multiple-Choice-Fragen in Allgemeinwissen'
+  ]},
   {v:'1.2.0',d:'23.11.2026',items:[
     'Aufgabe & ACTION: nur noch Text mit Erklärung, ohne Lösung oder Hinweis',
     'Aufgabe: Punkte nur für die Gruppe, die dran ist (keine halbe Punktzahl für andere)',
@@ -429,8 +467,11 @@ const COLORS=['#ff4d6d','#3ddc97','#4dabff','#ffd23f','#c77dff','#ff9f1c','#2ee6
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>Math.random().toString(36).slice(2,9);
-const blank=()=>({type:'frage',text:'',answer:''});
-const F=(text,answer)=>({type:'frage',text,answer});
+const TYPES=['frage','mc','schaetz','aufgabe','action'];
+const blank=()=>({type:'frage',text:'',answer:'',options:['','','',''],correct:0,unit:''});
+const F=(text,answer)=>Object.assign(blank(),{type:'frage',text,answer});
+const MC=(text,options,correct)=>Object.assign(blank(),{type:'mc',text,options,correct});
+const EST=(text,answer,unit)=>Object.assign(blank(),{type:'schaetz',text,answer:String(answer),unit:unit||''});
 
 function sample(){
   return {
@@ -446,9 +487,9 @@ function sample(){
     categories:[
       {name:'Allgemeinwissen',items:[
         F('Wie viele Beine hat eine Spinne?','8'),
-        F('Wie heißt die Hauptstadt von Australien?','Canberra'),
+        MC('Wie heißt die Hauptstadt von Australien?',['Sydney','Canberra','Melbourne','Perth'],1),
         F('Wie viele Bundesländer hat Deutschland?','16'),
-        F('Welches chemische Element hat das Symbol „Au“?','Gold'),
+        MC('Welches chemische Element hat das Symbol „Au“?',['Silber','Aluminium','Gold','Argon'],2),
         F('In welchem Jahr fiel die Berliner Mauer?','1989')]},
       {name:'Bibel',items:[
         F('Wer baute die Arche?','Noah'),
@@ -463,11 +504,11 @@ function sample(){
         F('In welcher Sportart gibt es einen „Birdie“?','Golf'),
         F('In welcher deutschen Stadt fanden 1972 die Olympischen Sommerspiele statt?','München')]},
       {name:'Schätzen',items:[
-        F('Wie viele Minuten hat ein Tag?','1.440'),
-        F('Wie hoch ist der Eiffelturm? (± 30 m zählt)','ca. 330 m'),
-        F('Wie viele Einwohner hat Deutschland? (± 5 Mio. zählt)','ca. 84 Millionen'),
-        F('Wie viele Knochen hat ein erwachsener Mensch? (± 10 zählt)','206'),
-        F('Wie viele Kilometer ist der Mond von der Erde entfernt? (± 30.000 km zählt)','ca. 384.000 km')]},
+        EST('Wie viele Minuten hat ein Tag?',1440,'Minuten'),
+        EST('Wie hoch ist der Eiffelturm (in Metern)?',330,'m'),
+        EST('Wie viele Millionen Einwohner hat Deutschland?',84,'Millionen'),
+        EST('Wie viele Knochen hat ein erwachsener Mensch?',206,'Knochen'),
+        EST('Wie viele Kilometer ist der Mond von der Erde entfernt?',384400,'km')]},
       {name:'Natur & Tiere',items:[
         F('Welches ist das größte Säugetier der Welt?','Blauwal'),
         F('Wie nennt man ein Känguru-Baby?','Joey'),
@@ -491,7 +532,8 @@ function normalize(d){
     points:Array.isArray(d.points)&&d.points.length?d.points.map(n=>Number(n)||0):s.points,
     settings:Object.assign({},s.settings,d.settings||{}),
     teams:Array.isArray(d.teams)?d.teams.map((t,i)=>({id:t.id||uid(),name:String(t.name||('Gruppe '+(i+1))),color:t.color||COLORS[i%COLORS.length],score:Number(t.score)||0})):s.teams,
-    categories:Array.isArray(d.categories)?d.categories.map(c=>({name:String(c.name||''),items:Array.isArray(c.items)?c.items.map(it=>({type:['aufgabe','action'].includes(it.type)?it.type:'frage',text:String(it.text||''),answer:String(it.answer||'')})):[]})):s.categories,
+    categories:Array.isArray(d.categories)?d.categories.map(c=>({name:String(c.name||''),items:Array.isArray(c.items)?c.items.map(it=>({type:TYPES.includes(it.type)?it.type:'frage',text:String(it.text||''),answer:String(it.answer||''),
+      options:[0,1,2,3].map(i=>String((Array.isArray(it.options)&&it.options[i])||'')),correct:Math.min(3,Math.max(0,Number(it.correct)||0)),unit:String(it.unit||'')})):[]})):s.categories,
     used:d.used&&typeof d.used==='object'?d.used:{},
     history:Array.isArray(d.history)?d.history:[],
     turn:Number(d.turn)||0
@@ -587,7 +629,16 @@ function floatScore(teamId,delta){
 
 /* ---------- Frage öffnen ---------- */
 let cur=null,fxBusy=false;
-const TYPE_LABEL={frage:'FRAGE',aufgabe:'AUFGABE',action:'⚡ ACTION'};
+const TYPE_LABEL={frage:'FRAGE',mc:'MULTIPLE CHOICE',schaetz:'SCHÄTZFRAGE',aufgabe:'AUFGABE',action:'⚡ ACTION'};
+// Zahl aus deutscher oder englischer Schreibweise lesen: "1.440", "42,195", "384 400"
+function parseNum(v){
+  let x=String(v||'').replace(/\s|\u00a0/g,'').replace(/[^0-9,.\-]/g,'');
+  if(!x)return NaN;
+  if(x.includes(','))x=x.replace(/\./g,'').replace(',','.');
+  else if(/^-?\d{1,3}(\.\d{3})+$/.test(x))x=x.replace(/\./g,'');
+  return parseFloat(x);
+}
+const fmtNum=n=>isNaN(n)?'':n.toLocaleString('de-DE',{maximumFractionDigits:3});
 function openQ(ci,ri){
   if(fxBusy)return;
   const it=S.categories[ci].items[ri]||blank();
@@ -609,36 +660,66 @@ function showQ(ci,ri){
   const bd=$('#qBadge');bd.className='qbadge '+it.type;bd.textContent=TYPE_LABEL[it.type]||'FRAGE';
   const qt=$('#qText');qt.textContent=it.text||'(Für dieses Feld ist noch nichts hinterlegt.)';
   qt.classList.toggle('long',(it.text||'').length>120);
-  const isQ=it.type==='frage',isAct=it.type==='action';
-  cur.type=it.type;cur.sel=new Set();
-  const qa=$('#qAnswer');qa.textContent=isQ?it.answer:'';qa.classList.remove('show');
-  $('#btnShowAnswer').style.display=isQ&&it.answer?'':'none';
+  const isQ=it.type==='frage',isMC=it.type==='mc',isEst=it.type==='schaetz',isAct=it.type==='action';
+  const allPlay=isAct||isEst;
+  cur.type=it.type;cur.sel=new Set();cur.stage='';
+  const qa=$('#qAnswer');qa.classList.remove('show');
+  qa.textContent=isQ?it.answer:isEst?(fmtNum(parseNum(it.answer))||it.answer)+(it.unit?' '+it.unit:''):'';
+  $('#btnShowAnswer').style.display=(isQ&&it.answer)||isMC?'':'none';
 
   const team=S.teams[S.turn];
   const hasTeams=S.teams.length>0;
   const half=Math.round(p/2);
-  const foot=$('#qOverlay .qfoot');foot.classList.toggle('act',isAct);
+  const foot=$('#qOverlay .qfoot');foot.classList.toggle('act',allPlay);
   const other=$('#qOther');other.innerHTML='';
   const pick=$('#halfPick');pick.innerHTML='';pick.classList.remove('show');
+  const ex=$('#qExtra');ex.innerHTML='';ex.className='';
+
+  const setWinBtn=()=>{const n=cur.sel.size;$('#btnOk').disabled=!n;$('#btnOk').style.opacity=n?1:.4;
+    $('#btnOk').textContent=n?`🏆 +${p} für ${n===1?S.teams.find(t=>cur.sel.has(t.id)).name:n+' Gruppen'}`:'🏆 Gewinner antippen';};
+  cur.setWinBtn=setWinBtn;
+
+  // Multiple Choice: Antwortkacheln
+  if(isMC){
+    ex.className='mc';
+    it.options.forEach((o,i)=>{if(!o.trim())return;
+      const b=document.createElement('button');b.className='mcopt';b.dataset.i=i;
+      b.innerHTML=`<span class="ml">${'ABCD'[i]}</span><span>${esc(o)}</span>`;
+      b.onclick=()=>{if(cur.stage==='revealed')return;b.classList.add('picked');revealMC(i===it.correct);};
+      ex.appendChild(b);});
+  }
+  // Schätzfrage: Eingabefeld pro Gruppe
+  if(isEst){
+    ex.className='est';
+    S.teams.forEach(t=>{const r=document.createElement('div');r.className='estrow';r.style.setProperty('--c',t.color);r.dataset.id=t.id;
+      r.innerHTML=`<span class="en">${esc(t.name)}</span><input inputmode="decimal" autocomplete="off" placeholder="?"><span class="ed"></span>`;
+      r.onclick=e=>{if(cur.stage!=='solved'||e.target.tagName==='INPUT')return;
+        if(cur.sel.has(t.id))cur.sel.delete(t.id);else cur.sel.add(t.id);r.classList.toggle('sel',cur.sel.has(t.id));setWinBtn();};
+      r.querySelector('input').addEventListener('keydown',e=>{if(e.key==='Enter'){const ins=[...ex.querySelectorAll('input')];const n=ins[ins.indexOf(e.target)+1];if(n)n.focus();else e.target.blur();}});
+      ex.appendChild(r);});
+  }
 
   if(isAct){
     // ACTION: alle Gruppen spielen mit, Gewinner-Gruppe(n) auswählen
     $('#qTurn').innerHTML=`🏆 Wer hat gewonnen? Jede Gewinner-Gruppe bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
     pick.classList.add('show');
     S.teams.forEach(t=>{const b=document.createElement('button');b.className='chip big';b.style.setProperty('--c',t.color);b.textContent=t.name;
-      b.onclick=()=>{if(cur.sel.has(t.id))cur.sel.delete(t.id);else cur.sel.add(t.id);b.classList.toggle('sel',cur.sel.has(t.id));updActBtn();};
+      b.onclick=()=>{if(cur.sel.has(t.id))cur.sel.delete(t.id);else cur.sel.add(t.id);b.classList.toggle('sel',cur.sel.has(t.id));setWinBtn();};
       pick.appendChild(b);});
-    const updActBtn=()=>{const n=cur.sel.size;$('#btnOk').disabled=!n;$('#btnOk').style.opacity=n?1:.4;
-      $('#btnOk').textContent=n?`🏆 +${p} für ${n===1?S.teams.find(t=>cur.sel.has(t.id)).name:n+' Gruppen'}`:'🏆 Gewinner antippen';};
-    updActBtn();
+    setWinBtn();
     $('#btnBad').textContent='Niemand hat gewonnen';
+  }else if(isEst){
+    $('#qTurn').innerHTML=`🔢 Jede Gruppe schätzt – wer am nächsten dran ist, bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
+    $('#btnOk').disabled=!hasTeams;$('#btnOk').style.opacity=hasTeams?1:.4;
+    $('#btnOk').textContent='🔍 Auflösen';
+    $('#btnBad').textContent='Niemand bekommt Punkte';
   }else{
     $('#qTurn').innerHTML=team?`Am Zug: <b style="color:${team.color}">${esc(team.name)}</b>`:'Keine Gruppen angelegt';
     $('#btnOk').textContent=team?`✓ Geschafft (+${p} für ${team.name})`:'✓ Geschafft';
     $('#btnBad').textContent=S.settings.minus&&team?`✗ Nicht geschafft (−${p})`:'✗ Nicht geschafft';
     $('#btnOk').disabled=!hasTeams;$('#btnOk').style.opacity=hasTeams?1:.4;
-    // Halbe Punktzahl nur bei Fragen
-    if(isQ&&S.teams.length>1){
+    // Halbe Punktzahl bei klassischen Fragen und Multiple Choice
+    if((isQ||isMC)&&S.teams.length>1){
       const hb=document.createElement('button');hb.className='chip';hb.style.setProperty('--c','#ffd23f');
       hb.textContent=`½ Halbe Punktzahl (${half}) für …`;
       hb.onclick=()=>pick.classList.toggle('show');
@@ -652,6 +733,30 @@ function showQ(ci,ri){
   $('#qOverlay').classList.add('show');
 }
 function closeQ(){$('#qOverlay').classList.remove('show');cur=null;}
+function revealMC(pickedRight){
+  if(!cur||cur.stage==='revealed')return;cur.stage='revealed';
+  const it=S.categories[cur.ci].items[cur.ri];
+  [...$('#qExtra').children].forEach(b=>{const i=+b.dataset.i;b.disabled=true;
+    if(i===it.correct)b.classList.add('right');else if(b.classList.contains('picked'))b.classList.add('wrong');else b.classList.add('dim');});
+  if(pickedRight===true)sfx('win');else if(pickedRight===false)sfx('lose');else sfx('tick');
+}
+function solveEstimate(){
+  const it=S.categories[cur.ci].items[cur.ri];
+  const target=parseNum(it.answer);
+  const rows=[...$('#qExtra').children];
+  const guesses=rows.map(r=>({id:r.dataset.id,row:r,v:parseNum(r.querySelector('input').value)}));
+  cur.stage='solved';
+  $('#qAnswer').classList.add('show');
+  rows.forEach(r=>{r.classList.add('solved');const inp=r.querySelector('input');inp.readOnly=true;inp.blur();});
+  if(!isNaN(target)){
+    const valid=guesses.filter(g=>!isNaN(g.v));
+    valid.forEach(g=>{const d=Math.abs(g.v-target);g.row.querySelector('.ed').textContent=d===0?'🎯 Volltreffer!':'daneben um '+fmtNum(d);});
+    if(valid.length){const min=Math.min(...valid.map(g=>Math.abs(g.v-target)));
+      valid.filter(g=>Math.abs(g.v-target)===min).forEach(g=>{cur.sel.add(g.id);g.row.classList.add('sel');});}
+  }
+  $('#qTurn').innerHTML=cur.sel.size?'🏆 Am nächsten dran! (Zum Ändern eine Gruppe antippen)':'Tippe die Gewinner-Gruppe an';
+  cur.setWinBtn();sfx('reveal');
+}
 function award(list,half){
   if(!cur)return;
   const k=cur.ci+'-'+cur.ri,prevTurn=S.turn;
@@ -668,14 +773,15 @@ function award(list,half){
 }
 $('#btnOk').onclick=()=>{
   if(!cur)return;const p=S.points[cur.ri];
-  if(cur.type==='action'){if(!cur.sel.size)return;award([...cur.sel].map(id=>({teamId:id,delta:p})));return;}
+  if(cur.type==='schaetz'&&cur.stage!=='solved'){solveEstimate();return;}
+  if(cur.type==='action'||cur.type==='schaetz'){if(!cur.sel.size)return;award([...cur.sel].map(id=>({teamId:id,delta:p})));return;}
   const t=S.teams[S.turn];if(t)award([{teamId:t.id,delta:p}]);
 };
 $('#btnBad').onclick=()=>{
   if(!cur)return;const t=S.teams[S.turn];
-  if(cur.type!=='action'&&S.settings.minus&&t)award([{teamId:t.id,delta:-S.points[cur.ri]}]);else award([]);
+  if(cur.type!=='action'&&cur.type!=='schaetz'&&S.settings.minus&&t)award([{teamId:t.id,delta:-S.points[cur.ri]}]);else award([]);
 };
-$('#btnShowAnswer').onclick=()=>{$('#qAnswer').classList.add('show');sfx('tick');};
+$('#btnShowAnswer').onclick=()=>{if(cur&&cur.type==='mc'){revealMC(null);return;}$('#qAnswer').classList.add('show');sfx('tick');};
 
 /* ---------- Rückgängig ---------- */
 $('#btnUndo').onclick=()=>{
@@ -800,22 +906,38 @@ function renderCats(){
     const it=c.items[ri]||(c.items[ri]=blank());
     const row=document.createElement('div');row.className='item';
     row.innerHTML=`<div class="pv">${p}</div><div class="flds">
-      <div class="seg"><button class="frage">❓ Frage</button><button class="aufgabe">🎯 Aufgabe</button><button class="action">⚡ ACTION</button></div>
+      <div class="seg"><button class="frage">❓ Klassisch</button><button class="mc">🔤 Multiple Choice</button><button class="schaetz">🔢 Schätzfrage</button><button class="aufgabe">🎯 Aufgabe</button><button class="action">⚡ ACTION</button></div>
       <textarea class="ta tx" rows="2"></textarea>
       <input class="inp an">
+      <div class="mcedit">${[0,1,2,3].map(i=>`<label><input type="radio" name="mc-${selCat}-${ri}" value="${i}" title="Richtige Antwort"><span class="ml">${'ABCD'[i]}</span><input class="inp opt" placeholder="Antwort ${'ABCD'[i]}"></label>`).join('')}</div>
+      <div class="estedit"><input class="inp num" inputmode="decimal" placeholder="Richtige Zahl, z. B. 1440"><input class="inp unit" placeholder="Einheit (optional), z. B. km"></div>
     </div>`;
     const segBtns=[...row.querySelectorAll('.seg button')],tx=row.querySelector('.tx'),an=row.querySelector('.an');
+    const mcBox=row.querySelector('.mcedit'),estBox=row.querySelector('.estedit'),num=row.querySelector('.num'),unit=row.querySelector('.unit');
     const PH={
-      frage:['Frage, z. B. „Wie viele Beine hat eine Spinne?“','Lösung (verdeckt, wird auf Klick gezeigt)'],
-      aufgabe:['Aufgabe & Erklärung, z. B. „Eine Person macht 10 Liegestütze. Schafft sie es, gibt es die Punkte.“',''],
-      action:['ACTION-Spiel & Erklärung – alle Gruppen spielen mit, am Ende wählst du den Gewinner (erst nach der Animation sichtbar)','']};
+      frage:'Frage, z. B. „Wie viele Beine hat eine Spinne?“',
+      mc:'Frage – unten 2–4 Antworten eintragen und die richtige mit dem Kreis markieren',
+      schaetz:'Schätzfrage, z. B. „Wie viele Minuten hat ein Tag?“ – jede Gruppe schätzt, wer am nächsten dran ist, gewinnt',
+      aufgabe:'Aufgabe & Erklärung, z. B. „Eine Person macht 10 Liegestütze. Schafft sie es, gibt es die Punkte.“',
+      action:'ACTION-Spiel & Erklärung – alle Gruppen spielen mit, am Ende wählst du den Gewinner (erst nach der Animation sichtbar)'};
+    an.placeholder='Lösung (verdeckt, wird auf Klick gezeigt)';
     const sync=()=>{segBtns.forEach(b=>b.classList.toggle('on',b.className.split(' ')[0]===it.type));
-      tx.placeholder=PH[it.type][0];an.placeholder=PH[it.type][1];
-      an.style.display=it.type==='frage'?'':'none';tx.rows=it.type==='frage'?2:4;};
-    tx.value=it.text;an.value=it.answer;sync();
-    segBtns.forEach(b=>b.onclick=()=>{it.type=b.className.split(' ')[0];sync();save();});
+      tx.placeholder=PH[it.type];
+      an.style.display=it.type==='frage'?'':'none';
+      mcBox.style.display=it.type==='mc'?'':'none';
+      estBox.style.display=it.type==='schaetz'?'':'none';
+      tx.rows=it.type==='aufgabe'||it.type==='action'?4:2;};
+    tx.value=it.text;an.value=it.answer;num.value=it.answer;unit.value=it.unit;
+    row.querySelectorAll('.opt').forEach((o,i)=>{o.value=it.options[i];o.oninput=()=>{it.options[i]=o.value;save();};});
+    row.querySelectorAll('input[type=radio]').forEach((r,i)=>{r.checked=it.correct===i;r.onchange=()=>{it.correct=i;save();};});
+    sync();
+    segBtns.forEach(b=>b.onclick=()=>{const old=it.type;it.type=b.className.split(' ')[0];
+      if(old!==it.type&&(old==='schaetz'||it.type==='schaetz')){an.value=it.answer;num.value=it.answer;}
+      sync();save();});
     tx.oninput=()=>{it.text=tx.value;save();};
     an.oninput=()=>{it.answer=an.value;save();};
+    num.oninput=()=>{it.answer=num.value;save();};
+    unit.oninput=()=>{it.unit=unit.value;save();};
     box.appendChild(row);
   });
 }
