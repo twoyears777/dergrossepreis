@@ -721,3 +721,11 @@ body.viewer .end-actions{display:none}
 @media (prefers-reduced-motion:reduce){
   .qcard,#actionFx .word .rl,#doneFx .dword .rl{animation:none}
 }
+
+/* ---------- Sicherungs-Erinnerung ---------- */
+.backup-note{background:var(--grain-soft),var(--marker);color:var(--ink);padding:18px 20px 16px;box-shadow:0 6px 14px #0006;transform:rotate(-.6deg);margin-bottom:8px;border-radius:2px}
+.backup-note p{font-family:var(--sans);line-height:1.45;margin-bottom:12px;max-width:62ch}
+.backup-actions{display:flex;gap:10px;flex-wrap:wrap}
+.backup-note .primary{background:var(--ink);color:var(--paper);box-shadow:none}
+.backup-note .btn{color:var(--ink);border-color:#1d1d1b55}
+#setScreen .menu-list+.menu-list{margin-top:26px}

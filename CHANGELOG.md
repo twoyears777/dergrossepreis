@@ -1,5 +1,13 @@
 # Changelog – Der große Preis
 
+## 1.10.0 – 23.11.2026
+- Sicherung: Hinweis im Spielmenü, wenn Änderungen noch nicht als Datei gesichert sind
+- Sicherung erstellen und einspielen unter „Einstellungen“ – enthält Spielbrett und alle eigenen Vorlagen
+- Nach dem Speichern einer Vorlage wird direkt die Sicherung als Datei angeboten
+- Neue Vorlage: Weihnachtsquiz
+- Technisch aufgeräumt: Code in übersichtliche Dateien aufgeteilt, alte Reste entfernt
+- Automatische Tests prüfen jede neue Version
+
 ## 1.9.0 – 23.11.2026
 - Neue Siegerehrung: Treppchen aus Pappe, Platz 3, 2 und 1 werden nacheinander enthüllt, der Sieger mit Trommelwirbel
 - Mit Zuschaueransicht siehst du bei der Siegerehrung nur den Knopf „Zurück zum Startmenü“

@@ -9,10 +9,20 @@ Quiz-Gameshow für Jugendgruppen. Das iPad wird an den Beamer angeschlossen, die
 
 Fragen, Gruppen und Punkte werden auf dem Gerät gespeichert (in der Home-Bildschirm-App, nicht in Safari).
 
+## Aufbau
+- `index.html` – Aufbau der Seiten
+- `css/app.css` – Aussehen
+- `js/data.js` – Versionsnummer, Changelog und Vorlagen
+- `js/app.js` – Spiellogik
+- `img/hero.svg` – Illustration auf der Startseite
+- `sw.js` – Offline-Modus und automatische Updates
+- `tests/run_tests.py` – automatische Tests (laufen bei jedem Push auf GitHub)
+
 ## Ein Update veröffentlichen
-1. Änderungen in `index.html` machen.
-2. In `index.html` **`APP_VERSION`** hochzählen und oben in `CHANGELOG` einen Eintrag ergänzen.
-3. In `sw.js` **`VERSION`** auf dieselbe Nummer setzen. Das ist wichtig, sonst merkt das iPad das Update nicht.
-4. `CHANGELOG.md` ergänzen und alles hochladen.
+1. Änderungen machen.
+2. In `js/data.js` **`APP_VERSION`** hochzählen und oben in `CHANGELOG` einen Eintrag ergänzen.
+3. In `sw.js` **`VERSION`** auf dieselbe Nummer setzen, sonst merkt das iPad das Update nicht.
+4. `CHANGELOG.md` ergänzen.
+5. Tests lokal laufen lassen: `python tests/run_tests.py`
 
 Ist das iPad im WLAN, lädt es die neue Version automatisch und zeigt „Neue Version geladen“ an.

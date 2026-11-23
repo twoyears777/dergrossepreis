@@ -3,8 +3,16 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.9.0';
+const APP_VERSION='1.10.0';
 const CHANGELOG=[
+  {v:'1.10.0',d:'23.11.2026',items:[
+    'Sicherung: Hinweis im Spielmenü, wenn Änderungen noch nicht als Datei gesichert sind',
+    'Sicherung erstellen und einspielen unter „Einstellungen“ – enthält Spielbrett und alle eigenen Vorlagen',
+    'Nach dem Speichern einer Vorlage wird direkt die Sicherung als Datei angeboten',
+    'Neue Vorlage: Weihnachtsquiz',
+    'Technisch aufgeräumt: Code in übersichtliche Dateien aufgeteilt, alte Reste entfernt',
+    'Automatische Tests prüfen jede neue Version'
+  ]},
   {v:'1.9.0',d:'23.11.2026',items:[
     'Neue Siegerehrung: Treppchen aus Pappe, Platz 3, 2 und 1 werden nacheinander enthüllt, der Sieger mit Trommelwirbel',
     'Mit Zuschaueransicht siehst du bei der Siegerehrung nur den Knopf „Zurück zum Startmenü“',
@@ -161,5 +169,38 @@ const TEMPLATES=[
         EST('Wie viele Psalmen gibt es?',150,'Psalmen'),
         EST('Wie viele Männer wurden bei der Speisung mit fünf Broten und zwei Fischen satt?',5000,'Männer'),
         EST('Wie alt wurde Methusalem laut Bibel?',969,'Jahre')]}
+   ]},
+  {id:'weihnachten',name:'Weihnachtsquiz',title:'Der große Weihnachtspreis',desc:'Weihnachtsgeschichte, Weihnachten weltweit, Klassiker, Plätzchen & Co., Schätzfragen',
+   categories:()=>[
+      {name:'Weihnachtsgeschichte',items:[
+        F('Wie hießen die Eltern von Jesus?','Maria und Josef'),
+        F('In welcher Stadt wurde Jesus geboren?','Bethlehem'),
+        MC('Wem erschienen die Engel in der Weihnachtsnacht auf dem Feld?',['Den Hirten','Den Weisen','Den Soldaten','Den Wirtsleuten'],0),
+        MC('Was brachten die Weisen aus dem Morgenland mit?',['Gold, Weihrauch und Myrrhe','Gold, Silber und Seide','Brot, Wein und Öl','Myrrhe, Zimt und Gold'],0),
+        F('In welchen zwei Evangelien wird die Geburt Jesu erzählt?','Matthäus und Lukas')]},
+      {name:'Weihnachten weltweit',items:[
+        MC('An welchem Tag ist in Deutschland Heiligabend?',['23. Dezember','24. Dezember','25. Dezember','6. Januar'],1),
+        F('Wie heißt der Weihnachtsmann in Großbritannien?','Father Christmas'),
+        MC('In welchem Land isst man an Weihnachten traditionell gern Fast-Food-Hähnchen?',['USA','Japan','Brasilien','Australien'],1),
+        F('Welche Stadt in Finnland gilt als Wohnort des Weihnachtsmanns?','Rovaniemi'),
+        MC('In welchem Land bringt die Hexe Befana am 6. Januar Geschenke?',['Spanien','Italien','Polen','Griechenland'],1)]},
+      {name:'Klassiker',items:[
+        F('Wie heißt das Rentier mit der roten Nase?','Rudolph'),
+        MC('In welchem Land wurde der Adventskranz erfunden?',['Deutschland','Schweden','Italien','USA'],0),
+        F('Wer hat den Adventskranz erfunden?','Johann Hinrich Wichern'),
+        MC('Wer komponierte das Ballett „Der Nussknacker“?',['Tschaikowsky','Mozart','Bach','Beethoven'],0),
+        F('Wie heißt der geizige Hauptcharakter in Charles Dickens’ „Eine Weihnachtsgeschichte“?','Ebenezer Scrooge')]},
+      {name:'Plätzchen & Co.',items:[
+        F('Wie heißt das Weihnachtsgebäck mit Rosinen, für das Dresden berühmt ist?','Stollen'),
+        MC('Woraus besteht Marzipan hauptsächlich?',['Mandeln und Zucker','Nüssen und Honig','Mehl und Butter','Kokos und Zucker'],0),
+        F('Wie heißt das heiße Getränk aus Rotwein und Gewürzen vom Weihnachtsmarkt?','Glühwein'),
+        MC('Aus welcher Stadt kommen die berühmten Lebkuchen mit geschützter Herkunftsbezeichnung?',['Nürnberg','Köln','Dresden','Lübeck'],0),
+        F('Was bedeutet das Wort „Advent“ übersetzt?','Ankunft')]},
+      {name:'Weihnachts-Schätzfragen',items:[
+        EST('Wie viele Türchen hat ein klassischer Adventskalender?',24,'Türchen'),
+        EST('Wie viele Strophen hatte „Stille Nacht, heilige Nacht“ im Original?',6,'Strophen'),
+        EST('In welchem Jahr wurde „Stille Nacht, heilige Nacht“ zum ersten Mal gesungen?',1818,''),
+        EST('Wie viele Kilometer sind es Luftlinie von Berlin nach Bethlehem?',2900,'km'),
+        EST('Wie viele Sekunden hat der Heiligabend?',86400,'Sekunden')]}
    ]}
 ];

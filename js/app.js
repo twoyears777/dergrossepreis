@@ -456,9 +456,11 @@ $('#btnFull').onclick=()=>{
 
 /* ================= EINSTELLUNGEN ================= */
 let selCat=0;
-function openSettings(){closeQ();document.querySelectorAll('.screen').forEach(x=>x.classList.remove('show'));screenName='settings';
+let boardSigAtOpen='';
+const boardSig=()=>JSON.stringify([S.title,S.points,S.categories]);
+function openSettings(){closeQ();document.querySelectorAll('.screen').forEach(x=>x.classList.remove('show'));screenName='settings';boardSigAtOpen=boardSig();
   renderSettings();$('#settings').classList.add('show');$('#settings').scrollTop=0;pushState();}
-function closeSettings(){$('#settings').classList.remove('show');screenName='board';applyMode();renderBoard();}
+function closeSettings(){if(boardSig()!==boardSigAtOpen)markUnsaved();$('#settings').classList.remove('show');screenName='board';applyMode();renderBoard();}
 $('#btnSettings').onclick=openSettings;$('#btnBack').onclick=closeSettings;
 
 function renderSettings(){
@@ -743,12 +745,33 @@ function boardToTpl(name){
 }
 function saveAsTemplate(){
   ask('Unter welchem Namen soll das aktuelle Spielbrett als Vorlage gespeichert werden?','Speichern',name=>{
-    const a=ownTpl();a.push(boardToTpl(name));lsSet(TPL_KEY,JSON.stringify(a));renderTpl();toast('Vorlage „'+name+'“ gespeichert.');
+    const a=ownTpl();a.push(boardToTpl(name));lsSet(TPL_KEY,JSON.stringify(a));renderTpl();markUnsaved();
+    setTimeout(()=>ask(`Vorlage „${name}“ ist gespeichert. Willst du sie gleich auch als Datei sichern? Dann geht sie nicht verloren, falls der Browser-Speicher gelöscht wird.`,'Als Datei sichern',()=>backupNow()),250);
   },{input:true,value:S.title||'',placeholder:'z. B. Weihnachtsquiz 2026'});
 }
 function deleteTemplate(tp){
+  if(tp.own)markUnsaved();
   if(tp.own)lsSet(TPL_KEY,JSON.stringify(ownTpl().filter(t=>t.id!==tp.id)));
   else{const h=hiddenTpl();if(!h.includes(tp.id))h.push(tp.id);lsSet(HID_KEY,JSON.stringify(h));}
+}
+/* ---------- Sicherung ---------- */
+const UNSAVED_KEY='grosserPreis_unsaved',BACKUP_KEY='grosserPreis_lastBackup',SNOOZE_KEY='grosserPreis_backupLater';
+function markUnsaved(){lsSet(UNSAVED_KEY,String(Date.now()));try{sessionStorage.removeItem(SNOOZE_KEY);}catch(e){}}
+function needsBackup(){return !!lsGet(UNSAVED_KEY);}
+function backupSnoozed(){try{return sessionStorage.getItem(SNOOZE_KEY)==='1';}catch(e){return false;}}
+function lastBackupText(){const t=Number(lsGet(BACKUP_KEY));if(!t)return 'Noch keine Sicherung erstellt.';
+  const d=new Date(t);return 'Letzte Sicherung: '+d.toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})+'.';}
+function dateStamp(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function backupNow(){
+  const txt=JSON.stringify({app:'grosser-preis',typ:'sicherung',version:APP_VERSION,exportiert:new Date().toISOString(),
+    spielbrett:{title:S.title,points:S.points,categories:S.categories,teams:S.teams.map(t=>({name:t.name,color:t.color})),settings:S.settings},
+    vorlagen:ownTpl().map(({id,...t})=>t)},null,1);
+  const ok=downloadFile(`grosser-preis-sicherung-${dateStamp()}.json`,txt);
+  if(!ok){try{navigator.clipboard.writeText(txt);toast('Download nicht möglich – Sicherung in die Zwischenablage kopiert.');}catch(e){toast('Sicherung nicht möglich.');return;}}
+  else toast('Sicherung gespeichert. Auf dem iPad findest du sie in der Dateien-App unter Downloads.');
+  lsSet(BACKUP_KEY,String(Date.now()));try{localStorage.removeItem(UNSAVED_KEY);}catch(e){}
+  if(screenName==='gmenu')renderGMenu();
+  if(screenName==='set')renderSet();
 }
 function downloadFile(name,text){
   try{const u=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=name;
@@ -765,7 +788,12 @@ function exportTemplates(){
 function importTemplates(txt){
   let d;try{d=JSON.parse(txt);}catch(e){toast('Die Datei ist keine gültige Vorlagen-Datei.');return;}
   let arr=[];
-  if(d&&Array.isArray(d.vorlagen))arr=d.vorlagen;
+  if(d&&d.typ==='sicherung'){
+    arr=Array.isArray(d.vorlagen)?d.vorlagen.slice():[];
+    const sb=d.spielbrett;
+    if(sb&&Array.isArray(sb.categories))arr.push({name:'Gesichertes Spielbrett: '+(sb.title||'Der große Preis'),title:sb.title,points:sb.points,cats:sb.categories});
+  }
+  else if(d&&Array.isArray(d.vorlagen))arr=d.vorlagen;
   else if(Array.isArray(d))arr=d;
   else if(d&&Array.isArray(d.categories))arr=[{name:d.title||'Importiertes Spielbrett',title:d.title,points:d.points,cats:d.categories}];
   else if(d&&Array.isArray(d.cats))arr=[d];
@@ -777,7 +805,7 @@ function importTemplates(txt){
     own.push({id:'own-'+uid(),name:String(t.name||t.title||'Importierte Vorlage'),title:n.title,points:n.points,
       desc:String(t.desc||n.categories.map(c=>c.name).join(', ')),cats:n.categories});});
   lsSet(TPL_KEY,JSON.stringify(own));renderTpl();
-  toast(`${arr.length} Vorlage${arr.length>1?'n':''} importiert.`);
+  toast(`${arr.length} Vorlage${arr.length>1?'n':''} importiert.`+(d&&d.typ==='sicherung'?' Du findest sie unter „Vorlagen“.':''));
 }
 $('#tplFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>importTemplates(String(r.result));r.readAsText(f);e.target.value='';};
 function menuBtn(list,title,fn,cls){
@@ -789,6 +817,14 @@ function renderGMenu(){
   const played=Object.keys(S.used).length,anyScore=S.teams.some(t=>t.score);
   const running=played>0||anyScore;
   const list=$('#gmList');list.innerHTML='';
+  if(needsBackup()&&!backupSnoozed()){
+    const n=document.createElement('div');n.className='backup-note';n.setAttribute('role','status');
+    n.innerHTML='<p>Du hast Änderungen, die noch nicht als Datei gesichert sind. Wenn der Browser-Speicher gelöscht wird, wären sie weg.</p>';
+    const row=document.createElement('div');row.className='backup-actions';
+    const go=document.createElement('button');go.className='primary';go.textContent='Jetzt sichern';go.onclick=()=>backupNow();
+    const later=document.createElement('button');later.className='btn';later.textContent='Später';later.onclick=()=>{try{sessionStorage.setItem(SNOOZE_KEY,'1');}catch(e){}renderGMenu();};
+    row.append(go,later);n.appendChild(row);list.appendChild(n);
+  }
   if(running)menuBtn(list,'Weiterspielen',startGame,'primary-m');
   menuBtn(list,'Neues Spiel mit aktuellem Spielbrett',()=>{
     if(running)ask('Neues Spiel starten? Alle Punkte gehen auf 0 und alle Felder werden wieder geöffnet. Fragen & Gruppen bleiben.','Neues Spiel',()=>{resetRound();startGame();});
@@ -824,6 +860,7 @@ function renderTpl(){
 }
 function renderSet(){
   ransom($('#setTitle'),'Einstellungen');
+  $('#backupInfo').textContent=lastBackupText();
   const hint=$('#dualHint');
   if(standalone){hint.classList.add('warn');hint.textContent='Achtung: Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.';}
   updViewerStatus();
@@ -831,6 +868,8 @@ function renderSet(){
 $('#btnTplBack').onclick=()=>showScreen('gmenu');
 $('#btnSetBack').onclick=()=>showScreen('gmenu');
 $('#btnEditBoard').onclick=()=>openSettings();
+$('#btnBackup').onclick=()=>backupNow();
+$('#btnRestore').onclick=()=>$('#tplFile').click();
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
 $('#btnGuide').onclick=()=>{try{$('#guide').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#guide').scrollIntoView();}};
