@@ -1,5 +1,8 @@
 # Changelog – Der große Preis
 
+## 1.8.1 – 23.11.2026
+- Startseite: Illustration einer Gruppe beim Spielen vor der Anleitung
+
 ## 1.8.0 – 23.11.2026
 - Anleitung auf der Startseite: in vier Schritten vom Spielbrett bis zum Beamer, dazu alle Feldtypen erklärt
 
