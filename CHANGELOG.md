@@ -1,5 +1,8 @@
 # Changelog – Manna
 
+## 1.17.1 – 23.11.2026
+- Neues Spiel in der Spielesammlung: Simon Says
+
 ## 1.17.0 – 23.11.2026
 - Spielesammlung: neuer Knopf „Spiel erstellen“ mit Eingabemaske für alle Angaben eines Spiels
 - Eigene Spiele erscheinen sofort in der Sammlung, markiert als „eigenes“, und lassen sich bearbeiten und löschen

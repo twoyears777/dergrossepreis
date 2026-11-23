@@ -3,8 +3,11 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.17.0';
+const APP_VERSION='1.17.1';
 const CHANGELOG=[
+  {v:'1.17.1',d:'23.11.2026',items:[
+    'Neues Spiel in der Spielesammlung: Simon Says'
+  ]},
   {v:'1.17.0',d:'23.11.2026',items:[
     'Spielesammlung: neuer Knopf „Spiel erstellen“ mit Eingabemaske für alle Angaben eines Spiels',
     'Eigene Spiele erscheinen sofort in der Sammlung, markiert als „eigenes“, und lassen sich bearbeiten und löschen',
@@ -322,5 +325,18 @@ const GAMES=[
      'Die Erzählung der Nacht auf die Gruppe abstimmen: spannend, aber nicht zu gruselig.',
      'Ausgeschiedene nicht ausschließen. Sie dürfen zum Beispiel als „Geister“ still zuschauen.'
    ],
-   hinweis:'Je lebendiger die Spielleitung die Nacht erzählt, desto mehr Spaß macht das Spiel.'}
+   hinweis:'Je lebendiger die Spielleitung die Nacht erzählt, desto mehr Spaß macht das Spiel.'},
+
+  {id:'simon-says',
+   name:'Simon Says',
+   kurz:'Wenn „Simon Says“ vorher kommt, muss es gemacht werden – sonst nicht.',
+   alter:['jugend'],
+   spieler:{min:4,max:9999},
+   ort:['drinnen','draussen'],
+   material:[],
+   dauer:'5 Minuten',
+   ablauf:[
+     'Ein Kommando wird vereinbart. Zum Beispiel „Simon Says“. Einer gibt von vorne nun Kommandos. Es muss und darf nur gemacht werden, wovor ein „Simon Says“ steht. „Simon Says Klatschen“ bedeutet, dass man klatschen muss. „Aufhören zu klatschen“ bedeutet, weiter zu klatschen, weil das Simon Says fehlte. Simon Says kann durch andere Formulierungen gut ersetzt werden. Wer falsch reagiert, fliegt raus. Der „Vortänzer“ verwirrt zusätzlich, wenn er Kommandos selbst anders befolgt, als er sie sagt.'
+   ],
+   risiken:[]}
 ];
