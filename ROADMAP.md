@@ -75,11 +75,15 @@ Ideen, die noch keiner Etappe fest zugeordnet sind. Neue Ideen kommen hier rein.
 - **Texte überarbeiten:** Alle Texte klingen noch zu sehr nach KI (Startseite, Erklärung, Spielbeschreibungen, Hinweise, Changelog). Kommt **ganz am Ende**: Du schreibst sie einmal selbst in deinen Worten, ich baue sie ein. Dafür vorher eine Liste aller Texte zum Überschreiben erstellen.
 
 - Spielesammlung als zweite Säule neben der Gameshow (→ Etappe 1)
+- **Designs für die Zuschaueransicht:** verschiedene Looks für den Beamer zum Auswählen (z. B. passend zu Anlass oder Jahreszeit), gültig für alle Spiele mit Zuschaueransicht
+  - Zuerst: eine große Auswahl, die kostenlos zur Verfügung steht
+  - Perspektivisch: zusätzliche Designs als Einmalkauf (siehe Finanzierung)
 - Weitere Vorlagen, z. B. Kennenlernabend, Freizeit-Abschlussabend
 - Später denkbar: Finanzierung – **kein Abo für Ehrenamtliche**, stattdessen Einmalkäufe; Grundausstattung bleibt kostenlos
   - Vorlagenpakete (Quiz-Themenpakete, günstiger Einstieg)
   - Geländespiele mit Material zum Ausdrucken (Rollenkarten, Stationen, Geschichte) – Premium-Angebot, muss real getestet sein
   - Besondere Beamerspiele als einmaliger Extra-Kauf (keine Namen/Logos von TV-Shows verwenden)
+  - Zusätzliche Designs für die Zuschaueransicht als Einmalkauf (Grundauswahl bleibt kostenlos)
   - Ergänzend denkbar: Träger-Lizenz für Verbände/Kirchenbezirke, freiwilliger „Unterstützen“-Knopf
   - Vorher: ein Paket mit Kollegen testen (Zahlungsbereitschaft), Arbeitgeber/Gewerbe/Zahlungsanbieter klären
 - Später denkbar: Jugendliche spielen mit dem eigenen Handy mit (Buzzer, Schätzzahlen eintippen)
