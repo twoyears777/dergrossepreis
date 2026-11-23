@@ -61,6 +61,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Test per TestFlight (Apple-Entwickler-Account nötig, ca. 99 € pro Jahr)
 - Echter Zwei-Bildschirm-Modus: Handy steuert, Beamer zeigt die Show (HDMI-Adapter oder AirPlay)
 - Eigener Name für die App
+- Daten sicher in der App speichern, Sync und Sicherung über iCloud
 
 ### Etappe 5 – Verbreiten (erst wenn genug Inhalt da ist)
 - Arbeitgeber klären, Impressum und Datenschutzhinweis
@@ -86,6 +87,12 @@ Ideen, die noch keiner Etappe fest zugeordnet sind. Neue Ideen kommen hier rein.
   - Zusätzliche Designs für die Zuschaueransicht als Einmalkauf (Grundauswahl bleibt kostenlos)
   - Ergänzend denkbar: Träger-Lizenz für Verbände/Kirchenbezirke, freiwilliger „Unterstützen“-Knopf
   - Vorher: ein Paket mit Kollegen testen (Zahlungsbereitschaft), Arbeitgeber/Gewerbe/Zahlungsanbieter klären
+- **Sicherer speichern:** Im Browser kann der Speicher gelöscht werden (Safari räumt z. B. Daten von Seiten weg, die länger nicht geöffnet wurden). Zwischenschritte in der Web-Version: dauerhaften Speicher beim Browser anfragen, automatische Sicherung in einen Ordner (z. B. iCloud Drive oder OneDrive), wo der Browser das kann. Richtig sicher wird es in der App: Speicher in der App plus Sync über iCloud (→ Etappe 4)
+- **Lieder / Liedtexte anzeigen:** erst sinnvoll, wenn das Speichern sicherer ist (am besten mit der App)
+  - Keine direkte SongSelect-Anbindung möglich: CCLI nimmt keine neuen API-Partner mehr auf
+  - Stattdessen: SongSelect-Dateien importieren oder Text einfügen, automatisch in Folien aufteilen, Anzeige über die Zuschaueransicht
+  - CCLI-Angaben unten auf jeder Folie, Liste der gezeigten Lieder für die CCLI-Meldung
+  - Keine Liedtexte mitliefern, nur was Nutzer selbst importieren (CCLI-Lizenz der Gemeinde nötig)
 - Später denkbar: Jugendliche spielen mit dem eigenen Handy mit (Buzzer, Schätzzahlen eintippen)
 
 ---
