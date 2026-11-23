@@ -1,5 +1,9 @@
 # Changelog – Der große Preis
 
+## 1.7.1 – 23.11.2026
+- Neu: Spiel vorzeitig beenden mit Siegerehrung – über 🏁 oben links im Spiel oder im Spielmenü
+- Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer
+
 ## 1.7.0 – 23.11.2026
 - Neues Design: Collage-Look mit Zeitungsschnipseln, Papier und Klebeband – ruhiger und entspannter
 - Überschriften wie aus ausgeschnittenen Buchstaben zusammengeklebt

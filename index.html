@@ -631,7 +631,8 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 /* Siegerehrung */
 #endScreen .qcard{padding:4vh 3vw}
 #endScreen .qcard>*{margin-left:0;margin-right:0}
-#endScreen .qcat{white-space:normal;text-align:center}
+#endScreen .qcat{white-space:normal;text-align:center;flex:none}
+#endTitle{font-size:clamp(1.8rem,8vh,5rem)}
 #endTitle{color:var(--ink)!important;font-family:var(--serif)}
 .prow{background:#fbf8f1;border:none;border-left:8px solid var(--c);border-radius:2px;color:var(--ink);font-family:var(--serif);box-shadow:0 2px 5px #0003}
 .prow .nm{color:var(--ink)}
@@ -651,6 +652,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
     <div class="ctrls left">
       <button class="icon-btn" id="btnHome" title="Menü">⌂</button>
       <button class="icon-btn" id="btnUndo" title="Letzte Wertung rückgängig">↶</button>
+      <button class="icon-btn" id="btnFinish" title="Spiel beenden und Siegerehrung zeigen">🏁</button>
     </div>
     <div class="marquee"><div id="title" class="chrome">Der große Preis</div></div>
     <div class="ctrls">
@@ -732,7 +734,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 <!-- ================= SIEGEREHRUNG ================= -->
 <div class="overlay" id="endScreen">
   <div class="qcard">
-    <div class="qcat bungee">Alle Felder gespielt!</div>
+    <div class="qcat bungee" id="endSub">Alle Felder gespielt!</div>
     <div class="qtext bungee" id="endTitle" style="color:var(--gold)">Gewinner</div>
     <div class="podium" id="podium"></div>
     <div class="row" style="justify-content:center">
@@ -818,8 +820,12 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 
 <script>
 (function(){
-const APP_VERSION='1.7.0';
+const APP_VERSION='1.7.1';
 const CHANGELOG=[
+  {v:'1.7.1',d:'23.11.2026',items:[
+    'Neu: Spiel vorzeitig beenden mit Siegerehrung – über 🏁 oben links im Spiel oder im Spielmenü',
+    'Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer'
+  ]},
   {v:'1.7.0',d:'23.11.2026',items:[
     'Neues Design: Collage-Look mit Zeitungsschnipseln, Papier und Klebeband – ruhiger und entspannter',
     'Überschriften wie aus ausgeschnittenen Buchstaben zusammengeklebt',
@@ -1341,9 +1347,12 @@ function checkEnd(){
   if(total>0&&played>=total&&S.teams.length)setTimeout(showEnd,700);
 }
 function showEnd(){
+  if(!S.teams.length)return;
+  const total=S.categories.length*S.points.length,played=Object.keys(S.used).length;
+  $('#endSub').textContent=played>=total?'Alle Felder gespielt!':'Spiel beendet';
   const rank=[...S.teams].sort((a,b)=>b.score-a.score);
   const top=rank[0].score,winners=rank.filter(t=>t.score===top);
-  $('#endTitle').textContent=winners.length>1?'🏆 Unentschieden!':'🏆 '+winners[0].name;
+  ransom($('#endTitle'),winners.length>1?'Unentschieden!':winners[0].name);
   const p=$('#podium');p.innerHTML='';
   let place=0,last=null;
   rank.forEach((t,i)=>{if(t.score!==last){place=i+1;last=t.score;}
@@ -1518,8 +1527,8 @@ document.addEventListener('keydown',e=>{
 addEventListener('resize',()=>{const cv=$('#confetti');cv.width=innerWidth;cv.height=innerHeight;});
 
 /* ---------- Changelog ---------- */
-function showChangelog(onlyNew){
-  const last=onlyNew?lsGet('grosserPreis_seenVersion'):null;
+function showChangelog(onlyNew,since){
+  const last=onlyNew?since:null;
   const list=onlyNew&&last?CHANGELOG.filter(e=>cmpVer(e.v,last)>0):CHANGELOG;
   $('#clTitle').textContent=onlyNew?'Neu in Version '+APP_VERSION:'Changelog';
   $('#clBody').innerHTML=list.map(e=>`<h3>Version ${esc(e.v)} <small>vom ${esc(e.d)}</small></h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
@@ -1534,7 +1543,7 @@ function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 (function whatsNew(){
   if(VIEW)return;
   const seen=lsGet('grosserPreis_seenVersion');
-  if(seen&&cmpVer(APP_VERSION,seen)>0)setTimeout(()=>showChangelog(true),600);
+  if(seen&&cmpVer(APP_VERSION,seen)>0)setTimeout(()=>showChangelog(true,seen),600);
   lsSet('grosserPreis_seenVersion',APP_VERSION);
 })();
 
@@ -1732,6 +1741,7 @@ function renderGMenu(){
   if(hiddenTpl().length)tb('↺ Standard-Vorlagen wiederherstellen',()=>{lsSet(HID_KEY,'[]');renderGMenu();toast('Standard-Vorlagen sind wieder da.');});
   list.appendChild(tools);
   lbl('Einstellungen');
+  if(running)add('🏁','Spiel beenden','Jetzt aufhören und die Siegerehrung zeigen',()=>finishGame());
   add('✏️','Spielbrett bearbeiten','Kategorien, Fragen, Gruppen, Punkte & Sound',openSettings);
   const hint=$('#dualHint');
   if(standalone){hint.classList.add('warn');hint.textContent='⚠️ Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.';}
@@ -1739,6 +1749,13 @@ function renderGMenu(){
 }
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
+function finishGame(){
+  if(!S.teams.length){toast('Es gibt noch keine Gruppen.');return;}
+  const total=S.categories.length*S.points.length,left=total-Object.keys(S.used).length;
+  ask(left>0?`Spiel jetzt beenden? ${left} ${left===1?'Feld ist':'Felder sind'} noch offen. Danach kommt die Siegerehrung.`:'Spiel beenden und Siegerehrung zeigen?','Spiel beenden',()=>{
+    closeQ();if(screenName!=='board'){showScreen('board');applyMode();renderBoard();}showEnd();});
+}
+$('#btnFinish').onclick=()=>finishGame();
 $('#btnHome').onclick=()=>{closeQ();showScreen('gmenu');};
 
 /* ---------- Zuschaueransicht ---------- */
