@@ -62,6 +62,8 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 ## Ideen-Sammlung
 Ideen, die noch keiner Etappe fest zugeordnet sind. Neue Ideen kommen hier rein.
 
+- **Texte überarbeiten:** Alle Texte klingen noch zu sehr nach KI (Startseite, Erklärung, Spielbeschreibungen, Hinweise, Changelog). Vorschlag: Du schreibst sie einmal selbst in deinen Worten, ich baue sie ein. Dafür vorher eine Liste aller Texte zum Überschreiben erstellen.
+
 - Spielesammlung als zweite Säule neben der Gameshow (→ Etappe 1)
 - Weitere Vorlagen, z. B. Kennenlernabend, Freizeit-Abschlussabend
 - Später denkbar: Finanzierung – **kein Abo für Ehrenamtliche**, stattdessen Einmalkäufe; Grundausstattung bleibt kostenlos
