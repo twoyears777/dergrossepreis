@@ -24,6 +24,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - ✔ Musterspiel „Zip Zap Boing“
 - ca. 20 erprobte Gruppenspiele mit Kurzbeschreibung, Ablauf, Material, Dauer, Gruppengröße (Inhalte kommen von dir)
 - Später überlegen: Filter für Dauer und ruhig/wild, Zufallsknopf
+- Später: Rollen bei „Nachts in Palermo“ anpassen und erweitern (weitere Sonderrollen, andere Verteilung)
 - Hinweise zu Sicherheit und Körperkontakt, niemand wird bloßgestellt
 - Ziel: im Alltag schneller ein passendes Spiel finden als bisher
 
