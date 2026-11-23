@@ -1,5 +1,10 @@
 # Changelog – Der große Preis
 
+## 1.7.0 – 23.11.2026
+- Neues Design: Collage-Look mit Zeitungsschnipseln, Papier und Klebeband – ruhiger und entspannter
+- Überschriften wie aus ausgeschnittenen Buchstaben zusammengeklebt
+- Gedämpfte Gruppenfarben statt Neon (bestehende Standardfarben werden automatisch angepasst)
+
 ## 1.6.0 – 23.11.2026
 - Neues Design im 2000er-Look: Aqua-Gel-Felder, Chrom-Schrift, Fenster mit Titelleiste
 - Fragen öffnen sich als Fenster – das ✕ oben rechts schließt sie (Feld bleibt offen)
