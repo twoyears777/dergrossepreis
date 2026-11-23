@@ -5,6 +5,12 @@ Eine App fürs iPhone für Jugendleiterinnen und Jugendleiter: Handy an den Beam
 
 Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen ohne viel Technik und ohne Vorbereitung einen guten Spieleabend gestalten können. Wir optimieren zuerst für Laptop und PC, danach fürs Handy.
 
+## Strategie: erst Inhalt, dann Wachstum
+- Der Fokus liegt darauf, möglichst viel **Hilfreiches für Jugendleiter** hineinzulegen: Spiele, Vorlagen und praktische Funktionen, die im Alltag fehlen.
+- Erst wenn viel guter Inhalt da ist, soll das Projekt bewusst wachsen (Verbreitung). Davon profitiert es am meisten.
+- Monetarisierung kommt erst, wenn das Tool groß und gut genutzt ist.
+- Qualität vor Menge: lieber erprobte, gut beschriebene Inhalte als viele halbe.
+
 ---
 
 ## Etappen
@@ -42,7 +48,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Echter Zwei-Bildschirm-Modus: Handy steuert, Beamer zeigt die Show (HDMI-Adapter oder AirPlay)
 - Eigener Name für die App
 
-### Etappe 5 – Verbreiten
+### Etappe 5 – Verbreiten (erst wenn genug Inhalt da ist)
 - Arbeitgeber klären, Impressum und Datenschutzhinweis
 - Eigene Domain, Startpaket mit Vorlagen, Ankündigungstext
 - Kann vorgezogen werden, sobald die Web-Version weitergegeben werden soll
