@@ -3,8 +3,13 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.18.0';
+const APP_VERSION='1.19.0';
 const CHANGELOG=[
+  {v:'1.19.0',d:'24.11.2026',items:[
+    'Neu auf der Startseite: eine kurze Erklärung, was Manna kann, mit Link zur Vision',
+    'Neue Screenshots auf der Startseite: Der große Preis, Eigenes Spiel, Countdown und Spielesammlung',
+    'Der große Preis, Eigenes Spiel und Countdown gibt es vorerst nur am Laptop oder PC. Auf Handy und Tablet kommt ein Hinweis, die Spielesammlung bleibt dort nutzbar'
+  ]},
   {v:'1.18.0',d:'24.11.2026',items:[
     'Spielesammlung verschlankt: „Spiel erstellen“ und „Spiel einsenden“ gibt es nicht mehr',
     'Neue Spiele erscheinen in der Spielesammlung jetzt ohne App-Update',

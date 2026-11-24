@@ -941,7 +941,10 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .brand{display:inline-flex;align-items:flex-end;gap:.04em;margin:3vh 0 1vh;font-size:clamp(3rem,10vh,6rem);line-height:1;color:#f1ede4}
 .brand-mark{width:1.18em;height:1.18em;display:block;margin-bottom:-.06em}
 .brand-word{font-family:var(--strong);font-weight:700;letter-spacing:-.02em;padding-bottom:.02em;text-shadow:0 3px 8px #0005}
-#home .brand{margin-bottom:7vh}
+#home .brand{margin-bottom:3vh}
+.home-intro{max-width:62ch;margin:0 auto 6vh;text-align:center;font-family:var(--serif);font-size:1.1rem;line-height:1.6;color:#d8d2c4}
+.home-intro a{color:#f1ede4;font-style:italic;text-decoration:underline;text-underline-offset:4px;white-space:nowrap}
+.home-intro a:hover{color:#fff}
 #vSplash .vs-brand{display:none;font-size:clamp(4rem,20vh,12rem);margin:0}
 #vSplash.brand-mode .vs-brand{display:inline-flex}
 #vSplash.brand-mode .marquee{display:none}

@@ -1,5 +1,10 @@
 # Changelog – Manna
 
+## 1.19.0 – 24.11.2026
+- Neu auf der Startseite: eine kurze Erklärung, was Manna kann, mit Link zur Vision
+- Neue Screenshots auf der Startseite: Der große Preis, Eigenes Spiel, Countdown und Spielesammlung
+- Der große Preis, Eigenes Spiel und Countdown gibt es vorerst nur am Laptop oder PC. Auf Handy und Tablet kommt ein Hinweis, die Spielesammlung bleibt dort nutzbar
+
 ## 1.18.0 – 24.11.2026
 - Spielesammlung verschlankt: „Spiel erstellen“ und „Spiel einsenden“ gibt es nicht mehr
 - Neue Spiele erscheinen in der Spielesammlung jetzt ohne App-Update

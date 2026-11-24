@@ -107,6 +107,23 @@ function sfx(n){
 /* ---------- Toast & Dialog ---------- */
 let toastT;
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
+/* Hinweis nur mit OK-Knopf */
+function notice(msg){ask(msg,'OK',()=>{});$('#dNo').style.display='none';}
+
+/* Beamer-Spiele gibt es vorerst nur am Laptop/PC. Handy und Tablet bekommen sie mit der App.
+   iPads melden sich in Safari als Mac, deshalb zählt zusätzlich der Touchscreen. */
+function isHandyOderTablet(){
+  try{
+    const ua=navigator.userAgent||'';
+    if(navigator.userAgentData&&navigator.userAgentData.mobile)return true;
+    if(/iPhone|iPad|iPod|Android|Mobile|Silk|Kindle/i.test(ua))return true;
+    if(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)return true;
+    return matchMedia('(pointer:coarse)').matches&&!matchMedia('(any-pointer:fine)').matches;
+  }catch(e){return false;}
+}
+function nurAmPC(start){
+  return ()=>{if(isHandyOderTablet()){notice('Diese Funktion ist aktuell nur auf einem Laptop oder PC verfügbar.');return;}start();};
+}
 function ask(msg,yesLabel,onYes,opt){
   $('#dMsg').textContent=msg;$('#dYes').textContent=yesLabel||'OK';$('#dialog').classList.add('show');
   const inp=$('#dInput'),withInput=!!(opt&&opt.input);
@@ -115,7 +132,7 @@ function ask(msg,yesLabel,onYes,opt){
   const yes=()=>{const v=inp.value.trim();if(withInput&&!v){inp.focus();return;}$('#dialog').classList.remove('show');onYes(v);};
   $('#dYes').onclick=yes;
   inp.onkeydown=e=>{if(e.key==='Enter')yes();};
-  $('#dNo').onclick=()=>$('#dialog').classList.remove('show');
+  $('#dNo').style.display='';$('#dNo').onclick=()=>$('#dialog').classList.remove('show');
 }
 
 /* ---------- Spielbrett ---------- */
@@ -910,8 +927,9 @@ $('#btnEditBoard').onclick=()=>openSettings();
 $('#btnBackup').onclick=()=>backupNow();
 $('#btnRestore').onclick=()=>$('#tplFile').click();
 $('#gcColl').onclick=()=>{if(gamesState==='fehler')loadGames();showScreen('coll');};
-$('#gcPreis').onclick=()=>showScreen('gmenu');
+$('#gcPreis').onclick=nurAmPC(()=>showScreen('gmenu'));
 $('#btnGmBack').onclick=()=>showScreen('home');
+$('#lnkVision').onclick=e=>{e.preventDefault();try{$('#vision').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(err){$('#vision').scrollIntoView();}};
 $('#btnGuide').onclick=()=>{try{$('#info').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#info').scrollIntoView();}};
 function finishGame(){
   if(!S.teams.length){toast('Es gibt noch keine Gruppen.');return;}
@@ -1193,7 +1211,7 @@ $('#tmStart').onclick=tmStart;
 $('#tmPause').onclick=tmPauseToggle;
 $('#tmReset').onclick=tmReset;
 $('#tmViewer').onclick=openViewer;
-$('#gcTimer').onclick=()=>showScreen('timer');
+$('#gcTimer').onclick=nurAmPC(()=>showScreen('timer'));
 $('#btnTimerBack').onclick=()=>{if(TM.phase==='running'||TM.phase==='paused'){ask('Der Countdown läuft noch. Trotzdem zurück? Der Countdown wird dabei beendet.','Zurück',()=>{tmReset();showScreen('home');});}else{tmReset();showScreen('home');}};
 if(!VIEW)tmRender();
 
@@ -1328,7 +1346,7 @@ function renderOwnList(){
   tip.textContent='Tipp: Exportiere ein fertiges Spiel als Datei. So hast du eine Sicherung und kannst es anderen schicken.';
   list.appendChild(tip);
 }
-$('#gcOwn').onclick=()=>showScreen('own');
+$('#gcOwn').onclick=nurAmPC(()=>showScreen('own'));
 $('#btnOwnBack').onclick=()=>showScreen('home');
 
 /* ---------- Einrichten ---------- */

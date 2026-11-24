@@ -62,7 +62,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['css/app.css', 'js/spielformat.js', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-frage.jpg', 'img/shot-action.jpg', 'img/shot-sieger.jpg']:
+    for f in ['css/app.css', 'js/spielformat.js', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-eigenes.jpg', 'img/shot-countdown.jpg', 'img/shot-sammlung.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
@@ -125,6 +125,12 @@ def browser_checks(p):
     check('Screenshots laden', all(loaded), loaded)
     heads = m.locator('#home .hblock h2').all_inner_texts()
     check('Bereiche auf der Startseite', heads == ['Genau das, was du brauchst!', "So funktioniert's", 'Unsere Vision'], heads)
+    intro = m.inner_text('#homeIntro') if m.locator('#homeIntro').count() else ''
+    check('Kurze Erklärung unter dem Titel', m.locator('#homeBrand + #homeIntro + .gamegrid').count() == 1 and 'Gruppenspiele' in intro, intro)
+    m.click('#lnkVision'); m.wait_for_timeout(900)
+    check('Link springt zur Vision', m.evaluate("(()=>{const r=document.querySelector('#vision').getBoundingClientRect();return r.top<innerHeight&&r.bottom>0})()") and '#' not in m.url)
+    m.evaluate('scrollTo(0,0)')
+    check('Laptop/PC: Beamer-Spiele nicht gesperrt', not m.evaluate('isHandyOderTablet()'))
     m.click('#homeVer'); m.wait_for_timeout(200)
     check('Changelog öffnet', m.locator('#clDialog.show').count() == 1)
     check('Changelog ohne Datum', not re.search(r'\d{1,2}\.\d{1,2}\.\d{4}', m.inner_text('#clBody')))
@@ -519,6 +525,31 @@ def build_text(txt):
         open(os.path.join(t, slug + '.txt'), 'w', encoding='utf-8').write(txt)
         return build(t, os.path.join(t, 'alle.json'))
 
+def mobile_checks(p):
+    print('Handy und Tablet')
+    b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
+    msg = 'Diese Funktion ist aktuell nur auf einem Laptop oder PC verfügbar.'
+    geraete = {
+        'iPhone': dict(p.devices['iPhone 13']),
+        'iPad (meldet sich als Mac)': dict(viewport={'width': 1024, 'height': 1366}, has_touch=True, is_mobile=False,
+            user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15'),
+        'Android-Tablet': dict(viewport={'width': 1280, 'height': 800}, has_touch=True,
+            user_agent='Mozilla/5.0 (Linux; Android 14; SM-X710) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'),
+    }
+    for name, opts in geraete.items():
+        opts.pop('default_browser_type', None)
+        ctx = b.new_context(**opts); m = ctx.new_page(); m.goto(URL); m.wait_for_timeout(400)
+        if m.locator('#clDialog.show').count(): m.click('#clX')
+        for card, screen in [('#gcPreis', '#gmenu'), ('#gcOwn', '#ownScreen'), ('#gcTimer', '#timerScreen')]:
+            m.click(card); m.wait_for_timeout(200)
+            ok = m.locator('#dialog.show').count() == 1 and m.inner_text('#dMsg') == msg and not m.locator('#dNo').is_visible()
+            check(f'{name}: {card} zeigt Hinweis statt Start', ok and m.locator('#home.show').count() == 1 and m.locator(screen + '.show').count() == 0)
+            m.click('#dYes'); m.wait_for_timeout(150)
+        m.click('#gcColl'); m.wait_for_timeout(300)
+        check(f'{name}: Spielesammlung bleibt nutzbar', m.locator('#collScreen.show').count() == 1)
+        ctx.close()
+    b.close()
+
 if __name__ == '__main__':
     httpd = serve()
     try:
@@ -526,6 +557,7 @@ if __name__ == '__main__':
         spiele_checks()
         with sync_playwright() as p:
             browser_checks(p)
+            mobile_checks(p)
             editor_checks(p)
     except Exception:
         traceback.print_exc(); results.append(('Testlauf ohne Absturz', False, ''))
