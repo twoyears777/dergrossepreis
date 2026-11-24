@@ -56,132 +56,131 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 107: 1 Gerät an den Beamer anschließen Du schließt dein Gerät (aktuell Laptop/PC) an den Beamer an und startest die Spieleshow.
 - Z. 108: 2 Zuschaueransicht öffnen Mit einem Klick auf „Zuschaueransicht zeigen“ öffnet sich ein neues Fenster.
 - Z. 109: 3 Moderieren Im ersten Fenster kannst du nun als Moderator steuern, hast Zusatzinfos und immer die Kontrolle über alles. Die Zuschaueransicht hat nette Animationen und bleibt immer aktuell.
-- Z. 112: Darum ist das so praktisch
-- Z. 114: Du siehst Lösungen und die richtige Antwort vorab, der Raum erst, wenn du sie zeigst.
-- Z. 115: Alle Knöpfe bleiben auf deinem Bildschirm. Auf dem Beamer läuft nur die Show.
-- Z. 116: Schätzzahlen tippst du ein, ohne dass jemand mitliest.
-- Z. 117: Du brauchst nur einen Laptop und einen Browser, keine zusätzliche Technik und keine App.
-- Z. 123: Was wollen wir?
-- Z. 125: Ey, ganz im Ernst: Soviel wir planen und machen und tun, sooft erleben wir es, dass wir spontan sein müssen. Spontan ein Icebreaker, spontan einen Abend füllen – das ist doch ehrlich Alltag in der Kinder- und Jugendarbeit. Es gibt viele Tools, die uns da helfen sollen. Doch so richtig hat uns nie eins überzeugt.
-- Z. 126: Wir wollten etwas, das uns verlässlich „versorgt“, wo wir immer ein passendes Spiel bekommen. Wie krass wäre es bitte, das eigene Smartphone einfach an den Beamer anzuschließen und eine fertig vorbereitete Spieleshow auf dem Handy spontan parat zu haben? Inklusive interaktiver Beameransicht und Moderatorenansicht auf dem Handy, Tablet oder Laptop?
-- Z. 127: Das ist unser Ziel: Eine App, die genau das kann! Unser Retter in der Not – damit möglichst viele Jugendliche durch gute Erfahrungen in der Jugendarbeit Jesus kennenlernen dürfen, den echten Retter in der Not!
-- Z. 128: Aktuell geht das nur auf dem Laptop/PC. Wir arbeiten aber dran, es als App in den App Store zu bringen. Am meisten hilfst du uns, wenn du Manna nutzt und uns deine Erfahrungen berichtest! Viel Spaß!
-- Z. 133: Impressum und Datenschutz
-- Z. 137: Pädagogischer Kram
-- Z. 139: ← Startseite
-- Z. 146: ← Pädagogischer Kram
-- Z. 150: Gameshows
-- Z. 153: Der große Preis
-- Z. 154: Der absolute Klassiker als interaktives Template!
-- Z. 157: Eigenes Spiel
-- Z. 158: Erstelle deine eigene Gameshow mit unserem Gameshow-Editor und präsentiere sie direkt über den Browser!
-- Z. 161: Countdown
-- Z. 162: Brauch man doch ständig so n Countdown. Schnell, einfach, riesig
-- Z. 165: ← Startseite
-- Z. 169: Der große Preis
-- Z. 171: ← Gameshows
-- Z. 177: Vorlagen
-- Z. 179: ← Zurück
-- Z. 183: Erklärung
-- Z. 186: Worum es geht
-- Z. 187: Mehrere Gruppen treten gegeneinander an. Auf dem Spielbrett gibt es Kategorien mit Feldern von 10 bis 100 Punkten. Je mehr Punkte, desto schwerer. Die Gruppen wählen abwechselnd Felder und müssen die entsprechende Frage beantworten oder Aufgabe lösen, um die Punkte zu bekommen. Wer am Ende die meisten Punkte hat, gewinnt.
-- Z. 190: So läuft eine Runde
-- Z. 192: Eine Gruppe wählt ein Feld. Zum Beispiel „Sport 40“.
-- Z. 193: Die Frage erscheint. Es könnte auch eine Aufgabe oder ein Actionspiel erscheinen. Dazu unten mehr.
-- Z. 194: Die Gruppe beantwortet die Frage. Ist die Antwort richtig, erhält die Gruppe die volle Punktzahl. Ist die Antwort falsch, hat eine andere, zufällig ausgewählte Gruppe die Möglichkeit, die Frage für die Hälfte der Punktzahl zu beantworten. Bei bestimmten Fragetypen (s. u.) antworten alle Gruppen.
-- Z. 195: Danach ist die nächste Gruppe dran. Gespielte Felder sind aus dem Spiel.
-- Z. 196: Wenn alle Felder gespielt sind, ist das Spiel vorbei.
-- Z. 200: Die Feldtypen
-- Z. 202: Frage Eine einfache Frage ohne sichtbare Antwortmöglichkeit. Es gibt richtig oder falsch.
-- Z. 203: Multiple Choice Vier Antwortmöglichkeiten. Die Gruppe kann eine einloggen.
-- Z. 204: Schätzfrage Alle Gruppen geben eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.
-- Z. 205: Aufgabe Eine Spezialaufgabe! Hier gilt: Geschafft gibt Punkte, sonst gibts nichts.
-- Z. 206: ACTION Volle Action! Alle Gruppen spielen um die Punkte! Der Gewinner bekommt die volle Punktzahl! Wenn die Gruppe, die das Feld gezogen hat, das Spiel gewinnt, verdoppeln sich für sie die Punkte!
-- Z. 210: Sonderregeln
-- Z. 212: Gleichstand: Haben am Ende mehrere Gruppen gleich viele Punkte, teilen sie sich den Sieg.
-- Z. 216: Tipps für die Spielleitung
-- Z. 218: Die optimale Anzahl an Gruppen liegt erfahrungsgemäß bei drei bis – wirklich maximal – sechs. Die Gruppen sollten nicht allzu groß sein.
-- Z. 219: Es hilft, wenn jede Gruppe einen Gruppenleiter festlegt, der die Antworten der Gruppe übermittelt.
-- Z. 220: Bei Schätzfragen die Einheit klug wählen.
-- Z. 221: Nicht zu viele ACTION-Felder – das bremst erfahrungsgemäß das ganze Spiel.
-- Z. 222: Aufgaben wählen, bei denen am besten alle mal mitmachen können und niemand bloßgestellt wird.
-- Z. 223: Fragen auf 10 wirklich leicht wählen, auf 100 auch gerne wirklich richtig schwere Fragen.
-- Z. 227: ← Zurück
-- Z. 231: Spielesammlung
-- Z. 233: (Attribut) Filter
-- Z. 234: Zufälliges Spiel Filter zurücksetzen
-- Z. 237: ← Startseite
-- Z. 242: ← Zur Spielesammlung
-- Z. 246: Countdown
-- Z. 250: (Attribut) Zeit auswählen
-- Z. 251: (Attribut) Eigene Zeit
-- Z. 252: − 1 Min +
-- Z. 252: (Attribut) Eine Minute weniger
-- Z. 252: (Attribut) Eine Minute mehr
-- Z. 253: − 00 Sek +
-- Z. 253: (Attribut) Fünf Sekunden weniger
-- Z. 253: (Attribut) Fünf Sekunden mehr
-- Z. 256: Start
-- Z. 257: Pause
-- Z. 258: Zurücksetzen
-- Z. 260: Zuschaueransicht zeigen
-- Z. 263: ← Gameshows
-- Z. 267: Eigenes Spiel
-- Z. 269: ← Gameshows
-- Z. 274: Spiel einrichten
-- Z. 277: ← Zurück
-- Z. 279: Exportieren
-- Z. 280: Speichern
-- Z. 281: Spiel starten
-- Z. 287: Einstellungen
-- Z. 289: Spielbrett bearbeiten
-- Z. 290: Zuschaueransicht zeigen
-- Z. 291: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
-- Z. 294: Sicherung erstellen
-- Z. 295: Sicherung einspielen
-- Z. 297: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
-- Z. 299: ← Zurück
-- Z. 304: anna Der große Preis Gleich geht's los
-- Z. 304: (Attribut) Manna
-- Z. 305: (Attribut) Vollbild
-- Z. 305: (Attribut) Vollbild
-- Z. 313: (Attribut) Schließen – Feld bleibt offen
-- Z. 313: (Attribut) Schließen
-- Z. 322: Lösung zeigen
-- Z. 327: Geschafft
-- Z. 328: Nicht geschafft
-- Z. 337: ACTION! SONDERFELD
-- Z. 342: (Attribut) Antippen zeigt sofort alles
-- Z. 343: Spiel beendet
-- Z. 348: Zurück zum Startmenü
-- Z. 356: Einstellungen
-- Z. 357: ▶ Zum Spiel
-- Z. 361: Allgemein
-- Z. 363: Titel der Show
-- Z. 368: Punktwerte der Zeilen
-- Z. 372: Soundeffekte
-- Z. 377: Gruppen
-- Z. 378: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
-- Z. 380: + Gruppe hinzufügen
-- Z. 384: Kategorien, Fragen &amp; Aufgaben
-- Z. 385: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
-- Z. 391: Spiel &amp; Daten
-- Z. 392: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
-- Z. 394: Neue Runde (Punkte &amp; Felder zurücksetzen)
-- Z. 398: Export erzeugen &amp; kopieren
-- Z. 399: Text unten importieren
-- Z. 400: Datei importieren (.json)
-- Z. 402: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
-- Z. 408: Version &amp; Updates
-- Z. 409: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
-- Z. 411: Changelog anzeigen
-- Z. 412: Jetzt nach Updates suchen
-- Z. 419: Manna Abbrechen OK
-- Z. 420: Changelog ✕ Alles klar
-- Z. 420: (Attribut) Schließen
-- Z. 420: (Attribut) Schließen
-- Z. 421: Neue Version geladen! Jetzt aktualisieren ✕
-- Z. 421: (Attribut) Später
+- Z. 114: Was wollen wir?
+- Z. 116: Ey, ganz im Ernst: Soviel wir planen und machen und tun, sooft erleben wir es, dass wir spontan sein müssen. Spontan ein Icebreaker, spontan einen Abend füllen – das ist doch ehrlich Alltag in der Kinder- und Jugendarbeit. Es gibt viele Tools, die uns da helfen sollen. Doch so richtig hat uns nie eins überzeugt.
+- Z. 117: Wir wollten etwas, das uns verlässlich „versorgt“, wo wir immer ein passendes Spiel bekommen. Wie krass wäre es bitte, das eigene Smartphone einfach an den Beamer anzuschließen und eine fertig vorbereitete Spieleshow auf dem Handy spontan parat zu haben? Inklusive interaktiver Beameransicht und Moderatorenansicht auf dem Handy, Tablet oder Laptop?
+- Z. 118: Das ist unser Ziel: Eine App, die genau das kann! Unser Retter in der Not – damit möglichst viele Jugendliche durch gute Erfahrungen in der Jugendarbeit Jesus kennenlernen dürfen, den echten Retter in der Not!
+- Z. 119: Aktuell geht das nur auf dem Laptop/PC. Wir arbeiten aber dran, es als App in den App Store zu bringen. Am meisten hilfst du uns, wenn du Manna nutzt und uns deine Erfahrungen berichtest! Viel Spaß!
+- Z. 124: Impressum und Datenschutz
+- Z. 128: Pädagogischer Kram
+- Z. 130: ← Startseite
+- Z. 137: ← Pädagogischer Kram
+- Z. 141: Gameshows
+- Z. 144: Der große Preis
+- Z. 145: Der absolute Klassiker als interaktives Template!
+- Z. 148: Eigenes Spiel
+- Z. 149: Erstelle deine eigene Gameshow mit unserem Gameshow-Editor und präsentiere sie direkt über den Browser!
+- Z. 152: Countdown
+- Z. 153: Brauch man doch ständig so n Countdown. Schnell, einfach, riesig
+- Z. 156: ← Startseite
+- Z. 160: Der große Preis
+- Z. 162: ← Gameshows
+- Z. 168: Vorlagen
+- Z. 170: ← Zurück
+- Z. 174: Erklärung
+- Z. 177: Worum es geht
+- Z. 178: Mehrere Gruppen treten gegeneinander an. Auf dem Spielbrett gibt es Kategorien mit Feldern von 10 bis 100 Punkten. Je mehr Punkte, desto schwerer. Die Gruppen wählen abwechselnd Felder und müssen die entsprechende Frage beantworten oder Aufgabe lösen, um die Punkte zu bekommen. Wer am Ende die meisten Punkte hat, gewinnt.
+- Z. 181: So läuft eine Runde
+- Z. 183: Eine Gruppe wählt ein Feld. Zum Beispiel „Sport 40“.
+- Z. 184: Die Frage erscheint. Es könnte auch eine Aufgabe oder ein Actionspiel erscheinen. Dazu unten mehr.
+- Z. 185: Die Gruppe beantwortet die Frage. Ist die Antwort richtig, erhält die Gruppe die volle Punktzahl. Ist die Antwort falsch, hat eine andere, zufällig ausgewählte Gruppe die Möglichkeit, die Frage für die Hälfte der Punktzahl zu beantworten. Bei bestimmten Fragetypen (s. u.) antworten alle Gruppen.
+- Z. 186: Danach ist die nächste Gruppe dran. Gespielte Felder sind aus dem Spiel.
+- Z. 187: Wenn alle Felder gespielt sind, ist das Spiel vorbei.
+- Z. 191: Die Feldtypen
+- Z. 193: Frage Eine einfache Frage ohne sichtbare Antwortmöglichkeit. Es gibt richtig oder falsch.
+- Z. 194: Multiple Choice Vier Antwortmöglichkeiten. Die Gruppe kann eine einloggen.
+- Z. 195: Schätzfrage Alle Gruppen geben eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.
+- Z. 196: Aufgabe Eine Spezialaufgabe! Hier gilt: Geschafft gibt Punkte, sonst gibts nichts.
+- Z. 197: ACTION Volle Action! Alle Gruppen spielen um die Punkte! Der Gewinner bekommt die volle Punktzahl! Wenn die Gruppe, die das Feld gezogen hat, das Spiel gewinnt, verdoppeln sich für sie die Punkte!
+- Z. 201: Sonderregeln
+- Z. 203: Gleichstand: Haben am Ende mehrere Gruppen gleich viele Punkte, teilen sie sich den Sieg.
+- Z. 207: Tipps für die Spielleitung
+- Z. 209: Die optimale Anzahl an Gruppen liegt erfahrungsgemäß bei drei bis – wirklich maximal – sechs. Die Gruppen sollten nicht allzu groß sein.
+- Z. 210: Es hilft, wenn jede Gruppe einen Gruppenleiter festlegt, der die Antworten der Gruppe übermittelt.
+- Z. 211: Bei Schätzfragen die Einheit klug wählen.
+- Z. 212: Nicht zu viele ACTION-Felder – das bremst erfahrungsgemäß das ganze Spiel.
+- Z. 213: Aufgaben wählen, bei denen am besten alle mal mitmachen können und niemand bloßgestellt wird.
+- Z. 214: Fragen auf 10 wirklich leicht wählen, auf 100 auch gerne wirklich richtig schwere Fragen.
+- Z. 218: ← Zurück
+- Z. 222: Spielesammlung
+- Z. 226: (Attribut) Spiel suchen, z. B. Zeitung oder Stuhlkreis
+- Z. 226: (Attribut) Spiele durchsuchen
+- Z. 227: (Attribut) Suche leeren
+- Z. 229: Filter
+- Z. 230: (Attribut) Filter
+- Z. 231: Zufälliges Spiel Filter zurücksetzen
+- Z. 234: ← Startseite
+- Z. 239: ← Zur Spielesammlung
+- Z. 243: Countdown
+- Z. 247: (Attribut) Zeit auswählen
+- Z. 248: (Attribut) Eigene Zeit
+- Z. 249: − 1 Min +
+- Z. 249: (Attribut) Eine Minute weniger
+- Z. 249: (Attribut) Eine Minute mehr
+- Z. 250: − 00 Sek +
+- Z. 250: (Attribut) Fünf Sekunden weniger
+- Z. 250: (Attribut) Fünf Sekunden mehr
+- Z. 253: Start
+- Z. 254: Pause
+- Z. 255: Zurücksetzen
+- Z. 257: Zuschaueransicht zeigen
+- Z. 260: ← Gameshows
+- Z. 264: Eigenes Spiel
+- Z. 266: ← Gameshows
+- Z. 271: Spiel einrichten
+- Z. 274: ← Zurück
+- Z. 276: Exportieren
+- Z. 277: Speichern
+- Z. 278: Spiel starten
+- Z. 284: Einstellungen
+- Z. 286: Spielbrett bearbeiten
+- Z. 287: Zuschaueransicht zeigen
+- Z. 288: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
+- Z. 291: Sicherung erstellen
+- Z. 292: Sicherung einspielen
+- Z. 294: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
+- Z. 296: ← Zurück
+- Z. 301: anna Der große Preis Gleich geht's los
+- Z. 301: (Attribut) Manna
+- Z. 302: (Attribut) Vollbild
+- Z. 302: (Attribut) Vollbild
+- Z. 310: (Attribut) Schließen – Feld bleibt offen
+- Z. 310: (Attribut) Schließen
+- Z. 319: Lösung zeigen
+- Z. 324: Geschafft
+- Z. 325: Nicht geschafft
+- Z. 334: ACTION! SONDERFELD
+- Z. 339: (Attribut) Antippen zeigt sofort alles
+- Z. 340: Spiel beendet
+- Z. 345: Zurück zum Startmenü
+- Z. 353: Einstellungen
+- Z. 354: ▶ Zum Spiel
+- Z. 358: Allgemein
+- Z. 360: Titel der Show
+- Z. 365: Punktwerte der Zeilen
+- Z. 369: Soundeffekte
+- Z. 374: Gruppen
+- Z. 375: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
+- Z. 377: + Gruppe hinzufügen
+- Z. 381: Kategorien, Fragen &amp; Aufgaben
+- Z. 382: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
+- Z. 388: Spiel &amp; Daten
+- Z. 389: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
+- Z. 391: Neue Runde (Punkte &amp; Felder zurücksetzen)
+- Z. 395: Export erzeugen &amp; kopieren
+- Z. 396: Text unten importieren
+- Z. 397: Datei importieren (.json)
+- Z. 399: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
+- Z. 405: Version &amp; Updates
+- Z. 406: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
+- Z. 408: Changelog anzeigen
+- Z. 409: Jetzt nach Updates suchen
+- Z. 416: Manna Abbrechen OK
+- Z. 417: Changelog ✕ Alles klar
+- Z. 417: (Attribut) Schließen
+- Z. 417: (Attribut) Schließen
+- Z. 418: Neue Version geladen! Jetzt aktualisieren ✕
+- Z. 418: (Attribut) Später
 
 ## rechtliches.html
 
@@ -195,44 +194,45 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 21: Weitere Hinweise
 - Z. 25: Impressum
 - Z. 26: Angaben gemäß § 5 DDG
-- Z. 28: folgt
-- Z. 29: folgt
-- Z. 30: folgt
-- Z. 31: Deutschland
-- Z. 33: E-Mail: kontakt@manna-games.de
-- Z. 34: Manna ist ein privates Projekt und kostenlos.
-- Z. 38: Datenschutz
-- Z. 40: Kurz gesagt
-- Z. 41: Manna braucht kein Konto, setzt keine Cookies, nutzt keine Analyse- oder Werbedienste und lädt nichts von fremden Servern nach. Was du in Manna eingibst, also Spielbretter, Vorlagen, eigene Spiele und Spielstände, bleibt in deinem Browser auf deinem Gerät. Davon bekommen wir nichts mit.
-- Z. 43: Verantwortlich
-- Z. 44: Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO) ist die im Impressum genannte Person.
-- Z. 46: Bereitstellung der Seite (Hosting)
-- Z. 47: Manna wird über GitHub Pages bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Beim Aufruf der Seite verarbeitet GitHub technisch notwendige Daten, die dein Browser automatisch mitschickt: IP-Adresse, Datum und Uhrzeit, aufgerufene Adresse, Browser und Betriebssystem sowie die zuvor besuchte Seite. GitHub nutzt diese Daten, um die Seite auszuliefern und den Dienst abzusichern. Wir selbst haben keinen Zugriff auf diese Protokolle.
-- Z. 48: Rechtsgrundlage ist unser berechtigtes Interesse an einer sicheren und zuverlässigen Bereitstellung (Art. 6 Abs. 1 lit. f DSGVO). Dabei können Daten in die USA übermittelt werden. GitHub ist unter dem EU-US Data Privacy Framework zertifiziert, für das die EU-Kommission ein angemessenes Datenschutzniveau festgestellt hat (Art. 45 DSGVO). Mehr dazu in der Datenschutzerklärung von GitHub .
-- Z. 50: Speicherung auf deinem Gerät
-- Z. 51: Damit Manna funktioniert und auch offline läuft, speichert die App Daten im Speicher deines Browsers (Local Storage, IndexedDB und ein Offline-Speicher für die App-Dateien). Dazu gehören deine Spielbretter, Vorlagen, eigenen Spiele, Spielstände und Einstellungen. Diese Daten verlassen dein Gerät nicht und werden nicht an uns oder andere übertragen.
-- Z. 52: Diese Speicherung ist unbedingt erforderlich, damit wir dir die von dir gewünschten Funktionen bereitstellen können. Eine Einwilligung ist dafür nicht nötig (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst alles jederzeit löschen, indem du die Websitedaten für manna-games.de in deinem Browser löschst. Damit sind deine Inhalte aber unwiderruflich weg. Sichere sie vorher über den Export in Manna.
-- Z. 54: Export, Sicherung und Teilen
-- Z. 55: Wenn du Inhalte exportierst, sicherst oder teilst, erzeugt Manna eine Datei oder kopiert den Inhalt in deine Zwischenablage. Das passiert nur, wenn du es selbst auslöst, und vollständig auf deinem Gerät. Wohin du die Datei danach schickst, entscheidest du.
-- Z. 57: Kontakt per E-Mail
-- Z. 58: Wenn du uns schreibst, verwenden wir deine Angaben nur, um deine Anfrage zu beantworten (Art. 6 Abs. 1 lit. f DSGVO). Wir löschen sie, sobald sie dafür nicht mehr gebraucht werden und keine gesetzlichen Aufbewahrungspflichten bestehen.
-- Z. 60: Bereich für die Pflege der Spielesammlung
-- Z. 61: Unter manna-games.de/editor/ liegt ein Werkzeug, mit dem wir die Spielesammlung pflegen. Es ist nur für uns bestimmt und verbindet sich mit GitHub. Beim normalen Benutzen von Manna wird es nicht verwendet.
-- Z. 63: Deine Rechte
-- Z. 64: Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21). Schreib uns dafür eine E-Mail. Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren (Art. 77 DSGVO), zum Beispiel bei der deines Bundeslandes.
-- Z. 66: Änderungen
-- Z. 67: Wenn Manna neue Funktionen bekommt, die Daten anders verarbeiten, zum Beispiel ein Konto, passen wir diese Erklärung vorher an.
-- Z. 71: Weitere Hinweise
-- Z. 73: Urheberrecht
-- Z. 74: Die App, ihre Gestaltung und die Inhalte der Spielesammlung sind urheberrechtlich geschützt. © folgt . Alle Rechte vorbehalten. Der Quellcode ist öffentlich einsehbar, das ist aber keine Erlaubnis, ihn zu übernehmen oder weiterzuverbreiten.
-- Z. 75: Die Spiele aus der Spielesammlung darfst du für deine eigene Gruppen- und Jugendarbeit nutzen und dafür ausdrucken. Sie anderswo zu veröffentlichen oder weiterzuverbreiten, ist nur mit unserer Erlaubnis gestattet.
-- Z. 77: Deine eigenen Inhalte
-- Z. 78: Was du selbst in Manna erstellst, gehört dir. Wenn du fremde Texte, Bilder, Lieder oder andere Werke einbaust und vor einer Gruppe zeigst, achte bitte selbst auf die Rechte daran.
-- Z. 80: Spiele und Aufsicht
-- Z. 81: Die Spiele und Anleitungen sind sorgfältig zusammengestellt, aber ohne Gewähr. Für die Durchführung, die Sicherheit der Teilnehmenden und die Aufsichtspflicht ist die Leitung vor Ort verantwortlich. Passe Spiele an Alter, Gruppe und Raum an und achte darauf, dass niemand bloßgestellt wird.
-- Z. 83: Haftung
-- Z. 84: Wir stellen Manna sorgfältig und kostenlos zur Verfügung, können aber nicht garantieren, dass es jederzeit fehlerfrei und erreichbar ist. Für Inhalte externer Seiten, auf die wir verlinken, sind deren Betreiber verantwortlich.
-- Z. 87: ← Zurück zu Manna
+- Z. 28: Manna — Lukas Harder
+- Z. 29: c/o Online-Impressum 13408
+- Z. 30: Europaring 90
+- Z. 31: 53757 Sankt Augustin
+- Z. 32: Deutschland
+- Z. 34: E-Mail: kontakt@manna-games.de
+- Z. 35: Manna ist ein privates Projekt und kostenlos.
+- Z. 39: Datenschutz
+- Z. 41: Kurz gesagt
+- Z. 42: Manna braucht kein Konto, setzt keine Cookies, nutzt keine Analyse- oder Werbedienste und lädt nichts von fremden Servern nach. Was du in Manna eingibst, also Spielbretter, Vorlagen, eigene Spiele und Spielstände, bleibt in deinem Browser auf deinem Gerät. Davon bekommen wir nichts mit.
+- Z. 44: Verantwortlich
+- Z. 45: Verantwortlich im Sinne der Datenschutz-Grundverordnung (DSGVO) ist die im Impressum genannte Person.
+- Z. 47: Bereitstellung der Seite (Hosting)
+- Z. 48: Manna wird über GitHub Pages bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Beim Aufruf der Seite verarbeitet GitHub technisch notwendige Daten, die dein Browser automatisch mitschickt: IP-Adresse, Datum und Uhrzeit, aufgerufene Adresse, Browser und Betriebssystem sowie die zuvor besuchte Seite. GitHub nutzt diese Daten, um die Seite auszuliefern und den Dienst abzusichern. Wir selbst haben keinen Zugriff auf diese Protokolle.
+- Z. 49: Rechtsgrundlage ist unser berechtigtes Interesse an einer sicheren und zuverlässigen Bereitstellung (Art. 6 Abs. 1 lit. f DSGVO). Dabei können Daten in die USA übermittelt werden. GitHub ist unter dem EU-US Data Privacy Framework zertifiziert, für das die EU-Kommission ein angemessenes Datenschutzniveau festgestellt hat (Art. 45 DSGVO). Mehr dazu in der Datenschutzerklärung von GitHub .
+- Z. 51: Speicherung auf deinem Gerät
+- Z. 52: Damit Manna funktioniert und auch offline läuft, speichert die App Daten im Speicher deines Browsers (Local Storage, IndexedDB und ein Offline-Speicher für die App-Dateien). Dazu gehören deine Spielbretter, Vorlagen, eigenen Spiele, Spielstände und Einstellungen. Diese Daten verlassen dein Gerät nicht und werden nicht an uns oder andere übertragen.
+- Z. 53: Diese Speicherung ist unbedingt erforderlich, damit wir dir die von dir gewünschten Funktionen bereitstellen können. Eine Einwilligung ist dafür nicht nötig (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst alles jederzeit löschen, indem du die Websitedaten für manna-games.de in deinem Browser löschst. Damit sind deine Inhalte aber unwiderruflich weg. Sichere sie vorher über den Export in Manna.
+- Z. 55: Export, Sicherung und Teilen
+- Z. 56: Wenn du Inhalte exportierst, sicherst oder teilst, erzeugt Manna eine Datei oder kopiert den Inhalt in deine Zwischenablage. Das passiert nur, wenn du es selbst auslöst, und vollständig auf deinem Gerät. Wohin du die Datei danach schickst, entscheidest du.
+- Z. 58: Kontakt per E-Mail
+- Z. 59: Wenn du uns schreibst, verwenden wir deine Angaben nur, um deine Anfrage zu beantworten (Art. 6 Abs. 1 lit. f DSGVO). Wir löschen sie, sobald sie dafür nicht mehr gebraucht werden und keine gesetzlichen Aufbewahrungspflichten bestehen.
+- Z. 61: Bereich für die Pflege der Spielesammlung
+- Z. 62: Unter manna-games.de/editor/ liegt ein Werkzeug, mit dem wir die Spielesammlung pflegen. Es ist nur für uns bestimmt und verbindet sich mit GitHub. Beim normalen Benutzen von Manna wird es nicht verwendet.
+- Z. 64: Deine Rechte
+- Z. 65: Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21). Schreib uns dafür eine E-Mail. Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren (Art. 77 DSGVO), zum Beispiel bei der deines Bundeslandes.
+- Z. 67: Änderungen
+- Z. 68: Wenn Manna neue Funktionen bekommt, die Daten anders verarbeiten, zum Beispiel ein Konto, passen wir diese Erklärung vorher an.
+- Z. 72: Weitere Hinweise
+- Z. 74: Urheberrecht
+- Z. 75: Die App, ihre Gestaltung und die Inhalte der Spielesammlung sind urheberrechtlich geschützt. © Lukas Harder. Alle Rechte vorbehalten. Der Quellcode ist öffentlich einsehbar, das ist aber keine Erlaubnis, ihn zu übernehmen oder weiterzuverbreiten.
+- Z. 76: Die Spiele aus der Spielesammlung darfst du für deine eigene Gruppen- und Jugendarbeit nutzen und dafür ausdrucken. Sie anderswo zu veröffentlichen oder weiterzuverbreiten, ist nur mit unserer Erlaubnis gestattet.
+- Z. 78: Deine eigenen Inhalte
+- Z. 79: Was du selbst in Manna erstellst, gehört dir. Wenn du fremde Texte, Bilder, Lieder oder andere Werke einbaust und vor einer Gruppe zeigst, achte bitte selbst auf die Rechte daran.
+- Z. 81: Spiele und Aufsicht
+- Z. 82: Die Spiele und Anleitungen sind sorgfältig zusammengestellt, aber ohne Gewähr. Für die Durchführung, die Sicherheit der Teilnehmenden und die Aufsichtspflicht ist die Leitung vor Ort verantwortlich. Passe Spiele an Alter, Gruppe und Raum an und achte darauf, dass niemand bloßgestellt wird.
+- Z. 84: Haftung
+- Z. 85: Wir stellen Manna sorgfältig und kostenlos zur Verfügung, können aber nicht garantieren, dass es jederzeit fehlerfrei und erreichbar ist. Für Inhalte externer Seiten, auf die wir verlinken, sind deren Betreiber verantwortlich.
+- Z. 88: ← Zurück zu Manna
 
 ## editor/index.html
 
@@ -408,12 +408,12 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 186: Tipp: Speichere ein fertiges Spielbrett als Vorlage und exportiere es. Die Datei kannst du über „Vorlagen importieren“ wieder einfügen.
 - Z. 193: Achtung: Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.
 - Z. 213: ……
-- Z. 221: ← Zurück zum Spiel
-- Z. 221: ← Pädagogischer Kram
-- Z. 223: …
-- Z. 224: ……
-- Z. 246: Spiel jetzt beenden? … … noch offen. Danach kommt die Siegerehrung.
-- Z. 246: Spiel beenden und Siegerehrung zeigen?
+- Z. 225: ← Zurück zum Spiel
+- Z. 225: ← Pädagogischer Kram
+- Z. 227: …
+- Z. 228: ………
+- Z. 250: Spiel jetzt beenden? … … noch offen. Danach kommt die Siegerehrung.
+- Z. 250: Spiel beenden und Siegerehrung zeigen?
 
 ## js/zuschauer.js
 
@@ -430,22 +430,36 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 
 ## js/sammlung.js
 
-- Z. 47: ab … Personen
-- Z. 47: …–… Personen
-- Z. 48: drinnen und draußen
-- Z. 76: Die Spiele konnten nicht geladen werden. Öffne die Spielesammlung noch einmal, sobald du Internet hast.
-- Z. 76: Spiele werden geladen …
-- Z. 82: ★
-- Z. 91: …
-- Z. 92: …
-- Z. 100: ……
-- Z. 111: …${g.phasen.length>=MannaSpiel.PHASEN.length?'Alle Gruppenphasen':MannaSpiel.PHASEN.filter(x=>g.phasen.includes(x.id)).map(x=>
-- Z. 113: Kein Material nötig.
-- Z. 115: So geht’s
-- Z. 117: Pädagogische Gedanken…
-- Z. 118: Fragen zum Nachgespräch…
-- Z. 119: Gefahren und Risiken…
-- Z. 120: Tipp…
+- Z. 49: ab … Personen
+- Z. 49: …–… Personen
+- Z. 50: drinnen und draußen
+- Z. 64: …: …
+- Z. 65: So geht’s
+- Z. 67: Pädagogische Gedanken
+- Z. 68: Fragen zum Nachgespräch
+- Z. 150: …
+- Z. 150: …
+- Z. 184: Filter (… aktiv)
+- Z. 186: 1 ähnliches Spiel
+- Z. 186: ähnliche Spiele
+- Z. 191: Die Spiele konnten nicht geladen werden. Öffne die Spielesammlung noch einmal, sobald du Internet hast.
+- Z. 191: Spiele werden geladen …
+- Z. 192: Kein Spiel gefunden für „…“. Prüf die Schreibweise oder versuch ein anderes Wort.
+- Z. 193: Kein Spiel gefunden für „…“, solange die Filter aktiv sind.
+- Z. 201: ★
+- Z. 202: Gefunden in …: …
+- Z. 211: …, wenn du die Filter zurücksetzt.
+- Z. 212: Filter zurücksetzen
+- Z. 230: …
+- Z. 231: …
+- Z. 239: ……
+- Z. 250: …${g.phasen.length>=MannaSpiel.PHASEN.length?'Alle Gruppenphasen':MannaSpiel.PHASEN.filter(x=>g.phasen.includes(x.id)).map(x=>
+- Z. 252: Kein Material nötig.
+- Z. 254: So geht’s
+- Z. 256: Pädagogische Gedanken…
+- Z. 257: Fragen zum Nachgespräch…
+- Z. 258: Gefahren und Risiken…
+- Z. 259: Tipp…
 
 ## js/countdown.js
 
@@ -505,178 +519,181 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 
 ## js/data.js
 
-- Z. 9: Neuer Bereich „Pädagogischer Kram“ mit dem Artikel „Gruppenphasen“
-- Z. 11: Neue Abschnitte „Pädagogische Gedanken“ und „Fragen zum Nachgespräch“ bei den Spielen
-- Z. 12: Zurück-Knöpfe jetzt auch oben auf jeder Seite
-- Z. 13: Die Spielesammlung steht jetzt an erster Stelle, und Überschriften passen auch aufs Handy
-- Z. 16: Neue Seite „Gameshows“: Der große Preis, Eigenes Spiel und Countdown sind jetzt dort zusammengefasst
-- Z. 24: Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast
-- Z. 26: Neuer Knopf „Zufälliges Spiel“ in der Spielesammlung
-- Z. 27: Manna bittet den Browser, deine gespeicherten Spiele nicht von selbst zu löschen
-- Z. 28: Neue Spiele erscheinen jetzt beim Öffnen der Spielesammlung, ohne dass Manna neu gestartet werden muss
-- Z. 31: Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite
-- Z. 33: Anleitungen zeigen Aufzählungszeichen und Nummern nur noch dort, wo du sie selbst gesetzt hast
-- Z. 36: Neu auf der Startseite: eine kurze Erklärung, was Manna kann, mit Link zur Vision
-- Z. 37: Neue Screenshots auf der Startseite: Der große Preis, Eigenes Spiel, Countdown und Spielesammlung
-- Z. 38: Der große Preis, Eigenes Spiel und Countdown gibt es vorerst nur am Laptop oder PC. Auf Handy und Tablet kommt ein Hinweis, die Spielesammlung bleibt dort nutzbar
-- Z. 41: Spielesammlung verschlankt: „Spiel erstellen“ und „Spiel einsenden“ gibt es nicht mehr
-- Z. 43: Die Sicherung enthält keine selbst erstellten Sammlungsspiele mehr. Ältere Sicherungen lassen sich weiter einspielen
-- Z. 49: Spielesammlung: neuer Knopf „Spiel erstellen“ mit Eingabemaske für alle Angaben eines Spiels
-- Z. 50: Eigene Spiele erscheinen sofort in der Sammlung, markiert als „eigenes“, und lassen sich bearbeiten und löschen
-- Z. 51: „Spiel einsenden“ öffnet eine fertige E-Mail. Eingesendete Spiele werden geprüft und kommen dann für alle in die Sammlung
-- Z. 52: Die Sicherung enthält jetzt auch selbst erstellte Spiele
-- Z. 56: Die Startseite und die Zuschaueransicht im Startmenü zeigen jetzt das Manna-Logo
-- Z. 57: Sicherungen und Exporte heißen jetzt „manna-…“, alte Dateien lassen sich weiter einspielen
-- Z. 61: Eigene Spiele anlegen mit Gruppen, frei wählbarer Rundenzahl und Punktevergabe (gleich viele pro Runde oder jede Runde einen mehr, nur Sieger oder mehrere Plätze)
-- Z. 62: Jede Runde hat eine Titelfolie und eine Erklärung, dazu beliebig viele weitere Folien mit Text und Bild
-- Z. 63: Punkte live zählen, immer sichtbar oben auf dem Bildschirm, mit Rückgängig und Siegerehrung am Ende
-- Z. 65: Die Sicherung enthält jetzt auch die eigenen Spiele
-- Z. 69: Zeit per Schnellauswahl oder Plus/Minus einstellen, Start, Pause und Zurücksetzen
-- Z. 70: Mit Zuschaueransicht: Der Beamer zeigt erst nur den Hintergrund, dann den Countdown und am Ende „Zeit vorbei!“
-- Z. 73: Spielesammlung: neuer Bereich „Gefahren und Risiken“ bei jedem Spiel
-- Z. 79: Neu auf der Startseite: Spielesammlung mit Filtern für Alter, Personenzahl, drinnen/draußen und Material
-- Z. 80: Detailseite für jedes Spiel mit Ablauf, Material, Varianten und Tipp
-- Z. 84: Startseite heißt jetzt „Die Spiele“
-- Z. 86: Neue Bereiche „Genau das, was du brauchst!“ und „Unsere Vision“
-- Z. 87: „So funktioniert\'s“ erklärt die Zuschaueransicht am Laptop
-- Z. 88: Neu im Spielmenü: „Erklärung“ mit Spielablauf, Feldtypen, Sonderregeln und Tipps fürs Spielleiten
-- Z. 92: Sicherung: Hinweis im Spielmenü, wenn Änderungen noch nicht als Datei gesichert sind
-- Z. 93: Sicherung erstellen und einspielen unter „Einstellungen“ – enthält Spielbrett und alle eigenen Vorlagen
-- Z. 96: Technisch aufgeräumt: Code in übersichtliche Dateien aufgeteilt, alte Reste entfernt
-- Z. 97: Automatische Tests prüfen jede neue Version
-- Z. 100: Neue Siegerehrung: Treppchen aus Pappe, Platz 3, 2 und 1 werden nacheinander enthüllt, der Sieger mit Trommelwirbel
-- Z. 101: Mit Zuschaueransicht siehst du bei der Siegerehrung nur den Knopf „Zurück zum Startmenü“
-- Z. 102: Spielmenü aufgeräumt: „Vorlagen“ und „Einstellungen“ als eigene Unterseiten, keine Untertitel mehr
-- Z. 103: „Neues Spiel mit aktuellem Spielbrett“ und „Neues Spiel mit leerem Spielbrett“
-- Z. 104: Keine Emojis mehr – Knöpfe mit schlichten Symbolen
-- Z. 105: Kräftigere Schrift statt Schreibmaschine und Handschrift
-- Z. 113: Anleitung auf der Startseite: in vier Schritten vom Spielbrett bis zum Beamer, dazu alle Feldtypen erklärt
-- Z. 116: Neu: Spiel vorzeitig beenden mit Siegerehrung – über die Zielflagge oben links im Spiel oder im Spielmenü
-- Z. 117: Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer
-- Z. 120: Neues Design: Collage-Look mit Zeitungsschnipseln, Papier und Klebeband – ruhiger und entspannter
-- Z. 121: Überschriften wie aus ausgeschnittenen Buchstaben zusammengeklebt
-- Z. 122: Gedämpfte Gruppenfarben statt Neon (bestehende Standardfarben werden automatisch angepasst)
-- Z. 126: Fragen öffnen sich als Fenster – das Kreuz oben rechts schließt sie (Feld bleibt offen)
-- Z. 127: Keine Schriften mehr von Google-Servern – besser für Datenschutz und offline
-- Z. 130: Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer
-- Z. 131: Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“
-- Z. 132: Changelog hat jetzt ein Kreuz zum Schließen (auch Tippen daneben schließt)
-- Z. 135: Versionsnummer unten im Menü – antippen öffnet den Changelog
-- Z. 136: Aufgaben bekommen eine eigene Intro-Animation („AUFGABE!“)
-- Z. 137: Nach Aufgaben und ACTION-Feldern gibt es eine Ergebnis-Animation: „GESCHAFFT!“, „GEWONNEN!“ oder „LEIDER NICHT!“
-- Z. 138: Multiple Choice: Antwort antippen loggt sie ein (änderbar), „Auflösen“ deckt sie mit Trommelwirbel auf
-- Z. 139: Eigene Vorlagen: aktuelles Spielbrett als Vorlage speichern, Vorlagen löschen, als Datei exportieren und wieder importieren
-- Z. 140: Gelöschte Standard-Vorlagen lassen sich wiederherstellen
-- Z. 141: Menü aufgeräumt: „Spielbrett bearbeiten“ und „Zuschaueransicht“ unter „Einstellungen“
-- Z. 144: Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer
-- Z. 145: Sobald die Zuschaueransicht verbunden ist, siehst nur du die Lösungen – wird sie geschlossen, verhält sich die App wieder wie gespiegelt
-- Z. 148: Neues Startmenü: erst das Spiel auswählen, dann Weiterspielen, Neues Spiel, Leeres Spiel oder eine Vorlage
-- Z. 149: Vorlagen: „Gemischtes Quiz“ und neu „Bibel-Quiz“
-- Z. 150: Zwei-Bildschirm-Modus: Der Beamer zeigt nur die Show, du siehst Lösungen, richtige MC-Antwort und alle Knöpfe vorab
-- Z. 151: Zuschaueransicht mit Startbild („Gleich geht\'s los!“), ACTION-Animation, Punkte-Animation und Siegerehrung
-- Z. 152: Bei Schätzfragen sieht der Beamer nur „abgegeben“, bis du auflöst
-- Z. 153: Haus-Knopf im Spiel führt zurück ins Menü
-- Z. 156: Neue Fragetypen: Klassisch, Multiple Choice und Schätzfrage
-- Z. 157: Multiple Choice: bis zu 4 Antworten (A–D). Antippen zeigt sofort richtig (grün) oder falsch (rot)
-- Z. 158: Schätzfrage: Jede Gruppe trägt ihre Zahl ein, „Auflösen“ zeigt die Lösung und markiert automatisch die Gruppe, die am nächsten dran ist (bei Gleichstand mehrere)
-- Z. 159: Beispielbrett: Schätzen-Kategorie als Schätzfragen, zwei Multiple-Choice-Fragen in Allgemeinwissen
-- Z. 162: Aufgabe & ACTION: nur noch Text mit Erklärung, ohne Lösung oder Hinweis
-- Z. 163: Aufgabe: Punkte nur für die Gruppe, die dran ist (keine halbe Punktzahl für andere)
-- Z. 164: ACTION: Alle Gruppen spielen mit, du wählst den Gewinner (auch mehrere bei Gleichstand), jede Gewinner-Gruppe bekommt die volle Punktzahl
-- Z. 165: Halbe Punktzahl für eine andere Gruppe gibt es nur noch bei Fragen
-- Z. 168: Läuft jetzt über GitHub Pages und als App auf dem Home-Bildschirm – auch komplett offline
-- Z. 170: Changelog in den Einstellungen und „Was ist neu“-Hinweis nach einem Update
-- Z. 171: Neu: „Halbe Punktzahl für …“ – eine andere Gruppe bekommt die halben Punkte
-- Z. 172: Neu: Feldtyp ACTION mit Überraschungs-Animation beim Aufdecken
-- Z. 174: Beispielbrett nur noch mit Fragen (ohne Spiele/Aufgaben)
-- Z. 177: Erste Version: Spielbrett mit 5 Kategorien, Live-Punktestand, Gruppen, Fragen & Aufgaben, Siegerehrung
-- Z. 190: Der große Preis
-- Z. 190: Allgemeinwissen, Bibel, Sport, Schätzen, Natur & Tiere – mit allen Fragetypen
-- Z. 193: Wie viele Beine hat eine Spinne?
-- Z. 194: Wie heißt die Hauptstadt von Australien?
-- Z. 195: Wie viele Bundesländer hat Deutschland?
-- Z. 196: Welches chemische Element hat das Symbol „Au“?
-- Z. 197: In welchem Jahr fiel die Berliner Mauer?
-- Z. 199: Wer baute die Arche?
-- Z. 200: Wie viele Jünger hatte Jesus?
-- Z. 201: In welcher Stadt wurde Jesus geboren?
-- Z. 202: Wie hieß der Riese, den David besiegt hat?
-- Z. 203: Wie viele Bücher hat die Bibel (evangelische Ausgabe)?
-- Z. 205: Wie viele Spieler hat eine Fußballmannschaft auf dem Feld?
-- Z. 206: Wie oft wurde die deutsche Männer-Nationalmannschaft Fußball-Weltmeister?
-- Z. 207: Wie lang ist ein Marathon?
-- Z. 208: In welcher Sportart gibt es einen „Birdie“?
-- Z. 209: In welcher deutschen Stadt fanden 1972 die Olympischen Sommerspiele statt?
-- Z. 211: Wie viele Minuten hat ein Tag?
-- Z. 212: Wie hoch ist der Eiffelturm (in Metern)?
-- Z. 213: Wie viele Millionen Einwohner hat Deutschland?
-- Z. 214: Wie viele Knochen hat ein erwachsener Mensch?
-- Z. 215: Wie viele Kilometer ist der Mond von der Erde entfernt?
-- Z. 216: Natur & Tiere
-- Z. 217: Welches ist das größte Säugetier der Welt?
-- Z. 218: Wie nennt man ein Känguru-Baby?
-- Z. 219: Wie viele Herzen hat ein Oktopus?
-- Z. 220: Welcher Planet ist der Sonne am nächsten?
-- Z. 221: Welches Tier schläft bis zu 22 Stunden am Tag?
-- Z. 223: Der große Bibel-Preis
-- Z. 223: Altes & Neues Testament, Personen, Wunder & Gleichnisse, Bibel-Schätzfragen
-- Z. 226: Wer baute die Arche?
-- Z. 227: An wie vielen Tagen erschuf Gott die Welt, bevor er am siebten Tag ruhte?
-- Z. 228: Wer führte das Volk Israel aus Ägypten?
-- Z. 229: Wie hieß die Frau von Abraham?
-- Z. 230: Wie viele Plagen kamen über Ägypten?
-- Z. 232: In welcher Stadt wurde Jesus geboren?
-- Z. 233: Wie viele Jünger hatte Jesus?
-- Z. 234: Wie viele Evangelien gibt es im Neuen Testament?
-- Z. 235: Welcher Jünger hat Jesus verraten?
-- Z. 236: Wie heißt das letzte Buch der Bibel?
-- Z. 238: Wer besiegte den Riesen Goliat?
-- Z. 239: Wie hieß der Bruder von Mose?
-- Z. 240: Wer war der erste König Israels?
-- Z. 241: Welcher Jünger ging Jesus auf dem Wasser entgegen?
-- Z. 242: Wie hieß der Zöllner, der auf einen Baum kletterte, um Jesus zu sehen?
-- Z. 243: Wunder & Gleichnisse
-- Z. 244: Was verwandelte Jesus bei der Hochzeit zu Kana?
-- Z. 245: Wie viele Brote hatte Jesus bei der Speisung der Fünftausend?
-- Z. 246: Welche Tiere hütete der verlorene Sohn, als es ihm ganz schlecht ging?
-- Z. 247: Welchen Freund weckte Jesus nach vier Tagen im Grab wieder auf?
-- Z. 248: In welchem Gleichnis hilft ein Mann einem Überfallenen, an dem andere vorbeigegangen sind?
-- Z. 250: Wie viele Bücher hat die Bibel (evangelische Ausgabe)?
-- Z. 251: Wie viele Tage und Nächte regnete es bei der Sintflut?
-- Z. 252: Wie viele Psalmen gibt es?
-- Z. 253: Wie viele Männer wurden bei der Speisung mit fünf Broten und zwei Fischen satt?
-- Z. 254: Wie alt wurde Methusalem laut Bibel?
-- Z. 256: Der große Weihnachtspreis
-- Z. 256: Weihnachtsgeschichte, Weihnachten weltweit, Klassiker, Plätzchen & Co., Schätzfragen
-- Z. 259: Wie hießen die Eltern von Jesus?
-- Z. 260: In welcher Stadt wurde Jesus geboren?
-- Z. 261: Wem erschienen die Engel in der Weihnachtsnacht auf dem Feld?
-- Z. 262: Was brachten die Weisen aus dem Morgenland mit?
-- Z. 262: Brot, Wein und Öl
-- Z. 263: In welchen zwei Evangelien wird die Geburt Jesu erzählt?
-- Z. 263: Matthäus und Lukas
-- Z. 265: An welchem Tag ist in Deutschland Heiligabend?
-- Z. 266: Wie heißt der Weihnachtsmann in Großbritannien?
-- Z. 267: In welchem Land isst man an Weihnachten traditionell gern Fast-Food-Hähnchen?
-- Z. 268: Welche Stadt in Finnland gilt als Wohnort des Weihnachtsmanns?
-- Z. 269: In welchem Land bringt die Hexe Befana am 6. Januar Geschenke?
-- Z. 271: Wie heißt das Rentier mit der roten Nase?
-- Z. 272: In welchem Land wurde der Adventskranz erfunden?
-- Z. 273: Wer hat den Adventskranz erfunden?
-- Z. 274: Wer komponierte das Ballett „Der Nussknacker“?
-- Z. 275: Wie heißt der geizige Hauptcharakter in Charles Dickens’ „Eine Weihnachtsgeschichte“?
-- Z. 276: Plätzchen & Co.
-- Z. 277: Wie heißt das Weihnachtsgebäck mit Rosinen, für das Dresden berühmt ist?
-- Z. 278: Woraus besteht Marzipan hauptsächlich?
-- Z. 278: Nüssen und Honig
-- Z. 279: Wie heißt das heiße Getränk aus Rotwein und Gewürzen vom Weihnachtsmarkt?
-- Z. 280: Aus welcher Stadt kommen die berühmten Lebkuchen mit geschützter Herkunftsbezeichnung?
-- Z. 281: Was bedeutet das Wort „Advent“ übersetzt?
-- Z. 283: Wie viele Türchen hat ein klassischer Adventskalender?
-- Z. 284: Wie viele Strophen hatte „Stille Nacht, heilige Nacht“ im Original?
-- Z. 285: In welchem Jahr wurde „Stille Nacht, heilige Nacht“ zum ersten Mal gesungen?
-- Z. 286: Wie viele Kilometer sind es Luftlinie von Berlin nach Bethlehem?
-- Z. 287: Wie viele Sekunden hat der Heiligabend?
+- Z. 9: Neuer Artikel „Vier-Ohren-Modell“ bei „Pädagogischer Kram“
+- Z. 11: Impressum und Datenschutz sind jetzt vollständig
+- Z. 12: Mehr Sicherheit und unter der Haube aufgeräumt
+- Z. 15: Neuer Bereich „Pädagogischer Kram“ mit dem Artikel „Gruppenphasen“
+- Z. 17: Neue Abschnitte „Pädagogische Gedanken“ und „Fragen zum Nachgespräch“ bei den Spielen
+- Z. 18: Zurück-Knöpfe jetzt auch oben auf jeder Seite
+- Z. 19: Die Spielesammlung steht jetzt an erster Stelle, und Überschriften passen auch aufs Handy
+- Z. 22: Neue Seite „Gameshows“: Der große Preis, Eigenes Spiel und Countdown sind jetzt dort zusammengefasst
+- Z. 30: Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast
+- Z. 32: Neuer Knopf „Zufälliges Spiel“ in der Spielesammlung
+- Z. 33: Manna bittet den Browser, deine gespeicherten Spiele nicht von selbst zu löschen
+- Z. 34: Neue Spiele erscheinen jetzt beim Öffnen der Spielesammlung, ohne dass Manna neu gestartet werden muss
+- Z. 37: Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite
+- Z. 39: Anleitungen zeigen Aufzählungszeichen und Nummern nur noch dort, wo du sie selbst gesetzt hast
+- Z. 42: Neu auf der Startseite: eine kurze Erklärung, was Manna kann, mit Link zur Vision
+- Z. 43: Neue Screenshots auf der Startseite: Der große Preis, Eigenes Spiel, Countdown und Spielesammlung
+- Z. 44: Der große Preis, Eigenes Spiel und Countdown gibt es vorerst nur am Laptop oder PC. Auf Handy und Tablet kommt ein Hinweis, die Spielesammlung bleibt dort nutzbar
+- Z. 47: Spielesammlung verschlankt: „Spiel erstellen“ und „Spiel einsenden“ gibt es nicht mehr
+- Z. 49: Die Sicherung enthält keine selbst erstellten Sammlungsspiele mehr. Ältere Sicherungen lassen sich weiter einspielen
+- Z. 55: Spielesammlung: neuer Knopf „Spiel erstellen“ mit Eingabemaske für alle Angaben eines Spiels
+- Z. 56: Eigene Spiele erscheinen sofort in der Sammlung, markiert als „eigenes“, und lassen sich bearbeiten und löschen
+- Z. 57: „Spiel einsenden“ öffnet eine fertige E-Mail. Eingesendete Spiele werden geprüft und kommen dann für alle in die Sammlung
+- Z. 58: Die Sicherung enthält jetzt auch selbst erstellte Spiele
+- Z. 62: Die Startseite und die Zuschaueransicht im Startmenü zeigen jetzt das Manna-Logo
+- Z. 63: Sicherungen und Exporte heißen jetzt „manna-…“, alte Dateien lassen sich weiter einspielen
+- Z. 67: Eigene Spiele anlegen mit Gruppen, frei wählbarer Rundenzahl und Punktevergabe (gleich viele pro Runde oder jede Runde einen mehr, nur Sieger oder mehrere Plätze)
+- Z. 68: Jede Runde hat eine Titelfolie und eine Erklärung, dazu beliebig viele weitere Folien mit Text und Bild
+- Z. 69: Punkte live zählen, immer sichtbar oben auf dem Bildschirm, mit Rückgängig und Siegerehrung am Ende
+- Z. 71: Die Sicherung enthält jetzt auch die eigenen Spiele
+- Z. 75: Zeit per Schnellauswahl oder Plus/Minus einstellen, Start, Pause und Zurücksetzen
+- Z. 76: Mit Zuschaueransicht: Der Beamer zeigt erst nur den Hintergrund, dann den Countdown und am Ende „Zeit vorbei!“
+- Z. 79: Spielesammlung: neuer Bereich „Gefahren und Risiken“ bei jedem Spiel
+- Z. 85: Neu auf der Startseite: Spielesammlung mit Filtern für Alter, Personenzahl, drinnen/draußen und Material
+- Z. 86: Detailseite für jedes Spiel mit Ablauf, Material, Varianten und Tipp
+- Z. 90: Startseite heißt jetzt „Die Spiele“
+- Z. 92: Neue Bereiche „Genau das, was du brauchst!“ und „Unsere Vision“
+- Z. 93: „So funktioniert\'s“ erklärt die Zuschaueransicht am Laptop
+- Z. 94: Neu im Spielmenü: „Erklärung“ mit Spielablauf, Feldtypen, Sonderregeln und Tipps fürs Spielleiten
+- Z. 98: Sicherung: Hinweis im Spielmenü, wenn Änderungen noch nicht als Datei gesichert sind
+- Z. 99: Sicherung erstellen und einspielen unter „Einstellungen“ – enthält Spielbrett und alle eigenen Vorlagen
+- Z. 102: Technisch aufgeräumt: Code in übersichtliche Dateien aufgeteilt, alte Reste entfernt
+- Z. 103: Automatische Tests prüfen jede neue Version
+- Z. 106: Neue Siegerehrung: Treppchen aus Pappe, Platz 3, 2 und 1 werden nacheinander enthüllt, der Sieger mit Trommelwirbel
+- Z. 107: Mit Zuschaueransicht siehst du bei der Siegerehrung nur den Knopf „Zurück zum Startmenü“
+- Z. 108: Spielmenü aufgeräumt: „Vorlagen“ und „Einstellungen“ als eigene Unterseiten, keine Untertitel mehr
+- Z. 109: „Neues Spiel mit aktuellem Spielbrett“ und „Neues Spiel mit leerem Spielbrett“
+- Z. 110: Keine Emojis mehr – Knöpfe mit schlichten Symbolen
+- Z. 111: Kräftigere Schrift statt Schreibmaschine und Handschrift
+- Z. 119: Anleitung auf der Startseite: in vier Schritten vom Spielbrett bis zum Beamer, dazu alle Feldtypen erklärt
+- Z. 122: Neu: Spiel vorzeitig beenden mit Siegerehrung – über die Zielflagge oben links im Spiel oder im Spielmenü
+- Z. 123: Fehler behoben: Das Fenster „Was ist neu?“ nach einem Update war leer
+- Z. 126: Neues Design: Collage-Look mit Zeitungsschnipseln, Papier und Klebeband – ruhiger und entspannter
+- Z. 127: Überschriften wie aus ausgeschnittenen Buchstaben zusammengeklebt
+- Z. 128: Gedämpfte Gruppenfarben statt Neon (bestehende Standardfarben werden automatisch angepasst)
+- Z. 132: Fragen öffnen sich als Fenster – das Kreuz oben rechts schließt sie (Feld bleibt offen)
+- Z. 133: Keine Schriften mehr von Google-Servern – besser für Datenschutz und offline
+- Z. 136: Fehler behoben: Animationen liefen nicht mehr auf dem eigenen Gerät, sobald irgendwo eine Zuschaueransicht offen war – sie laufen jetzt immer
+- Z. 137: Eine Zuschaueransicht im Hintergrund-Tab zählt nicht mehr als „verbunden“
+- Z. 138: Changelog hat jetzt ein Kreuz zum Schließen (auch Tippen daneben schließt)
+- Z. 141: Versionsnummer unten im Menü – antippen öffnet den Changelog
+- Z. 142: Aufgaben bekommen eine eigene Intro-Animation („AUFGABE!“)
+- Z. 143: Nach Aufgaben und ACTION-Feldern gibt es eine Ergebnis-Animation: „GESCHAFFT!“, „GEWONNEN!“ oder „LEIDER NICHT!“
+- Z. 144: Multiple Choice: Antwort antippen loggt sie ein (änderbar), „Auflösen“ deckt sie mit Trommelwirbel auf
+- Z. 145: Eigene Vorlagen: aktuelles Spielbrett als Vorlage speichern, Vorlagen löschen, als Datei exportieren und wieder importieren
+- Z. 146: Gelöschte Standard-Vorlagen lassen sich wiederherstellen
+- Z. 147: Menü aufgeräumt: „Spielbrett bearbeiten“ und „Zuschaueransicht“ unter „Einstellungen“
+- Z. 150: Kein Umschalten mehr nötig: Die App startet in der Moderatoransicht, „Zuschaueransicht zeigen“ öffnet automatisch ein zweites Fenster für den Beamer
+- Z. 151: Sobald die Zuschaueransicht verbunden ist, siehst nur du die Lösungen – wird sie geschlossen, verhält sich die App wieder wie gespiegelt
+- Z. 154: Neues Startmenü: erst das Spiel auswählen, dann Weiterspielen, Neues Spiel, Leeres Spiel oder eine Vorlage
+- Z. 155: Vorlagen: „Gemischtes Quiz“ und neu „Bibel-Quiz“
+- Z. 156: Zwei-Bildschirm-Modus: Der Beamer zeigt nur die Show, du siehst Lösungen, richtige MC-Antwort und alle Knöpfe vorab
+- Z. 157: Zuschaueransicht mit Startbild („Gleich geht\'s los!“), ACTION-Animation, Punkte-Animation und Siegerehrung
+- Z. 158: Bei Schätzfragen sieht der Beamer nur „abgegeben“, bis du auflöst
+- Z. 159: Haus-Knopf im Spiel führt zurück ins Menü
+- Z. 162: Neue Fragetypen: Klassisch, Multiple Choice und Schätzfrage
+- Z. 163: Multiple Choice: bis zu 4 Antworten (A–D). Antippen zeigt sofort richtig (grün) oder falsch (rot)
+- Z. 164: Schätzfrage: Jede Gruppe trägt ihre Zahl ein, „Auflösen“ zeigt die Lösung und markiert automatisch die Gruppe, die am nächsten dran ist (bei Gleichstand mehrere)
+- Z. 165: Beispielbrett: Schätzen-Kategorie als Schätzfragen, zwei Multiple-Choice-Fragen in Allgemeinwissen
+- Z. 168: Aufgabe & ACTION: nur noch Text mit Erklärung, ohne Lösung oder Hinweis
+- Z. 169: Aufgabe: Punkte nur für die Gruppe, die dran ist (keine halbe Punktzahl für andere)
+- Z. 170: ACTION: Alle Gruppen spielen mit, du wählst den Gewinner (auch mehrere bei Gleichstand), jede Gewinner-Gruppe bekommt die volle Punktzahl
+- Z. 171: Halbe Punktzahl für eine andere Gruppe gibt es nur noch bei Fragen
+- Z. 174: Läuft jetzt über GitHub Pages und als App auf dem Home-Bildschirm – auch komplett offline
+- Z. 176: Changelog in den Einstellungen und „Was ist neu“-Hinweis nach einem Update
+- Z. 177: Neu: „Halbe Punktzahl für …“ – eine andere Gruppe bekommt die halben Punkte
+- Z. 178: Neu: Feldtyp ACTION mit Überraschungs-Animation beim Aufdecken
+- Z. 180: Beispielbrett nur noch mit Fragen (ohne Spiele/Aufgaben)
+- Z. 183: Erste Version: Spielbrett mit 5 Kategorien, Live-Punktestand, Gruppen, Fragen & Aufgaben, Siegerehrung
+- Z. 196: Der große Preis
+- Z. 196: Allgemeinwissen, Bibel, Sport, Schätzen, Natur & Tiere – mit allen Fragetypen
+- Z. 199: Wie viele Beine hat eine Spinne?
+- Z. 200: Wie heißt die Hauptstadt von Australien?
+- Z. 201: Wie viele Bundesländer hat Deutschland?
+- Z. 202: Welches chemische Element hat das Symbol „Au“?
+- Z. 203: In welchem Jahr fiel die Berliner Mauer?
+- Z. 205: Wer baute die Arche?
+- Z. 206: Wie viele Jünger hatte Jesus?
+- Z. 207: In welcher Stadt wurde Jesus geboren?
+- Z. 208: Wie hieß der Riese, den David besiegt hat?
+- Z. 209: Wie viele Bücher hat die Bibel (evangelische Ausgabe)?
+- Z. 211: Wie viele Spieler hat eine Fußballmannschaft auf dem Feld?
+- Z. 212: Wie oft wurde die deutsche Männer-Nationalmannschaft Fußball-Weltmeister?
+- Z. 213: Wie lang ist ein Marathon?
+- Z. 214: In welcher Sportart gibt es einen „Birdie“?
+- Z. 215: In welcher deutschen Stadt fanden 1972 die Olympischen Sommerspiele statt?
+- Z. 217: Wie viele Minuten hat ein Tag?
+- Z. 218: Wie hoch ist der Eiffelturm (in Metern)?
+- Z. 219: Wie viele Millionen Einwohner hat Deutschland?
+- Z. 220: Wie viele Knochen hat ein erwachsener Mensch?
+- Z. 221: Wie viele Kilometer ist der Mond von der Erde entfernt?
+- Z. 222: Natur & Tiere
+- Z. 223: Welches ist das größte Säugetier der Welt?
+- Z. 224: Wie nennt man ein Känguru-Baby?
+- Z. 225: Wie viele Herzen hat ein Oktopus?
+- Z. 226: Welcher Planet ist der Sonne am nächsten?
+- Z. 227: Welches Tier schläft bis zu 22 Stunden am Tag?
+- Z. 229: Der große Bibel-Preis
+- Z. 229: Altes & Neues Testament, Personen, Wunder & Gleichnisse, Bibel-Schätzfragen
+- Z. 232: Wer baute die Arche?
+- Z. 233: An wie vielen Tagen erschuf Gott die Welt, bevor er am siebten Tag ruhte?
+- Z. 234: Wer führte das Volk Israel aus Ägypten?
+- Z. 235: Wie hieß die Frau von Abraham?
+- Z. 236: Wie viele Plagen kamen über Ägypten?
+- Z. 238: In welcher Stadt wurde Jesus geboren?
+- Z. 239: Wie viele Jünger hatte Jesus?
+- Z. 240: Wie viele Evangelien gibt es im Neuen Testament?
+- Z. 241: Welcher Jünger hat Jesus verraten?
+- Z. 242: Wie heißt das letzte Buch der Bibel?
+- Z. 244: Wer besiegte den Riesen Goliat?
+- Z. 245: Wie hieß der Bruder von Mose?
+- Z. 246: Wer war der erste König Israels?
+- Z. 247: Welcher Jünger ging Jesus auf dem Wasser entgegen?
+- Z. 248: Wie hieß der Zöllner, der auf einen Baum kletterte, um Jesus zu sehen?
+- Z. 249: Wunder & Gleichnisse
+- Z. 250: Was verwandelte Jesus bei der Hochzeit zu Kana?
+- Z. 251: Wie viele Brote hatte Jesus bei der Speisung der Fünftausend?
+- Z. 252: Welche Tiere hütete der verlorene Sohn, als es ihm ganz schlecht ging?
+- Z. 253: Welchen Freund weckte Jesus nach vier Tagen im Grab wieder auf?
+- Z. 254: In welchem Gleichnis hilft ein Mann einem Überfallenen, an dem andere vorbeigegangen sind?
+- Z. 256: Wie viele Bücher hat die Bibel (evangelische Ausgabe)?
+- Z. 257: Wie viele Tage und Nächte regnete es bei der Sintflut?
+- Z. 258: Wie viele Psalmen gibt es?
+- Z. 259: Wie viele Männer wurden bei der Speisung mit fünf Broten und zwei Fischen satt?
+- Z. 260: Wie alt wurde Methusalem laut Bibel?
+- Z. 262: Der große Weihnachtspreis
+- Z. 262: Weihnachtsgeschichte, Weihnachten weltweit, Klassiker, Plätzchen & Co., Schätzfragen
+- Z. 265: Wie hießen die Eltern von Jesus?
+- Z. 266: In welcher Stadt wurde Jesus geboren?
+- Z. 267: Wem erschienen die Engel in der Weihnachtsnacht auf dem Feld?
+- Z. 268: Was brachten die Weisen aus dem Morgenland mit?
+- Z. 268: Brot, Wein und Öl
+- Z. 269: In welchen zwei Evangelien wird die Geburt Jesu erzählt?
+- Z. 269: Matthäus und Lukas
+- Z. 271: An welchem Tag ist in Deutschland Heiligabend?
+- Z. 272: Wie heißt der Weihnachtsmann in Großbritannien?
+- Z. 273: In welchem Land isst man an Weihnachten traditionell gern Fast-Food-Hähnchen?
+- Z. 274: Welche Stadt in Finnland gilt als Wohnort des Weihnachtsmanns?
+- Z. 275: In welchem Land bringt die Hexe Befana am 6. Januar Geschenke?
+- Z. 277: Wie heißt das Rentier mit der roten Nase?
+- Z. 278: In welchem Land wurde der Adventskranz erfunden?
+- Z. 279: Wer hat den Adventskranz erfunden?
+- Z. 280: Wer komponierte das Ballett „Der Nussknacker“?
+- Z. 281: Wie heißt der geizige Hauptcharakter in Charles Dickens’ „Eine Weihnachtsgeschichte“?
+- Z. 282: Plätzchen & Co.
+- Z. 283: Wie heißt das Weihnachtsgebäck mit Rosinen, für das Dresden berühmt ist?
+- Z. 284: Woraus besteht Marzipan hauptsächlich?
+- Z. 284: Nüssen und Honig
+- Z. 285: Wie heißt das heiße Getränk aus Rotwein und Gewürzen vom Weihnachtsmarkt?
+- Z. 286: Aus welcher Stadt kommen die berühmten Lebkuchen mit geschützter Herkunftsbezeichnung?
+- Z. 287: Was bedeutet das Wort „Advent“ übersetzt?
+- Z. 289: Wie viele Türchen hat ein klassischer Adventskalender?
+- Z. 290: Wie viele Strophen hatte „Stille Nacht, heilige Nacht“ im Original?
+- Z. 291: In welchem Jahr wurde „Stille Nacht, heilige Nacht“ zum ersten Mal gesungen?
+- Z. 292: Wie viele Kilometer sind es Luftlinie von Berlin nach Bethlehem?
+- Z. 293: Wie viele Sekunden hat der Heiligabend?
 
 ## js/artikel.js
 
@@ -693,6 +710,24 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 20: Was ich von mir zeige: Gefühle, Haltung, Befinden. Beim Satz „Die Tür ist offen.“ zum Beispiel: „Mir ist kalt.“ Wer auf diesem Ohr hört, fragt sich: Was ist mit der Person los?
 - Z. 21: Was ich von dir halte und wie wir zueinander stehen. Beim Satz „Die Tür ist offen.“ zum Beispiel: „Du denkst nie daran, sie zu schließen.“ Wer auf diesem Ohr hört, fühlt sich schnell angegriffen oder bestätigt.
 - Z. 22: Wozu ich dich bringen möchte. Beim Satz „Die Tür ist offen.“ zum Beispiel: „Mach sie bitte zu.“ Wer auf diesem Ohr hört, fragt sich: Was soll ich jetzt tun?
+- Z. 26: Wo Gruppen spielen, toben und unterwegs sind, kann immer etwas passieren. Gute Vorbereitung sorgt dafür, dass im Ernstfall niemand lange überlegen muss.
+- Z. 28: Was tun im Notfall?
+- Z. 28: Hier geht es um den Rahmen, den es für den Notfall braucht. Eine Anleitung zur Ersten Hilfe ersetzt das nicht, dafür gibt es Erste-Hilfe-Kurse.
+- Z. 30: Bei jeder Gruppenstunde und jeder Aktion sollte mindestens eine Person aus dem Team einen aktuellen Erste-Hilfe-Kurs haben. Für die Juleica muss der Kurs meist innerhalb der letzten zwei Jahre gemacht worden sein. Bei Kindergruppen ist ein Kurs „Erste Hilfe am Kind“ sinnvoll.
+- Z. 31: Welches Material sollte da sein?
+- Z. 31: - Ein vollständiger Verbandkasten, der regelmäßig geprüft wird (Ablaufdaten!)
+- Z. 31: - Kühlpacks
+- Z. 31: - Bei Ausflügen und Freizeiten: eine Erste-Hilfe-Tasche zum Mitnehmen
+- Z. 32: Wo ist das Material?
+- Z. 32: Alle im Team sollten wissen, wo Verbandkasten, Notfallnummern und Feuerlöscher sind, und wie man zur Not ins Gebäude und wieder hinaus kommt. Am besten zeigt man das jedem neuen Teammitglied einmal.
+- Z. 33: Wie reagiere ich im Notfall?
+- Z. 33: Ruhe bewahren und sich einen Überblick verschaffen. Die Unfallstelle absichern, sich selbst nicht in Gefahr bringen.
+- Z. 33: Eine Person kümmert sich um die verletzte Person, eine andere um den Rest der Gruppe. Die Gruppe wird beschäftigt und von der Unfallstelle weggebracht.
+- Z. 34: Wen kontaktiere ich?
+- Z. 34: - Notruf 112 bei allem, was ernst sein könnte. Wer anruft, beantwortet die Fragen der Leitstelle und legt nicht als Erstes auf.
+- Z. 34: - Ärztlicher Bereitschaftsdienst 116 117, wenn es nicht lebensbedrohlich ist, aber ein Arzt drauf schauen sollte.
+- Z. 34: - Die verantwortliche Person beim Träger, zum Beispiel Jugendreferent oder Gemeindeleitung.
+- Z. 34: Danach alles kurz aufschreiben: Was ist wann passiert, und was wurde gemacht? Das hilft, falls später Fragen kommen, zum Beispiel von der Versicherung.
 
 ## editor/editor.js
 

@@ -541,7 +541,6 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 .steps .note:nth-child(2){transform:rotate(.6deg);background:var(--grain-soft),#dfd9cd}
 .steps .note:nth-child(3){transform:rotate(-.5deg);background:var(--grain-soft),#ead8d2}
 .snum{position:absolute;top:14px;right:16px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--stamp);color:var(--stamp);font-family:var(--serif);font-weight:700;font-size:1.2rem;transform:rotate(8deg);opacity:.85}
-.note.why{background:var(--grain-soft),var(--marker);transform:rotate(.5deg);max-width:720px;margin:0 auto}
 .note.vision{max-width:720px;margin:0 auto;transform:rotate(-.6deg);padding:34px 34px 30px}
 .note.vision p{font-family:var(--serif);font-size:1.12rem;line-height:1.65;color:var(--ink)}
 /* Erklärung im Spielmenü */
@@ -647,8 +646,15 @@ body.viewer .end-actions{display:none}
   #btnFilterReset[style*="hidden"]{display:none}
 }
 .filters{background:var(--grain-soft),var(--paper);color:var(--ink);padding:20px 22px 12px;box-shadow:0 6px 16px #0006;border-radius:2px;transform:rotate(-.3deg)}
-.fgroup{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start;padding:8px 0;border-bottom:1px dashed #1d1d1b30}
+.fgroup{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:start;padding:8px 0;border-bottom:1px dashed #1d1d1b30}
 .fgroup:last-child{border-bottom:none}
+/* Breite Bildschirme: Ort und Material teilen sich eine Zeile, damit der Filterbereich kompakt bleibt */
+@media (min-width:860px){
+  .filters{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}
+  .fgroup{grid-column:1/-1}
+  .fgroup.f-ort,.fgroup.f-material{grid-column:auto}
+  .fgroup.f-material{grid-template-columns:auto 1fr}
+}
 .flabel{font-family:var(--strong);font-weight:700;padding-top:9px}
 .fchips{display:flex;flex-wrap:wrap;gap:8px}
 .fchip{font-family:var(--sans);font-weight:700;font-size:.95rem;color:var(--ink);background:#fbf8f1;border:2px solid #1d1d1b33;border-radius:2px;padding:.45em .9em;transition:background .12s,border-color .12s}
@@ -674,7 +680,9 @@ body.viewer .end-actions{display:none}
 .game-facts b{display:block;font-family:var(--strong);font-size:.8rem;color:var(--stamp);margin-bottom:2px}
 .game-notes{width:100%;display:grid;gap:34px}
 @media (max-width:720px){
-  .fgroup{grid-template-columns:1fr;gap:6px}
+  .fgroup{grid-template-columns:1fr;gap:6px;padding:7px 0}
+  .fchip{font-size:.9rem;padding:.38em .75em}
+  .fchips{gap:6px}
   .flabel{padding-top:0}
   .game-facts{grid-template-columns:1fr 1fr}
 }

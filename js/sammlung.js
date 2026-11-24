@@ -29,11 +29,12 @@ function toggleFav(id){const i=favs.indexOf(id);if(i>=0)favs.splice(i,1);else fa
 const FILTER_DEFS=[
   {key:'alter',label:'Alter',opts:()=>AGE_GROUPS.map(a=>({id:a.id,label:a.label}))},
   {key:'groesse',label:'Personen',opts:()=>SIZE_GROUPS.map(g=>({id:g.id,label:g.label}))},
+  {key:'phase',label:'Gruppenphase',opts:()=>MannaSpiel.PHASEN.map(x=>({id:x.id,label:x.label.replace(/sphase$|phase$/,'')}))},
   {key:'ort',label:'Ort',opts:()=>[{id:'drinnen',label:'Drinnen'},{id:'draussen',label:'Draußen'}]},
   {key:'material',label:'Material',opts:()=>[{id:'ohne',label:'Ohne Material'},{id:'mit',label:'Mit Material'}]},
   {key:'fav',label:'Favoriten',opts:()=>[{id:'nur',label:'Nur Favoriten'}]}
 ];
-let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[],fav:[]};
+let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[],phase:[],fav:[]};
   if(f&&typeof f==='object')Object.keys(e).forEach(k=>{if(Array.isArray(f[k]))e[k]=f[k];});return e;})();
 function saveFilter(){lsSet(FILTER_KEY,JSON.stringify(filter));}
 function gameMatches(g,f){
@@ -41,6 +42,7 @@ function gameMatches(g,f){
   if(f.groesse.length&&!f.groesse.some(id=>{const s=SIZE_GROUPS.find(x=>x.id===id);return s&&g.spieler.min<=s.max&&g.spieler.max>=s.min;}))return false;
   if(f.ort.length&&!f.ort.some(o=>g.ort.includes(o)))return false;
   if(f.material.length){const has=g.material.length>0;if(!f.material.some(m=>(m==='mit')===has))return false;}
+  if(f.phase&&f.phase.length&&!f.phase.some(p=>(g.phasen||[]).includes(p)))return false;
   if(f.fav&&f.fav.length&&!isFav(g.id))return false;
   return true;
 }
@@ -156,7 +158,7 @@ function renderColl(){
   ransom($('#collTitle'),'Spielesammlung');
   const box=$('#filters');box.innerHTML='';
   FILTER_DEFS.forEach(def=>{
-    const grp=document.createElement('div');grp.className='fgroup';
+    const grp=document.createElement('div');grp.className='fgroup f-'+def.key;
     const lab=document.createElement('span');lab.className='flabel';lab.textContent=def.label;grp.appendChild(lab);
     const wrap=document.createElement('div');wrap.className='fchips';
     def.opts().forEach(o=>{
@@ -212,6 +214,9 @@ function verstecktHinweis(n){
 }
 /* Suchfeld: filtert beim Tippen, × und Esc leeren, „/“ springt ins Feld */
 (()=>{const inp=$('#collSearch');if(!inp)return;
+  // Auf schmalen Bildschirmen passt das Beispiel nicht ins Feld
+  const langerText=inp.placeholder,mq=matchMedia('(max-width:520px)');
+  const ph=()=>{inp.placeholder=mq.matches?'Spiel suchen':langerText;};ph();mq.addEventListener&&mq.addEventListener('change',ph);
   inp.addEventListener('input',()=>{collQuery=inp.value;renderColl();});
   inp.addEventListener('keydown',e=>{if(e.key==='Escape'&&inp.value){e.preventDefault();e.stopPropagation();inp.value='';collQuery='';renderColl();}
     else if(e.key==='Enter'){e.preventDefault();if(collHits.length===1)openGame(collHits[0].id);else inp.blur();}});
