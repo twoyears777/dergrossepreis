@@ -209,6 +209,8 @@
 
   /* ---------- Formular ---------- */
   const lines = t => String(t || '').split('\n').map(s => s.trim()).filter(Boolean);
+  // freie Listen: jede Zeile so, wie sie eingegeben wurde (Zeichen nur, wenn selbst gesetzt)
+  const frei = t => lines(t).map(F.zeile).filter(Boolean);
   const items = t => lines(t).map(s => s.replace(/^\s*(?:[-*•–]|\d+[.)])\s+/, '').trim()).filter(Boolean);
   const chipVals = id => [...document.querySelectorAll('#' + id + ' .chip.on')].map(b => b.dataset.v);
 
@@ -242,19 +244,19 @@
     const r = g.rollen || {};
     return {
       name: g.name, kurz: g.kurz, alter: g.alter.slice(), min: String(g.spieler.min), max: g.spieler.max >= F.OHNE_MAX ? '' : String(g.spieler.max),
-      ort: g.ort.slice(), dauer: g.dauer || '', ablauf: F.ablaufZeilen(g).join('\n'), material: g.material.join('\n'),
-      varianten: (g.varianten || []).join('\n'), rollen: (r.liste || []).map(x => x.name + (x.text ? ': ' + x.text : '')).join('\n'),
+      ort: g.ort.slice(), dauer: g.dauer || '', ablauf: F.ablaufZeilen(g).join('\n'), material: F.zeilenVon(g, 'material').join('\n'),
+      varianten: F.zeilenVon(g, 'varianten').join('\n'), rollen: (r.liste || []).map(x => x.name + (x.text ? ': ' + x.text : '')).join('\n'),
       tabelle: r.tabelle ? [r.tabelle.kopf].concat(r.tabelle.zeilen).map(z => z.join(' | ')).join('\n') : '',
-      rollenHinweis: r.hinweis || '', risiken: (g.risiken || []).join('\n'), tipp: g.hinweis || ''
+      rollenHinweis: r.hinweis || '', risiken: F.zeilenVon(g, 'risiken').join('\n'), tipp: g.hinweis || ''
     };
   }
-  /* Formular -> Spiel. Texte bleiben, wie sie eingegeben wurden (nur Leerzeichen und Aufzählungszeichen weg). */
+  /* Formular -> Spiel. Texte bleiben, wie sie eingegeben wurden. Aufzählungszeichen nur, wo sie selbst gesetzt sind. */
   function gameFromValues(v) {
     const min = parseInt(v.min, 10), maxRaw = String(v.max).trim(), max = parseInt(maxRaw, 10);
     const g = {
       name: v.name.trim(), kurz: v.kurz.replace(/\s+/g, ' ').trim(), alter: v.alter, ort: v.ort,
       spieler: Number.isFinite(min) && min >= 1 && (!maxRaw || (Number.isFinite(max) && max >= min)) ? { min, max: maxRaw ? max : F.OHNE_MAX } : null,
-      material: items(v.material), dauer: v.dauer.trim(), ablauf: items(v.ablauf), ablaufZeilen: lines(v.ablauf).map(F.zeile).filter(Boolean), risiken: items(v.risiken)
+      material: items(v.material), materialZeilen: frei(v.material), dauer: v.dauer.trim(), ablauf: items(v.ablauf), ablaufZeilen: frei(v.ablauf), risiken: items(v.risiken), risikenZeilen: frei(v.risiken)
     };
     const rl = items(v.rollen).map(l => { const p = l.indexOf(':'); return p > 0 ? { name: l.slice(0, p).trim(), text: l.slice(p + 1).trim() } : { name: l, text: '' }; });
     const tz = lines(v.tabelle).map(l => l.split('|').map(c => c.trim()));
@@ -264,7 +266,7 @@
       if (tz.length) g.rollen.tabelle = { kopf: tz[0], zeilen: tz.slice(1) };
       if (rh) g.rollen.hinweis = rh;
     }
-    const va = items(v.varianten); if (va.length) g.varianten = va;
+    const va = items(v.varianten); if (va.length) { g.varianten = va; g.variantenZeilen = frei(v.varianten); }
     const tipp = v.tipp.replace(/\s+/g, ' ').trim(); if (tipp) g.hinweis = tipp;
     return g;
   }
@@ -312,7 +314,7 @@
     let h = '<h2>' + (g.name ? esc(g.name) : ph('Name')) + '</h2><p class="lead">' + (g.kurz ? esc(g.kurz) : ph('Kurzbeschreibung')) + '</p>' +
       '<ul class="facts"><li><b>Personen</b>' + (pers || ph('fehlt')) + '</li><li><b>Alter</b>' + (age ? esc(age) : ph('fehlt')) + '</li>' +
       '<li><b>Ort</b>' + (ort || ph('fehlt')) + '</li><li><b>Dauer</b>' + esc(g.dauer || 'keine Angabe') + '</li></ul>';
-    h += '<h3>Material</h3>' + (g.material.length ? list(g.material, 'ul') : '<p>Kein Material nötig.</p>');
+    h += '<h3>Material</h3>' + (g.material.length ? F.listeHtml(g, 'material', esc) : '<p>Kein Material nötig.</p>');
     if (g.rollen) {
       h += '<h3>Rollen</h3>';
       if (g.rollen.liste.length) h += '<dl>' + g.rollen.liste.map(r => '<dt>' + esc(r.name) + '</dt><dd>' + esc(r.text) + '</dd>').join('') + '</dl>';
@@ -321,8 +323,8 @@
       if (g.rollen.hinweis) h += '<p>' + esc(g.rollen.hinweis) + '</p>';
     }
     h += '<h3>So geht’s</h3>' + (g.ablauf.length ? F.ablaufHtml(g, esc) : '<p>' + ph('Ablauf fehlt') + '</p>');
-    if (g.varianten) h += '<h3>Varianten</h3>' + list(g.varianten, 'ul');
-    if (g.risiken.length) h += '<div class="risk"><h3>Gefahren und Risiken</h3>' + list(g.risiken, 'ul') + '</div>';
+    if (g.varianten) h += '<h3>Varianten</h3>' + F.listeHtml(g, 'varianten', esc);
+    if (g.risiken.length) h += '<div class="risk"><h3>Gefahren und Risiken</h3>' + F.listeHtml(g, 'risiken', esc) + '</div>';
     if (g.hinweis) h += '<div class="tip"><h3>Tipp</h3><p>' + esc(g.hinweis) + '</p></div>';
     $('#prevCard').innerHTML = h;
     $('#prevTxt').textContent = F.serialize(Object.assign({}, g, { spieler: g.spieler || { min: 1, max: F.OHNE_MAX } }));

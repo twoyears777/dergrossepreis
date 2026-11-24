@@ -103,7 +103,9 @@ def format_checks(m):
       return {fehler:p.fehler,g:p.spiel,again:F.serialize(p.spiel),slug:F.slug('Ächz Übung – Groß!'),
         bad:F.parse('Name: X').fehler.length,pers:F.parse(t.replace('ab 5','8 bis 15')).spiel.spieler,
         palermo:F.parse(F.serialize(F.parse(t+'\nRollen-Tabelle:\nA | B\n1 | 2\n').spiel)).spiel.rollen,
-        html:F.ablaufHtml(p.spiel,x=>x),alt:F.ablaufHtml({ablauf:['A','B']},x=>x)}})()""")
+        html:F.ablaufHtml(p.spiel,x=>x),alt:F.ablaufHtml({ablauf:['A','B']},x=>x),
+        frei:(()=>{const q=F.serialize(F.parse(t.replace('Material:\n- keins','Material:\nEin Ball')).spiel);return q.slice(q.indexOf('Material:'),q.indexOf('Ablauf:')-1);})(),
+        freiRisk:F.serialize(F.parse(t.replace('- Nicht rennen.','Nicht rennen.')).spiel).includes('Gefahren und Risiken:\nNicht rennen.\n')}})()""")
     g = res['g']
     check('Format: lesen ohne Fehler', res['fehler'] == [], res['fehler'])
     check('Format: Angaben übernommen', g['alter'] == ['kinder', 'jugend'] and g['spieler'] == {'min': 5, 'max': 9999} and g['ort'] == ['draussen'] and g['dauer'] == '' and g['material'] == [], g)
@@ -111,6 +113,7 @@ def format_checks(m):
     check('Format: Ablauf-Zeilen behalten ihr eigenes Zeichen', g['ablaufZeilen'] == ['1. Eine Person steht an der Wand.', '- Die anderen schleichen.', 'Wer sich bewegt, muss zurück.'], g.get('ablaufZeilen'))
     check('Format: schreiben ohne automatische Nummern', 'Ablauf:\n1. Eine Person steht an der Wand.\n- Die anderen schleichen.\nWer sich bewegt, muss zurück.\n' in res['again'], res['again'])
     check('Format: Ablauf als Absatz, Punkt und Nummer', res['html'] == '<ol><li value="1">Eine Person steht an der Wand.</li></ol><ul><li>Die anderen schleichen.</li></ul><p>Wer sich bewegt, muss zurück.</p>', res['html'])
+    check('Format: Material und Gefahren ohne automatische Punkte', res['frei'] == 'Material:\nEin Ball\n' and res['freiRisk'], res['frei'])
     check('Format: ältere Spiele ohne Zeilen weiter nummeriert', res['alt'] == '<ol><li value="1">A</li><li value="2">B</li></ol>', res['alt'])
     check('Format: Personen „8 bis 15“', res['pers'] == {'min': 8, 'max': 15})
     check('Format: Rollen-Tabelle', res['palermo'] == {'liste': [], 'tabelle': {'kopf': ['A', 'B'], 'zeilen': [['1', '2']]}}, res['palermo'])
@@ -204,7 +207,8 @@ def browser_checks(p):
     check('Spiele für offline zwischengespeichert', m.evaluate("caches.open('manna-spiele').then(c=>c.match('spiele/alle.json')).then(r=>r?r.json():null).then(j=>!!j&&j.spiele.some(g=>g.name==='Neues Testspiel'))"))
     FIXTURE['json'] = orig
     ed = ctx.new_page(); ed.goto(EDITOR); ed.wait_for_timeout(400)
-    check('Editor öffnet trotz Service Worker (nicht die App)', ed.title() == 'Manna Editor', ed.title()); ed.close()
+    check('Editor öffnet trotz Service Worker (nicht die App)', ed.title() == 'Manna Editor', ed.title())
+    check('Editor lädt das aktuelle Spieleformat (nicht aus dem Offline-Speicher)', ed.evaluate("typeof MannaSpiel.zeilenVon") == 'function'); ed.close()
     lg = ctx.new_page(); lg.goto(URL.replace('index.html', '') + 'rechtliches.html'); lg.wait_for_timeout(400)
     check('Rechtliches öffnet trotz Service Worker (nicht die App)', lg.locator('#impressum').count() == 1, lg.title()); lg.close()
     ctx.set_offline(True)
@@ -500,7 +504,8 @@ def editor_checks(p):
     check('Editor: neues Spiel als Textdatei veröffentlicht', gh.log == ['Neues Spiel: Ochs am Berg'] and txt == (
         'MANNA-SPIEL v1\nName: Ochs am Berg\nKurzbeschreibung: Anschleichen,solange niemand hinschaut .\nAlter: Jugendliche (13–17)\n'
         'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\n\nMaterial:\n- keins\n\nAblauf:\n- Eine Person steht an der Wand.\n'
-        '2. Die anderen schleichen sich an.\nwer sich bewegt muss zurück\n\nGefahren und Risiken:\n- Nicht rennen, wenn der Boden rutschig ist.\n'), txt)
+        '2. Die anderen schleichen sich an.\nwer sich bewegt muss zurück\n\nGefahren und Risiken:\nNicht rennen, wenn der Boden rutschig ist.\n'), txt)
+    check('Editor: keine automatischen Aufzählungszeichen bei Gefahren', '\n- Nicht rennen' not in txt)
     check('Editor: Wortlaut unverändert (keine Korrekturen)', 'wer sich bewegt muss zurück' in txt and 'Anschleichen,solange' in txt)
     check('Editor: zurück in der Liste, Spiel ist online', e.locator('.game b', has_text='Ochs am Berg').count() == 1 and 'ist online' in e.inner_text('#notices'))
     check('Editor: Entwurf nach Veröffentlichen gelöscht', e.evaluate("localStorage.getItem('manna-editor-entwurf')") is None)

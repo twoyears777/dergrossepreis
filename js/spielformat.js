@@ -57,9 +57,11 @@
     return ORTE.map(o => o.id).filter(id => out.includes(id));
   }
 
-  /* Ablauf: Jede Zeile bleibt so, wie sie geschrieben wurde.
+  /* Freie Listen (Material, Ablauf, Varianten, Gefahren): Jede Zeile bleibt so, wie sie geschrieben wurde.
      „- Text“ = Aufzählungspunkt, „1. Text“ = nummerierter Schritt, ohne Zeichen = Absatz.
-     g.ablauf enthält weiter die Schritte ohne Zeichen (für ältere App-Versionen). */
+     Die Felder material, ablauf, varianten, risiken enthalten weiter die Einträge ohne Zeichen
+     (für ältere App-Versionen und die Filter), die Fassung mit Zeichen steht in <feld>Zeilen. */
+  const FREI = ['material', 'ablauf', 'varianten', 'risiken'];
   const PUNKT = /^\s*[-*•–]\s+/, NUMMER = /^\s*(\d+)[.)]\s+/;
   function zeile(t) {
     t = String(t || '').trim();
@@ -68,10 +70,13 @@
     if (m) return m[1] + '. ' + t.replace(NUMMER, '').trim();
     return t;
   }
-  function ablaufZeilen(g) {
-    if (g && Array.isArray(g.ablaufZeilen) && g.ablaufZeilen.length) return g.ablaufZeilen;
-    return ((g && g.ablauf) || []).map((x, n) => (n + 1) + '. ' + x);
+  // Zeilen eines Feldes; ältere Daten ohne Zeilen: Ablauf nummeriert, sonst Punkte
+  function zeilenVon(g, key) {
+    const z = g && g[key + 'Zeilen'];
+    if (Array.isArray(z) && z.length) return z;
+    return ((g && g[key]) || []).map((x, n) => (key === 'ablauf' ? (n + 1) + '. ' : '- ') + x);
   }
+  const ablaufZeilen = g => zeilenVon(g, 'ablauf');
   // Zeilen -> Blöcke: [{ typ: 'p'|'ul'|'ol', eintraege: [{ text, nr }] }]
   function ablaufBloecke(zeilen) {
     const out = [];
@@ -87,18 +92,20 @@
     });
     return out;
   }
-  function ablaufHtml(g, esc) {
-    return ablaufBloecke(ablaufZeilen(g)).map(b => b.typ === 'p'
+  function zeilenHtml(zeilen, esc) {
+    return ablaufBloecke(zeilen).map(b => b.typ === 'p'
       ? '<p>' + esc(b.eintraege[0].text) + '</p>'
       : '<' + b.typ + '>' + b.eintraege.map(e => '<li' + (b.typ === 'ol' ? ' value="' + e.nr + '"' : '') + '>' + esc(e.text) + '</li>').join('') + '</' + b.typ + '>'
     ).join('');
   }
+  const listeHtml = (g, key, esc) => zeilenHtml(zeilenVon(g, key), esc);
+  const ablaufHtml = (g, esc) => listeHtml(g, 'ablauf', esc);
 
   /* Text -> Spiel. Gibt { spiel, fehler: [] } zurück. */
   function parse(text) {
     const fehler = [];
     const lines = String(text || '').replace(/^﻿/, '').replace(/\r\n?/g, '\n').split('\n');
-    const raw = {}, lists = {};
+    const raw = {}, lists = {}, zeilenRoh = {};
     let i = 0;
     while (i < lines.length && !lines[i].trim()) i++;
     if ((lines[i] || '').trim() !== HEADER) fehler.push('Die erste Zeile muss „' + HEADER + '“ sein');
@@ -125,7 +132,7 @@
         }
       }
       if (cur) {
-        if (cur === 'ablauf') { (lists.ablaufZeilen = lists.ablaufZeilen || []).push(zeile(t)); }
+        if (FREI.includes(cur)) { (zeilenRoh[cur] = zeilenRoh[cur] || []).push(zeile(t)); }
         lists[cur].push(cur === 'tabelle' ? t : t.replace(MARKER, '').trim());
         continue;
       }
@@ -133,6 +140,7 @@
     }
     const err = m => fehler.push(m);
     const list = k => { const a = (lists[k] || []).map(clean).filter(Boolean); return keins(a) ? [] : a; };
+    const frei = k => list(k).length ? (zeilenRoh[k] || []).map(clean).filter(Boolean) : [];
     const g = {
       name: clean(raw.name), kurz: clean(raw.kurz),
       alter: raw.alter ? parseAlter(raw.alter, err) : [],
@@ -141,7 +149,9 @@
       material: list('material'),
       dauer: /^(-|–)?$/.test(clean(raw.dauer)) ? '' : clean(raw.dauer),
       ablauf: list('ablauf'),
-      ablaufZeilen: list('ablauf').length ? (lists.ablaufZeilen || []).map(clean).filter(Boolean) : [],
+      ablaufZeilen: frei('ablauf'),
+      materialZeilen: frei('material'),
+      risikenZeilen: frei('risiken'),
       risiken: list('risiken')
     };
     const rl = list('rollen').map(l => { const p = l.indexOf(':'); return p > 0 ? { name: clean(l.slice(0, p)), text: clean(l.slice(p + 1)) } : { name: l, text: '' }; });
@@ -157,7 +167,7 @@
       }
       if (rh) g.rollen.hinweis = rh;
     }
-    const v = list('varianten'); if (v.length) g.varianten = v;
+    const v = list('varianten'); if (v.length) { g.varianten = v; g.variantenZeilen = frei('varianten'); }
     if (clean(raw.hinweis)) g.hinweis = clean(raw.hinweis);
     pflicht(g).forEach(m => fehler.push('Es fehlt: ' + m));
     if (!g.spieler) g.spieler = { min: 1, max: OHNE_MAX };
@@ -194,11 +204,15 @@
       if (!a.length) L.push('- keins');
       a.forEach((x, n) => L.push((num ? (n + 1) + '. ' : '- ') + x));
     };
-    block('Material', g.material, false, true);
-    { const az = ablaufZeilen(g).map(one).filter(Boolean);
-      L.push(''); L.push('Ablauf:');
-      if (!az.length) L.push('- keins');
-      az.forEach(x => L.push(x)); }
+    const frei = (title, key, leer) => {
+      const z = zeilenVon(g, key).map(one).filter(Boolean);
+      if (!z.length && !leer) return;
+      L.push(''); L.push(title + ':');
+      if (!z.length) L.push('- keins');
+      z.forEach(x => L.push(x));
+    };
+    frei('Material', 'material', true);
+    frei('Ablauf', 'ablauf', true);
     const r = g.rollen;
     if (r) {
       block('Rollen', (r.liste || []).filter(x => one(x.name)).map(x => one(x.name) + (one(x.text) ? ': ' + one(x.text) : '')));
@@ -208,13 +222,13 @@
       }
       if (one(r.hinweis)) { L.push(''); L.push('Rollen-Hinweis: ' + one(r.hinweis)); }
     }
-    block('Varianten', g.varianten);
-    block('Gefahren und Risiken', g.risiken, false, true);
+    frei('Varianten', 'varianten', false);
+    frei('Gefahren und Risiken', 'risiken', true);
     if (one(g.hinweis)) { L.push(''); L.push('Tipp: ' + one(g.hinweis)); }
     return L.join('\n') + '\n';
   }
 
-  const api = { HEADER, ALTER, ORTE, OHNE_MAX, slug, parse, serialize, pflicht, zeile, ablaufZeilen, ablaufBloecke, ablaufHtml };
+  const api = { HEADER, ALTER, ORTE, OHNE_MAX, slug, parse, serialize, pflicht, FREI, zeile, zeilenVon, ablaufZeilen, ablaufBloecke, zeilenHtml, listeHtml, ablaufHtml };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MannaSpiel = api;
 })(typeof self !== 'undefined' ? self : this);

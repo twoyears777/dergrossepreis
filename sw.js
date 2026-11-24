@@ -2,7 +2,7 @@
    Macht die App offline-fähig und lädt Updates automatisch.
    WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in js/data.js).
    Die Spiele (spiele/alle.json) brauchen kein Update: Sie werden immer zuerst frisch geladen. */
-const VERSION = '1.20.0';
+const VERSION = '1.21.0';
 const CACHE = 'grosser-preis-' + VERSION;
 const FONT_CACHE = 'grosser-preis-fonts';
 const GAMES_CACHE = 'manna-spiele';
@@ -69,6 +69,9 @@ self.addEventListener('fetch', event => {
   // Der Editor (editor/) läuft ohne Service Worker, immer direkt aus dem Netz
   const scope = new URL(self.registration.scope);
   if (url.pathname.startsWith(scope.pathname + 'editor/') || url.pathname === scope.pathname + 'editor') return;
+  // Auch alles, was die Editor-Seite nachlädt (z. B. js/spielformat.js), kommt frisch aus dem Netz,
+  // damit der Editor nie mit einer älteren Fassung aus dem Offline-Speicher speichert.
+  try { if (req.referrer && new URL(req.referrer).pathname.startsWith(scope.pathname + 'editor')) return; } catch (e) {}
 
   // Spiele: zuerst frisch aus dem Netz, offline die zuletzt geladene Fassung
   if (url.pathname === scope.pathname + 'spiele/alle.json') {

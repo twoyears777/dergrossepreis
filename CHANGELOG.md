@@ -1,5 +1,8 @@
 # Changelog – Manna
 
+## 1.21.0 – 24.11.2026
+- Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast
+
 ## 1.20.0 – 24.11.2026
 - Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite
 - Die Seite funktioniert auch offline

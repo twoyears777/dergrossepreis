@@ -3,8 +3,11 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.20.0';
+const APP_VERSION='1.21.0';
 const CHANGELOG=[
+  {v:'1.21.0',d:'24.11.2026',items:[
+    'Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast'
+  ]},
   {v:'1.20.0',d:'24.11.2026',items:[
     'Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite',
     'Die Seite funktioniert auch offline',

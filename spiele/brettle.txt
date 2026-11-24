@@ -10,7 +10,7 @@ Material:
 - Ein rundes Brett
 
 Ablauf:
-1. Alle sitzen im Stuhlkreis. Eine Person ist in der Mitte. Diese Person muss jetzt ein rundes Brett in der Mitte drehen, sodass es sich frei dreht. Dabei sagt sie einen Namen einer Person im Stuhlkreis. Diese muss dann versuchen das Brett zu fangen bevor es zu Boden fällt und liegen bleibt. Dabei haben die Personen rechts und links von ihr die Aufgabe sie aufzuhalten. Wenn die Person das Brett fängt, darf sie sitzen bleiben. Wenn nicht muss sie in die Mitte.
+Alle sitzen im Stuhlkreis. Eine Person ist in der Mitte. Diese Person muss jetzt ein rundes Brett in der Mitte drehen, sodass es sich frei dreht. Dabei sagt sie einen Namen einer Person im Stuhlkreis. Diese muss dann versuchen das Brett zu fangen bevor es zu Boden fällt und liegen bleibt. Dabei haben die Personen rechts und links von ihr die Aufgabe sie aufzuhalten. Wenn die Person das Brett fängt, darf sie sitzen bleiben. Wenn nicht muss sie in die Mitte.
 
 Gefahren und Risiken:
 - Körperkontakt!
