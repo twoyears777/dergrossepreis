@@ -73,8 +73,16 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Anmeldung per E-Mail-Link, ohne Passwörter
 - Gespeichert werden Vorlagen, vorbereitete Spiele und eigene Spiele
 - Manna bleibt offline nutzbar, abgeglichen wird bei Verbindung
-- Fertiger Anmelde-Dienst mit Servern in der EU (z. B. Supabase), kein eigener Server. Manna bleibt auf GitHub Pages
-- Vorher: Datenschutzhinweis ergänzen, Vertrag zur Auftragsverarbeitung mit dem Anbieter, kostenlose Grenzen prüfen
+- Dienst: **Supabase**, Projekt in Frankfurt (entschieden am 24.11.2026). Kein eigener Server, Manna bleibt auf GitHub Pages
+  - Kostenloser Plan (Stand 11/2026): 50.000 aktive Nutzer im Monat, 500 MB Datenbank, 5 GB Datenverkehr, 1 GB Dateien. Ein Entwurf hat nur wenige KB, das reicht lange
+  - Haken: Projekt pausiert nach einer Woche ohne Aktivität, keine automatischen Sicherungen
+  - Phase 1, entwickeln und mit Kollegen testen: kostenlos
+  - Phase 2, für Nutzer freigeben: Pro-Plan (ab 25 $ im Monat), ohne Pause und mit Sicherungen. Erst ab hier Kosten
+  - Anmeldemails über ein eigenes Postfach verschicken (z. B. anmeldung@manna-games.de), der eingebaute Mailversand ist nur für Tests
+  - Beim Einrichten prüfen: Frankfurt im kostenlosen Plan wählbar
+  - Verworfen: Firebase (Anmeldung über US-Server), Appwrite (sperrt bei Überschreitung, kleiner Anbieter)
+- Vorher: Datenschutzhinweis ergänzen, Vertrag zur Auftragsverarbeitung mit dem Anbieter
+- Konto löschen löscht auch alle Entwürfe (DSGVO), Entwürfe exportierbar
 - Ohne Konto bleibt alles wie bisher nutzbar. Bis dahin: Sicherung exportieren und auf dem anderen Gerät importieren
 - Die iPhone-App nutzt das Konto dann von Anfang an
 
