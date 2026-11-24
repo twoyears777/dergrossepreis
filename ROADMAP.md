@@ -56,7 +56,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Beamer-Anzeige: Regeln groß, Punktezähler für Gruppen
 
 ### Erstes Standbein – Web-App unter manna-games.de (als Nächstes)
-- Domain manna-games.de mit GitHub Pages verbinden (vorher eigene Daten unter der alten Adresse exportieren)
+- ✔ Domain manna-games.de mit GitHub Pages verbunden (24.11.2026), www.manna-games.de geht auch, die alte Adresse leitet weiter
 - Am Laptop und PC voll nutzbar, mit allen Beamer-Funktionen
 - ✔ Auf Handy und Tablet startet kein Beamer-Spiel (Der große Preis, Eigenes Spiel, Countdown). Stattdessen kommt die Meldung „Diese Funktion ist aktuell nur auf einem Laptop oder PC verfügbar.“, ohne dass etwas startet. Tablets über den Touchscreen erkennen (iPad meldet sich im Browser als Mac) (Version 1.19.0)
 - ✔ Startseite: kurze Erklärung mit Link zur Vision, neue Screenshots (Version 1.19.0)

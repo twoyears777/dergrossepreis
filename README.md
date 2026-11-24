@@ -3,7 +3,7 @@
 Spiele und Werkzeuge für die Jugendarbeit: die Quiz-Gameshow „Der große Preis“, eigene Spiele mit Folien und Punktestand, ein Countdown und eine Spielesammlung. Gemacht für Laptop und Beamer, mit Zuschaueransicht auf dem zweiten Bildschirm.
 
 ## Installieren (iPad)
-1. Die GitHub-Pages-Adresse in **Safari** öffnen (`https://twoyears777.github.io/manna/`).
+1. **https://manna-games.de** in **Safari** öffnen.
 2. Teilen-Symbol → **„Zum Home-Bildschirm“**.
 3. Die App einmal **mit Internet** vom Home-Bildschirm aus öffnen. Danach läuft sie auch offline.
 
@@ -12,7 +12,7 @@ Fragen, Gruppen und Punkte werden auf dem Gerät gespeichert (in der Home-Bildsc
 ## Spiele pflegen
 Die Spiele der Spielesammlung liegen als Textdateien in `spiele/` (eine Datei pro Spiel, Format `MANNA-SPIEL v1`, siehe `js/spielformat.js`). Gepflegt werden sie mit dem **Editor**:
 
-**`https://twoyears777.github.io/manna/editor/`**
+**`https://manna-games.de/editor/`**
 
 - Funktioniert am Desktop, auf dem iPad und auf dem Handy. Auf iPad/iPhone am besten in Safari „Zum Home-Bildschirm“ hinzufügen, dann bleibt die Anmeldung dauerhaft gespeichert.
 - „Veröffentlichen“ legt die Textdatei auf GitHub an oder ändert sie, „Löschen“ entfernt sie. Jede Fassung bleibt in der GitHub-Historie erhalten.
