@@ -140,7 +140,7 @@ def browser_checks(p):
     format_checks(m)
     check('Startseite sichtbar', m.locator('#home.show').count() == 1)
     check('Minuspunkte entfernt', m.locator('#sMinus').count() == 0)
-    check('Startseite: Kacheln Gameshows und Spielesammlung', m.locator('#home .gcard .wbar').all_inner_texts() == ['Gameshows', 'Spielesammlung'], m.locator('#home .gcard .wbar').all_inner_texts())
+    check('Startseite: Kacheln Gameshows und Spielesammlung', m.locator('#home .gcard .wbar').all_inner_texts() == ['Spielesammlung', 'Gameshows'], m.locator('#home .gcard .wbar').all_inner_texts())
     m.click('#gcShows'); m.wait_for_timeout(200)
     check('Gameshows: drei Kacheln', m.locator('#showsScreen.show').count() == 1 and m.locator('#showsScreen .gcard .wbar').all_inner_texts() == ['Der große Preis', 'Eigenes Spiel', 'Countdown'], m.locator('#showsScreen .gcard .wbar').all_inner_texts())
     m.click('#btnShowsBack'); m.wait_for_timeout(150)
@@ -635,6 +635,9 @@ def mobile_checks(p):
             m.click('#dYes'); m.wait_for_timeout(150)
         m.click('#gcColl'); m.wait_for_timeout(300)
         check(f'{name}: Spielesammlung bleibt nutzbar', m.locator('#collScreen.show').count() == 1)
+        m.wait_for_timeout(300)
+        box = m.evaluate("(()=>{const r=document.querySelector('#collTitle').getBoundingClientRect();return [r.left,r.right,innerWidth]})()")
+        check(f'{name}: Überschrift „Spielesammlung“ passt in die Breite', box[0] >= 0 and box[1] <= box[2], box)
         ctx.close()
     b.close()
 

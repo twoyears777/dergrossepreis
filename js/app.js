@@ -11,6 +11,8 @@ const R_FONTS=['Georgia,"Times New Roman",serif','Futura,"Avenir Next","Arial Bl
 const R_PAPER=[['#ece6da','#1d1d1b'],['#1d1d1b','#ece6da'],['#c9a77c','#1d1d1b'],['#f2df6b','#1d1d1b'],['#e3b2ab','#1d1d1b'],['#ffffff','#b8432f'],['#d9ded0','#1d1d1b']];
 function ransom(el,text){
   text=String(text||'');el.textContent='';el.classList.add('ransom');el.setAttribute('aria-label',text);
+  // längstes Wort merken: Überschriften werden auf schmalen Bildschirmen danach verkleinert (CSS --rlen)
+  el.style.setProperty('--rlen',Math.max(4,...text.split(' ').map(w=>[...w].length)));
   let h=7,word=null;
   [...text].forEach((ch,i)=>{
     if(ch===' '){const sp=document.createElement('span');sp.className='rsp';el.appendChild(sp);word=null;return;}

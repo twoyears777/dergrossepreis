@@ -956,3 +956,6 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .fav-btn.on{background:var(--marker);color:var(--ink);border-color:var(--ink)}
 .gfav{color:var(--marker)}
 #showsScreen .menu-title{margin-bottom:6vh}
+
+/* Papierbuchstaben-Überschriften: lange Wörter passen auch aufs Handy (ein Buchstabe ist etwa 1em breit) */
+.menu-title.ransom{font-size:min(clamp(1.8rem,6vh,3.6rem),calc(92vw / var(--rlen,8)))}
