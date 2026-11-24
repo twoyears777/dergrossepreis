@@ -2,7 +2,7 @@ MANNA-SPIEL v1
 Name: Rotes Sofa / Parlament
 Kurzbeschreibung: Welches Team schafft es als erstes das Parlament alleine zu besetzen?
 Alter: Jugendliche (13–17)
-Personen: ab 6
+Personen: 12 bis 20
 Ort: drinnen
 Dauer: -
 
