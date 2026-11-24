@@ -1,8 +1,9 @@
 /* Manna – Grundlagen: Hilfsfunktionen, Papierbuchstaben, Spielstand von „Der große Preis“, Sound, Hinweise und Dialoge, Handy/Tablet-Erkennung
    Teil von app.js, aufgeteilt nach Bereichen. Die Dateien werden in index.html in fester Reihenfolge geladen
    und teilen sich dieselben globalen Variablen. Reihenfolge nicht ändern. */
-/* Manna – App-Logik (Startseite, „Der große Preis“, Eigenes Spiel, Countdown, Spielesammlung)
-   Lädt nach js/data.js. Beide Dateien teilen sich den globalen Gültigkeitsbereich. */
+/* Speichernamen: Viele Schlüssel im Browser-Speicher beginnen noch mit „grosserPreis_“ (aus der Zeit vor Manna),
+   ebenso Cache- und Dateinamen mit „grosser-preis“. Bitte NICHT umbenennen: Sonst wären bei allen Nutzern
+   Spielbrett, Vorlagen, eigene Spiele, Filter und Einstellungen weg. */
 
 const KEY='grosserPreis_v1';
 const VIEW=location.hash==='#zuschauer';

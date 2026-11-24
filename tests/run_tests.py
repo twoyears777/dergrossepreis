@@ -67,8 +67,8 @@ def static_checks():
     check('keine offenen Text-Platzhalter im JavaScript', not re.search(r'\[\[[A-ZÄÖÜ][^\]\[]*\]\]', appjs), ', '.join(re.findall(r'\[\[([^\]]+)\]\]', appjs)))
     legal = open(os.path.join(ROOT, 'rechtliches.html'), encoding='utf-8').read()
     offen = len(re.findall(r'class="ph"|\[\[', legal))
-    # Impressum-Daten kommen mit 1.21 (Online-Impressum). Bis dahin nur Hinweis, kein Fehler.
-    if offen: print(f'  HINWEIS Rechtliches: an {offen} Stellen steht noch „folgt“ (Impressum-Daten fehlen)')
+    check('Rechtliches: alle Angaben eingetragen (kein „folgt“ mehr)', offen == 0, f'{offen} Stellen offen')
+    check('Rechtliches: Name und Anschrift im Impressum', 'Lukas Harder' in legal and 'c/o Online-Impressum' in legal and '53757 Sankt Augustin' in legal)
     check('Rechtliches: Impressum nach § 5 DDG', '§ 5 DDG' in legal and 'id="impressum"' in legal)
     check('Rechtliches: Datenschutz und weitere Hinweise', 'id="datenschutz"' in legal and 'id="hinweise"' in legal)
     data = open(os.path.join(ROOT, 'js/data.js'), encoding='utf-8').read()

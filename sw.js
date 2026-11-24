@@ -4,7 +4,6 @@
    Die Spiele (spiele/alle.json) brauchen kein Update: Sie werden immer zuerst frisch geladen. */
 const VERSION = '1.23.0';
 const CACHE = 'grosser-preis-' + VERSION;
-const FONT_CACHE = 'grosser-preis-fonts';
 const GAMES_CACHE = 'manna-spiele';
 const GAMES_FILE = './spiele/alle.json';
 const FILES = [
@@ -50,7 +49,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(keys
-        .filter(k => k.startsWith('grosser-preis-') && k !== CACHE && k !== FONT_CACHE)
+        .filter(k => k.startsWith('grosser-preis-') && k !== CACHE)
         .map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
@@ -60,17 +59,6 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-
-  // Google Fonts: aus dem Cache, im Hintergrund auffrischen
-  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
-    event.respondWith(caches.open(FONT_CACHE).then(cache =>
-      cache.match(req).then(hit => {
-        const net = fetch(req).then(r => { if (r && (r.ok || r.type === 'opaque')) cache.put(req, r.clone()); return r; }).catch(() => hit);
-        return hit || net;
-      })
-    ));
-    return;
-  }
 
   if (url.origin !== location.origin) return;
 
