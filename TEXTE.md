@@ -41,10 +41,10 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 79: Gameshow-Content und weitere hilfreiche Tools für Beamer-Connection
 - Z. 82: Mehr erfahren ↓
 - Z. 85: (Attribut) Screenshots aus Manna
-- Z. 86: (Attribut) Der große Preis: Spielbrett mit fünf Kategorien und dem Punktestand der Gruppen
-- Z. 87: (Attribut) Eigenes Spiel: Titel der nächsten Runde aus ausgeschnittenen Buchstaben, darüber der Punktestand
-- Z. 88: (Attribut) Countdown: große Restzeit auf einem Papierzettel
-- Z. 89: (Attribut) Spielesammlung: Nachts in Palermo mit Gruppengröße, Alter, Material und Rollen
+- Z. 86: (Attribut) Spielesammlung: Suche nach „Mitte“ mit vier Treffern, die Fundstellen sind markiert
+- Z. 87: (Attribut) Spielesammlung: Filter nach Alter, Personen, Gruppenphase, Ort, Material und Favoriten
+- Z. 88: (Attribut) Spiel Zeitungsschlagen: Eckdaten, passende Gruppenphasen, Material und Ablauf
+- Z. 89: (Attribut) Der große Preis: Spielbrett mit fünf Kategorien und dem Punktestand der Gruppen
 - Z. 93: Wir wissen, was es in der Jugendarbeit braucht!
 - Z. 95: Du brauchst spontan einen Ersatz? Jemand ist ausgefallen? Kein Problem! Wähle einfach eine Vorlage aus und starte direkt in den Spieleabend rein!
 - Z. 96: Erstelle eigene Quizze und Gameshows! Eigene Fragen, verschiedene Fragetypen, automatische Punktezähler. Es war noch nie so einfach!

@@ -78,7 +78,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'img/shot-brett.jpg', 'img/shot-eigenes.jpg', 'img/shot-countdown.jpg', 'img/shot-sammlung.jpg']:
+    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'img/shot-suche.jpg', 'img/shot-filter.jpg', 'img/shot-spiel.jpg', 'img/shot-brett.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
