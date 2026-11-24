@@ -1131,7 +1131,7 @@ function openGame(id){
     <div class="game-notes">
       ${sec('Material',g.material.length?'<ul>'+g.material.map(m=>`<li>${esc(m)}</li>`).join('')+'</ul>':'<p>Kein Material nötig.</p>')}
       ${g.rollen?sec('Rollen',rolesHtml(g.rollen)):''}
-      ${sec('So geht’s','<ol>'+g.ablauf.map(s=>`<li>${esc(s)}</li>`).join('')+'</ol>')}
+      ${sec('So geht’s',MannaSpiel.ablaufHtml(g,esc))}
       ${g.varianten&&g.varianten.length?sec('Varianten','<ul>'+g.varianten.map(s=>`<li>${esc(s)}</li>`).join('')+'</ul>'):''}
       ${g.risiken&&g.risiken.length?`<section class="note risk"><h3>Gefahren und Risiken</h3><ul>${g.risiken.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></section>`:''}
       ${g.hinweis?`<section class="note tip"><h3>Tipp</h3><p>${esc(g.hinweis)}</p></section>`:''}

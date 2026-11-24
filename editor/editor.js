@@ -242,7 +242,7 @@
     const r = g.rollen || {};
     return {
       name: g.name, kurz: g.kurz, alter: g.alter.slice(), min: String(g.spieler.min), max: g.spieler.max >= F.OHNE_MAX ? '' : String(g.spieler.max),
-      ort: g.ort.slice(), dauer: g.dauer || '', ablauf: g.ablauf.join('\n'), material: g.material.join('\n'),
+      ort: g.ort.slice(), dauer: g.dauer || '', ablauf: F.ablaufZeilen(g).join('\n'), material: g.material.join('\n'),
       varianten: (g.varianten || []).join('\n'), rollen: (r.liste || []).map(x => x.name + (x.text ? ': ' + x.text : '')).join('\n'),
       tabelle: r.tabelle ? [r.tabelle.kopf].concat(r.tabelle.zeilen).map(z => z.join(' | ')).join('\n') : '',
       rollenHinweis: r.hinweis || '', risiken: (g.risiken || []).join('\n'), tipp: g.hinweis || ''
@@ -254,7 +254,7 @@
     const g = {
       name: v.name.trim(), kurz: v.kurz.replace(/\s+/g, ' ').trim(), alter: v.alter, ort: v.ort,
       spieler: Number.isFinite(min) && min >= 1 && (!maxRaw || (Number.isFinite(max) && max >= min)) ? { min, max: maxRaw ? max : F.OHNE_MAX } : null,
-      material: items(v.material), dauer: v.dauer.trim(), ablauf: items(v.ablauf), risiken: items(v.risiken)
+      material: items(v.material), dauer: v.dauer.trim(), ablauf: items(v.ablauf), ablaufZeilen: lines(v.ablauf).map(F.zeile).filter(Boolean), risiken: items(v.risiken)
     };
     const rl = items(v.rollen).map(l => { const p = l.indexOf(':'); return p > 0 ? { name: l.slice(0, p).trim(), text: l.slice(p + 1).trim() } : { name: l, text: '' }; });
     const tz = lines(v.tabelle).map(l => l.split('|').map(c => c.trim()));
@@ -320,7 +320,7 @@
         g.rollen.tabelle.zeilen.map(z => '<tr>' + z.map(c => '<td>' + esc(c) + '</td>').join('') + '</tr>').join('') + '</tbody></table>';
       if (g.rollen.hinweis) h += '<p>' + esc(g.rollen.hinweis) + '</p>';
     }
-    h += '<h3>So geht’s</h3>' + (g.ablauf.length ? list(g.ablauf, 'ol') : '<p>' + ph('Ablauf fehlt') + '</p>');
+    h += '<h3>So geht’s</h3>' + (g.ablauf.length ? F.ablaufHtml(g, esc) : '<p>' + ph('Ablauf fehlt') + '</p>');
     if (g.varianten) h += '<h3>Varianten</h3>' + list(g.varianten, 'ul');
     if (g.risiken.length) h += '<div class="risk"><h3>Gefahren und Risiken</h3>' + list(g.risiken, 'ul') + '</div>';
     if (g.hinweis) h += '<div class="tip"><h3>Tipp</h3><p>' + esc(g.hinweis) + '</p></div>';

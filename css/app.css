@@ -653,6 +653,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 .note p{max-width:62ch}
 .note p+p{margin-top:10px}
 .note ul,.note ol{padding-left:1.2em;display:grid;gap:6px}
+.note p+ul,.note p+ol,.note ul+p,.note ol+p,.note ul+ol,.note ol+ul{margin-top:10px}
 .note dl{display:grid;grid-template-columns:auto 1fr;gap:10px 14px}
 .note dt{font-family:var(--strong);font-weight:700;white-space:nowrap}
 .note dd{margin:0}

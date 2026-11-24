@@ -3,6 +3,7 @@
 ## 1.20.0 – 24.11.2026
 - Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite
 - Die Seite funktioniert auch offline
+- Anleitungen zeigen Aufzählungszeichen und Nummern nur noch dort, wo du sie selbst gesetzt hast
 
 ## 1.19.0 – 24.11.2026
 - Neu auf der Startseite: eine kurze Erklärung, was Manna kann, mit Link zur Vision
