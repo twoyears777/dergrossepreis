@@ -952,3 +952,6 @@ body.viewer #ownPlay{padding-bottom:3vh}
 
 /* ---------- Spielesammlung: Kopfzeile ---------- */
 .coll-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.game-actions{display:flex;justify-content:center;margin:-8px 0 24px}
+.fav-btn.on{background:var(--marker);color:var(--ink);border-color:var(--ink)}
+.gfav{color:var(--marker)}

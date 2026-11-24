@@ -926,7 +926,7 @@ $('#btnHelpBack').onclick=()=>showScreen('gmenu');
 $('#btnEditBoard').onclick=()=>openSettings();
 $('#btnBackup').onclick=()=>backupNow();
 $('#btnRestore').onclick=()=>$('#tplFile').click();
-$('#gcColl').onclick=()=>{if(gamesState==='fehler')loadGames();showScreen('coll');};
+$('#gcColl').onclick=()=>{loadGames();showScreen('coll');};
 $('#gcPreis').onclick=nurAmPC(()=>showScreen('gmenu'));
 $('#btnGmBack').onclick=()=>showScreen('home');
 $('#lnkVision').onclick=e=>{e.preventDefault();try{$('#vision').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(err){$('#vision').scrollIntoView();}};
@@ -1045,21 +1045,31 @@ function validGame(g){
   return g&&typeof g.id==='string'&&typeof g.name==='string'&&g.name&&typeof g.kurz==='string'&&Array.isArray(g.alter)&&
     g.spieler&&Number.isFinite(g.spieler.min)&&Number.isFinite(g.spieler.max)&&Array.isArray(g.ort)&&Array.isArray(g.material)&&Array.isArray(g.ablauf);
 }
+/* Wird beim Start, bei jedem Öffnen der Spielesammlung und beim Zurückkehren in die App geladen,
+   damit neue Spiele auch ohne App-Update erscheinen. Die bisherige Liste bleibt sichtbar, bis die neue da ist. */
+let gamesLoading=null;
 function loadGames(){
-  gamesState='laden';
-  return fetch('spiele/alle.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
+  if(gamesLoading)return gamesLoading;
+  if(!GAMES.length)gamesState='laden';
+  return gamesLoading=fetch('spiele/alle.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
     GAMES=(d&&Array.isArray(d.spiele)?d.spiele:[]).filter(validGame).map(g=>Object.assign({risiken:[]},g));gamesState='ok';
-  }).catch(()=>{gamesState='fehler';}).then(()=>{if(screenName==='coll')renderColl();});
+  }).catch(()=>{if(!GAMES.length)gamesState='fehler';}).then(()=>{gamesLoading=null;if(screenName==='coll')renderColl();});
 }
+document.addEventListener('visibilitychange',()=>{if(!VIEW&&document.visibilityState==='visible')loadGames();});
 if(!VIEW)loadGames();
 const FILTER_KEY='grosserPreis_filter';
+const FAV_KEY='manna_favoriten';
+let favs=(()=>{const a=jget(FAV_KEY,[]);return Array.isArray(a)?a.filter(x=>typeof x==='string'):[];})();
+const isFav=id=>favs.includes(id);
+function toggleFav(id){const i=favs.indexOf(id);if(i>=0)favs.splice(i,1);else favs.push(id);lsSet(FAV_KEY,JSON.stringify(favs));}
 const FILTER_DEFS=[
   {key:'alter',label:'Alter',opts:()=>AGE_GROUPS.map(a=>({id:a.id,label:a.label}))},
   {key:'groesse',label:'Personen',opts:()=>SIZE_GROUPS.map(g=>({id:g.id,label:g.label}))},
   {key:'ort',label:'Ort',opts:()=>[{id:'drinnen',label:'Drinnen'},{id:'draussen',label:'Draußen'}]},
-  {key:'material',label:'Material',opts:()=>[{id:'ohne',label:'Ohne Material'},{id:'mit',label:'Mit Material'}]}
+  {key:'material',label:'Material',opts:()=>[{id:'ohne',label:'Ohne Material'},{id:'mit',label:'Mit Material'}]},
+  {key:'fav',label:'Favoriten',opts:()=>[{id:'nur',label:'Nur Favoriten'}]}
 ];
-let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[]};
+let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[],fav:[]};
   if(f&&typeof f==='object')Object.keys(e).forEach(k=>{if(Array.isArray(f[k]))e[k]=f[k];});return e;})();
 function saveFilter(){lsSet(FILTER_KEY,JSON.stringify(filter));}
 function gameMatches(g,f){
@@ -1067,11 +1077,14 @@ function gameMatches(g,f){
   if(f.groesse.length&&!f.groesse.some(id=>{const s=SIZE_GROUPS.find(x=>x.id===id);return s&&g.spieler.min<=s.max&&g.spieler.max>=s.min;}))return false;
   if(f.ort.length&&!f.ort.some(o=>g.ort.includes(o)))return false;
   if(f.material.length){const has=g.material.length>0;if(!f.material.some(m=>(m==='mit')===has))return false;}
+  if(f.fav&&f.fav.length&&!isFav(g.id))return false;
   return true;
 }
 const personText=g=>g.spieler.max>=9999?`ab ${g.spieler.min} Personen`:`${g.spieler.min}–${g.spieler.max} Personen`;
 const ortText=g=>g.ort.length===2?'drinnen und draußen':(g.ort[0]==='drinnen'?'drinnen':'draußen');
 const matText=g=>g.material.length?'mit Material':'ohne Material';
+let collHits=[];
+function randomGame(){if(collHits.length)openGame(collHits[Math.floor(Math.random()*collHits.length)].id);}
 function renderColl(){
   ransom($('#collTitle'),'Spielesammlung');
   const box=$('#filters');box.innerHTML='';
@@ -1092,6 +1105,7 @@ function renderColl(){
   const active=Object.values(filter).some(a=>a.length);
   $('#collCount').textContent=!GAMES.length&&gamesState!=='ok'?'':hits.length===1?'1 Spiel':hits.length+' Spiele';
   $('#btnFilterReset').style.visibility=active?'visible':'hidden';
+  collHits=hits;$('#btnRandom').style.display=hits.length?'':'none';
   if(!hits.length){
     const li=document.createElement('li');li.className='games-empty';
     li.textContent=GAMES.length||gamesState==='ok'?'Kein Spiel passt zu diesen Filtern. Nimm einen Filter heraus, um mehr Spiele zu sehen.':
@@ -1101,7 +1115,7 @@ function renderColl(){
   hits.forEach(g=>{
     const li=document.createElement('li');
     const b=document.createElement('button');b.className='game-row';
-    b.innerHTML=`<span class="gname">${esc(g.name)}</span><span class="gshort">${esc(g.kurz)}</span>
+    b.innerHTML=`<span class="gname">${isFav(g.id)?'<span class="gfav" aria-label="Favorit">★</span> ':''}${esc(g.name)}</span><span class="gshort">${esc(g.kurz)}</span>
       <span class="gtags"><span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
     b.onclick=()=>openGame(g.id);
     li.appendChild(b);list.appendChild(li);
@@ -1122,6 +1136,7 @@ function openGame(id){
   $('#gameSheet').innerHTML=`
     <h1 class="menu-title" id="gameTitle"></h1>
     <p class="game-lead">${esc(g.kurz)}</p>
+    <div class="game-actions"><button class="btn fav-btn" id="btnFav"></button></div>
     <ul class="game-facts">
       <li><b>Personen</b>${esc(personText(g))}</li>
       <li><b>Alter</b>${esc(ages)}</li>
@@ -1136,9 +1151,17 @@ function openGame(id){
       ${g.risiken&&g.risiken.length?`<section class="note risk"><h3>Gefahren und Risiken</h3>${MannaSpiel.listeHtml(g,'risiken',esc)}</section>`:''}
       ${g.hinweis?`<section class="note tip"><h3>Tipp</h3><p>${esc(g.hinweis)}</p></section>`:''}
     </div>`;
+  const fb=$('#btnFav');
+  const favLabel=()=>{const on=isFav(g.id);fb.textContent='Favorit';fb.classList.toggle('on',on);fb.setAttribute('aria-pressed',on);};
+  favLabel();fb.onclick=()=>{toggleFav(g.id);favLabel();};
   ransom($('#gameTitle'),g.name);
   showScreen('game');
 }
+$('#btnRandom').onclick=randomGame;
+/* Den Browser bitten, die gespeicherten Daten nicht von selbst zu löschen (z. B. Safari nach längerer Nichtnutzung).
+   Einmal beim ersten Tippen, ohne Rückmeldung. */
+function askPersist(){try{if(VIEW||!navigator.storage||!navigator.storage.persist)return;navigator.storage.persisted().then(p=>{if(!p)return navigator.storage.persist();}).catch(()=>{});}catch(e){}}
+document.addEventListener('pointerdown',askPersist,{once:true});
 $('#btnFilterReset').onclick=()=>{Object.keys(filter).forEach(k=>filter[k]=[]);saveFilter();renderColl();};
 $('#btnCollBack').onclick=()=>showScreen('home');
 $('#btnGameBack').onclick=()=>showScreen('coll');

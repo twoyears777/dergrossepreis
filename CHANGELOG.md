@@ -2,6 +2,10 @@
 
 ## 1.21.0 – 24.11.2026
 - Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast
+- Favorisieren von Spielen und entsprechende Filter
+- Neuer Knopf „Zufälliges Spiel“ in der Spielesammlung
+- Manna bittet den Browser, deine gespeicherten Spiele nicht von selbst zu löschen
+- Neue Spiele erscheinen jetzt beim Öffnen der Spielesammlung, ohne dass Manna neu gestartet werden muss
 
 ## 1.20.0 – 24.11.2026
 - Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite

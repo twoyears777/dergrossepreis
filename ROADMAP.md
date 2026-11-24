@@ -72,7 +72,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 ### Zwischenschritt – Konto und Sync zwischen Geräten (vor der App)
 - Ziel: Am PC oder Handy ein Spiel vorbereiten (z. B. Der große Preis) und es auf einem anderen Gerät nach der Anmeldung genauso abrufen
 - Anmeldung per E-Mail-Link, ohne Passwörter
-- Gespeichert werden Vorlagen, vorbereitete Spiele und eigene Spiele
+- Gespeichert werden Vorlagen, vorbereitete Spiele, eigene Spiele und Favoriten (Favoriten bis dahin nur auf dem Gerät, nicht in der Sicherung)
 - Manna bleibt offline nutzbar, abgeglichen wird bei Verbindung
 - Dienst: **Supabase**, Projekt in Frankfurt (entschieden am 24.11.2026). Kein eigener Server, Manna bleibt auf GitHub Pages
   - Kostenloser Plan (Stand 11/2026): 50.000 aktive Nutzer im Monat, 500 MB Datenbank, 5 GB Datenverkehr, 1 GB Dateien. Ein Entwurf hat nur wenige KB, das reicht lange

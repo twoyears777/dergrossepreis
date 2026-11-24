@@ -6,7 +6,11 @@
 const APP_VERSION='1.21.0';
 const CHANGELOG=[
   {v:'1.21.0',d:'24.11.2026',items:[
-    'Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast'
+    'Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast',
+    'Favorisieren von Spielen und entsprechende Filter',
+    'Neuer Knopf „Zufälliges Spiel“ in der Spielesammlung',
+    'Manna bittet den Browser, deine gespeicherten Spiele nicht von selbst zu löschen',
+    'Neue Spiele erscheinen jetzt beim Öffnen der Spielesammlung, ohne dass Manna neu gestartet werden muss'
   ]},
   {v:'1.20.0',d:'24.11.2026',items:[
     'Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite',
