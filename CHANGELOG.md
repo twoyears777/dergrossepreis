@@ -3,6 +3,10 @@
 ## 1.22.0 – 24.11.2026
 - Neue Seite „Gameshows“: Der große Preis, Eigenes Spiel und Countdown sind jetzt dort zusammengefasst
 - Deutlich mehr Texte sind nun menschengemacht
+- Halbe Punktzahl: Manna lost die andere Gruppe jetzt selbst aus
+- Multiple Choice: Nach einer falschen Antwort bekommt eine ausgeloste Gruppe eine zweite Chance
+- ACTION: Gewinnt die Gruppe, die das Feld gezogen hat, bekommt sie die doppelte Punktzahl
+- Minuspunkte entfernt, damit das Spiel schlank bleibt
 
 ## 1.21.0 – 24.11.2026
 - Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast

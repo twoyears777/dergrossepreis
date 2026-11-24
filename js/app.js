@@ -32,7 +32,7 @@ function sample(){
   return {
     title:'Der große Preis',
     points:[10,20,40,60,100],
-    settings:{minus:false,sound:true},
+    settings:{sound:true},
     teams:[
       {id:uid(),name:'Gruppe A',color:COLORS[0],score:0},
       {id:uid(),name:'Gruppe B',color:COLORS[1],score:0},
@@ -222,7 +222,7 @@ function showQ(ci,ri){
   qt.classList.toggle('long',(it.text||'').length>120);
   const isQ=it.type==='frage',isMC=it.type==='mc',isEst=it.type==='schaetz',isAct=it.type==='action';
   const allPlay=isAct||isEst;
-  cur.type=it.type;cur.sel=new Set();cur.stage='';
+  cur.type=it.type;cur.sel=new Set();cur.stage='';cur.second=null;cur.wrong=null;
   const qa=$('#qAnswer');qa.classList.remove('show');
   qa.textContent=isQ?it.answer:isEst?(fmtNum(parseNum(it.answer))||it.answer)+(it.unit?' '+it.unit:''):'';
   qa.classList.toggle('secret',!!qa.textContent);
@@ -238,7 +238,8 @@ function showQ(ci,ri){
   const ex=$('#qExtra');ex.innerHTML='';ex.className='';
 
   const setWinBtn=()=>{const n=cur.sel.size;$('#btnOk').disabled=!n;$('#btnOk').style.opacity=n?1:.4;
-    $('#btnOk').textContent=n?`+${p} für ${n===1?S.teams.find(t=>cur.sel.has(t.id)).name:n+' Gruppen'}`:'Gewinner antippen';pushState();};
+    const dt=cur.type==='action'?S.teams[S.turn]:null,one=n===1?S.teams.find(t=>cur.sel.has(t.id)):null;
+    $('#btnOk').textContent=n?(one?`+${dt&&one.id===dt.id?2*p:p} für ${one.name}`:`Punkte für ${n} Gruppen`):'Gewinner antippen';pushState();};
   cur.setWinBtn=setWinBtn;
 
   // Multiple Choice: Antwortkacheln
@@ -248,7 +249,7 @@ function showQ(ci,ri){
       const b=document.createElement('button');b.className='mcopt';b.dataset.i=i;
       b.innerHTML=`<span class="ml">${'ABCD'[i]}</span><span>${esc(o)}</span>`;
       if(i===it.correct)b.classList.add('hint-right');
-      b.onclick=()=>{if(cur.stage==='revealed'||cur.stage==='revealing')return;lockMC(i);};
+      b.onclick=()=>{if(cur.stage==='revealed'||cur.stage==='revealing'||cur.stage==='wrong1'||i===cur.wrong)return;lockMC(i);};
       ex.appendChild(b);});
   }
   // Schätzfrage: Eingabefeld pro Gruppe
@@ -265,7 +266,7 @@ function showQ(ci,ri){
 
   if(isAct){
     // ACTION: alle Gruppen spielen mit, Gewinner-Gruppe(n) auswählen
-    $('#qTurn').innerHTML=`Wer hat gewonnen? Jede Gewinner-Gruppe bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
+    $('#qTurn').innerHTML=TXT.action(p,team);
     pick.classList.add('show');
     S.teams.forEach(t=>{const b=document.createElement('button');b.className='chip big';b.style.setProperty('--c',t.color);b.textContent=t.name;
       b.onclick=()=>{if(cur.sel.has(t.id))cur.sel.delete(t.id);else cur.sel.add(t.id);b.classList.toggle('sel',cur.sel.has(t.id));setWinBtn();};
@@ -280,22 +281,53 @@ function showQ(ci,ri){
   }else{
     $('#qTurn').innerHTML=(team?`Am Zug: <b style="color:${team.color}">${esc(team.name)}</b>`:'Keine Gruppen angelegt')+(isMC?' · Antwort antippen zum Einloggen':'');
     $('#btnOk').textContent=team?`Geschafft (+${p} für ${team.name})`:'Geschafft';
-    $('#btnBad').textContent=S.settings.minus&&team?`Nicht geschafft (−${p})`:'Nicht geschafft';
+    $('#btnBad').textContent='Nicht geschafft';
     $('#btnOk').disabled=!hasTeams;$('#btnOk').style.opacity=hasTeams?1:.4;
     // Halbe Punktzahl bei klassischen Fragen und Multiple Choice
     if((isQ||isMC)&&S.teams.length>1){
-      const hb=document.createElement('button');hb.className='chip';hb.style.setProperty('--c','#ffd23f');
-      hb.textContent=`½ Halbe Punktzahl (${half}) für …`;
-      hb.onclick=()=>pick.classList.toggle('show');
+      const hb=document.createElement('button');hb.className='chip';hb.id='btnSecond';hb.style.setProperty('--c','#ffd23f');
+      hb.textContent=TXT.draw(half);hb.onclick=drawSecond;
+      if(isMC)hb.style.display='none'; // bei Multiple Choice erst nach einer falschen Antwort
       other.appendChild(hb);
-      const l=document.createElement('span');l.textContent='Welche Gruppe bekommt '+half+' Punkte?';pick.appendChild(l);
-      S.teams.forEach((t,i)=>{if(i===S.turn)return;const b=document.createElement('button');b.className='chip';b.style.setProperty('--c',t.color);b.textContent=`${t.name} +${half}`;b.onclick=()=>award([{teamId:t.id,delta:half}],true);pick.appendChild(b);});
     }
   }
   const back=document.createElement('button');back.className='chip ghost';back.textContent='Zurück, Feld bleibt offen';back.onclick=closeQ;other.appendChild(back);
 
   $('#qOverlay').classList.add('show');
   pushState();
+}
+/* Texte für zweite Chance und ACTION */
+const TXT={
+  draw:half=>`Andere Gruppe auslosen (halbe Punktzahl: ${half})`,
+  second:(t,half)=>`Zweite Chance: <b style="color:${t.color}">${esc(t.name)}</b> – für die halbe Punktzahl (${half})`,
+  wrong:'Eure Antwort ist leider falsch!',
+  action:(p,t)=>`Wer hat gewonnen? Jede Gewinner-Gruppe bekommt <b style="color:var(--gold)">${p}</b> Punkte`+(t?`, <b style="color:${t.color}">${esc(t.name)}</b> als ziehende Gruppe das Doppelte (${2*p})`:'')
+};
+/* Halbe Punktzahl / zweite Chance: Manna lost eine andere Gruppe aus (auf Knopfdruck der Spielleitung) */
+function drawSecond(){
+  if(!cur||cur.second)return;
+  const others=S.teams.filter((t,i)=>i!==S.turn);if(!others.length)return;
+  const t=others[Math.floor(Math.random()*others.length)],half=Math.round(S.points[cur.ri]/2);
+  cur.second=t.id;
+  const sb=$('#btnSecond');if(sb)sb.style.display='none';
+  $('#qTurn').innerHTML=TXT.second(t,half);
+  $('#btnOk').textContent=`Geschafft (+${half} für ${t.name})`;
+  const okOn=cur.type!=='mc';$('#btnOk').disabled=!okOn;$('#btnOk').style.opacity=okOn?1:.4;
+  if(cur.type==='mc'){
+    cur.stage='second';cur.picked=null;
+    [...$('#qExtra').children].forEach(b=>{const i=+b.dataset.i;b.classList.remove('picked','locked');b.disabled=i===cur.wrong;});
+    const sa=$('#btnShowAnswer');sa.style.display='';sa.disabled=false;sa.textContent=isDual()?'Lösung auf dem Beamer zeigen':'Lösung zeigen';
+  }
+  sfx('tick');pushState();
+}
+function wrongFirst(){
+  cur.wrong=cur.picked;cur.stage='wrong1';
+  [...$('#qExtra').children].forEach(b=>{const i=+b.dataset.i;b.classList.remove('locked');if(i===cur.wrong){b.classList.add('wrong');b.disabled=true;}});
+  $('#btnShowAnswer').style.display='none';
+  $('#btnOk').disabled=true;$('#btnOk').style.opacity=.4;
+  $('#qTurn').innerHTML=TXT.wrong;
+  const sb=$('#btnSecond');if(sb)sb.style.display='';
+  sfx('lose');pushState();
 }
 function closeQ(){$('#qOverlay').classList.remove('show');cur=null;pushState();}
 $('#qX').onclick=()=>closeQ();
@@ -309,7 +341,9 @@ function startRevealMC(){
   const it=S.categories[cur.ci].items[cur.ri];
   cur.stage='revealing';$('#qExtra').classList.add('suspense');$('#btnShowAnswer').disabled=true;
   sfx('drum');pushState();
-  setTimeout(()=>{if(!cur)return;$('#qExtra').classList.remove('suspense');$('#btnShowAnswer').disabled=false;revealMC(cur.picked===it.correct);},1300);
+  setTimeout(()=>{if(!cur)return;$('#qExtra').classList.remove('suspense');$('#btnShowAnswer').disabled=false;
+    const right=cur.picked===it.correct;
+    if(!right&&!cur.second&&cur.wrong==null&&S.teams.length>1)wrongFirst();else revealMC(right);},1300);
 }
 function revealMC(pickedRight){
   if(!cur||cur.stage==='revealed')return;cur.stage='revealed';
@@ -317,7 +351,8 @@ function revealMC(pickedRight){
   $('#btnShowAnswer').style.display='none';
   $('#qTurn').innerHTML=$('#qTurn').innerHTML.replace(' · Antwort antippen zum Einloggen','');
   [...$('#qExtra').children].forEach(b=>{const i=+b.dataset.i;b.disabled=true;b.classList.remove('locked');
-    if(i===it.correct)b.classList.add('right');else if(b.classList.contains('picked'))b.classList.add('wrong');else b.classList.add('dim');});
+    if(i===it.correct)b.classList.add('right');else if(b.classList.contains('picked')||i===cur.wrong)b.classList.add('wrong');else b.classList.add('dim');});
+  if(cur.second){const ok=pickedRight===true;$('#btnOk').disabled=!ok;$('#btnOk').style.opacity=ok?1:.4;}
   if(pickedRight===true)sfx('win');else if(pickedRight===false)sfx('lose');else sfx('tick');
   pushState();
 }
@@ -354,9 +389,9 @@ function award(list,half){
   if(cur.type==='aufgabe'||cur.type==='action'){
     const p=S.points[cur.ri],pos=list.filter(a=>a.teamId&&a.delta>0);
     const names=pos.map(a=>(S.teams.find(t=>t.id===a.teamId)||{}).name).filter(Boolean).join(' & ');
-    if(cur.type==='action')done=pos.length?{ok:true,title:'GEWONNEN!',sub:`${names} +${p}`}:{ok:false,title:'KEIN GEWINNER',sub:''};
-    else{const t=S.teams[S.turn],neg=list.find(a=>a.delta<0);
-      done=pos.length?{ok:true,title:'GESCHAFFT!',sub:`${names} +${p}`}:{ok:false,title:'LEIDER NICHT!',sub:t?(t.name+(neg?' '+neg.delta:'')):''};}
+    if(cur.type==='action')done=pos.length?{ok:true,title:'GEWONNEN!',sub:pos.map(a=>(S.teams.find(t=>t.id===a.teamId)||{}).name+' +'+a.delta).join(' & ')}:{ok:false,title:'KEIN GEWINNER',sub:''};
+    else{const t=S.teams[S.turn];
+      done=pos.length?{ok:true,title:'GESCHAFFT!',sub:`${names} +${p}`}:{ok:false,title:'LEIDER NICHT!',sub:t?t.name:''};}
   }
   const k=cur.ci+'-'+cur.ri,prevTurn=S.turn;
   list=list.filter(a=>a.teamId&&a.delta);
@@ -375,12 +410,14 @@ function award(list,half){
 $('#btnOk').onclick=()=>{
   if(!cur)return;const p=S.points[cur.ri];
   if(cur.type==='schaetz'&&cur.stage!=='solved'){solveEstimate();return;}
-  if(cur.type==='action'||cur.type==='schaetz'){if(!cur.sel.size)return;award([...cur.sel].map(id=>({teamId:id,delta:p})));return;}
+  if(cur.type==='action'){if(!cur.sel.size)return;const dt=S.teams[S.turn];award([...cur.sel].map(id=>({teamId:id,delta:dt&&id===dt.id?2*p:p})));return;}
+  if(cur.type==='schaetz'){if(!cur.sel.size)return;award([...cur.sel].map(id=>({teamId:id,delta:p})));return;}
+  if(cur.second){award([{teamId:cur.second,delta:Math.round(p/2)}],true);return;}
   const t=S.teams[S.turn];if(t)award([{teamId:t.id,delta:p}]);
 };
 $('#btnBad').onclick=()=>{
   if(!cur)return;const t=S.teams[S.turn];
-  if(cur.type!=='action'&&cur.type!=='schaetz'&&S.settings.minus&&t)award([{teamId:t.id,delta:-S.points[cur.ri]}]);else award([]);
+  award([]);
 };
 $('#btnShowAnswer').onclick=()=>{if(!cur)return;if(cur.type==='mc'){if(cur.stage==='locked')startRevealMC();else revealMC(null);return;}
   cur.answerShown=true;$('#qAnswer').classList.remove('secret');$('#qAnswer').classList.add('show');sfx('tick');pushState();};
@@ -490,7 +527,6 @@ $('#btnSettings').onclick=openSettings;$('#btnBack').onclick=closeSettings;
 
 function renderSettings(){
   $('#sTitle').value=S.title;
-  $('#sMinus').checked=!!S.settings.minus;
   $('#sSound').checked=!!S.settings.sound;
   const pg=$('#sPoints');pg.innerHTML='';
   S.points.forEach((p,i)=>{const inp=document.createElement('input');inp.className='inp';inp.type='number';inp.inputMode='numeric';inp.value=p;
@@ -498,7 +534,6 @@ function renderSettings(){
   renderTeams();renderCats();
 }
 $('#sTitle').oninput=e=>{S.title=e.target.value;save();};
-$('#sMinus').onchange=e=>{S.settings.minus=e.target.checked;save();};
 $('#sSound').onchange=e=>{S.settings.sound=e.target.checked;save();if(e.target.checked)sfx('win');};
 
 function renderTeams(){
@@ -694,7 +729,7 @@ function onMsg(fn){
 var screenName='home',endShown=false,pushT=null,viewerSeen=0;
 function qState(){
   if(!cur)return null;
-  const q={ci:cur.ci,ri:cur.ri,type:cur.type,stage:cur.stage||'',answerShown:!!cur.answerShown,sel:[...(cur.sel||[])],picked:cur.picked==null?null:cur.picked,guesses:{}};
+  const q={ci:cur.ci,ri:cur.ri,type:cur.type,stage:cur.stage||'',answerShown:!!cur.answerShown,sel:[...(cur.sel||[])],picked:cur.picked==null?null:cur.picked,wrong:cur.wrong==null?null:cur.wrong,second:cur.second||null,guesses:{}};
   if(cur.type==='schaetz')document.querySelectorAll('#qExtra .estrow').forEach(r=>{q.guesses[r.dataset.id]=r.querySelector('input').value;});
   return q;
 }
@@ -912,7 +947,7 @@ function renderTpl(){
   if(hiddenTpl().length)tb('Standard-Vorlagen wiederherstellen',()=>{lsSet(HID_KEY,'[]');renderTpl();toast('Standard-Vorlagen sind wieder da.');});
   list.appendChild(tools);
   const tip=document.createElement('p');tip.className='mhint';
-  tip.textContent='Tipp: Speichere ein fertiges Spielbrett als Vorlage und exportiere es. Die Datei kannst du anderen schicken, die sie über „Vorlagen importieren“ bei sich einspielen.';
+  tip.textContent='Tipp: Speichere ein fertiges Spielbrett als Vorlage und exportiere es. Die Datei kannst du über „Vorlagen importieren“ wieder einfügen.';
   list.appendChild(tip);
 }
 function renderSet(){
@@ -998,8 +1033,8 @@ function vShowQ(q){
     b.classList.toggle('locked',q.picked===i&&(q.stage==='locked'||q.stage==='revealing'));
     const rev=q.stage==='revealed';
     b.classList.toggle('right',rev&&i===it.correct);
-    b.classList.toggle('wrong',rev&&i!==it.correct&&q.picked===i);
-    b.classList.toggle('dim',rev&&i!==it.correct&&q.picked!==i);});
+    b.classList.toggle('wrong',(rev&&i!==it.correct&&q.picked===i)||(q.wrong!=null&&i===q.wrong));
+    b.classList.toggle('dim',rev&&i!==it.correct&&q.picked!==i&&i!==q.wrong);});
   const names=q.sel.map(id=>(S.teams.find(t=>t.id===id)||{}).name).filter(Boolean).join(', ');
   if(it.type==='schaetz'){
     const solved=q.stage==='solved',target=parseNum(it.answer);
@@ -1010,6 +1045,10 @@ function vShowQ(q){
     $('#qTurn').innerHTML=solved?(names?'Am nächsten dran: '+esc(names):''):`Jede Gruppe schätzt – wer am nächsten dran ist, bekommt <b style="color:var(--gold)">${p}</b> Punkte`;
   }else if(it.type==='action'){
     $('#qTurn').innerHTML=names?'Gewinner: '+esc(names):`Alle Gruppen spielen mit – es geht um <b style="color:var(--gold)">${p}</b> Punkte`;
+  }else if(q.second&&S.teams.find(t=>t.id===q.second)){
+    $('#qTurn').innerHTML=TXT.second(S.teams.find(t=>t.id===q.second),Math.round(p/2));
+  }else if(q.stage==='wrong1'){
+    $('#qTurn').innerHTML=TXT.wrong;
   }else{
     const team=S.teams[S.turn];
     $('#qTurn').innerHTML=team?`Am Zug: <b style="color:${team.color}">${esc(team.name)}</b>`:'';
