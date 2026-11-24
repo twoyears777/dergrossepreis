@@ -77,7 +77,7 @@ function qState(){
 function pushState(){
   if(VIEW)return;
   clearTimeout(pushT);
-  pushT=setTimeout(()=>send({t:'state',S:S,screen:screenName,q:qState(),end:endShown,endSub:$('#endSub').textContent,tm:TM,own:screenName==='ownplay'?OR:null}),30);
+  pushT=setTimeout(()=>send({t:'state',S:S,screen:screenName,q:qState(),end:endShown,endSub:$('#endSub').textContent,tm:typeof TM!=='undefined'?TM:null,own:screenName==='ownplay'&&typeof OR!=='undefined'?OR:null}),30);
 }
 function isDual(){return !VIEW&&viewerConnected();}
 function applyMode(){

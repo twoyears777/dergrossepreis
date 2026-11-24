@@ -14,7 +14,7 @@ function vApply(m){
   $('#ownPlay').classList.toggle('show',m.screen==='ownplay');
   if(m.screen==='ownplay'&&m.own){OR=m.own;opRender();}
   $('#vTimer').classList.toggle('show',m.screen==='timer');
-  if(m.tm){Object.assign(TM,m.tm);tmRender();}
+  if(m.tm&&typeof TM!=='undefined'){Object.assign(TM,m.tm);tmRender();}
   renderBoard();
   if(m.q&&m.screen==='board')vShowQ(m.q);else{$('#qOverlay').classList.remove('show');vKey=null;}
   if(m.end&&!vEnd)showEnd(m.screen==='ownplay'&&m.own?{teams:m.own.teams,ctx:'own',sub:m.endSub}:undefined);

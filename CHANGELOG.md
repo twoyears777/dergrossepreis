@@ -1,5 +1,11 @@
 # Changelog – Manna
 
+## 1.24.0 – 24.11.2026
+- Neuer Artikel „Vier-Ohren-Modell“ bei „Pädagogischer Kram“
+- Kacheln sind besser lesbar
+- Impressum und Datenschutz sind jetzt vollständig
+- Mehr Sicherheit und unter der Haube aufgeräumt
+
 ## 1.23.0 – 24.11.2026
 - Neuer Bereich „Pädagogischer Kram“ mit dem Artikel „Gruppenphasen“
 - Spiele zeigen, in welche Gruppenphasen sie passen

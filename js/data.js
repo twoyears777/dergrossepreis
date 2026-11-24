@@ -3,8 +3,14 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.23.0';
+const APP_VERSION='1.24.0';
 const CHANGELOG=[
+  {v:'1.24.0',d:'24.11.2026',items:[
+    'Neuer Artikel „Vier-Ohren-Modell“ bei „Pädagogischer Kram“',
+    'Kacheln sind besser lesbar',
+    'Impressum und Datenschutz sind jetzt vollständig',
+    'Mehr Sicherheit und unter der Haube aufgeräumt'
+  ]},
   {v:'1.23.0',d:'24.11.2026',items:[
     'Neuer Bereich „Pädagogischer Kram“ mit dem Artikel „Gruppenphasen“',
     'Spiele zeigen, in welche Gruppenphasen sie passen',
