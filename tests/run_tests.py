@@ -50,11 +50,16 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'css/app.css', 'js/app.js', 'js/data.js', 'js/spielformat.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
+    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/app.js', 'js/data.js', 'js/spielformat.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
         check(f'keine Schreibmaschinen-/Handschrift in {f}', not re.search('Courier|Typewriter|Marker Felt|Comic Sans', txt))
+    legal = open(os.path.join(ROOT, 'rechtliches.html'), encoding='utf-8').read()
+    offen = len(re.findall(r'class="ph"|\[\[', legal))
+    check('Rechtliches: alle Angaben eingetragen (kein „folgt“ mehr)', offen == 0, f'{offen} Stellen offen')
+    check('Rechtliches: Impressum nach § 5 DDG', '§ 5 DDG' in legal and 'id="impressum"' in legal)
+    check('Rechtliches: Datenschutz und weitere Hinweise', 'id="datenschutz"' in legal and 'id="hinweise"' in legal)
     data = open(os.path.join(ROOT, 'js/data.js'), encoding='utf-8').read()
     sw = open(os.path.join(ROOT, 'sw.js'), encoding='utf-8').read()
     v1 = re.search(r"APP_VERSION='([\d.]+)'", data).group(1)
@@ -62,7 +67,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['css/app.css', 'js/spielformat.js', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-eigenes.jpg', 'img/shot-countdown.jpg', 'img/shot-sammlung.jpg']:
+    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-eigenes.jpg', 'img/shot-countdown.jpg', 'img/shot-sammlung.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
@@ -130,6 +135,7 @@ def browser_checks(p):
     m.click('#lnkVision'); m.wait_for_timeout(900)
     check('Link springt zur Vision', m.evaluate("(()=>{const r=document.querySelector('#vision').getBoundingClientRect();return r.top<innerHeight&&r.bottom>0})()") and '#' not in m.url)
     m.evaluate('scrollTo(0,0)')
+    check('Startseite verlinkt Impressum und Datenschutz', m.get_attribute('#lnkLegal', 'href') == 'rechtliches.html')
     check('Laptop/PC: Beamer-Spiele nicht gesperrt', not m.evaluate('isHandyOderTablet()'))
     m.click('#homeVer'); m.wait_for_timeout(200)
     check('Changelog öffnet', m.locator('#clDialog.show').count() == 1)
@@ -192,6 +198,16 @@ def browser_checks(p):
     FIXTURE['json'] = orig
     ed = ctx.new_page(); ed.goto(EDITOR); ed.wait_for_timeout(400)
     check('Editor öffnet trotz Service Worker (nicht die App)', ed.title() == 'Manna Editor', ed.title()); ed.close()
+    lg = ctx.new_page(); lg.goto(URL.replace('index.html', '') + 'rechtliches.html'); lg.wait_for_timeout(400)
+    check('Rechtliches öffnet trotz Service Worker (nicht die App)', lg.locator('#impressum').count() == 1, lg.title()); lg.close()
+    ctx.set_offline(True)
+    lg = ctx.new_page()
+    try:
+        lg.goto(URL.replace('index.html', '') + 'rechtliches.html'); lg.wait_for_timeout(400)
+        check('Rechtliches auch offline', lg.locator('#datenschutz').count() == 1)
+    except Exception as e:
+        check('Rechtliches auch offline', False, str(e)[:80])
+    lg.close(); ctx.set_offline(False)
     m.evaluate("navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister())))"); m.reload(); m.wait_for_timeout(600)
     m.click('#gcColl'); m.wait_for_timeout(300)
     m.click('#btnCollBack'); m.wait_for_timeout(200)

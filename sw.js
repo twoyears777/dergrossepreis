@@ -2,7 +2,7 @@
    Macht die App offline-fähig und lädt Updates automatisch.
    WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in js/data.js).
    Die Spiele (spiele/alle.json) brauchen kein Update: Sie werden immer zuerst frisch geladen. */
-const VERSION = '1.19.0';
+const VERSION = '1.20.0';
 const CACHE = 'grosser-preis-' + VERSION;
 const FONT_CACHE = 'grosser-preis-fonts';
 const GAMES_CACHE = 'manna-spiele';
@@ -10,6 +10,7 @@ const GAMES_FILE = './spiele/alle.json';
 const FILES = [
   './',
   './index.html',
+  './rechtliches.html',
   './css/app.css',
   './js/spielformat.js',
   './js/data.js',
@@ -81,7 +82,10 @@ self.addEventListener('fetch', event => {
   }
 
   // App-Dateien: zuerst aus dem Cache (funktioniert offline), sonst Netz
-  if (req.mode === 'navigate') {
+  // Nur die App selbst (Startadresse, index.html) kommt aus dem gespeicherten index.html,
+  // andere Seiten wie rechtliches.html werden als sie selbst ausgeliefert.
+  const isApp = url.pathname === scope.pathname || url.pathname === scope.pathname + 'index.html';
+  if (req.mode === 'navigate' && isApp) {
     event.respondWith(
       caches.match('./index.html', { cacheName: CACHE })
         .then(hit => hit || fetch(req))

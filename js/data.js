@@ -3,8 +3,12 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.19.0';
+const APP_VERSION='1.20.0';
 const CHANGELOG=[
+  {v:'1.20.0',d:'24.11.2026',items:[
+    'Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite',
+    'Die Seite funktioniert auch offline'
+  ]},
   {v:'1.19.0',d:'24.11.2026',items:[
     'Neu auf der Startseite: eine kurze Erklärung, was Manna kann, mit Link zur Vision',
     'Neue Screenshots auf der Startseite: Der große Preis, Eigenes Spiel, Countdown und Spielesammlung',

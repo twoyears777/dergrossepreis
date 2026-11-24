@@ -1,5 +1,9 @@
 # Changelog – Manna
 
+## 1.20.0 – 24.11.2026
+- Neue Seite „Rechtliches“ mit Impressum, Datenschutz und weiteren Hinweisen, verlinkt unten auf der Startseite
+- Die Seite funktioniert auch offline
+
 ## 1.19.0 – 24.11.2026
 - Neu auf der Startseite: eine kurze Erklärung, was Manna kann, mit Link zur Vision
 - Neue Screenshots auf der Startseite: Der große Preis, Eigenes Spiel, Countdown und Spielesammlung
