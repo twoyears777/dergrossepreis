@@ -3,8 +3,15 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.22.0';
+const APP_VERSION='1.23.0';
 const CHANGELOG=[
+  {v:'1.23.0',d:'24.11.2026',items:[
+    'Neuer Bereich „Pädagogischer Kram“ mit dem Artikel „Gruppenphasen“',
+    'Spiele zeigen, in welche Gruppenphasen sie passen',
+    'Neue Abschnitte „Pädagogische Gedanken“ und „Fragen zum Nachgespräch“ bei den Spielen',
+    'Zurück-Knöpfe jetzt auch oben auf jeder Seite',
+    'Die Spielesammlung steht jetzt an erster Stelle, und Überschriften passen auch aufs Handy'
+  ]},
   {v:'1.22.0',d:'24.11.2026',items:[
     'Neue Seite „Gameshows“: Der große Preis, Eigenes Spiel und Countdown sind jetzt dort zusammengefasst',
     'Deutlich mehr Texte sind nun menschengemacht',

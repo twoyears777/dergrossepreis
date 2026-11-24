@@ -1,5 +1,12 @@
 # Changelog – Manna
 
+## 1.23.0 – 24.11.2026
+- Neuer Bereich „Pädagogischer Kram“ mit dem Artikel „Gruppenphasen“
+- Spiele zeigen, in welche Gruppenphasen sie passen
+- Neue Abschnitte „Pädagogische Gedanken“ und „Fragen zum Nachgespräch“ bei den Spielen
+- Zurück-Knöpfe jetzt auch oben auf jeder Seite
+- Die Spielesammlung steht jetzt an erster Stelle, und Überschriften passen auch aufs Handy
+
 ## 1.22.0 – 24.11.2026
 - Neue Seite „Gameshows“: Der große Preis, Eigenes Spiel und Countdown sind jetzt dort zusammengefasst
 - Deutlich mehr Texte sind nun menschengemacht
