@@ -191,8 +191,8 @@
     if (!open.length || !token) return;
     for (const r of open) {
       try {
-        const d = await gh(R + '/actions/runs?head_sha=' + r.sha + '&per_page=5');
-        const run = (d.workflow_runs || [])[0];
+        const d = await gh(R + '/actions/runs?head_sha=' + r.sha + '&per_page=10');
+        const run = (d.workflow_runs || []).find(x => /tests\.yml$/.test(x.path || '')) || null;
         if (run && run.status === 'completed') { r.state = run.conclusion === 'success' ? 'ok' : 'err'; r.url = run.html_url; }
         else if (!run && Date.now() - r.t > 10 * 60e3) { r.state = 'err'; }
       } catch (e) { if (e.status === 403 || e.status === 404) { r.state = 'ok'; r.text += ' (Status nicht abrufbar, bitte in der App prüfen)'; } }

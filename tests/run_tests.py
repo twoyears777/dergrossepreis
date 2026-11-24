@@ -424,7 +424,7 @@ class FakeGitHub:
             if c['parent'] != self.head: return js(422, {'message': 'Update is not a fast forward'})
             self.head = body['sha']; self.files = c['files']; self.log.append(c['msg']); return js(200, {})
         if rest == '/actions/runs':
-            return js(200, {'workflow_runs': [{'status': 'completed', 'conclusion': 'success', 'html_url': 'https://example.org/run'}]})
+            return js(200, {'workflow_runs': [{'status': 'in_progress', 'path': 'dynamic/pages/pages-build-deployment'}, {'status': 'completed', 'conclusion': 'success', 'html_url': 'https://example.org/run', 'path': '.github/workflows/tests.yml'}]})
         return js(404, {'message': 'Not Found: ' + rest})
     def change_elsewhere(self, k, txt):
         f = dict(self.files); f[k] = txt; self.head = self.new_commit(f, self.head, 'anderes Gerät'); self.files = f
