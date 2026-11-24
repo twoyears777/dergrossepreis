@@ -48,135 +48,131 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 93: Wir wissen, was es in der Jugendarbeit braucht!
 - Z. 95: Du brauchst spontan einen Ersatz? Jemand ist ausgefallen? Kein Problem! Wähle einfach eine Vorlage aus und starte direkt in den Spieleabend rein!
 - Z. 96: Erstelle eigene Quizze und Gameshows! Eigene Fragen, verschiedene Fragetypen, automatische Punktezähler. Es war noch nie so einfach!
-- Z. 97: Geht sogar offline JA, du kannst das einfach als Webapp speichern und offline abrufen. Bald auch über ein iPad und iPhone. Crazy.
-- Z. 98: Wir haben kein Interesse an deinen Daten Wir wollen nix Persönliches von dir wissen. Datenschutz ist in der Jugendarbeit wichtig, das wissen wir!
-- Z. 99: Einfachste Beamer-Connection So einfach war es noch nie, eine Präsentation auf den Beamer zu bekommen! Nur dein Browser, keine Präsentationssoftware oder sonstiges.
-- Z. 100: Wir arbeiten an neuen Funktionen Abwechslung ist wichtig: Neue Designs, neue Funktionen – wir haben einiges noch vor!
-- Z. 105: Was wollen wir?
-- Z. 107: Ey, ganz im Ernst: Soviel wir planen und machen und tun, sooft erleben wir es, dass wir spontan sein müssen. Spontan ein Icebreaker, spontan einen Abend füllen – das ist doch ehrlich Alltag in der Kinder- und Jugendarbeit. Es gibt viele Tools, die uns da helfen sollen. Doch so richtig hat uns nie eins überzeugt.
-- Z. 108: Wir wollten etwas, das uns verlässlich „versorgt“, wo wir immer ein passendes Spiel bekommen. Wie krass wäre es bitte, das eigene Smartphone einfach an den Beamer anzuschließen und eine fertig vorbereitete Spieleshow auf dem Handy spontan parat zu haben? Inklusive interaktiver Beameransicht und Moderatorenansicht auf dem Handy, Tablet oder Laptop?
-- Z. 109: Das ist unser Ziel: Eine App, die genau das kann! Unser Retter in der Not – damit möglichst viele Jugendliche durch gute Erfahrungen in der Jugendarbeit Jesus kennenlernen dürfen, den echten Retter in der Not!
-- Z. 110: Aktuell geht das nur auf dem Laptop/PC. Wir arbeiten aber dran, es als App in den App Store zu bringen. Am meisten hilfst du uns, wenn du Manna nutzt und uns deine Erfahrungen berichtest! Viel Spaß!
-- Z. 115: Impressum und Datenschutz
-- Z. 119: Pädagogischer Kram
-- Z. 121: ← Startseite
-- Z. 128: ← Pädagogischer Kram
-- Z. 132: Gameshows
-- Z. 135: Der große Preis
-- Z. 136: Der absolute Klassiker als interaktives Template!
-- Z. 139: Eigenes Spiel
-- Z. 140: Erstelle deine eigene Gameshow mit unserem Gameshow-Editor und präsentiere sie direkt über den Browser!
-- Z. 143: Countdown
-- Z. 144: Brauch man doch ständig so n Countdown. Schnell, einfach, riesig
-- Z. 147: ← Startseite
-- Z. 151: Der große Preis
-- Z. 153: ← Gameshows
-- Z. 159: Vorlagen
-- Z. 161: ← Zurück
-- Z. 165: Erklärung
-- Z. 168: Worum es geht
-- Z. 169: Mehrere Gruppen treten gegeneinander an. Auf dem Spielbrett gibt es Kategorien mit Feldern von 10 bis 100 Punkten. Je mehr Punkte, desto schwerer. Die Gruppen wählen abwechselnd Felder und müssen die entsprechende Frage beantworten oder Aufgabe lösen, um die Punkte zu bekommen. Wer am Ende die meisten Punkte hat, gewinnt.
-- Z. 172: So läuft eine Runde
-- Z. 174: Eine Gruppe wählt ein Feld. Zum Beispiel „Sport 40“.
-- Z. 175: Die Frage erscheint. Es könnte auch eine Aufgabe oder ein Actionspiel erscheinen. Dazu unten mehr.
-- Z. 176: Die Gruppe beantwortet die Frage. Ist die Antwort richtig, erhält die Gruppe die volle Punktzahl. Ist die Antwort falsch, hat eine andere, zufällig ausgewählte Gruppe die Möglichkeit, die Frage für die Hälfte der Punktzahl zu beantworten. Bei bestimmten Fragetypen (s. u.) antworten alle Gruppen.
-- Z. 177: Danach ist die nächste Gruppe dran. Gespielte Felder sind aus dem Spiel.
-- Z. 178: Wenn alle Felder gespielt sind, ist das Spiel vorbei.
-- Z. 182: Die Feldtypen
-- Z. 184: Frage Eine einfache Frage ohne sichtbare Antwortmöglichkeit. Es gibt richtig oder falsch.
-- Z. 185: Multiple Choice Vier Antwortmöglichkeiten. Die Gruppe kann eine einloggen.
-- Z. 186: Schätzfrage Alle Gruppen geben eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.
-- Z. 187: Aufgabe Eine Spezialaufgabe! Hier gilt: Geschafft gibt Punkte, sonst gibts nichts.
-- Z. 188: ACTION Volle Action! Alle Gruppen spielen um die Punkte! Der Gewinner bekommt die volle Punktzahl! Wenn die Gruppe, die das Feld gezogen hat, das Spiel gewinnt, verdoppeln sich für sie die Punkte!
-- Z. 192: Sonderregeln
-- Z. 194: Gleichstand: Haben am Ende mehrere Gruppen gleich viele Punkte, teilen sie sich den Sieg.
-- Z. 198: Tipps für die Spielleitung
-- Z. 200: Die optimale Anzahl an Gruppen liegt erfahrungsgemäß bei drei bis – wirklich maximal – sechs. Die Gruppen sollten nicht allzu groß sein.
-- Z. 201: Es hilft, wenn jede Gruppe einen Gruppenleiter festlegt, der die Antworten der Gruppe übermittelt.
-- Z. 202: Bei Schätzfragen die Einheit klug wählen.
-- Z. 203: Nicht zu viele ACTION-Felder – das bremst erfahrungsgemäß das ganze Spiel.
-- Z. 204: Aufgaben wählen, bei denen am besten alle mal mitmachen können und niemand bloßgestellt wird.
-- Z. 205: Fragen auf 10 wirklich leicht wählen, auf 100 auch gerne wirklich richtig schwere Fragen.
-- Z. 209: ← Zurück
-- Z. 213: Spielesammlung
-- Z. 217: (Attribut) Spiel suchen, z. B. Zeitung oder Stuhlkreis
-- Z. 217: (Attribut) Spiele durchsuchen
-- Z. 218: (Attribut) Suche leeren
-- Z. 220: Filter
-- Z. 221: (Attribut) Filter
-- Z. 222: Zufälliges Spiel Filter zurücksetzen
-- Z. 225: ← Startseite
-- Z. 230: ← Zur Spielesammlung
-- Z. 234: Countdown
-- Z. 238: (Attribut) Zeit auswählen
-- Z. 239: (Attribut) Eigene Zeit
-- Z. 240: − 1 Min +
-- Z. 240: (Attribut) Eine Minute weniger
-- Z. 240: (Attribut) Eine Minute mehr
-- Z. 241: − 00 Sek +
-- Z. 241: (Attribut) Fünf Sekunden weniger
-- Z. 241: (Attribut) Fünf Sekunden mehr
-- Z. 244: Start
-- Z. 245: Pause
-- Z. 246: Zurücksetzen
-- Z. 248: Zuschaueransicht zeigen
-- Z. 251: ← Gameshows
-- Z. 255: Eigenes Spiel
-- Z. 257: ← Gameshows
-- Z. 262: Spiel einrichten
-- Z. 265: ← Zurück
-- Z. 267: Exportieren
-- Z. 268: Speichern
-- Z. 269: Spiel starten
-- Z. 275: Einstellungen
-- Z. 277: Spielbrett bearbeiten
-- Z. 278: Zuschaueransicht zeigen
-- Z. 279: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
-- Z. 282: Sicherung erstellen
-- Z. 283: Sicherung einspielen
-- Z. 285: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
-- Z. 287: ← Zurück
-- Z. 292: anna Der große Preis Gleich geht's los
-- Z. 292: (Attribut) Manna
-- Z. 293: (Attribut) Vollbild
-- Z. 293: (Attribut) Vollbild
-- Z. 301: (Attribut) Schließen – Feld bleibt offen
-- Z. 301: (Attribut) Schließen
-- Z. 310: Lösung zeigen
-- Z. 315: Geschafft
-- Z. 316: Nicht geschafft
-- Z. 325: ACTION! SONDERFELD
-- Z. 330: (Attribut) Antippen zeigt sofort alles
-- Z. 331: Spiel beendet
-- Z. 336: Zurück zum Startmenü
-- Z. 344: Einstellungen
-- Z. 345: ▶ Zum Spiel
-- Z. 349: Allgemein
-- Z. 351: Titel der Show
-- Z. 356: Punktwerte der Zeilen
-- Z. 360: Soundeffekte
-- Z. 365: Gruppen
-- Z. 366: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
-- Z. 368: + Gruppe hinzufügen
-- Z. 372: Kategorien, Fragen &amp; Aufgaben
-- Z. 373: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
-- Z. 379: Spiel &amp; Daten
-- Z. 380: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
-- Z. 382: Neue Runde (Punkte &amp; Felder zurücksetzen)
-- Z. 386: Export erzeugen &amp; kopieren
-- Z. 387: Text unten importieren
-- Z. 388: Datei importieren (.json)
-- Z. 390: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
-- Z. 396: Version &amp; Updates
-- Z. 397: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
-- Z. 399: Changelog anzeigen
-- Z. 400: Jetzt nach Updates suchen
-- Z. 407: Manna Abbrechen OK
-- Z. 408: Changelog ✕ Alles klar
-- Z. 408: (Attribut) Schließen
-- Z. 408: (Attribut) Schließen
-- Z. 409: Neue Version geladen! Jetzt aktualisieren ✕
-- Z. 409: (Attribut) Später
+- Z. 101: Was wollen wir?
+- Z. 103: Ey, ganz im Ernst: Soviel wir planen und machen und tun, sooft erleben wir es, dass wir spontan sein müssen. Spontan ein Icebreaker, spontan einen Abend füllen – das ist doch ehrlich Alltag in der Kinder- und Jugendarbeit. Es gibt viele Tools, die uns da helfen sollen. Doch so richtig hat uns nie eins überzeugt.
+- Z. 104: Wir wollten etwas, das uns verlässlich „versorgt“, wo wir immer ein passendes Spiel bekommen. Wie krass wäre es bitte, das eigene Smartphone einfach an den Beamer anzuschließen und eine fertig vorbereitete Spieleshow auf dem Handy spontan parat zu haben? Inklusive interaktiver Beameransicht und Moderatorenansicht auf dem Handy, Tablet oder Laptop?
+- Z. 105: Das ist unser Ziel: Eine App, die genau das kann! Unser Retter in der Not – damit möglichst viele Jugendliche durch gute Erfahrungen in der Jugendarbeit Jesus kennenlernen dürfen, den echten Retter in der Not!
+- Z. 106: Aktuell geht das nur auf dem Laptop/PC. Wir arbeiten aber dran, es als App in den App Store zu bringen. Am meisten hilfst du uns, wenn du Manna nutzt und uns deine Erfahrungen berichtest! Viel Spaß!
+- Z. 111: Impressum und Datenschutz
+- Z. 115: Pädagogischer Kram
+- Z. 117: ← Startseite
+- Z. 124: ← Pädagogischer Kram
+- Z. 128: Gameshows
+- Z. 131: Der große Preis
+- Z. 132: Der absolute Klassiker als interaktives Template!
+- Z. 135: Eigenes Spiel
+- Z. 136: Erstelle deine eigene Gameshow mit unserem Gameshow-Editor und präsentiere sie direkt über den Browser!
+- Z. 139: Countdown
+- Z. 140: Brauch man doch ständig so n Countdown. Schnell, einfach, riesig
+- Z. 143: ← Startseite
+- Z. 147: Der große Preis
+- Z. 149: ← Gameshows
+- Z. 155: Vorlagen
+- Z. 157: ← Zurück
+- Z. 161: Erklärung
+- Z. 164: Worum es geht
+- Z. 165: Mehrere Gruppen treten gegeneinander an. Auf dem Spielbrett gibt es Kategorien mit Feldern von 10 bis 100 Punkten. Je mehr Punkte, desto schwerer. Die Gruppen wählen abwechselnd Felder und müssen die entsprechende Frage beantworten oder Aufgabe lösen, um die Punkte zu bekommen. Wer am Ende die meisten Punkte hat, gewinnt.
+- Z. 168: So läuft eine Runde
+- Z. 170: Eine Gruppe wählt ein Feld. Zum Beispiel „Sport 40“.
+- Z. 171: Die Frage erscheint. Es könnte auch eine Aufgabe oder ein Actionspiel erscheinen. Dazu unten mehr.
+- Z. 172: Die Gruppe beantwortet die Frage. Ist die Antwort richtig, erhält die Gruppe die volle Punktzahl. Ist die Antwort falsch, hat eine andere, zufällig ausgewählte Gruppe die Möglichkeit, die Frage für die Hälfte der Punktzahl zu beantworten. Bei bestimmten Fragetypen (s. u.) antworten alle Gruppen.
+- Z. 173: Danach ist die nächste Gruppe dran. Gespielte Felder sind aus dem Spiel.
+- Z. 174: Wenn alle Felder gespielt sind, ist das Spiel vorbei.
+- Z. 178: Die Feldtypen
+- Z. 180: Frage Eine einfache Frage ohne sichtbare Antwortmöglichkeit. Es gibt richtig oder falsch.
+- Z. 181: Multiple Choice Vier Antwortmöglichkeiten. Die Gruppe kann eine einloggen.
+- Z. 182: Schätzfrage Alle Gruppen geben eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.
+- Z. 183: Aufgabe Eine Spezialaufgabe! Hier gilt: Geschafft gibt Punkte, sonst gibts nichts.
+- Z. 184: ACTION Volle Action! Alle Gruppen spielen um die Punkte! Der Gewinner bekommt die volle Punktzahl! Wenn die Gruppe, die das Feld gezogen hat, das Spiel gewinnt, verdoppeln sich für sie die Punkte!
+- Z. 188: Sonderregeln
+- Z. 190: Gleichstand: Haben am Ende mehrere Gruppen gleich viele Punkte, teilen sie sich den Sieg.
+- Z. 194: Tipps für die Spielleitung
+- Z. 196: Die optimale Anzahl an Gruppen liegt erfahrungsgemäß bei drei bis – wirklich maximal – sechs. Die Gruppen sollten nicht allzu groß sein.
+- Z. 197: Es hilft, wenn jede Gruppe einen Gruppenleiter festlegt, der die Antworten der Gruppe übermittelt.
+- Z. 198: Bei Schätzfragen die Einheit klug wählen.
+- Z. 199: Nicht zu viele ACTION-Felder – das bremst erfahrungsgemäß das ganze Spiel.
+- Z. 200: Aufgaben wählen, bei denen am besten alle mal mitmachen können und niemand bloßgestellt wird.
+- Z. 201: Fragen auf 10 wirklich leicht wählen, auf 100 auch gerne wirklich richtig schwere Fragen.
+- Z. 205: ← Zurück
+- Z. 209: Spielesammlung
+- Z. 213: (Attribut) Spiel suchen, z. B. Zeitung oder Stuhlkreis
+- Z. 213: (Attribut) Spiele durchsuchen
+- Z. 214: (Attribut) Suche leeren
+- Z. 216: Filter
+- Z. 217: (Attribut) Filter
+- Z. 218: Zufälliges Spiel Filter zurücksetzen
+- Z. 221: ← Startseite
+- Z. 226: ← Zur Spielesammlung
+- Z. 230: Countdown
+- Z. 234: (Attribut) Zeit auswählen
+- Z. 235: (Attribut) Eigene Zeit
+- Z. 236: − 1 Min +
+- Z. 236: (Attribut) Eine Minute weniger
+- Z. 236: (Attribut) Eine Minute mehr
+- Z. 237: − 00 Sek +
+- Z. 237: (Attribut) Fünf Sekunden weniger
+- Z. 237: (Attribut) Fünf Sekunden mehr
+- Z. 240: Start
+- Z. 241: Pause
+- Z. 242: Zurücksetzen
+- Z. 244: Zuschaueransicht zeigen
+- Z. 247: ← Gameshows
+- Z. 251: Eigenes Spiel
+- Z. 253: ← Gameshows
+- Z. 258: Spiel einrichten
+- Z. 261: ← Zurück
+- Z. 263: Exportieren
+- Z. 264: Speichern
+- Z. 265: Spiel starten
+- Z. 271: Einstellungen
+- Z. 273: Spielbrett bearbeiten
+- Z. 274: Zuschaueransicht zeigen
+- Z. 275: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
+- Z. 278: Sicherung erstellen
+- Z. 279: Sicherung einspielen
+- Z. 281: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
+- Z. 283: ← Zurück
+- Z. 288: anna Der große Preis Gleich geht's los
+- Z. 288: (Attribut) Manna
+- Z. 289: (Attribut) Vollbild
+- Z. 289: (Attribut) Vollbild
+- Z. 297: (Attribut) Schließen – Feld bleibt offen
+- Z. 297: (Attribut) Schließen
+- Z. 306: Lösung zeigen
+- Z. 311: Geschafft
+- Z. 312: Nicht geschafft
+- Z. 321: ACTION! SONDERFELD
+- Z. 326: (Attribut) Antippen zeigt sofort alles
+- Z. 327: Spiel beendet
+- Z. 332: Zurück zum Startmenü
+- Z. 340: Einstellungen
+- Z. 341: ▶ Zum Spiel
+- Z. 345: Allgemein
+- Z. 347: Titel der Show
+- Z. 352: Punktwerte der Zeilen
+- Z. 356: Soundeffekte
+- Z. 361: Gruppen
+- Z. 362: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
+- Z. 364: + Gruppe hinzufügen
+- Z. 368: Kategorien, Fragen &amp; Aufgaben
+- Z. 369: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
+- Z. 375: Spiel &amp; Daten
+- Z. 376: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
+- Z. 378: Neue Runde (Punkte &amp; Felder zurücksetzen)
+- Z. 382: Export erzeugen &amp; kopieren
+- Z. 383: Text unten importieren
+- Z. 384: Datei importieren (.json)
+- Z. 386: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
+- Z. 392: Version &amp; Updates
+- Z. 393: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
+- Z. 395: Changelog anzeigen
+- Z. 396: Jetzt nach Updates suchen
+- Z. 403: Manna Abbrechen OK
+- Z. 404: Changelog ✕ Alles klar
+- Z. 404: (Attribut) Schließen
+- Z. 404: (Attribut) Schließen
+- Z. 405: Neue Version geladen! Jetzt aktualisieren ✕
+- Z. 405: (Attribut) Später
 
 ## rechtliches.html
 
