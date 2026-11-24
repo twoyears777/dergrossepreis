@@ -230,6 +230,12 @@
 <div class="screen" id="collScreen">
   <h1 class="menu-title" id="collTitle">Spielesammlung</h1>
   <div class="coll">
+    <div class="coll-search" role="search">
+      <svg class="cs-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      <input type="search" id="collSearch" placeholder="Spiel suchen, z. B. Zeitung oder Stuhlkreis" aria-label="Spiele durchsuchen" autocomplete="off" enterkeyhint="search" spellcheck="false">
+      <button type="button" id="collSearchClear" aria-label="Suche leeren" hidden>×</button>
+    </div>
+    <button type="button" class="btn filter-toggle" id="btnFilterToggle" aria-expanded="false" aria-controls="filters">Filter</button>
     <div class="filters" id="filters" role="group" aria-label="Filter"></div>
     <div class="coll-head"><span id="collCount"></span><span class="coll-tools"><button class="btn" id="btnRandom">Zufälliges Spiel</button><button class="btn" id="btnFilterReset">Filter zurücksetzen</button></span></div>
     <ul class="games" id="gameList"></ul>

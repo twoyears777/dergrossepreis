@@ -47,6 +47,109 @@ function gameMatches(g,f){
 const personText=g=>g.spieler.max>=9999?`ab ${g.spieler.min} Personen`:`${g.spieler.min}–${g.spieler.max} Personen`;
 const ortText=g=>g.ort.length===2?'drinnen und draußen':(g.ort[0]==='drinnen'?'drinnen':'draußen');
 const matText=g=>g.material.length?'mit Material':'ohne Material';
+
+/* ---------- Suche ----------
+   Sucht in allen Texten eines Spiels. Verzeiht Groß-/Kleinschreibung, ä/ae, ß/ss, Bindestriche,
+   getrennt geschriebene Wörter („Zeitung schlagen“ findet „Zeitungsschlagen“) und kleine Tippfehler.
+   Alle Suchwörter müssen passen. Treffer im Namen zählen am meisten, dann Kurzbeschreibung, dann der Rest. */
+/* ä, ae und a gelten als gleich (ebenso ö/oe/o, ü/ue/u), ß wie ss. Beide Seiten werden gleich behandelt. */
+const normTxt=t=>String(t||'').toLowerCase().replace(/ß/g,'ss').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/ae/g,'a').replace(/oe/g,'o').replace(/ue/g,'u').replace(/[^a-z0-9]+/g,' ').trim();
+const SUCH_FELDER=[
+  {key:'name',label:'Name',w:100,get:g=>[g.name]},
+  {key:'kurz',label:'Kurzbeschreibung',w:40,get:g=>[g.kurz]},
+  {key:'material',label:'Material',w:12,get:g=>g.material},
+  {key:'rollen',label:'Rollen',w:12,get:g=>g.rollen&&Array.isArray(g.rollen.liste)?g.rollen.liste.map(r=>`${r.name}: ${r.text}`):[]},
+  {key:'ablauf',label:'So geht’s',w:10,get:g=>g.ablauf},
+  {key:'varianten',label:'Varianten',w:10,get:g=>g.varianten||[]},
+  {key:'paedagogik',label:'Pädagogische Gedanken',w:8,get:g=>g.paedagogik||[]},
+  {key:'nachgespraech',label:'Fragen zum Nachgespräch',w:8,get:g=>g.nachgespraech||[]},
+  {key:'risiken',label:'Gefahren und Risiken',w:8,get:g=>g.risiken||[]},
+  {key:'hinweis',label:'Tipp',w:8,get:g=>g.hinweis?[g.hinweis]:[]},
+  {key:'eckdaten',label:'Eckdaten',w:15,get:g=>[g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).join(' '),ortText(g),g.dauer||'']},
+  {key:'phasen',label:'Gruppenphasen',w:15,get:g=>[(g.phasen||[]).map(id=>(MannaSpiel.PHASEN.find(x=>x.id===id)||{}).label||'').filter(Boolean).join(', ')]}
+];
+/* Abstand zweier Wörter (Tippfehler: vertauschte, fehlende, falsche oder doppelte Buchstaben), bricht ab, sobald er zu groß wird */
+function wortAbstand(a,b,max){
+  if(Math.abs(a.length-b.length)>max)return max+1;
+  let pp=null,p=Array.from({length:b.length+1},(_,j)=>j);
+  for(let i=1;i<=a.length;i++){
+    const c=[i];let lo=i;
+    for(let j=1;j<=b.length;j++){
+      let v=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));
+      if(pp&&i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])v=Math.min(v,pp[j-2]+1);
+      c.push(v);if(v<lo)lo=v;
+    }
+    if(lo>max)return max+1;pp=p;p=c;
+  }
+  return p[b.length];
+}
+const erlaubteFehler=w=>w.length>=9?2:w.length>=5?1:0;
+/* Wie gut passt ein Suchwort zu einem Text? 1 = steht drin, 0.6 = mit Tippfehler, 0 = gar nicht.
+   Tippfehler zählen nur, wenn es keine genauen Treffer gibt (unscharf=true). */
+function wortPasst(q,n,unscharf){
+  if(!q)return 1;
+  if(n.text.includes(q)||n.ohne.includes(q))return 1;
+  const max=unscharf?erlaubteFehler(q):0;if(!max)return 0;
+  for(const t of n.woerter){
+    if(wortAbstand(q,t,max)<=max)return .6;
+    // Wortanfang mit Tippfehler, z. B. „zeitng“ in „zeitungsschlagen“
+    for(const L of [q.length-1,q.length,q.length+1])if(L>=4&&L<t.length&&wortAbstand(q,t.slice(0,L),max)<=max)return .6;
+  }
+  return 0;
+}
+const suchIndex=new WeakMap();
+function indexFuer(g){
+  let ix=suchIndex.get(g);if(ix)return ix;
+  ix=SUCH_FELDER.map(f=>({f,zeilen:f.get(g).filter(Boolean).map(z=>{const t=normTxt(z);return{orig:String(z),text:t,ohne:t.replace(/ /g,''),woerter:t.split(' ').filter(Boolean)};})}));
+  suchIndex.set(g,ix);return ix;
+}
+/* Ergebnis: null = passt nicht, sonst {score, felder:[Feldnamen], zeile:{label,orig} für die Fundstelle} */
+function sucheIn(g,query,unscharf){
+  const qn=normTxt(query);if(!qn)return{score:0,felder:[]};
+  const worte=qn.split(' '),ganz=qn.replace(/ /g,'');
+  const ix=indexFuer(g);let score=0;const felder=new Set();let fund=null;
+  for(const q of worte){
+    let best=0,bestF=null,bestZ=null;
+    for(const {f,zeilen} of ix)for(const z of zeilen){
+      let m=wortPasst(q,z,unscharf);
+      if(!m&&worte.length>1&&z.ohne.includes(ganz))m=1; // getrennt geschrieben, zusammen gemeint
+      if(m){const v=m*f.w+(f.key==='name'&&z.woerter.some(t=>t.startsWith(q))?30:0);if(v>best){best=v;bestF=f;bestZ=z;}}
+    }
+    if(!best)return null;
+    score+=best;felder.add(bestF.key);
+    if(!['name','kurz','eckdaten'].includes(bestF.key)&&!fund)fund={label:bestF.label,orig:bestZ.orig};
+  }
+  if(normTxt(g.name).replace(/ /g,'').startsWith(ganz))score+=60;
+  return{score,felder:[...felder],fund};
+}
+/* Markiert ganze Wörter im Originaltext, die zur Suche passen */
+const WORT_TRENNER=/([^\wäöüÄÖÜßéèêáàâíìîóòôúùû]+)/;
+function wortTreffer(teil,worte,ganz,unscharf){
+  const n=normTxt(teil);if(!n)return false;
+  const z={text:n,ohne:n.replace(/ /g,''),woerter:[n]};
+  return worte.some(q=>wortPasst(q,z,unscharf))||(worte.length>1&&z.ohne.includes(ganz));
+}
+function markiere(text,query,unscharf){
+  const worte=normTxt(query).split(' ').filter(Boolean),ganz=worte.join('');
+  if(!worte.length)return esc(text);
+  return String(text).split(WORT_TRENNER).map(t=>wortTreffer(t,worte,ganz,unscharf)?`<mark>${esc(t)}</mark>`:esc(t)).join('');
+}
+/* Ausschnitt aus einer langen Zeile rund um das erste passende Wort */
+function ausschnitt(text,query,unscharf){
+  text=String(text);if(text.length<=120)return markiere(text,query,unscharf);
+  const worte=normTxt(query).split(' ').filter(Boolean),ganz=worte.join('');
+  let pos=0,at=0;
+  for(const t of text.split(WORT_TRENNER)){if(wortTreffer(t,worte,ganz,unscharf)){at=pos;break;}pos+=t.length;}
+  let start=Math.max(0,at-45);
+  if(start>0){const sp=text.indexOf(' ',start);if(sp>=0&&sp<at)start=sp+1;}
+  let end=Math.min(text.length,start+120);
+  if(end<text.length){const sp=text.lastIndexOf(' ',end);if(sp>at)end=sp;}
+  return (start>0?'… ':'')+markiere(text.slice(start,end),query,unscharf)+(end<text.length?' …':'');
+}
+let collQuery='';
+/* Auf schmalen Bildschirmen sind die Filter eingeklappt, damit die Treffer direkt unter dem Suchfeld stehen */
+let filterOffen=false;
 let collHits=[];
 function randomGame(){if(collHits.length)openGame(collHits[Math.floor(Math.random()*collHits.length)].id);}
 function renderColl(){
@@ -65,26 +168,57 @@ function renderColl(){
     grp.appendChild(wrap);box.appendChild(grp);
   });
   const list=$('#gameList');list.innerHTML='';
-  const hits=GAMES.filter(g=>gameMatches(g,filter)).sort((a,b)=>a.name.localeCompare(b.name,'de'));
   const active=Object.values(filter).some(a=>a.length);
-  $('#collCount').textContent=!GAMES.length&&gamesState!=='ok'?'':hits.length===1?'1 Spiel':hits.length+' Spiele';
+  const sucht=!!normTxt(collQuery);
+  /* Erst genau suchen. Nur wenn nichts passt, auch Tippfehler zulassen („ähnliche Spiele“). */
+  let treffer=new Map(),unscharf=false;
+  const suche=u=>{const t=new Map();GAMES.forEach(g=>{const r=sucheIn(g,collQuery,u);if(r)t.set(g.id,r);});return t;};
+  if(sucht){treffer=suche(false);if(!treffer.size){treffer=suche(true);unscharf=treffer.size>0;}}
+  const hits=GAMES.filter(g=>gameMatches(g,filter)&&(!sucht||treffer.has(g.id)))
+    .sort((a,b)=>sucht?(treffer.get(b.id).score-treffer.get(a.id).score)||a.name.localeCompare(b.name,'de'):a.name.localeCompare(b.name,'de'));
+  const versteckt=sucht&&active?treffer.size-hits.length:0;
+  $('#collSearchClear').hidden=!collQuery;
+  const nAktiv=Object.values(filter).reduce((n,x)=>n+x.length,0);
+  $('#btnFilterToggle').textContent=nAktiv?`Filter (${nAktiv} aktiv)`:'Filter';
+  $('#btnFilterToggle').setAttribute('aria-expanded',filterOffen);$('#filters').classList.toggle('zu',!filterOffen);
+  $('#collCount').textContent=!GAMES.length&&gamesState!=='ok'?'':(hits.length===1?(unscharf?'1 ähnliches Spiel':'1 Spiel'):hits.length+(unscharf?' ähnliche Spiele':' Spiele'))+(sucht?' gefunden':'');
   $('#btnFilterReset').style.visibility=active?'visible':'hidden';
   collHits=hits;$('#btnRandom').style.display=hits.length?'':'none';
   if(!hits.length){
     const li=document.createElement('li');li.className='games-empty';
-    li.textContent=GAMES.length||gamesState==='ok'?'Kein Spiel passt zu diesen Filtern. Nimm einen Filter heraus, um mehr Spiele zu sehen.':
-      gamesState==='fehler'?'Die Spiele konnten nicht geladen werden. Öffne die Spielesammlung noch einmal, sobald du Internet hast.':'Spiele werden geladen …';
-    list.appendChild(li);return;
+    li.textContent=!(GAMES.length||gamesState==='ok')?(gamesState==='fehler'?'Die Spiele konnten nicht geladen werden. Öffne die Spielesammlung noch einmal, sobald du Internet hast.':'Spiele werden geladen …'):
+      sucht&&!versteckt?`Kein Spiel gefunden für „${collQuery.trim()}“. Prüf die Schreibweise oder versuch ein anderes Wort.`:
+      sucht?`Kein Spiel gefunden für „${collQuery.trim()}“, solange die Filter aktiv sind.`:
+      'Kein Spiel passt zu diesen Filtern. Nimm einen Filter heraus, um mehr Spiele zu sehen.';
+    list.appendChild(li);if(versteckt)list.appendChild(verstecktHinweis(versteckt));return;
   }
   hits.forEach(g=>{
     const li=document.createElement('li');
     const b=document.createElement('button');b.className='game-row';
-    b.innerHTML=`<span class="gname">${isFav(g.id)?'<span class="gfav" aria-label="Favorit">★</span> ':''}${esc(g.name)}</span><span class="gshort">${esc(g.kurz)}</span>
+    const r=sucht?treffer.get(g.id):null,mk=t=>sucht?markiere(t,collQuery,unscharf):esc(t);
+    b.innerHTML=`<span class="gname">${isFav(g.id)?'<span class="gfav" aria-label="Favorit">★</span> ':''}${mk(g.name)}</span><span class="gshort">${mk(g.kurz)}</span>
+      ${r&&r.fund?`<span class="gfund"><b>Gefunden in ${esc(r.fund.label)}:</b> ${ausschnitt(r.fund.orig,collQuery,unscharf)}</span>`:''}
       <span class="gtags"><span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
     b.onclick=()=>openGame(g.id);
     li.appendChild(b);list.appendChild(li);
   });
+  if(versteckt)list.appendChild(verstecktHinweis(versteckt));
 }
+function verstecktHinweis(n){
+  const li=document.createElement('li');li.className='games-hidden';
+  li.innerHTML=`<span>${n===1?'1 weiterer Treffer':n+' weitere Treffer'}, wenn du die Filter zurücksetzt.</span>`;
+  const b=document.createElement('button');b.className='btn';b.textContent='Filter zurücksetzen';
+  b.onclick=()=>$('#btnFilterReset').click();li.appendChild(b);return li;
+}
+/* Suchfeld: filtert beim Tippen, × und Esc leeren, „/“ springt ins Feld */
+(()=>{const inp=$('#collSearch');if(!inp)return;
+  inp.addEventListener('input',()=>{collQuery=inp.value;renderColl();});
+  inp.addEventListener('keydown',e=>{if(e.key==='Escape'&&inp.value){e.preventDefault();e.stopPropagation();inp.value='';collQuery='';renderColl();}
+    else if(e.key==='Enter'){e.preventDefault();if(collHits.length===1)openGame(collHits[0].id);else inp.blur();}});
+  $('#btnFilterToggle').onclick=()=>{filterOffen=!filterOffen;renderColl();};
+  $('#collSearchClear').onclick=()=>{inp.value='';collQuery='';renderColl();inp.focus();};
+  document.addEventListener('keydown',e=>{if(e.key==='/'&&screenName==='coll'&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||'')&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();inp.focus();}});
+})();
 function rolesHtml(r){
   let h='';
   if(r.liste&&r.liste.length)h+='<dl class="roles">'+r.liste.map(x=>`<dt>${esc(x.name)}</dt><dd>${esc(x.text)}</dd>`).join('')+'</dl>';

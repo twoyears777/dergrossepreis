@@ -30,6 +30,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - ✔ Erste Spiele: Zeitungsschlagen, Nachts in Palermo
 - ca. 20 erprobte Gruppenspiele mit Kurzbeschreibung, Ablauf, Material, Dauer, Gruppengröße (Inhalte kommen von dir)
 - Später überlegen: Filter für Dauer und ruhig/wild, Zufallsknopf
+- In Arbeit: Suche in der Spielesammlung (durchsucht alle Texte, verzeiht Tippfehler und Umlaute, zeigt die Fundstelle; auf dem Handy sind die Filter eingeklappt)
 - Später: Rollen bei „Nachts in Palermo“ anpassen und erweitern (weitere Sonderrollen, andere Verteilung)
 - Hinweise zu Sicherheit und Körperkontakt, niemand wird bloßgestellt
 - In Arbeit: Artikel „Sicherheit“ bei „Pädagogischer Kram“, erster Abschnitt „Was tun im Notfall?“ (Rahmen: Erste-Hilfe-Schein, Material, wo es liegt, Ablauf im Notfall, wen man kontaktiert)
