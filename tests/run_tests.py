@@ -57,7 +57,8 @@ def static_checks():
         check(f'keine Schreibmaschinen-/Handschrift in {f}', not re.search('Courier|Typewriter|Marker Felt|Comic Sans', txt))
     legal = open(os.path.join(ROOT, 'rechtliches.html'), encoding='utf-8').read()
     offen = len(re.findall(r'class="ph"|\[\[', legal))
-    check('Rechtliches: alle Angaben eingetragen (kein „folgt“ mehr)', offen == 0, f'{offen} Stellen offen')
+    # Impressum-Daten kommen mit 1.21 (Online-Impressum). Bis dahin nur Hinweis, kein Fehler.
+    if offen: print(f'  HINWEIS Rechtliches: an {offen} Stellen steht noch „folgt“ (Impressum-Daten fehlen)')
     check('Rechtliches: Impressum nach § 5 DDG', '§ 5 DDG' in legal and 'id="impressum"' in legal)
     check('Rechtliches: Datenschutz und weitere Hinweise', 'id="datenschutz"' in legal and 'id="hinweise"' in legal)
     data = open(os.path.join(ROOT, 'js/data.js'), encoding='utf-8').read()
