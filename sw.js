@@ -13,6 +13,7 @@ const FILES = [
   './rechtliches.html',
   './css/app.css',
   './js/spielformat.js',
+  './js/artikel.js',
   './js/data.js',
   './js/app.js',
   './img/shot-brett.jpg',

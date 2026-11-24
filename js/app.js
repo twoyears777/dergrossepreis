@@ -657,6 +657,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!VIEW&&(screenName==='tpl'||screenName==='set'||screenName==='help')&&!$('#dialog').classList.contains('show')){showScreen('gmenu');return;}
   if(e.key==='Escape'&&!VIEW&&screenName==='game'){showScreen('coll');return;}
   if(e.key==='Escape'&&!VIEW&&(screenName==='coll'||screenName==='shows')){showScreen('home');return;}
+  if(e.key==='Escape'&&!VIEW&&(screenName==='paed'||screenName==='art')&&!$('#dialog').classList.contains('show')){$(SCREENS[screenName].el+' > .back-link').click();return;}
   if(e.key==='Escape'&&!VIEW&&screenName==='timer'&&!$('#dialog').classList.contains('show')){$('#btnTimerBack').click();return;}
   if(e.key==='Escape'&&!VIEW){if($('#clDialog').classList.contains('show'))$('#clDialog').classList.remove('show');else if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#btnEndMenu').click();}
 });
@@ -769,36 +770,30 @@ $('#btnOpenViewer').onclick=openViewer;
 
 /* ---------- Menüs ---------- */
 const PREIS_SCREENS=['gmenu','tpl','set','help','settings','board'];
+/* Alle Seiten an einer Stelle: Element, Überschrift aus Papierbuchstaben (optional) und was beim Öffnen passiert.
+   Neue Seite = neuer Eintrag hier. Zurück-Knöpfe: der .back-link der Seite (oben wird automatisch eine Kopie angezeigt). */
+const SCREENS={
+  home:{el:'#home'},
+  coll:{el:'#collScreen',show:()=>renderColl()},
+  game:{el:'#gameScreen'},
+  paed:{el:'#paedScreen',title:'Pädagogischer Kram',show:()=>renderArtTiles()},
+  art:{el:'#artScreen'},
+  shows:{el:'#showsScreen',title:'Gameshows'},
+  gmenu:{el:'#gmenu',show:()=>renderGMenu()},
+  tpl:{el:'#tplScreen',show:()=>renderTpl()},
+  set:{el:'#setScreen',show:()=>renderSet()},
+  help:{el:'#helpScreen',title:'Erklärung'},
+  timer:{el:'#timerScreen',show:()=>renderTimerScreen()},
+  own:{el:'#ownScreen',show:()=>renderOwnList()},
+  ownedit:{el:'#ownEdit',show:()=>renderOwnEditor()},
+  ownplay:{el:'#ownPlay'}
+};
 function showScreen(n){
   screenName=n;
   if(!VIEW)document.title=PREIS_SCREENS.includes(n)?(S.title||'Der große Preis'):'Manna';
-  $('#home').classList.toggle('show',n==='home');
-  $('#paedScreen').classList.toggle('show',n==='paed');
-  $('#artPhasen').classList.toggle('show',n==='artPhasen');
-  $('#artOhren').classList.toggle('show',n==='artOhren');
-  if(n==='artOhren'){ransom($('#artOhrenTitle'),'Vier-Ohren-Modell');$('#artOhren').scrollTop=0;}
-  if(n==='paed')ransom($('#paedTitle'),'Pädagogischer Kram');
-  if(n==='artPhasen')ransom($('#artPhasenTitle'),'Gruppenphasen');
-  $('#showsScreen').classList.toggle('show',n==='shows');
-  if(n==='shows')ransom($('#showsTitle'),'Gameshows');
-  $('#gmenu').classList.toggle('show',n==='gmenu');
-  $('#tplScreen').classList.toggle('show',n==='tpl');
-  $('#setScreen').classList.toggle('show',n==='set');
-  $('#helpScreen').classList.toggle('show',n==='help');
-  $('#collScreen').classList.toggle('show',n==='coll');
-  $('#gameScreen').classList.toggle('show',n==='game');
-  $('#timerScreen').classList.toggle('show',n==='timer');
-  $('#ownScreen').classList.toggle('show',n==='own');
-  $('#ownEdit').classList.toggle('show',n==='ownedit');
-  $('#ownPlay').classList.toggle('show',n==='ownplay');
-  if(n==='own')renderOwnList();
-  if(n==='ownedit')renderOwnEditor();
-  if(n==='timer')renderTimerScreen();
-  if(n==='coll')renderColl();
-  if(n==='help')ransom($('#helpTitle'),'Erklärung');
-  if(n==='gmenu')renderGMenu();
-  if(n==='tpl')renderTpl();
-  if(n==='set')renderSet();
+  Object.entries(SCREENS).forEach(([k,d])=>$(d.el).classList.toggle('show',k===n));
+  const d=SCREENS[n];
+  if(d){if(d.title)ransom($(d.el).querySelector('.menu-title'),d.title);if(d.show)d.show();}
   document.querySelectorAll('.screen.show').forEach(x=>x.scrollTop=0);
   pushState();
 }
@@ -976,21 +971,32 @@ $('#gcPreis').onclick=nurAmPC(()=>showScreen('gmenu'));
 $('#btnGmBack').onclick=()=>showScreen('shows');
 $('#gcShows').onclick=nurAmPC(()=>showScreen('shows'));
 $('#btnShowsBack').onclick=()=>showScreen('home');
-/* Pädagogischer Kram */
+/* Pädagogischer Kram: Kacheln und Artikelseite entstehen aus ARTIKEL (js/artikel.js) */
 let artFrom='paed';
-function openPhasen(id,from){
+function renderArtTiles(){
+  const box=$('#artTiles');if(box.children.length)return;
+  ARTIKEL.forEach(a=>{
+    const b=document.createElement('button');b.className='gcard';b.dataset.art=a.id;
+    b.innerHTML=`<span class="wbar">${esc(a.kachelTitel||a.titel)}</span><span class="gbody"><span>${esc(a.kachel||'')}</span></span>`;
+    b.onclick=()=>openArticle(a.id,null,'paed');box.appendChild(b);
+  });
+}
+const paras=t=>(Array.isArray(t)?t:[t]).filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('');
+function openArticle(id,abschnitt,from){
+  const a=ARTIKEL.find(x=>x.id===id);if(!a)return;
   artFrom=from||'paed';
   $('#btnArtBack').textContent=artFrom==='game'?'← Zurück zum Spiel':'← Pädagogischer Kram';
-  showScreen('artPhasen');
-  const scr=$('#artPhasen');scr.scrollTop=0;
-  if(id){const el=document.getElementById('phase-'+id);if(el)setTimeout(()=>{el.scrollIntoView({block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);},60);}
+  $('#artLead').textContent=a.untertitel||'';$('#artLead').style.display=a.untertitel?'':'none';
+  $('#artBody').innerHTML=(a.einleitung?`<section class="note">${paras(a.einleitung)}</section>`:'')+
+    (a.abschnitte||[]).map(x=>`<section class="note" id="art-${esc(a.id)}-${esc(x.id)}"><h3>${esc(x.titel)}</h3>${paras(x.text)}</section>`).join('');
+  showScreen('art');ransom($('#artTitle'),a.titel);
+  if(abschnitt){const el=document.getElementById('art-'+a.id+'-'+abschnitt);if(el)setTimeout(()=>{el.scrollIntoView({block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);},60);}
   syncBackTop();
 }
+// Gruppenphasen-Schilder an den Spielen
+const openPhasen=(phase,from)=>openArticle('gruppenphasen',phase,from);
 $('#gcPaed').onclick=()=>showScreen('paed');
 $('#btnPaedBack').onclick=()=>showScreen('home');
-$('#gcArtPhasen').onclick=()=>openPhasen(null,'paed');
-$('#gcArtOhren').onclick=()=>showScreen('artOhren');
-$('#btnOhrenBack').onclick=()=>showScreen('paed');
 $('#btnArtBack').onclick=()=>showScreen(artFrom==='game'?'game':'paed');
 /* Zurück-Knöpfe zusätzlich oben (gleiche Funktion wie unten) */
 const backTops=[];
