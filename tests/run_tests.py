@@ -171,7 +171,7 @@ def browser_checks(p):
     loaded = m.evaluate("Promise.all([...document.querySelectorAll('.collage img')].map(i=>{i.loading='eager';return i.decode().then(()=>i.naturalWidth>0,()=>false)}))")
     check('Screenshots laden', all(loaded), loaded)
     heads = m.locator('#home .hblock h2').all_inner_texts()
-    check('Bereiche auf der Startseite', heads == ['Wir wissen, was es in der Jugendarbeit braucht!', "So einfach geht's", 'Was wollen wir?'], heads)
+    check('Bereiche auf der Startseite', heads == ['Wir wissen, was es in der Jugendarbeit braucht!', 'Was wollen wir?'], heads)
     intro = m.inner_text('#homeIntro') if m.locator('#homeIntro').count() else ''
     check('Kurze Erklärung unter dem Titel', m.locator('#homeBrand + #homeIntro + .gamegrid').count() == 1 and 'Jugendarbeit' in intro, intro)
     m.click('#lnkVision'); m.wait_for_timeout(900)

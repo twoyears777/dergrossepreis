@@ -54,7 +54,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 ### Gameshows: Anleitung und FAQ
 - Ausführliche Anleitung im Bereich „Gameshows“: Beamer anschließen, Anzeige auf „Erweitern“ statt „Spiegeln“ (Windows-Taste + P, Mac: Systemeinstellungen → Displays), Zuschaueransicht öffnen, Fenster auf den Beamer ziehen, Vollbild
 - Dazu ein FAQ mit typischen Fragen und Problemen
-- Die Startseite erklärt nur noch kurz in drei Schritten
+- Die Startseite erklärt das nicht mehr (die drei Schritte sind entfernt, Fokus auf Spielesammlung und Vision), die Anleitung gehört in den Bereich „Gameshows“
 
 ### Etappe 2 – Spielekiste ausbauen
 - ✔ **Spiele pflegen mit Editor** (Version 1.18.0): eigene Web-App unter `/editor/`, Spiele liegen als Textdateien in `spiele/`, Veröffentlichen direkt auf GitHub, neue Spiele erscheinen ohne App-Update
