@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Manna Editor">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2b303c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="../img/manna-mark.svg">
+<title>Manna Editor</title>
+<link rel="stylesheet" href="editor.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Manna Editor"><img src="../img/manna-mark.svg" alt=""><span>Manna <b>Editor</b></span></a>
+  <span class="top-gap"></span>
+  <span class="who" id="who"></span>
+  <button class="link" id="btnLogout" hidden>Abmelden</button>
+</header>
+
+<main>
+  <!-- Anmelden -->
+  <section class="view" id="vLogin" hidden>
+    <div class="sheet narrow">
+      <h1>Anmelden</h1>
+      <p>Der Editor veröffentlicht Spiele direkt in die Spielesammlung von Manna. Dafür braucht er einmal deinen GitHub-Zugangsschlüssel. Er bleibt nur auf diesem Gerät gespeichert.</p>
+      <label class="field"><span>Zugangsschlüssel</span>
+        <input type="password" id="inToken" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…"></label>
+      <label class="field"><span>Läuft ab am (optional, dann erinnert dich der Editor rechtzeitig)</span>
+        <input type="date" id="inExpiry"></label>
+      <div class="row"><button class="primary" id="btnLogin">Anmelden</button></div>
+      <p class="msg" id="loginMsg" role="alert"></p>
+      <p class="hint">Wie du den Schlüssel anlegst, steht in der <a href="https://github.com/twoyears777/dergrossepreis#spiele-pflegen" target="_blank" rel="noopener">Anleitung</a>.</p>
+    </div>
+  </section>
+
+  <!-- Liste -->
+  <section class="view" id="vList" hidden>
+    <div class="notices" id="notices"></div>
+    <div class="list-head">
+      <h1>Spielesammlung</h1>
+      <span class="top-gap"></span>
+      <button class="primary" id="btnNew">Neues Spiel</button>
+    </div>
+    <input class="search" id="inSearch" type="search" placeholder="Suchen …" aria-label="Spiele durchsuchen">
+    <p class="count" id="listCount"></p>
+    <ul class="games" id="gameList"></ul>
+  </section>
+
+  <!-- Bearbeiten -->
+  <section class="view" id="vEdit" hidden>
+    <div class="edit-grid">
+      <form class="sheet form" id="form" autocomplete="off" novalidate>
+        <h1 id="editTitle">Neues Spiel</h1>
+        <div class="draft" id="draftBox" hidden></div>
+
+        <fieldset><legend>Das Spiel</legend>
+          <label class="field" data-f="name"><span>Name</span><input id="fName" maxlength="60" placeholder="z. B. Zeitungsschlagen"></label>
+          <label class="field" data-f="kurz"><span>Kurzbeschreibung (ein Satz)</span><textarea id="fKurz" rows="2" maxlength="300" placeholder="Worum geht es?"></textarea></label>
+        </fieldset>
+
+        <fieldset><legend>Für wen und wo</legend>
+          <div class="field" data-f="alter"><span>Alter</span><div class="chips" id="fAlter" role="group" aria-label="Alter"></div></div>
+          <div class="pair" data-f="personen">
+            <label class="field"><span>Personen mindestens</span><input id="fMin" type="number" min="1" inputmode="numeric"></label>
+            <label class="field"><span>Personen höchstens (leer = egal)</span><input id="fMax" type="number" min="1" inputmode="numeric" placeholder="egal"></label>
+          </div>
+          <div class="field" data-f="ort"><span>Ort</span><div class="chips" id="fOrt" role="group" aria-label="Ort"></div></div>
+          <label class="field"><span>Dauer</span><input id="fDauer" maxlength="40" placeholder="z. B. ca. 15 Minuten"></label>
+        </fieldset>
+
+        <fieldset><legend>Ablauf</legend>
+          <p class="hint">Jeder Schritt in eine eigene Zeile. Nummern und Aufzählungszeichen brauchst du nicht.</p>
+          <label class="field" data-f="ablauf"><span>So geht’s</span><textarea id="fAblauf" rows="7"></textarea></label>
+          <label class="field"><span>Material (eins pro Zeile, leer = kein Material)</span><textarea id="fMaterial" rows="3"></textarea></label>
+          <label class="field"><span>Varianten (optional, eine pro Zeile)</span><textarea id="fVarianten" rows="3"></textarea></label>
+        </fieldset>
+
+        <fieldset><legend>Rollen (optional)</legend>
+          <label class="field"><span>Rollen, eine pro Zeile: „Name: Beschreibung“</span><textarea id="fRollen" rows="4" placeholder="Mafia: Wacht nachts auf und wählt ein Opfer."></textarea></label>
+          <label class="field" data-f="tabelle"><span>Verteilungstabelle, eine Zeile pro Reihe, Spalten mit | trennen. Erste Zeile = Überschriften.</span><textarea id="fTabelle" rows="4" class="mono" placeholder="Personen | Mafia | Arzt&#10;8–10 | 2 | –"></textarea></label>
+          <label class="field"><span>Hinweis zu den Rollen</span><textarea id="fRollenHinweis" rows="2"></textarea></label>
+        </fieldset>
+
+        <fieldset><legend>Sicherheit und Tipp</legend>
+          <label class="field"><span>Gefahren und Risiken (eins pro Zeile)</span><textarea id="fRisiken" rows="4" placeholder="Worauf muss die Spielleitung achten?"></textarea></label>
+          <label class="field"><span>Tipp (optional)</span><textarea id="fTipp" rows="2"></textarea></label>
+        </fieldset>
+      </form>
+
+      <aside class="preview">
+        <div class="tabs" role="tablist">
+          <button class="tab on" id="tabPrev" role="tab" aria-selected="true">Vorschau</button>
+          <button class="tab" id="tabTxt" role="tab" aria-selected="false">Textdatei</button>
+        </div>
+        <article class="sheet card" id="prevCard"></article>
+        <pre class="sheet txt" id="prevTxt" hidden></pre>
+      </aside>
+    </div>
+
+    <div class="bar">
+      <button class="link" id="btnBack">← Zur Liste</button>
+      <span class="top-gap"></span>
+      <button class="danger" id="btnDelete" hidden>Löschen</button>
+      <button class="primary" id="btnPublish">Veröffentlichen</button>
+    </div>
+  </section>
+
+  <section class="view" id="vLoading"><p class="center">Wird geladen …</p></section>
+</main>
+
+<div class="modal" id="modal" hidden><div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mMsg">
+  <p id="mMsg"></p><div class="row end" id="mBtns"></div></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="../js/spielformat.js"></script>
+<script src="editor.js"></script>
+</body>
+</html>

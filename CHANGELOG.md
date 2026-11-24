@@ -1,5 +1,10 @@
 # Changelog – Manna
 
+## 1.18.0 – 24.11.2026
+- Spielesammlung verschlankt: „Spiel erstellen“ und „Spiel einsenden“ gibt es nicht mehr
+- Neue Spiele erscheinen in der Spielesammlung jetzt ohne App-Update
+- Die Sicherung enthält keine selbst erstellten Sammlungsspiele mehr. Ältere Sicherungen lassen sich weiter einspielen
+
 ## 1.17.1 – 23.11.2026
 - Neues Spiel in der Spielesammlung: Simon Says
 

@@ -1,2 +1,4 @@
 tests/.sicherung.json
 __pycache__/
+spiele/alle.json
+tests/.*

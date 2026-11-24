@@ -725,8 +725,6 @@ function showScreen(n){
   $('#helpScreen').classList.toggle('show',n==='help');
   $('#collScreen').classList.toggle('show',n==='coll');
   $('#gameScreen').classList.toggle('show',n==='game');
-  $('#geScreen').classList.toggle('show',n==='gedit');
-  if(n==='gedit')renderGameEditor();
   $('#timerScreen').classList.toggle('show',n==='timer');
   $('#ownScreen').classList.toggle('show',n==='own');
   $('#ownEdit').classList.toggle('show',n==='ownedit');
@@ -797,7 +795,7 @@ function backupNow(){
 function backupWrite(games,bilder){
   const txt=JSON.stringify({app:'grosser-preis',typ:'sicherung',version:APP_VERSION,exportiert:new Date().toISOString(),
     spielbrett:{title:S.title,points:S.points,categories:S.categories,teams:S.teams.map(t=>({name:t.name,color:t.color})),settings:S.settings},
-    vorlagen:ownTpl().map(({id,...t})=>t),eigeneSpiele:games.map(({id,...g})=>g),bilder,sammlung:userGames()},null,1);
+    vorlagen:ownTpl().map(({id,...t})=>t),eigeneSpiele:games.map(({id,...g})=>g),bilder},null,1);
   const ok=downloadFile(`manna-sicherung-${dateStamp()}.json`,txt);
   if(!ok){try{navigator.clipboard.writeText(txt);toast('Download nicht möglich – Sicherung in die Zwischenablage kopiert.');}catch(e){toast('Sicherung nicht möglich.');return;}}
   else toast('Sicherung gespeichert. Auf dem iPad findest du sie in der Dateien-App unter Downloads.');
@@ -832,7 +830,6 @@ function importTemplates(txt){
   else if(d&&Array.isArray(d.cats))arr=[d];
   arr=arr.filter(t=>t&&Array.isArray(t.cats||t.categories));
   const nOwn=d&&d.typ==='sicherung'&&Array.isArray(d.eigeneSpiele)?importOwnData({spiele:d.eigeneSpiele,bilder:d.bilder}):0;
-  if(d&&d.typ==='sicherung'&&Array.isArray(d.sammlung))importUserGames(d.sammlung);
   if(!arr.length){toast(nOwn?`${nOwn} eigene${nOwn>1?' Spiele':'s Spiel'} eingespielt.`:'In der Datei wurden keine Vorlagen gefunden.');return;}
   const own=ownTpl();
   arr.forEach(t=>{const cats=t.cats||t.categories;
@@ -912,7 +909,7 @@ $('#btnHelpBack').onclick=()=>showScreen('gmenu');
 $('#btnEditBoard').onclick=()=>openSettings();
 $('#btnBackup').onclick=()=>backupNow();
 $('#btnRestore').onclick=()=>$('#tplFile').click();
-$('#gcColl').onclick=()=>showScreen('coll');
+$('#gcColl').onclick=()=>{if(gamesState==='fehler')loadGames();showScreen('coll');};
 $('#gcPreis').onclick=()=>showScreen('gmenu');
 $('#btnGmBack').onclick=()=>showScreen('home');
 $('#btnGuide').onclick=()=>{try{$('#info').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#info').scrollIntoView();}};
@@ -1023,6 +1020,20 @@ if(VIEW){
 }
 
 /* ================= SPIELESAMMLUNG ================= */
+/* Die Spiele kommen aus spiele/alle.json (gebaut aus spiele/*.txt).
+   Der Service Worker holt die Datei immer zuerst frisch und hat offline die letzte Fassung. */
+let GAMES=[],gamesState='laden';
+function validGame(g){
+  return g&&typeof g.id==='string'&&typeof g.name==='string'&&g.name&&typeof g.kurz==='string'&&Array.isArray(g.alter)&&
+    g.spieler&&Number.isFinite(g.spieler.min)&&Number.isFinite(g.spieler.max)&&Array.isArray(g.ort)&&Array.isArray(g.material)&&Array.isArray(g.ablauf);
+}
+function loadGames(){
+  gamesState='laden';
+  return fetch('spiele/alle.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
+    GAMES=(d&&Array.isArray(d.spiele)?d.spiele:[]).filter(validGame).map(g=>Object.assign({risiken:[]},g));gamesState='ok';
+  }).catch(()=>{gamesState='fehler';}).then(()=>{if(screenName==='coll')renderColl();});
+}
+if(!VIEW)loadGames();
 const FILTER_KEY='grosserPreis_filter';
 const FILTER_DEFS=[
   {key:'alter',label:'Alter',opts:()=>AGE_GROUPS.map(a=>({id:a.id,label:a.label}))},
@@ -1059,19 +1070,20 @@ function renderColl(){
     grp.appendChild(wrap);box.appendChild(grp);
   });
   const list=$('#gameList');list.innerHTML='';
-  const hits=allGames().filter(g=>gameMatches(g,filter)).sort((a,b)=>a.name.localeCompare(b.name,'de'));
+  const hits=GAMES.filter(g=>gameMatches(g,filter)).sort((a,b)=>a.name.localeCompare(b.name,'de'));
   const active=Object.values(filter).some(a=>a.length);
-  $('#collCount').textContent=hits.length===1?'1 Spiel':hits.length+' Spiele';
+  $('#collCount').textContent=!GAMES.length&&gamesState!=='ok'?'':hits.length===1?'1 Spiel':hits.length+' Spiele';
   $('#btnFilterReset').style.visibility=active?'visible':'hidden';
   if(!hits.length){
     const li=document.createElement('li');li.className='games-empty';
-    li.textContent='Kein Spiel passt zu diesen Filtern. Nimm einen Filter heraus, um mehr Spiele zu sehen.';
+    li.textContent=GAMES.length||gamesState==='ok'?'Kein Spiel passt zu diesen Filtern. Nimm einen Filter heraus, um mehr Spiele zu sehen.':
+      gamesState==='fehler'?'Die Spiele konnten nicht geladen werden. Öffne die Spielesammlung noch einmal, sobald du Internet hast.':'Spiele werden geladen …';
     list.appendChild(li);return;
   }
   hits.forEach(g=>{
     const li=document.createElement('li');
     const b=document.createElement('button');b.className='game-row';
-    b.innerHTML=`<span class="gname">${esc(g.name)}${g.own?'<span class="own">eigenes</span>':''}</span><span class="gshort">${esc(g.kurz)}</span>
+    b.innerHTML=`<span class="gname">${esc(g.name)}</span><span class="gshort">${esc(g.kurz)}</span>
       <span class="gtags"><span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
     b.onclick=()=>openGame(g.id);
     li.appendChild(b);list.appendChild(li);
@@ -1086,7 +1098,7 @@ function rolesHtml(r){
   return h;
 }
 function openGame(id){
-  const g=allGames().find(x=>x.id===id);if(!g)return;
+  const g=GAMES.find(x=>x.id===id);if(!g)return;
   const ages=g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).filter(Boolean).join(', ');
   const sec=(title,html)=>html?`<section class="note"><h3>${title}</h3>${html}</section>`:'';
   $('#gameSheet').innerHTML=`
@@ -1105,8 +1117,7 @@ function openGame(id){
       ${g.varianten&&g.varianten.length?sec('Varianten','<ul>'+g.varianten.map(s=>`<li>${esc(s)}</li>`).join('')+'</ul>'):''}
       ${g.risiken&&g.risiken.length?`<section class="note risk"><h3>Gefahren und Risiken</h3><ul>${g.risiken.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></section>`:''}
       ${g.hinweis?`<section class="note tip"><h3>Tipp</h3><p>${esc(g.hinweis)}</p></section>`:''}
-    </div>`+(g.own?ugActionsHtml(g):'');
-  if(g.own)ugBindActions(g);
+    </div>`;
   ransom($('#gameTitle'),g.name);
   showScreen('game');
 }
@@ -1595,161 +1606,3 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='Escape'){if(OR&&OR.phase==='award'){OR.phase='play';saveRun();opRender();}}
 });
 if(!VIEW)setTimeout(gcImages,4000);
-
-/* ================= SPIEL ERSTELLEN & EINSENDEN ================= */
-const UG_KEY='grosserPreis_userGames';
-const SUBMIT_ADDR='add.task.buq0vrdnwndfbifx@todoist.net';
-const ORT_OPTS=[['drinnen','Drinnen'],['draussen','Draußen']];
-function normUserGame(g){
-  g=g&&typeof g==='object'?g:{};
-  const arr=(a,max)=>(Array.isArray(a)?a:[]).map(x=>String(x||'').trim().slice(0,600)).filter(Boolean).slice(0,max);
-  const min=clampInt(g.spieler&&g.spieler.min,1,999,2),max=clampInt(g.spieler&&g.spieler.max,min,9999,9999);
-  const o={id:typeof g.id==='string'&&/^u-[a-z0-9]+$/.test(g.id)?g.id:'u-'+uid()+uid(),own:true,
-    name:String(g.name||'').trim().slice(0,60),kurz:String(g.kurz||'').trim().slice(0,200),
-    alter:(Array.isArray(g.alter)?g.alter:[]).filter(a=>AGE_GROUPS.some(x=>x.id===a)),
-    spieler:{min,max},ort:(Array.isArray(g.ort)?g.ort:[]).filter(a=>a==='drinnen'||a==='draussen'),
-    material:arr(g.material,30),dauer:String(g.dauer||'').trim().slice(0,40),ablauf:arr(g.ablauf,40),
-    varianten:arr(g.varianten,20),risiken:arr(g.risiken,20),hinweis:String(g.hinweis||'').trim().slice(0,600),
-    sentAt:Number(g.sentAt)||0};
-  const rl=(g.rollen&&Array.isArray(g.rollen.liste)?g.rollen.liste:[]).map(r=>({name:String((r&&r.name)||'').trim().slice(0,60),text:String((r&&r.text)||'').trim().slice(0,400)})).filter(r=>r.name).slice(0,20);
-  if(rl.length)o.rollen={liste:rl};
-  return o;
-}
-function userGames(){const a=jget(UG_KEY,[]);return Array.isArray(a)?a.map(normUserGame).filter(g=>g.name):[];}
-function storeUserGames(a){try{localStorage.setItem(UG_KEY,JSON.stringify(a));return true;}catch(e){toast('Speichern nicht möglich – der Speicher des Browsers ist voll.');return false;}}
-function allGames(){return GAMES.concat(userGames());}
-function importUserGames(arr){
-  const list=userGames();let n=0;
-  arr.forEach(x=>{const g=normUserGame(x);if(!g.name)return;const i=list.findIndex(y=>y.id===g.id);if(i>=0)list[i]=g;else list.push(g);n++;});
-  if(n)storeUserGames(list);return n;
-}
-
-/* ---------- Text zum Einsenden ---------- */
-function ugSubmitText(g){
-  const L=[];
-  L.push('MANNA-SPIEL v1');
-  L.push('Name: '+g.name);
-  L.push('Kurzbeschreibung: '+g.kurz);
-  L.push('Alter: '+g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).join(', '));
-  L.push('Personen: '+(g.spieler.max>=9999?'ab '+g.spieler.min:g.spieler.min+' bis '+g.spieler.max));
-  L.push('Ort: '+g.ort.map(o=>o==='drinnen'?'drinnen':'draußen').join(', '));
-  L.push('Dauer: '+(g.dauer||'-'));
-  const list=(title,a,num)=>{L.push('');L.push(title+':');if(!a.length)L.push('- keins');a.forEach((x,i)=>L.push((num?(i+1)+'. ':'- ')+x));};
-  list('Material',g.material);
-  list('Ablauf',g.ablauf,true);
-  if(g.rollen)list('Rollen',g.rollen.liste.map(r=>r.name+': '+r.text));
-  if(g.varianten.length)list('Varianten',g.varianten);
-  list('Gefahren und Risiken',g.risiken);
-  if(g.hinweis){L.push('');L.push('Tipp: '+g.hinweis);}
-  L.push('');L.push('Eingesendet mit Manna '+APP_VERSION);
-  return L.join('\n');
-}
-function ugActionsHtml(g){
-  const sent=g.sentAt?`<p class="ug-sent">Zuletzt eingesendet am ${new Date(g.sentAt).toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'})}.</p>`:'';
-  return `<section class="note ug-box"><h3>Dein eigenes Spiel</h3>
-    <p>Dieses Spiel liegt nur auf diesem Gerät. Schick es ein, dann wird es geprüft und kommt für alle in die Spielesammlung.</p>${sent}
-    <div class="ug-acts"><button class="primary" id="ugSend">Spiel einsenden</button><button class="btn" id="ugEdit">Bearbeiten</button><button class="btn" id="ugDel">Löschen</button></div>
-    <div class="ug-send" id="ugSendBox" hidden>
-      <p>Es öffnet sich eine fertige E-Mail. Du musst sie nur noch abschicken. Klappt das nicht, kopiere den Text und schick ihn an <b>${esc(SUBMIT_ADDR)}</b>.</p>
-      <textarea class="oe-inp oe-ta" id="ugText" readonly aria-label="Text zum Einsenden"></textarea>
-      <div class="ug-acts"><a class="primary" id="ugMail">E-Mail öffnen</a><button class="btn" id="ugCopy">Text kopieren</button></div>
-    </div></section>`;
-}
-function ugMarkSent(id){const a=userGames(),g=a.find(x=>x.id===id);if(g){g.sentAt=Date.now();storeUserGames(a);}}
-function ugBindActions(g){
-  const txt=ugSubmitText(g);
-  $('#ugText').value=txt;
-  $('#ugMail').href='mailto:'+SUBMIT_ADDR+'?subject='+encodeURIComponent('Neues Spiel: '+g.name)+'&body='+encodeURIComponent(txt);
-  $('#ugSend').onclick=()=>{const b=$('#ugSendBox');b.hidden=!b.hidden;if(!b.hidden)b.scrollIntoView({block:'nearest'});};
-  $('#ugMail').onclick=()=>{ugMarkSent(g.id);setTimeout(()=>toast('Danke! Nach dem Abschicken wird dein Spiel geprüft.'),400);};
-  $('#ugCopy').onclick=()=>{
-    const done=()=>{ugMarkSent(g.id);toast('Text kopiert. Schick ihn per E-Mail an '+SUBMIT_ADDR+'.');};
-    try{navigator.clipboard.writeText(txt).then(done,()=>{$('#ugText').select();document.execCommand('copy');done();});}catch(e){$('#ugText').select();try{document.execCommand('copy');done();}catch(x){toast('Kopieren nicht möglich. Markiere den Text und kopiere ihn von Hand.');}}
-  };
-  $('#ugEdit').onclick=()=>openGameEditor(g);
-  $('#ugDel').onclick=()=>ask(`Spiel „${g.name}“ löschen? Es ist dann weg (außer du hast eine Sicherung).`,'Löschen',()=>{
-    storeUserGames(userGames().filter(x=>x.id!==g.id));markUnsaved();showScreen('coll');toast('Spiel gelöscht.');});
-}
-
-/* ---------- Eingabemaske ---------- */
-let GE=null;
-const linesOf=t=>String(t||'').split('\n').map(s=>s.replace(/^\s*(?:[-*•]|\d+[.)])\s*/,'').trim()).filter(Boolean);
-function geDirty(){return !!GE&&JSON.stringify([GE.g,GE.raw])!==GE.sig;}
-function openGameEditor(g){
-  const isNew=!g;
-  g=isNew?normUserGame({alter:['jugend'],ort:['drinnen'],spieler:{min:6,max:30}}):normUserGame(JSON.parse(JSON.stringify(g)));
-  const raw={material:g.material.join('\n'),ablauf:g.ablauf.join('\n'),varianten:g.varianten.join('\n'),risiken:g.risiken.join('\n'),
-    rollen:g.rollen?g.rollen.liste.map(r=>r.name+': '+r.text).join('\n'):'',max:g.spieler.max>=9999?'':String(g.spieler.max)};
-  GE={g,raw,isNew,sig:''};GE.sig=isNew?'':JSON.stringify([GE.g,GE.raw]);
-  showScreen('gedit');
-}
-function geMulti(parent,label,opts,arr){
-  const w=oeEl('div','oe-field');w.appendChild(oeEl('span','oe-flabel',label));
-  const c=oeEl('div','fchips');c.setAttribute('role','group');c.setAttribute('aria-label',label);
-  opts.forEach(([v,t])=>{const b=oeEl('button','fchip'+(arr.includes(v)?' on':''),t);b.setAttribute('aria-pressed',arr.includes(v));
-    b.onclick=()=>{const i=arr.indexOf(v);if(i>=0)arr.splice(i,1);else arr.push(v);b.classList.toggle('on',i<0);b.setAttribute('aria-pressed',i<0);};c.appendChild(b);});
-  w.appendChild(c);parent.appendChild(w);return w;
-}
-function renderGameEditor(){
-  if(!GE)return;
-  const g=GE.g,r=GE.raw,b=$('#geBody');
-  ransom($('#geTitle'),GE.isNew?'Spiel erstellen':'Spiel bearbeiten');
-  b.innerHTML='';
-  const s1=oeSec(b,'Das Spiel');
-  oeLabeled(s1,'Name',oeInput(g.name,'z. B. Zeitungsschlagen',60,v=>{g.name=v;})).dataset.f='name';
-  oeLabeled(s1,'Kurzbeschreibung (ein Satz)',oeInput(g.kurz,'Worum geht es?',200,v=>{g.kurz=v;})).dataset.f='kurz';
-  const s2=oeSec(b,'Für wen und wo');
-  geMulti(s2,'Alter',AGE_GROUPS.map(a=>[a.id,a.label]),g.alter).dataset.f='alter';
-  const pr=oeEl('div','ge-people');pr.dataset.f='spieler';
-  const mi=oeInput(String(g.spieler.min),'',3,v=>{g.spieler.min=clampInt(v,1,999,g.spieler.min);});mi.type='number';mi.min=1;mi.inputMode='numeric';
-  const ma=oeInput(r.max,'egal',4,v=>{r.max=v;});ma.type='number';ma.min=1;ma.inputMode='numeric';
-  oeLabeled(pr,'Personen mindestens',mi);oeLabeled(pr,'Personen höchstens (leer lassen, wenn egal)',ma);s2.appendChild(pr);
-  geMulti(s2,'Ort',ORT_OPTS,g.ort).dataset.f='ort';
-  oeLabeled(s2,'Dauer',oeInput(g.dauer,'z. B. ca. 15 Minuten',40,v=>{g.dauer=v;}));
-  const s3=oeSec(b,'Ablauf');
-  s3.appendChild(oeEl('p','oe-hint','Schreib jeden Schritt in eine eigene Zeile. Aufzählungszeichen und Nummern brauchst du nicht.'));
-  oeLabeled(s3,'So geht’s',oeInput(r.ablauf,'Alle stellen sich im Kreis auf.\nEine Person beginnt …',4000,v=>{r.ablauf=v;},true)).dataset.f='ablauf';
-  oeLabeled(s3,'Material (eins pro Zeile, leer lassen, wenn keins nötig ist)',oeInput(r.material,'z. B. eine Zeitung',3000,v=>{r.material=v;},true));
-  oeLabeled(s3,'Rollen (optional, eine pro Zeile im Format „Name: Beschreibung“)',oeInput(r.rollen,'z. B. Mafia: wählt nachts ein Opfer',3000,v=>{r.rollen=v;},true));
-  oeLabeled(s3,'Varianten (optional, eine pro Zeile)',oeInput(r.varianten,'',3000,v=>{r.varianten=v;},true));
-  const s4=oeSec(b,'Sicherheit und Tipp');
-  oeLabeled(s4,'Gefahren und Risiken (eins pro Zeile)',oeInput(r.risiken,'Worauf muss die Spielleitung achten?',3000,v=>{r.risiken=v;},true));
-  oeLabeled(s4,'Tipp (optional)',oeInput(g.hinweis,'Was macht das Spiel besser?',600,v=>{g.hinweis=v;}));
-  b.querySelectorAll('textarea').forEach(t=>t.rows=5);
-}
-function geBuild(){
-  const g=GE.g,r=GE.raw;
-  const out=normUserGame(Object.assign({},g,{
-    spieler:{min:g.spieler.min,max:String(r.max).trim()?clampInt(r.max,g.spieler.min,9999,9999):9999},
-    material:linesOf(r.material),ablauf:linesOf(r.ablauf),varianten:linesOf(r.varianten),risiken:linesOf(r.risiken),
-    rollen:{liste:linesOf(r.rollen).map(l=>{const i=l.indexOf(':');return i>0?{name:l.slice(0,i),text:l.slice(i+1)}:{name:l,text:''};})}}));
-  out.sentAt=0;return out;
-}
-function geCheck(g){
-  const miss=[];
-  if(!g.name)miss.push(['name','den Namen']);
-  if(!g.kurz)miss.push(['kurz','die Kurzbeschreibung']);
-  if(!g.alter.length)miss.push(['alter','mindestens eine Altersgruppe']);
-  if(!g.ort.length)miss.push(['ort','drinnen oder draußen']);
-  if(!g.ablauf.length)miss.push(['ablauf','den Ablauf']);
-  return miss;
-}
-$('#btnGeSave').onclick=()=>{
-  if(!GE)return;
-  const g=geBuild(),miss=geCheck(g);
-  if(miss.length){
-    toast('Bitte noch ergänzen: '+miss.map(m=>m[1]).join(', ')+'.');
-    const el=$(`#geBody [data-f="${miss[0][0]}"]`);if(el){el.scrollIntoView({block:'center'});const i=el.querySelector('input,textarea,button');if(i)i.focus();}
-    return;
-  }
-  const list=userGames(),i=list.findIndex(x=>x.id===g.id);
-  if(i>=0)list[i]=g;else list.push(g);
-  if(!storeUserGames(list))return;
-  markUnsaved();GE=null;openGame(g.id);
-  toast('Spiel gespeichert. Unten kannst du es einsenden.');
-};
-$('#btnGeBack').onclick=()=>{
-  const leave=()=>{GE=null;showScreen('coll');};
-  if(geDirty())ask('Deine Eingaben sind noch nicht gespeichert. Trotzdem zurück?','Verwerfen',leave);else leave();
-};
-$('#btnGameNew').onclick=()=>openGameEditor(null);

@@ -3,15 +3,22 @@
 Startet einen lokalen Webserver, öffnet die App in Chromium und spielt die
 wichtigsten Abläufe durch. Beendet sich mit Fehlercode, wenn etwas nicht stimmt.
 
+Die Spielesammlung wird mit festen Testspielen geprüft (tests/testspiele/), nicht mit
+den echten Spielen. So bricht kein Test, wenn im Editor ein Spiel dazukommt oder wegfällt.
+Der Editor wird gegen ein nachgebautes GitHub geprüft, es wird nichts veröffentlicht.
+
 Lokal ausführen:   pip install playwright && python -m playwright install chromium
-                   python tests/run_tests.py
+                   python tests/run_tests.py          (braucht Node.js für den Bau der Spiele)
 """
-import functools, http.server, json, os, re, socketserver, sys, threading, traceback
+import base64, functools, hashlib, http.server, json, os, re, socketserver, subprocess, sys, tempfile, threading, traceback
+from urllib.parse import urlparse, parse_qs, unquote
 from playwright.sync_api import sync_playwright
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORT = 8799
 URL = f'http://localhost:{PORT}/index.html'
+EDITOR = f'http://localhost:{PORT}/editor/'
+FIXTURE = {'json': b''}   # was der Testserver als spiele/alle.json ausliefert
 CHROME = os.environ.get('CHROME_PATH')  # optional: eigener Browser
 
 results = []
@@ -28,6 +35,11 @@ def check(name, cond, info=''):
 def serve():
     class Quiet(http.server.SimpleHTTPRequestHandler):
         def log_message(self, *a): pass
+        def do_GET(self):
+            if self.path.split('?')[0] == '/spiele/alle.json':
+                self.send_response(200); self.send_header('Content-Type', 'application/json')
+                self.send_header('Cache-Control', 'no-cache'); self.end_headers(); self.wfile.write(FIXTURE['json']); return
+            return super().do_GET()
     handler = functools.partial(Quiet, directory=ROOT)
     socketserver.TCPServer.allow_reuse_address = True
     httpd = socketserver.TCPServer(('localhost', PORT), handler)
@@ -38,7 +50,7 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'css/app.css', 'js/app.js', 'js/data.js']:
+    for f in ['index.html', 'css/app.css', 'js/app.js', 'js/data.js', 'js/spielformat.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
@@ -50,9 +62,50 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['css/app.css', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-frage.jpg', 'img/shot-action.jpg', 'img/shot-sieger.jpg']:
+    for f in ['css/app.css', 'js/spielformat.js', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-frage.jpg', 'img/shot-action.jpg', 'img/shot-sieger.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
+
+def build(src, out):
+    return subprocess.run(['node', os.path.join(ROOT, 'tools', 'build-spiele.js'), src, out], capture_output=True, text=True)
+
+def spiele_checks():
+    print('Spiele (Textdateien)')
+    r = build(os.path.join(ROOT, 'spiele'), os.path.join(ROOT, 'spiele', 'alle.json'))
+    check('echte Spiele bauen fehlerfrei', r.returncode == 0, (r.stdout + r.stderr).strip())
+    if r.returncode == 0:
+        d = json.load(open(os.path.join(ROOT, 'spiele', 'alle.json'), encoding='utf-8'))
+        check('echte Spiele: mindestens eins', len(d['spiele']) > 0)
+        check('echte Spiele: Pflichtangaben', all(g['name'] and g['kurz'] and g['alter'] and g['ort'] and g['ablauf'] for g in d['spiele']))
+    out = os.path.join(ROOT, 'tests', '.testspiele.json')
+    r = build(os.path.join(ROOT, 'tests', 'testspiele'), out)
+    check('Testspiele bauen', r.returncode == 0, r.stderr)
+    FIXTURE['json'] = open(out, 'rb').read()
+    with tempfile.TemporaryDirectory() as t:
+        open(os.path.join(t, 'kaputt.txt'), 'w', encoding='utf-8').write('MANNA-SPIEL v1\nName: Kaputt\nAlter: Senioren\n')
+        r = build(t, os.path.join(t, 'alle.json'))
+        check('fehlerhafte Spieldatei stoppt den Bau', r.returncode == 1 and 'Kurzbeschreibung' in r.stderr and 'Senioren' in r.stderr and not os.path.exists(os.path.join(t, 'alle.json')), r.stderr)
+        open(os.path.join(t, 'kaputt.txt'), 'w', encoding='utf-8').write(open(os.path.join(ROOT, 'tests', 'testspiele', 'simon-says.txt'), encoding='utf-8').read())
+        r = build(t, os.path.join(t, 'alle.json'))
+        check('Dateiname muss zum Namen passen', r.returncode == 1 and 'simon-says.txt' in r.stderr, r.stderr)
+
+def format_checks(m):
+    print('Textformat')
+    res = m.evaluate(r"""(()=>{const F=MannaSpiel;
+      const t='MANNA-SPIEL v1\nName: Ochs am Berg\nKurzbeschreibung: Anschleichen , solange keiner schaut.\nAlter: Kinder, Jugendliche\nPersonen: ab 5\nOrt: draußen\nDauer: -\n\nMaterial:\n- keins\n\nAblauf:\n1. Eine Person steht an der Wand.\n- Die anderen schleichen.\nWer sich bewegt, muss zurück.\n\nGefahren und Risiken:\n- Nicht rennen.\n';
+      const p=F.parse(t);
+      return {fehler:p.fehler,g:p.spiel,again:F.serialize(p.spiel),slug:F.slug('Ächz Übung – Groß!'),
+        bad:F.parse('Name: X').fehler.length,pers:F.parse(t.replace('ab 5','8 bis 15')).spiel.spieler,
+        palermo:F.parse(F.serialize(F.parse(t+'\nRollen-Tabelle:\nA | B\n1 | 2\n').spiel)).spiel.rollen}})()""")
+    g = res['g']
+    check('Format: lesen ohne Fehler', res['fehler'] == [], res['fehler'])
+    check('Format: Angaben übernommen', g['alter'] == ['kinder', 'jugend'] and g['spieler'] == {'min': 5, 'max': 9999} and g['ort'] == ['draussen'] and g['dauer'] == '' and g['material'] == [], g)
+    check('Format: Wortlaut bleibt, nur Aufzählungszeichen weg', g['ablauf'] == ['Eine Person steht an der Wand.', 'Die anderen schleichen.', 'Wer sich bewegt, muss zurück.'] and g['kurz'] == 'Anschleichen , solange keiner schaut.', g['ablauf'])
+    check('Format: schreiben und wieder lesen gleich', 'Ablauf:\n1. Eine Person steht an der Wand.\n2. Die anderen schleichen.\n3. Wer sich bewegt' in res['again'])
+    check('Format: Personen „8 bis 15“', res['pers'] == {'min': 8, 'max': 15})
+    check('Format: Rollen-Tabelle', res['palermo'] == {'liste': [], 'tabelle': {'kopf': ['A', 'B'], 'zeilen': [['1', '2']]}}, res['palermo'])
+    check('Format: Dateiname aus Namen', res['slug'] == 'aechz-uebung-gross', res['slug'])
+    check('Format: Pflichtangaben werden geprüft', res['bad'] >= 5)
 
 def browser_checks(p):
     errs = []
@@ -64,6 +117,7 @@ def browser_checks(p):
 
     print('Startseite & Menüs')
     m.goto(URL); m.wait_for_timeout(400)
+    format_checks(m)
     check('Startseite sichtbar', m.locator('#home.show').count() == 1)
     check('Marke „Manna“ auf der Startseite', m.get_attribute('#homeBrand', 'aria-label') == 'Manna' and m.evaluate("document.querySelector('#homeBrand img').naturalWidth>0") and m.title() == 'Manna')
     check('Screenshot-Collage mit 4 Bildern', m.locator('.collage .shot img').count() == 4)
@@ -90,6 +144,7 @@ def browser_checks(p):
     print('Spielesammlung')
     m.click('#btnGmBack'); m.click('#gcColl'); m.wait_for_timeout(200)
     check('Spielesammlung öffnet', m.locator('#collScreen.show').count() == 1)
+    check('kein Knopf „Spiel erstellen“', m.locator('#btnGameNew').count() == 0 and m.locator('#geScreen').count() == 0)
     check('Filtergruppen', m.locator('.flabel').all_inner_texts() == ['Alter', 'Personen', 'Ort', 'Material'], m.locator('.flabel').all_inner_texts())
     check('Personen-Filter 3–9, 10–19, 20–39, 40+', m.locator('.fgroup').nth(1).locator('.fchip').all_inner_texts() == ['3–9', '10–19', '20–39', '40 und mehr'])
     rows = m.locator('.game-row .gname').all_inner_texts()
@@ -99,7 +154,7 @@ def browser_checks(p):
     m.click('#btnFilterReset'); m.locator('.fchip', has_text='Ohne Material').click()
     check('Filter „Ohne Material“: nur Simon Says', m.locator('.game-row .gname').all_inner_texts() == ['Simon Says'])
     m.click('#btnFilterReset'); m.locator('.fchip', has_text='Kinder (6–12)').click()
-    check('Kein Treffer: Hinweis statt Liste', m.locator('.game-row').count() == m.evaluate("allGames().filter(g=>g.alter.includes('kinder')).length") and (m.locator('.game-row').count() > 0 or m.locator('.games-empty').count() == 1))
+    check('Kein Treffer: Hinweis statt Liste', m.locator('.game-row').count() == m.evaluate("GAMES.filter(g=>g.alter.includes('kinder')).length") and (m.locator('.game-row').count() > 0 or m.locator('.games-empty').count() == 1))
     m.click('#btnFilterReset'); m.locator('.fchip', has_text='Erwachsene').click()
     check('Filter Erwachsene: nur Palermo', m.locator('.game-row .gname').all_inner_texts() == ['Nachts in Palermo'])
     m.click('#btnFilterReset')
@@ -116,32 +171,23 @@ def browser_checks(p):
     check('Palermo: Rollen mit Verteilungstabelle', m.locator('.role-table tbody tr').count() == 4 and 'Kommissar' in m.inner_text('#gameSheet'))
     m.click('#btnGameBack'); m.wait_for_timeout(200)
 
-    print('Spiel erstellen & einsenden')
-    m.click('#btnGameNew'); m.wait_for_timeout(300)
-    check('Eingabemaske öffnet', m.locator('#geScreen.show').count() == 1)
-    m.locator('#geBody [data-f="name"] input').fill('Ochs am Berg')
-    m.locator('#geBody [data-f="ablauf"] textarea').fill('- Eine Person steht an der Wand.\n2. Die anderen schleichen sich an.')
-    m.click('#btnGeSave'); m.wait_for_timeout(200)
-    check('Pflichtfeld fehlt: Maske bleibt offen', m.locator('#geScreen.show').count() == 1 and 'Kurzbeschreibung' in m.inner_text('#toast'))
-    m.locator('#geBody [data-f="kurz"] input').fill('Anschleichen, solange niemand hinschaut.')
-    m.locator('#geBody [data-f="ort"] .fchip', has_text='Draußen').click()
-    m.locator('#geBody textarea').nth(3).fill('Nicht rennen, wenn der Boden rutschig ist.')
-    m.click('#btnGeSave'); m.wait_for_timeout(300)
-    check('Spiel gespeichert und Detailseite offen', m.locator('#gameScreen.show').count() == 1 and m.get_attribute('#gameTitle', 'aria-label') == 'Ochs am Berg')
-    check('Ablauf ohne Aufzählungszeichen', m.locator('#gameSheet ol li').all_inner_texts() == ['Eine Person steht an der Wand.', 'Die anderen schleichen sich an.'])
-    m.click('#ugSend'); m.wait_for_timeout(200)
-    href = m.get_attribute('#ugMail', 'href')
-    check('Einsenden an Todoist mit Betreff', href.startswith('mailto:add.task.buq0vrdnwndfbifx@todoist.net?subject=Neues%20Spiel%3A%20Ochs%20am%20Berg'))
-    txt = m.input_value('#ugText')
-    check('Einsende-Text vollständig', txt.startswith('MANNA-SPIEL v1') and 'Ort: drinnen, draußen' in txt and '1. Eine Person steht an der Wand.' in txt and 'Gefahren und Risiken:' in txt)
-    m.click('#btnGameBack'); m.wait_for_timeout(200)
-    check('Eigenes Spiel in der Liste markiert', m.locator('.game-row', has_text='Ochs am Berg').locator('.own').count() == 1)
-    m.locator('.game-row', has_text='Ochs am Berg').click(); m.wait_for_timeout(200)
-    m.click('#ugEdit'); m.wait_for_timeout(200)
-    m.locator('#geBody [data-f="name"] input').fill('Ochs am Berg (Variante)'); m.click('#btnGeSave'); m.wait_for_timeout(300)
-    check('Spiel bearbeiten', m.get_attribute('#gameTitle', 'aria-label') == 'Ochs am Berg (Variante)' and m.evaluate("JSON.parse(localStorage.grosserPreis_userGames).length") == 1)
-    m.click('#ugDel'); m.click('#dYes'); m.wait_for_timeout(300)
-    check('Spiel löschen', m.locator('#collScreen.show').count() == 1 and m.locator('.game-row').count() == m.evaluate('GAMES.length'))
+    print('Spielesammlung ohne App-Update')
+    d = json.loads(FIXTURE['json']); orig = FIXTURE['json']
+    d['spiele'].append(dict(d['spiele'][0], id='neues-testspiel', name='Neues Testspiel'))
+    # Der Service Worker läuft sonst nur unter https (GitHub Pages), hier für den Test von Hand starten
+    m.click('#btnCollBack')
+    m.evaluate("navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready)"); m.reload(); m.wait_for_timeout(800)
+    check('Service Worker aktiv', m.evaluate("!!navigator.serviceWorker.controller"))
+    m.click('#gcColl'); m.wait_for_timeout(300); m.click('#btnCollBack')
+    FIXTURE['json'] = json.dumps(d).encode()
+    m.reload(); m.wait_for_timeout(800); m.click('#gcColl'); m.wait_for_timeout(300)
+    check('neues Spiel erscheint ohne neue Version', 'Neues Testspiel' in m.locator('.game-row .gname').all_inner_texts(), m.locator('.game-row .gname').all_inner_texts())
+    check('Spiele für offline zwischengespeichert', m.evaluate("caches.open('manna-spiele').then(c=>c.match('spiele/alle.json')).then(r=>r?r.json():null).then(j=>!!j&&j.spiele.some(g=>g.name==='Neues Testspiel'))"))
+    FIXTURE['json'] = orig
+    ed = ctx.new_page(); ed.goto(EDITOR); ed.wait_for_timeout(400)
+    check('Editor öffnet trotz Service Worker (nicht die App)', ed.title() == 'Manna Editor', ed.title()); ed.close()
+    m.evaluate("navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister())))"); m.reload(); m.wait_for_timeout(600)
+    m.click('#gcColl'); m.wait_for_timeout(300)
     m.click('#btnCollBack'); m.wait_for_timeout(200)
     m.click('#gcPreis'); m.wait_for_timeout(200)
 
@@ -303,6 +349,9 @@ def browser_checks(p):
     check('Sicherung enthält Spielbrett', backup.get('typ') == 'sicherung' and len(backup['spielbrett']['categories']) == 5)
     check('Sicherung enthält eigene Spiele mit Bild', len(backup.get('eigeneSpiele', [])) == 1 and len(backup.get('bilder', {})) == 1)
     m.wait_for_timeout(200)
+    check('Sicherung ohne selbst erstellte Sammlungsspiele', 'sammlung' not in backup)
+    backup['sammlung'] = [{'name': 'Altes eigenes Spiel', 'kurz': 'x', 'alter': ['jugend'], 'ort': ['drinnen'], 'ablauf': ['x']}]
+    json.dump(backup, open(path, 'w', encoding='utf-8'))
     check('Hinweis nach Sicherung weg', m.locator('#gmList .backup-note').count() == 0)
     m.locator('.mbtn', has_text='Vorlagen').click()
     m.locator('.ttools .btn', has_text='als Vorlage').click(); m.fill('#dInput', 'Testquiz'); m.click('#dYes'); m.wait_for_timeout(400)
@@ -313,7 +362,7 @@ def browser_checks(p):
     m.locator('.trow', has_text='Weihnachtsquiz').locator('.tdel').click(); m.click('#dYes'); m.wait_for_timeout(200)
     check('Löschen', m.locator('.trow', has_text='Testquiz').count() == 0 and m.locator('.trow', has_text='Weihnachtsquiz').count() == 0)
     m.set_input_files('#tplFile', path); m.wait_for_timeout(400)
-    check('Sicherung einspielen', m.locator('.trow', has_text='Gesichertes Spielbrett').count() == 1)
+    check('Sicherung einspielen (auch alte mit Sammlungsspielen)', m.locator('.trow', has_text='Gesichertes Spielbrett').count() == 1)
     m.locator('.ttools .btn', has_text='wiederherstellen').click(); m.wait_for_timeout(200)
     check('Standard-Vorlagen wiederherstellen', m.locator('.trow', has_text='Weihnachtsquiz').count() == 1)
     m.locator('.trow', has_text='Weihnachtsquiz').locator('.mbtn').click(); m.click('#dYes'); m.wait_for_timeout(400)
@@ -327,12 +376,157 @@ def browser_checks(p):
     check('keine JavaScript-Fehler', not errs, '; '.join(errs))
     b.close()
 
+class FakeGitHub:
+    """Nachgebautes GitHub (nur was der Editor braucht). Hält die Dateien im Speicher."""
+    TOKEN = 'testtoken'
+    def __init__(self, files):
+        self.files = dict(files); self.commits = {}; self.trees = {}; self.n = 0
+        self.head = self.new_commit(dict(self.files), None, 'Start')
+        self.log = []
+    def new_commit(self, files, parent, msg):
+        self.n += 1; sha = hashlib.sha1(f'commit{self.n}'.encode()).hexdigest()
+        self.commits[sha] = {'files': files, 'parent': parent, 'msg': msg}; return sha
+    @staticmethod
+    def blob(txt): return hashlib.sha1(txt.encode()).hexdigest()
+    def handle(self, route, request):
+        u = urlparse(request.url); path = unquote(u.path); q = parse_qs(u.query)
+        js = lambda code, body: route.fulfill(status=code, content_type='application/json', body=json.dumps(body),
+                                              headers={'Access-Control-Allow-Origin': '*'})
+        if request.method == 'OPTIONS':
+            return route.fulfill(status=204, headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': '*'})
+        if request.headers.get('authorization') != 'Bearer ' + self.TOKEN: return js(401, {'message': 'Bad credentials'})
+        base = '/repos/twoyears777/dergrossepreis'
+        if path == base: return js(200, {'full_name': 'twoyears777/dergrossepreis'})
+        rest = path[len(base):]
+        ref = (q.get('ref') or ['main'])[0]
+        files = self.commits[self.head if ref == 'main' else ref]['files'] if (ref == 'main' or ref in self.commits) else self.files
+        if rest == '/contents/spiele':
+            return js(200, [{'name': k.split('/')[-1], 'path': k, 'sha': self.blob(v), 'type': 'file'} for k, v in sorted(files.items())])
+        if rest.startswith('/contents/'):
+            k = rest[len('/contents/'):]
+            if k not in files: return js(404, {'message': 'Not Found'})
+            return js(200, {'path': k, 'sha': self.blob(files[k]), 'content': base64.b64encode(files[k].encode()).decode()})
+        if rest == '/git/ref/heads/main': return js(200, {'object': {'sha': self.head}})
+        if rest.startswith('/git/commits/') and request.method == 'GET': return js(200, {'tree': {'sha': 'tree-' + rest.split('/')[-1]}})
+        body = json.loads(request.post_data or '{}')
+        if rest == '/git/trees':
+            f = dict(self.commits[body['base_tree'][5:]]['files'])
+            for e in body['tree']:
+                if e.get('sha', '') is None:
+                    if e['path'] not in f: return js(422, {'message': 'path not found'})
+                    del f[e['path']]
+                else: f[e['path']] = e['content']
+            t = 't' + str(len(self.trees)); self.trees[t] = f; return js(201, {'sha': t})
+        if rest == '/git/commits':
+            sha = self.new_commit(self.trees[body['tree']], body['parents'][0], body['message']); return js(201, {'sha': sha})
+        if rest == '/git/refs/heads/main':
+            c = self.commits[body['sha']]
+            if c['parent'] != self.head: return js(422, {'message': 'Update is not a fast forward'})
+            self.head = body['sha']; self.files = c['files']; self.log.append(c['msg']); return js(200, {})
+        if rest == '/actions/runs':
+            return js(200, {'workflow_runs': [{'status': 'completed', 'conclusion': 'success', 'html_url': 'https://example.org/run'}]})
+        return js(404, {'message': 'Not Found: ' + rest})
+    def change_elsewhere(self, k, txt):
+        f = dict(self.files); f[k] = txt; self.head = self.new_commit(f, self.head, 'anderes Gerät'); self.files = f
+
+def editor_checks(p):
+    print('Editor')
+    errs = []
+    d = os.path.join(ROOT, 'tests', 'testspiele')
+    gh = FakeGitHub({'spiele/' + f: open(os.path.join(d, f), encoding='utf-8').read() for f in os.listdir(d) if f.endswith('.txt')})
+    b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
+    ctx = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
+    ctx.route('https://api.github.com/**', gh.handle)
+    e = ctx.new_page(); e.on('pageerror', lambda x: errs.append(str(x)))
+    toast = lambda: e.inner_text('#toast')
+    e.goto(EDITOR); e.wait_for_timeout(300)
+    check('Editor: Anmeldung', e.locator('#vLogin:not([hidden])').count() == 1)
+    e.fill('#inToken', 'falsch'); e.click('#btnLogin'); e.wait_for_timeout(300)
+    check('Editor: falscher Schlüssel abgelehnt', 'ungültig' in e.inner_text('#loginMsg') and e.evaluate("localStorage.getItem('manna-editor-token')") is None)
+    e.fill('#inToken', 'testtoken'); e.click('#btnLogin'); e.wait_for_timeout(600)
+    names = e.locator('.game b').all_inner_texts()
+    check('Editor: Spiele gelistet', names == ['Nachts in Palermo', 'Simon Says', 'Zeitungsschlagen'], names)
+    e.reload(); e.wait_for_timeout(600)
+    check('Editor: Schlüssel bleibt gespeichert', e.locator('#vList:not([hidden])').count() == 1)
+
+    e.locator('.game', has_text='Palermo').click(); e.wait_for_timeout(200)
+    check('Editor: Palermo vollständig im Formular', 'Kommissar' in e.input_value('#fRollen') and '8–10 | 2 | 1 | –' in e.input_value('#fTabelle') and e.input_value('#fMax') == '25')
+    e.click('#btnPublish'); e.wait_for_timeout(300)
+    check('Editor: unverändert ergibt dieselbe Datei', 'Keine Änderungen' in toast() and gh.log == [], toast())
+    e.click('#btnBack'); e.wait_for_timeout(200)
+
+    e.click('#btnNew'); e.wait_for_timeout(200)
+    e.fill('#fName', 'Ochs am Berg'); e.click('#btnPublish'); e.wait_for_timeout(300)
+    check('Editor: Pflichtfelder fehlen', 'Kurzbeschreibung' in toast() and 'Ablauf' in toast() and gh.log == [] and e.locator('[data-f="kurz"].bad').count() == 1)
+    e.fill('#fKurz', 'Anschleichen,solange niemand hinschaut .')
+    e.fill('#fAblauf', '- Eine Person steht an der Wand.\n2. Die anderen schleichen sich an.\n\nwer sich bewegt muss zurück')
+    e.locator('#fOrt .chip', has_text='Draußen').click()
+    e.fill('#fRisiken', 'Nicht rennen, wenn der Boden rutschig ist.')
+    check('Editor: Vorschau', 'Die anderen schleichen sich an.' in e.inner_text('#prevCard'))
+    e.click('#tabTxt'); check('Editor: Textdatei-Ansicht', e.inner_text('#prevTxt').startswith('MANNA-SPIEL v1')); e.click('#tabPrev')
+    check('Editor: Entwurf gespeichert', 'Ochs am Berg' in (e.evaluate("localStorage.getItem('manna-editor-entwurf')") or ''))
+    e.click('#btnPublish'); e.wait_for_timeout(800)
+    txt = gh.files.get('spiele/ochs-am-berg.txt', '')
+    check('Editor: neues Spiel als Textdatei veröffentlicht', gh.log == ['Neues Spiel: Ochs am Berg'] and txt == (
+        'MANNA-SPIEL v1\nName: Ochs am Berg\nKurzbeschreibung: Anschleichen,solange niemand hinschaut .\nAlter: Jugendliche (13–17)\n'
+        'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\n\nMaterial:\n- keins\n\nAblauf:\n1. Eine Person steht an der Wand.\n'
+        '2. Die anderen schleichen sich an.\n3. wer sich bewegt muss zurück\n\nGefahren und Risiken:\n- Nicht rennen, wenn der Boden rutschig ist.\n'), txt)
+    check('Editor: Wortlaut unverändert (keine Korrekturen)', 'wer sich bewegt muss zurück' in txt and 'Anschleichen,solange' in txt)
+    check('Editor: zurück in der Liste, Spiel ist online', e.locator('.game b', has_text='Ochs am Berg').count() == 1 and 'ist online' in e.inner_text('#notices'))
+    check('Editor: Entwurf nach Veröffentlichen gelöscht', e.evaluate("localStorage.getItem('manna-editor-entwurf')") is None)
+    r = build_text(txt)
+    check('Editor: Datei besteht den Bau-Schritt', r.returncode == 0, r.stderr)
+
+    e.click('#btnNew'); e.fill('#fName', 'simon says'); e.fill('#fKurz', 'x'); e.fill('#fAblauf', 'x'); e.click('#btnPublish'); e.wait_for_timeout(300)
+    check('Editor: doppelter Name abgelehnt', 'gibt es schon' in toast() and len(gh.log) == 1, toast())
+    e.click('#btnBack'); e.wait_for_timeout(200)
+    check('Editor: Rückfrage bei ungespeicherten Änderungen', e.locator('#modal:not([hidden])').count() == 1)
+    e.locator('#mBtns button', has_text='Entwurf verwerfen').click(); e.wait_for_timeout(200)
+
+    e.locator('.game', has_text='Ochs am Berg').click(); e.wait_for_timeout(200)
+    e.fill('#fName', 'Ochs am Berg (Variante)'); e.click('#btnPublish'); e.wait_for_timeout(800)
+    check('Editor: umbenennen in einem Commit', len(gh.log) == 2 and 'spiele/ochs-am-berg-variante.txt' in gh.files and 'spiele/ochs-am-berg.txt' not in gh.files, gh.log)
+
+    e.locator('.game', has_text='Zeitungsschlagen').click(); e.wait_for_timeout(200)
+    gh.change_elsewhere('spiele/zeitungsschlagen.txt', gh.files['spiele/zeitungsschlagen.txt'].replace('ca. 10 Minuten', 'ca. 12 Minuten'))
+    e.fill('#fDauer', 'ca. 15 Minuten'); e.click('#btnPublish'); e.wait_for_timeout(500)
+    check('Editor: Warnung bei Änderung auf anderem Gerät', 'anderen Gerät geändert' in e.inner_text('#mMsg'))
+    e.locator('#mBtns button', has_text='Abbrechen').click(); e.wait_for_timeout(300)
+    check('Editor: abgebrochen, nichts überschrieben', 'ca. 12 Minuten' in gh.files['spiele/zeitungsschlagen.txt'] and len(gh.log) == 2)
+    check('Editor: Entwurf bleibt', 'ca. 15 Minuten' in (e.evaluate("localStorage.getItem('manna-editor-entwurf')") or ''))
+    e.click('#btnPublish'); e.wait_for_timeout(500)
+    e.locator('#mBtns button', has_text='Trotzdem überschreiben').click(); e.wait_for_timeout(800)
+    check('Editor: bewusst überschreiben', 'ca. 15 Minuten' in gh.files['spiele/zeitungsschlagen.txt'] and gh.log[-1] == 'Spiel überarbeitet: Zeitungsschlagen')
+
+    e.locator('.game', has_text='Variante').click(); e.wait_for_timeout(200)
+    e.click('#btnDelete'); e.wait_for_timeout(200)
+    check('Editor: Löschen fragt nach', 'wirklich' in e.inner_text('#mMsg'))
+    e.locator('#mBtns button', has_text='Löschen').click(); e.wait_for_timeout(800)
+    check('Editor: Spiel gelöscht', 'spiele/ochs-am-berg-variante.txt' not in gh.files and gh.log[-1] == 'Spiel gelöscht: Ochs am Berg (Variante)' and e.locator('.game b', has_text='Variante').count() == 0)
+
+    e.set_viewport_size({'width': 390, 'height': 844}); e.click('#btnNew'); e.wait_for_timeout(200)
+    check('Editor: Handy ohne seitliches Scrollen', e.evaluate("document.documentElement.scrollWidth<=window.innerWidth"))
+    e.click('#btnBack'); e.wait_for_timeout(200)
+    e.click('#btnLogout'); e.locator('#mBtns button', has_text='Abmelden').click(); e.wait_for_timeout(200)
+    check('Editor: Abmelden löscht den Schlüssel', e.evaluate("localStorage.getItem('manna-editor-token')") is None and e.locator('#vLogin:not([hidden])').count() == 1)
+    check('Editor: keine JavaScript-Fehler', not errs, '; '.join(errs))
+    b.close()
+
+def build_text(txt):
+    with tempfile.TemporaryDirectory() as t:
+        name = re.search(r'^Name: (.+)$', txt, re.M).group(1)
+        slug = re.sub(r'[^a-z0-9]+', '-', name.lower().replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue').replace('ß', 'ss')).strip('-')
+        open(os.path.join(t, slug + '.txt'), 'w', encoding='utf-8').write(txt)
+        return build(t, os.path.join(t, 'alle.json'))
+
 if __name__ == '__main__':
     httpd = serve()
     try:
         static_checks()
+        spiele_checks()
         with sync_playwright() as p:
             browser_checks(p)
+            editor_checks(p)
     except Exception:
         traceback.print_exc(); results.append(('Testlauf ohne Absturz', False, ''))
     finally:

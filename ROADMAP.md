@@ -49,10 +49,8 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Weitere Ideen: Gruppen einteilen (zufällig, nach Anzahl), Zufallsauswahl (Name ziehen, wer fängt an), Abendplaner (Ablauf eines Jugendkreises mit Zeiten)
 
 ### Etappe 2 – Spielekiste ausbauen
-- ✔ **Spiel erstellen:** (Version 1.17.0) Eingabemaske mit Feldern (Name, Kurzbeschreibung, Alter, Personen, Ort, Material, Dauer, Ablauf, Varianten, Gefahren und Risiken, Tipp, optional Rollen)
-- **Spiel einsenden:** Spiele sollen nicht nur lokal bleiben, sondern zentral ankommen
-  - ✔ Einfacher Weg ohne Server (Version 1.17.0): Einsenden per E-Mail an das Todoist-Projekt „Manna Spiele“, Freigabe per Label „freigeben“, eine tägliche geplante Aufgabe baut freigegebene Spiele ein (Ablauf: EINSENDUNGEN.md)
-  - Großer Weg mit Server: Einsendungen landen in einer Datenbank, du gibst sie frei, freigegebene Spiele erscheinen bei allen ohne Update (braucht Impressum, Datenschutzhinweis, Schutz vor Spam, Klärung mit Arbeitgeber)
+- ✔ **Spiele pflegen mit Editor** (Version 1.18.0): eigene Web-App unter `/editor/`, Spiele liegen als Textdateien in `spiele/`, Veröffentlichen direkt auf GitHub, neue Spiele erscheinen ohne App-Update
+- Verworfen (Version 1.18.0): „Spiel erstellen“ und „Spiel einsenden“ in der App für alle Nutzer, die App bleibt erst einmal schlank
 - Favoriten
 - Teilen und Sicherung wie bei den Vorlagen
 - Beamer-Anzeige: Regeln groß, Punktezähler für Gruppen

@@ -1,13 +1,17 @@
 /* Manna – Service Worker
    Macht die App offline-fähig und lädt Updates automatisch.
-   WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in index.html). */
-const VERSION = '1.17.1';
+   WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in js/data.js).
+   Die Spiele (spiele/alle.json) brauchen kein Update: Sie werden immer zuerst frisch geladen. */
+const VERSION = '1.18.0';
 const CACHE = 'grosser-preis-' + VERSION;
 const FONT_CACHE = 'grosser-preis-fonts';
+const GAMES_CACHE = 'manna-spiele';
+const GAMES_FILE = './spiele/alle.json';
 const FILES = [
   './',
   './index.html',
   './css/app.css',
+  './js/spielformat.js',
   './js/data.js',
   './js/app.js',
   './img/shot-brett.jpg',
@@ -27,6 +31,8 @@ self.addEventListener('install', event => {
       .then(cache => Promise.all(FILES.map(f =>
         fetch(new Request(f, { cache: 'reload' })).then(r => { if (r.ok) return cache.put(f, r); })
       )))
+      .then(() => caches.open(GAMES_CACHE).then(c => fetch(new Request(GAMES_FILE, { cache: 'no-cache' }))
+        .then(r => { if (r.ok) return c.put(GAMES_FILE, r); }).catch(() => {})))
       .then(() => self.skipWaiting())
   );
 });
@@ -58,6 +64,21 @@ self.addEventListener('fetch', event => {
   }
 
   if (url.origin !== location.origin) return;
+
+  // Der Editor (editor/) läuft ohne Service Worker, immer direkt aus dem Netz
+  const scope = new URL(self.registration.scope);
+  if (url.pathname.startsWith(scope.pathname + 'editor/') || url.pathname === scope.pathname + 'editor') return;
+
+  // Spiele: zuerst frisch aus dem Netz, offline die zuletzt geladene Fassung
+  if (url.pathname === scope.pathname + 'spiele/alle.json') {
+    event.respondWith(caches.open(GAMES_CACHE).then(cache =>
+      fetch(new Request(GAMES_FILE, { cache: 'no-cache' })).then(r => {
+        if (r.ok) cache.put(GAMES_FILE, r.clone());
+        return r.ok ? r : cache.match(GAMES_FILE).then(hit => hit || r);
+      }).catch(() => cache.match(GAMES_FILE).then(hit => hit || Response.error()))
+    ));
+    return;
+  }
 
   // App-Dateien: zuerst aus dem Cache (funktioniert offline), sonst Netz
   if (req.mode === 'navigate') {

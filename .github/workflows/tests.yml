@@ -1,22 +1,61 @@
-name: Tests
+name: Tests und Veröffentlichen
+
+# Bei jedem Push: Spiele bauen (spiele/*.txt -> spiele/alle.json), alle Tests ausführen.
+# Nur wenn alles grün ist und der Push auf main ging, wird die Seite auf GitHub Pages veröffentlicht.
+# Voraussetzung: Settings -> Pages -> Source: „GitHub Actions“.
 
 on:
   push:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Spiele bauen
+        run: node tools/build-spiele.js
       - name: Playwright installieren
         run: |
           pip install playwright
           python -m playwright install --with-deps chromium
       - name: Tests ausführen
         run: python tests/run_tests.py
+      - name: Seite zusammenstellen
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          mkdir _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'tests' --exclude 'tools' --exclude '*.md' ./ _site/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          path: _site
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
