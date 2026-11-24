@@ -773,6 +773,10 @@ function showScreen(n){
   screenName=n;
   if(!VIEW)document.title=PREIS_SCREENS.includes(n)?(S.title||'Der große Preis'):'Manna';
   $('#home').classList.toggle('show',n==='home');
+  $('#paedScreen').classList.toggle('show',n==='paed');
+  $('#artPhasen').classList.toggle('show',n==='artPhasen');
+  if(n==='paed')ransom($('#paedTitle'),'Pädagogischer Kram');
+  if(n==='artPhasen')ransom($('#artPhasenTitle'),'Gruppenphasen');
   $('#showsScreen').classList.toggle('show',n==='shows');
   if(n==='shows')ransom($('#showsTitle'),'Gameshows');
   $('#gmenu').classList.toggle('show',n==='gmenu');
@@ -970,6 +974,27 @@ $('#gcPreis').onclick=nurAmPC(()=>showScreen('gmenu'));
 $('#btnGmBack').onclick=()=>showScreen('shows');
 $('#gcShows').onclick=nurAmPC(()=>showScreen('shows'));
 $('#btnShowsBack').onclick=()=>showScreen('home');
+/* Pädagogischer Kram */
+let artFrom='paed';
+function openPhasen(id,from){
+  artFrom=from||'paed';
+  $('#btnArtBack').textContent=artFrom==='game'?'← Zurück zum Spiel':'← Pädagogischer Kram';
+  showScreen('artPhasen');
+  const scr=$('#artPhasen');scr.scrollTop=0;
+  if(id){const el=document.getElementById('phase-'+id);if(el)setTimeout(()=>{el.scrollIntoView({block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);},60);}
+  syncBackTop();
+}
+$('#gcPaed').onclick=()=>showScreen('paed');
+$('#btnPaedBack').onclick=()=>showScreen('home');
+$('#gcArtPhasen').onclick=()=>openPhasen(null,'paed');
+$('#btnArtBack').onclick=()=>showScreen(artFrom==='game'?'game':'paed');
+/* Zurück-Knöpfe zusätzlich oben (gleiche Funktion wie unten) */
+const backTops=[];
+document.querySelectorAll('.screen > .back-link').forEach(b=>{
+  const t=document.createElement('button');t.type='button';t.className='back-top';t.textContent=b.textContent;
+  t.onclick=()=>b.click();b.parentNode.prepend(t);backTops.push([t,b]);
+});
+function syncBackTop(){backTops.forEach(([t,b])=>{t.textContent=b.textContent;});}
 $('#lnkVision').onclick=e=>{e.preventDefault();try{$('#vision').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(err){$('#vision').scrollIntoView();}};
 $('#btnGuide').onclick=()=>{try{$('#info').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#info').scrollIntoView();}};
 function finishGame(){
@@ -1174,6 +1199,7 @@ function rolesHtml(r){
   if(r.hinweis)h+=`<p>${esc(r.hinweis)}</p>`;
   return h;
 }
+const TXT_PHASEN='[[Label Gruppenphasen]]';
 function openGame(id){
   const g=GAMES.find(x=>x.id===id);if(!g)return;
   const ages=g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).filter(Boolean).join(', ');
@@ -1188,6 +1214,7 @@ function openGame(id){
       <li><b>Ort</b>${esc(ortText(g))}</li>
       <li><b>Dauer</b>${esc(g.dauer||'keine Angabe')}</li>
     </ul>
+    ${g.phasen&&g.phasen.length?`<div class="game-phasen"><span class="gp-label">${TXT_PHASEN}</span>${MannaSpiel.PHASEN.filter(x=>g.phasen.includes(x.id)).map(x=>`<button class="phase-chip" data-p="${x.id}">${esc(x.label)}</button>`).join('')}</div>`:''}
     <div class="game-notes">
       ${sec('Material',g.material.length?MannaSpiel.listeHtml(g,'material',esc):'<p>Kein Material nötig.</p>')}
       ${g.rollen?sec('Rollen',rolesHtml(g.rollen)):''}
@@ -1199,6 +1226,7 @@ function openGame(id){
   const fb=$('#btnFav');
   const favLabel=()=>{const on=isFav(g.id);fb.textContent='Favorit';fb.classList.toggle('on',on);fb.setAttribute('aria-pressed',on);};
   favLabel();fb.onclick=()=>{toggleFav(g.id);favLabel();};
+  $('#gameSheet').querySelectorAll('.phase-chip').forEach(b=>b.onclick=()=>openPhasen(b.dataset.p,'game'));
   ransom($('#gameTitle'),g.name);
   showScreen('game');
 }

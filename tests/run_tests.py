@@ -62,6 +62,8 @@ def static_checks():
         check(f'keine Schreibmaschinen-/Handschrift in {f}', not re.search('Courier|Typewriter|Marker Felt|Comic Sans', txt))
     idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     check('keine offenen Text-Platzhalter in index.html', '[[' not in idx, ', '.join(re.findall(r'\[\[([^\]]+)\]\]', idx)))
+    appjs = open(os.path.join(ROOT, 'js/app.js'), encoding='utf-8').read()
+    check('keine offenen Text-Platzhalter in app.js', '[[' not in appjs, ', '.join(re.findall(r'\[\[([^\]]+)\]\]', appjs)))
     legal = open(os.path.join(ROOT, 'rechtliches.html'), encoding='utf-8').read()
     offen = len(re.findall(r'class="ph"|\[\[', legal))
     # Impressum-Daten kommen mit 1.21 (Online-Impressum). Bis dahin nur Hinweis, kein Fehler.
@@ -112,6 +114,8 @@ def format_checks(m):
         palermo:F.parse(F.serialize(F.parse(t+'\nRollen-Tabelle:\nA | B\n1 | 2\n').spiel)).spiel.rollen,
         html:F.ablaufHtml(p.spiel,x=>x),alt:F.ablaufHtml({ablauf:['A','B']},x=>x),
         frei:(()=>{const q=F.serialize(F.parse(t.replace('Material:\n- keins','Material:\nEin Ball')).spiel);return q.slice(q.indexOf('Material:'),q.indexOf('Ablauf:')-1);})(),
+        ph:F.parse(t.replace('Dauer: -','Dauer: -\nGruppenphasen: Ablösungsphase, Rollenfindungsphase')).spiel.phasen,
+        phErr:F.parse(t.replace('Dauer: -','Dauer: -\nGruppenphasen: Chaosphase')).fehler,
         freiRisk:F.serialize(F.parse(t.replace('- Nicht rennen.','Nicht rennen.')).spiel).includes('Gefahren und Risiken:\nNicht rennen.\n')}})()""")
     g = res['g']
     check('Format: lesen ohne Fehler', res['fehler'] == [], res['fehler'])
@@ -123,6 +127,8 @@ def format_checks(m):
     check('Format: Material und Gefahren ohne automatische Punkte', res['frei'] == 'Material:\nEin Ball\n' and res['freiRisk'], res['frei'])
     check('Format: ältere Spiele ohne Zeilen weiter nummeriert', res['alt'] == '<ol><li value="1">A</li><li value="2">B</li></ol>', res['alt'])
     check('Format: Personen „8 bis 15“', res['pers'] == {'min': 8, 'max': 15})
+    check('Format: Gruppenphasen lesen', res['ph'] == ['rollen', 'abloesung'], res['ph'])
+    check('Format: unbekannte Gruppenphase meldet Fehler', any('Gruppenphasen' in f for f in res['phErr']), res['phErr'])
     check('Format: Rollen-Tabelle', res['palermo'] == {'liste': [], 'tabelle': {'kopf': ['A', 'B'], 'zeilen': [['1', '2']]}}, res['palermo'])
     check('Format: Dateiname aus Namen', res['slug'] == 'aechz-uebung-gross', res['slug'])
     check('Format: Pflichtangaben werden geprüft', res['bad'] >= 5)
@@ -140,11 +146,18 @@ def browser_checks(p):
     format_checks(m)
     check('Startseite sichtbar', m.locator('#home.show').count() == 1)
     check('Minuspunkte entfernt', m.locator('#sMinus').count() == 0)
-    check('Startseite: Kacheln Gameshows und Spielesammlung', m.locator('#home .gcard .wbar').all_inner_texts() == ['Spielesammlung', 'Gameshows'], m.locator('#home .gcard .wbar').all_inner_texts())
+    check('Startseite: Kacheln Gameshows und Spielesammlung', m.locator('#home .gcard .wbar').all_inner_texts() == ['Spielesammlung', 'Pädagogischer Kram', 'Gameshows'], m.locator('#home .gcard .wbar').all_inner_texts())
     m.click('#gcShows'); m.wait_for_timeout(200)
     check('Gameshows: drei Kacheln', m.locator('#showsScreen.show').count() == 1 and m.locator('#showsScreen .gcard .wbar').all_inner_texts() == ['Der große Preis', 'Eigenes Spiel', 'Countdown'], m.locator('#showsScreen .gcard .wbar').all_inner_texts())
     m.click('#btnShowsBack'); m.wait_for_timeout(150)
     check('Gameshows: zurück zur Startseite', m.locator('#home.show').count() == 1)
+    m.click('#gcPaed'); m.wait_for_timeout(200)
+    check('Pädagogischer Kram: Seite mit Artikel Gruppenphasen', m.locator('#paedScreen.show').count() == 1 and m.locator('#paedScreen .gcard .wbar').all_inner_texts() == ['Gruppenphasen'])
+    m.click('#gcArtPhasen'); m.wait_for_timeout(200)
+    check('Artikel Gruppenphasen: fünf Phasen', m.locator('#artPhasen .note h3').all_inner_texts() == ['Anfangsphase', 'Rollenfindungsphase', 'Vertrautheitsphase', 'Differenzierungsphase', 'Ablösungsphase'], m.locator('#artPhasen .note h3').all_inner_texts())
+    check('Artikel: zurück zu Pädagogischer Kram', m.inner_text('#btnArtBack') == '← Pädagogischer Kram')
+    m.click('#btnArtBack'); m.wait_for_timeout(150); m.click('#paedScreen .back-top'); m.wait_for_timeout(150)
+    check('Zurück-Knopf oben auf Unterseiten', m.locator('#home.show').count() == 1)
     check('Marke „Manna“ auf der Startseite', m.get_attribute('#homeBrand', 'aria-label') == 'Manna' and m.evaluate("document.querySelector('#homeBrand img').naturalWidth>0") and m.title() == 'Manna')
     check('Screenshot-Collage mit 4 Bildern', m.locator('.collage .shot img').count() == 4)
     loaded = m.evaluate("Promise.all([...document.querySelectorAll('.collage img')].map(i=>{i.loading='eager';return i.decode().then(()=>i.naturalWidth>0,()=>false)}))")
@@ -202,6 +215,12 @@ def browser_checks(p):
     steps = m.locator('#gameScreen .game-notes ol li').all_inner_texts()
     check('Detailseite: Schritte ohne doppelte Nummern', len(steps) > 0 and not any(re.match(r'\d+[.)] ', x) for x in steps), steps[:2])
     check('Bereich „Gefahren und Risiken“', m.locator('.note.risk').count() == 1 and 'Oberschenkel' in m.inner_text('.note.risk'))
+    check('Detailseite: Gruppenphasen als Schilder', m.locator('#gameSheet .phase-chip').all_inner_texts() == ['Anfangsphase', 'Vertrautheitsphase'], m.locator('#gameSheet .phase-chip').all_inner_texts())
+    m.locator('#gameSheet .phase-chip', has_text='Vertrautheitsphase').click(); m.wait_for_timeout(500)
+    check('Gruppenphase führt zum Artikel', m.locator('#artPhasen.show').count() == 1 and m.evaluate("(()=>{const r=document.querySelector('#phase-vertraut').getBoundingClientRect();return r.top>=0&&r.top<innerHeight})()"))
+    check('Artikel: zurück zum Spiel', m.inner_text('#btnArtBack') == '← Zurück zum Spiel' and m.inner_text('#artPhasen .back-top') == '← Zurück zum Spiel')
+    m.click('#artPhasen .back-top'); m.wait_for_timeout(200)
+    check('Zurück-Knopf oben führt zurück zum Spiel', m.locator('#gameScreen.show').count() == 1)
     m.click('#btnGameBack'); m.locator('.game-row', has_text='Palermo').click(); m.wait_for_timeout(300)
     check('Palermo: Rollen mit Verteilungstabelle', m.locator('.role-table tbody tr').count() == 4 and 'Kommissar' in m.inner_text('#gameSheet'))
     m.click('#btnGameBack'); m.wait_for_timeout(200)
@@ -553,6 +572,7 @@ def editor_checks(p):
     e.fill('#fKurz', 'Anschleichen,solange niemand hinschaut .')
     e.fill('#fAblauf', '- Eine Person steht an der Wand.\n2. Die anderen schleichen sich an.\n\nwer sich bewegt muss zurück')
     e.locator('#fOrt .chip', has_text='Draußen').click()
+    e.locator('#fPhasen .chip', has_text='Anfangsphase').click()
     e.fill('#fRisiken', 'Nicht rennen, wenn der Boden rutschig ist.')
     check('Editor: Vorschau', 'Die anderen schleichen sich an.' in e.inner_text('#prevCard'))
     check('Editor: Vorschau setzt nur eigene Zeichen', e.locator('#prevCard ul li', has_text='Eine Person steht').count() == 1 and e.locator('#prevCard ol li', has_text='schleichen').count() == 1 and e.locator('#prevCard p', has_text='wer sich bewegt').count() == 1)
@@ -562,7 +582,7 @@ def editor_checks(p):
     txt = gh.files.get('spiele/ochs-am-berg.txt', '')
     check('Editor: neues Spiel als Textdatei veröffentlicht', gh.log == ['Neues Spiel: Ochs am Berg'] and txt == (
         'MANNA-SPIEL v1\nName: Ochs am Berg\nKurzbeschreibung: Anschleichen,solange niemand hinschaut .\nAlter: Jugendliche (13–17)\n'
-        'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\n\nMaterial:\n- keins\n\nAblauf:\n- Eine Person steht an der Wand.\n'
+        'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\nGruppenphasen: Anfangsphase\n\nMaterial:\n- keins\n\nAblauf:\n- Eine Person steht an der Wand.\n'
         '2. Die anderen schleichen sich an.\nwer sich bewegt muss zurück\n\nGefahren und Risiken:\nNicht rennen, wenn der Boden rutschig ist.\n'), txt)
     check('Editor: keine automatischen Aufzählungszeichen bei Gefahren', '\n- Nicht rennen' not in txt)
     check('Editor: Wortlaut unverändert (keine Korrekturen)', 'wer sich bewegt muss zurück' in txt and 'Anschleichen,solange' in txt)

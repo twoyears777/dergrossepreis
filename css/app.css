@@ -959,3 +959,16 @@ body.viewer #ownPlay{padding-bottom:3vh}
 
 /* Papierbuchstaben-Überschriften: lange Wörter passen auch aufs Handy (ein Buchstabe ist etwa 1em breit) */
 .menu-title.ransom{font-size:min(clamp(1.8rem,6vh,3.6rem),calc(92vw / var(--rlen,8)))}
+
+/* Zurück-Knopf oben auf Unterseiten */
+.back-top{align-self:flex-start;position:sticky;top:0;z-index:5;margin:-3vh 0 1vh;padding:8px 14px;background:var(--paper);color:var(--ink);font-family:var(--strong);font-weight:700;font-size:.95rem;border-radius:2px;box-shadow:0 4px 10px #0006}
+.back-top:hover{background:var(--marker)}
+/* Pädagogischer Kram: Artikel */
+.article{width:100%;max-width:760px;display:grid;gap:30px;margin-top:3vh}
+.article .note{scroll-margin-top:70px;transition:box-shadow .3s}
+.article .note.flash{box-shadow:0 0 0 4px var(--marker),0 6px 16px #0006}
+/* Gruppenphasen auf der Detailseite */
+.game-phasen{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:-6px 0 26px;max-width:760px}
+.gp-label{color:#d8d2c4;font-family:var(--strong);font-weight:700;font-size:.95rem}
+.phase-chip{background:var(--sage);color:var(--ink);font-family:var(--strong);font-weight:700;font-size:.9rem;padding:6px 12px;border-radius:2px;box-shadow:0 2px 5px #0005}
+.phase-chip:hover{background:var(--marker)}

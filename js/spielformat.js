@@ -14,10 +14,18 @@
     { id: 'drinnen', label: 'drinnen' },
     { id: 'draussen', label: 'draußen' }
   ];
+  // Gruppenphasen (optional, mehrere möglich)
+  const PHASEN = [
+    { id: 'anfang', label: 'Anfangsphase', wort: 'anfang' },
+    { id: 'rollen', label: 'Rollenfindungsphase', wort: 'rollen' },
+    { id: 'vertraut', label: 'Vertrautheitsphase', wort: 'vertraut' },
+    { id: 'differenz', label: 'Differenzierungsphase', wort: 'differenz' },
+    { id: 'abloesung', label: 'Ablösungsphase', wort: 'abl' }
+  ];
   const OHNE_MAX = 9999;
   // einzeilige Angaben „Schlüssel: Wert“
   const FELDER = { 'Name': 'name', 'Kurzbeschreibung': 'kurz', 'Alter': 'alter', 'Personen': 'personen',
-    'Ort': 'ort', 'Dauer': 'dauer', 'Rollen-Hinweis': 'rollenHinweis', 'Tipp': 'hinweis' };
+    'Ort': 'ort', 'Dauer': 'dauer', 'Gruppenphasen': 'phasen', 'Rollen-Hinweis': 'rollenHinweis', 'Tipp': 'hinweis' };
   // Listen „Überschrift:“ und darunter eine Zeile pro Eintrag
   const LISTEN = { 'Material': 'material', 'Ablauf': 'ablauf', 'Rollen': 'rollen', 'Rollen-Tabelle': 'tabelle',
     'Varianten': 'varianten', 'Gefahren und Risiken': 'risiken' };
@@ -39,6 +47,14 @@
       if (a) { if (!out.includes(a.id)) out.push(a.id); } else err('Alter: „' + w + '“ ist unbekannt (Kinder, Jugendliche, Erwachsene)');
     });
     return ALTER.map(a => a.id).filter(id => out.includes(id));
+  }
+  function parsePhasen(v, err) {
+    const out = [];
+    v.split(/[,;/]|\bund\b/).map(s => s.trim()).filter(Boolean).forEach(w => {
+      const s = w.toLowerCase(), ph = PHASEN.find(x => s === x.id || s.startsWith(x.wort));
+      if (ph) { if (!out.includes(ph.id)) out.push(ph.id); } else err('Gruppenphasen: „' + w + '“ ist unbekannt (' + PHASEN.map(x => x.label).join(', ') + ')');
+    });
+    return PHASEN.map(x => x.id).filter(id => out.includes(id));
   }
   function parsePersonen(v, err) {
     let m = v.match(/^ab\s+(\d+)/i);
@@ -148,6 +164,7 @@
       ort: raw.ort ? parseOrt(raw.ort, err) : [],
       material: list('material'),
       dauer: /^(-|–)?$/.test(clean(raw.dauer)) ? '' : clean(raw.dauer),
+      phasen: raw.phasen && !/^(-|–)?$/.test(clean(raw.phasen)) ? parsePhasen(raw.phasen, err) : [],
       ablauf: list('ablauf'),
       ablaufZeilen: frei('ablauf'),
       materialZeilen: frei('material'),
@@ -197,6 +214,7 @@
     L.push('Personen: ' + (sp.max >= OHNE_MAX ? 'ab ' + sp.min : sp.min + ' bis ' + sp.max));
     L.push('Ort: ' + ORTE.filter(o => (g.ort || []).includes(o.id)).map(o => o.label).join(', '));
     L.push('Dauer: ' + (one(g.dauer) || '-'));
+    if (g.phasen && g.phasen.length) L.push('Gruppenphasen: ' + PHASEN.filter(x => g.phasen.includes(x.id)).map(x => x.label).join(', '));
     const block = (title, a, num, leer) => {
       a = (a || []).map(one).filter(Boolean);
       if (!a.length && !leer) return;
@@ -228,7 +246,7 @@
     return L.join('\n') + '\n';
   }
 
-  const api = { HEADER, ALTER, ORTE, OHNE_MAX, slug, parse, serialize, pflicht, FREI, zeile, zeilenVon, ablaufZeilen, ablaufBloecke, zeilenHtml, listeHtml, ablaufHtml };
+  const api = { HEADER, ALTER, ORTE, PHASEN, OHNE_MAX, slug, parse, serialize, pflicht, FREI, zeile, zeilenVon, ablaufZeilen, ablaufBloecke, zeilenHtml, listeHtml, ablaufHtml };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.MannaSpiel = api;
 })(typeof self !== 'undefined' ? self : this);

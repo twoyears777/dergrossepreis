@@ -5,6 +5,7 @@ Alter: Jugendliche (13–17)
 Personen: 8 bis 15
 Ort: drinnen
 Dauer: ca. 10 Minuten
+Gruppenphasen: Anfangsphase, Vertrautheitsphase
 
 Material:
 - Stühle für alle außer einer Person
