@@ -68,12 +68,22 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Spielekiste und alles ohne Beamer fürs iPhone optimieren (Bedienung, Layout, Schriftgrößen)
 - Beamer-Spiele aufs Handy erst mit der App (→ Etappe 4)
 
+### Zwischenschritt – Konto und Sync zwischen Geräten (vor der App)
+- Ziel: Am PC oder Handy ein Spiel vorbereiten (z. B. Der große Preis) und es auf einem anderen Gerät nach der Anmeldung genauso abrufen
+- Anmeldung per E-Mail-Link, ohne Passwörter
+- Gespeichert werden Vorlagen, vorbereitete Spiele und eigene Spiele
+- Manna bleibt offline nutzbar, abgeglichen wird bei Verbindung
+- Fertiger Anmelde-Dienst mit Servern in der EU (z. B. Supabase), kein eigener Server. Manna bleibt auf GitHub Pages
+- Vorher: Datenschutzhinweis ergänzen, Vertrag zur Auftragsverarbeitung mit dem Anbieter, kostenlose Grenzen prüfen
+- Ohne Konto bleibt alles wie bisher nutzbar. Bis dahin: Sicherung exportieren und auf dem anderen Gerät importieren
+- Die iPhone-App nutzt das Konto dann von Anfang an
+
 ### Etappe 4 – iPhone-App
 - Web-App als echte App verpacken, Bau automatisch über GitHub (ohne Mac)
 - Test per TestFlight (Apple-Entwickler-Account nötig, ca. 99 € pro Jahr)
 - Echter Zwei-Bildschirm-Modus: Handy steuert, Beamer zeigt die Show (HDMI-Adapter oder AirPlay). Erst damit gibt es die Beamer-Spiele auf Handy und Tablet
 - Eigener Name für die App
-- Daten sicher in der App speichern, Sync und Sicherung über iCloud
+- Daten sicher in der App speichern, Sync über das Manna-Konto (siehe Zwischenschritt)
 
 ### Etappe 5 – Verbreiten (erst wenn genug Inhalt da ist)
 - Startpaket mit Vorlagen, Ankündigungstext
