@@ -775,6 +775,8 @@ function showScreen(n){
   $('#home').classList.toggle('show',n==='home');
   $('#paedScreen').classList.toggle('show',n==='paed');
   $('#artPhasen').classList.toggle('show',n==='artPhasen');
+  $('#artOhren').classList.toggle('show',n==='artOhren');
+  if(n==='artOhren'){ransom($('#artOhrenTitle'),'Vier-Ohren-Modell');$('#artOhren').scrollTop=0;}
   if(n==='paed')ransom($('#paedTitle'),'Pädagogischer Kram');
   if(n==='artPhasen')ransom($('#artPhasenTitle'),'Gruppenphasen');
   $('#showsScreen').classList.toggle('show',n==='shows');
@@ -987,6 +989,8 @@ function openPhasen(id,from){
 $('#gcPaed').onclick=()=>showScreen('paed');
 $('#btnPaedBack').onclick=()=>showScreen('home');
 $('#gcArtPhasen').onclick=()=>openPhasen(null,'paed');
+$('#gcArtOhren').onclick=()=>showScreen('artOhren');
+$('#btnOhrenBack').onclick=()=>showScreen('paed');
 $('#btnArtBack').onclick=()=>showScreen(artFrom==='game'?'game':'paed');
 /* Zurück-Knöpfe zusätzlich oben (gleiche Funktion wie unten) */
 const backTops=[];
