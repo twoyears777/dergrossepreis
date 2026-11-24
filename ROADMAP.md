@@ -55,20 +55,28 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Teilen und Sicherung wie bei den Vorlagen
 - Beamer-Anzeige: Regeln groß, Punktezähler für Gruppen
 
+### Erstes Standbein – Web-App unter manna-games.de (als Nächstes)
+- Domain manna-games.de mit GitHub Pages verbinden (vorher eigene Daten unter der alten Adresse exportieren)
+- Am Laptop und PC voll nutzbar, mit allen Beamer-Funktionen
+- **Wunsch:** Auf Handy und Tablet startet kein Beamer-Spiel (Der große Preis, Eigenes Spiel, Countdown). Stattdessen kommt die Meldung „Diese Funktion ist aktuell nur auf einem Laptop oder PC verfügbar.“, ohne dass etwas startet. Tablets über den Touchscreen erkennen (iPad meldet sich im Browser als Mac)
+- Alles ohne Beamer (Spielesammlung, Vorlagen, Vorbereiten) bleibt auf Handy und Tablet nutzbar
+- Vor dem Weitergeben: Arbeitgeber klären, Impressum und Datenschutzhinweis
+- Code bleibt öffentlich (kostenloser App-Bau über GitHub). Bezahlinhalte später getrennt aufbewahren
+
 ### Etappe 3 – Handy-tauglich
-- „Der große Preis“ und die Spielekiste fürs iPhone optimieren (Bedienung, Layout, Schriftgrößen)
+- Spielekiste und alles ohne Beamer fürs iPhone optimieren (Bedienung, Layout, Schriftgrößen)
+- Beamer-Spiele aufs Handy erst mit der App (→ Etappe 4)
 
 ### Etappe 4 – iPhone-App
 - Web-App als echte App verpacken, Bau automatisch über GitHub (ohne Mac)
 - Test per TestFlight (Apple-Entwickler-Account nötig, ca. 99 € pro Jahr)
-- Echter Zwei-Bildschirm-Modus: Handy steuert, Beamer zeigt die Show (HDMI-Adapter oder AirPlay)
+- Echter Zwei-Bildschirm-Modus: Handy steuert, Beamer zeigt die Show (HDMI-Adapter oder AirPlay). Erst damit gibt es die Beamer-Spiele auf Handy und Tablet
 - Eigener Name für die App
 - Daten sicher in der App speichern, Sync und Sicherung über iCloud
 
 ### Etappe 5 – Verbreiten (erst wenn genug Inhalt da ist)
-- Arbeitgeber klären, Impressum und Datenschutzhinweis
-- Eigene Domain, Startpaket mit Vorlagen, Ankündigungstext
-- Kann vorgezogen werden, sobald die Web-Version weitergegeben werden soll
+- Startpaket mit Vorlagen, Ankündigungstext
+- Domain, Impressum, Datenschutz und Arbeitgeber sind ins erste Standbein vorgezogen
 
 ---
 
