@@ -1,5 +1,9 @@
 # Changelog – Manna
 
+## 1.22.0 – 24.11.2026
+- Neue Seite „Gameshows“: Der große Preis, Eigenes Spiel und Countdown sind jetzt dort zusammengefasst
+- Deutlich mehr Texte sind nun menschengemacht
+
 ## 1.21.0 – 24.11.2026
 - Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast
 - Favorisieren von Spielen und entsprechende Filter

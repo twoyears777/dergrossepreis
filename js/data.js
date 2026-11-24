@@ -3,8 +3,12 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.21.0';
+const APP_VERSION='1.22.0';
 const CHANGELOG=[
+  {v:'1.22.0',d:'24.11.2026',items:[
+    'Neue Seite „Gameshows“: Der große Preis, Eigenes Spiel und Countdown sind jetzt dort zusammengefasst',
+    'Deutlich mehr Texte sind nun menschengemacht'
+  ]},
   {v:'1.21.0',d:'24.11.2026',items:[
     'Auch Material, Varianten und Gefahren zeigen Aufzählungszeichen nur noch dort, wo du sie selbst gesetzt hast',
     'Favorisieren von Spielen und entsprechende Filter',
