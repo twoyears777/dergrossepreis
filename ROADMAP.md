@@ -57,6 +57,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Die Startseite erklärt das nicht mehr (die drei Schritte sind entfernt, Fokus auf Spielesammlung und Vision), die Anleitung gehört in den Bereich „Gameshows“
 
 ### Etappe 2 – Spielekiste ausbauen
+- Ziel: 100 und mehr Spiele, bevor Manna breiter weitergegeben wird (Qualität vor Menge: mit eigenen Erfahrungen, Pädagogischen Gedanken und Gruppenphasen)
 - ✔ **Spiele pflegen mit Editor** (Version 1.18.0): eigene Web-App unter `/editor/`, Spiele liegen als Textdateien in `spiele/`, Veröffentlichen direkt auf GitHub, neue Spiele erscheinen ohne App-Update
 - Verworfen (Version 1.18.0): „Spiel erstellen“ und „Spiel einsenden“ in der App für alle Nutzer, die App bleibt erst einmal schlank
 - Favoriten
