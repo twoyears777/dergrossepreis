@@ -30,10 +30,10 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - ✔ Erste Spiele: Zeitungsschlagen, Nachts in Palermo
 - ca. 20 erprobte Gruppenspiele mit Kurzbeschreibung, Ablauf, Material, Dauer, Gruppengröße (Inhalte kommen von dir)
 - Später überlegen: Filter für Dauer und ruhig/wild, Zufallsknopf
-- In Arbeit: Suche in der Spielesammlung (durchsucht alle Texte, verzeiht Tippfehler und Umlaute, zeigt die Fundstelle; auf dem Handy sind die Filter eingeklappt)
+- ✔ Suche in der Spielesammlung (Version 1.25.0) (durchsucht alle Texte, verzeiht Tippfehler und Umlaute, zeigt die Fundstelle; auf dem Handy sind die Filter eingeklappt)
 - Später: Rollen bei „Nachts in Palermo“ anpassen und erweitern (weitere Sonderrollen, andere Verteilung)
 - Hinweise zu Sicherheit und Körperkontakt, niemand wird bloßgestellt
-- In Arbeit: Artikel „Sicherheit“ bei „Pädagogischer Kram“, erster Abschnitt „Was tun im Notfall?“ (Rahmen: Erste-Hilfe-Schein, Material, wo es liegt, Ablauf im Notfall, wen man kontaktiert)
+- ✔ Artikel „Sicherheit“ (Version 1.25.0, Texte folgen) bei „Pädagogischer Kram“, erster Abschnitt „Was tun im Notfall?“ (Rahmen: Erste-Hilfe-Schein, Material, wo es liegt, Ablauf im Notfall, wen man kontaktiert)
 - Idee für später: Anleitung zur Ersten Hilfe im Artikel „Sicherheit“
 - Ziel: im Alltag schneller ein passendes Spiel finden als bisher
 
@@ -71,7 +71,7 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Startseite entschlankt: nur noch zwei Kacheln („Du brauchst spontan einen Ersatz?“ und „Erstelle eigene Quizze und Gameshows!“). Diese zwei inhaltlich neu schreiben (Lukas)
 - Alles ohne Beamer (Spielesammlung, Vorlagen, Vorbereiten) bleibt auf Handy und Tablet nutzbar
 - ✔ Arbeitgeber geklärt (24.11.2026), er befürwortet das Projekt
-- Vor dem Weitergeben: Impressum und Datenschutzhinweis
+- ✔ Impressum und Datenschutzhinweis (Version 1.24.0)
 - Code bleibt öffentlich (kostenloser App-Bau über GitHub). Bezahlinhalte später getrennt aufbewahren
 
 ### Etappe 3 – Handy-tauglich

@@ -1,5 +1,11 @@
 # Changelog – Manna
 
+## 1.25.0 – 24.11.2026
+- Neu: Suche in der Spielesammlung
+- Neuer Filter nach Gruppenphase
+- Neuer Artikel „Sicherheit“ bei „Pädagogischer Kram“
+- Startseite aufgeräumt: mehr Fokus auf die Spielesammlung
+
 ## 1.24.0 – 24.11.2026
 - Neuer Artikel „Vier-Ohren-Modell“ bei „Pädagogischer Kram“
 - Kacheln sind besser lesbar
