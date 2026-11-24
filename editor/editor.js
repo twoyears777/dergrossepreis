@@ -5,7 +5,12 @@
 (function () {
   'use strict';
   const F = window.MannaSpiel;
-  const OWNER = 'twoyears777', REPO = 'dergrossepreis', BRANCH = 'main', DIR = 'spiele';
+  // Repo aus der Adresse ablesen (<owner>.github.io/<repo>/editor/), so übersteht der Editor ein Umbenennen.
+  // Bei einer eigenen Domain oder lokal gelten die festen Werte.
+  const GH_PAGES = location.hostname.match(/^([a-z0-9-]+)\.github\.io$/i);
+  const OWNER = GH_PAGES ? GH_PAGES[1] : 'twoyears777';
+  const REPO = (GH_PAGES && location.pathname.split('/')[1] && location.pathname.split('/')[1] !== 'editor') ? location.pathname.split('/')[1] : 'manna';
+  const BRANCH = 'main', DIR = 'spiele';
   const API = 'https://api.github.com', R = '/repos/' + OWNER + '/' + REPO;
   const K_TOKEN = 'manna-editor-token', K_EXP = 'manna-editor-ablauf', K_DRAFT = 'manna-editor-entwurf', K_RUNS = 'manna-editor-laeufe';
 

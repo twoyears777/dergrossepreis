@@ -3,7 +3,7 @@
 Spiele und Werkzeuge für die Jugendarbeit: die Quiz-Gameshow „Der große Preis“, eigene Spiele mit Folien und Punktestand, ein Countdown und eine Spielesammlung. Gemacht für Laptop und Beamer, mit Zuschaueransicht auf dem zweiten Bildschirm.
 
 ## Installieren (iPad)
-1. Die GitHub-Pages-Adresse in **Safari** öffnen (`https://twoyears777.github.io/dergrossepreis/`).
+1. Die GitHub-Pages-Adresse in **Safari** öffnen (`https://twoyears777.github.io/manna/`).
 2. Teilen-Symbol → **„Zum Home-Bildschirm“**.
 3. Die App einmal **mit Internet** vom Home-Bildschirm aus öffnen. Danach läuft sie auch offline.
 
@@ -12,7 +12,7 @@ Fragen, Gruppen und Punkte werden auf dem Gerät gespeichert (in der Home-Bildsc
 ## Spiele pflegen
 Die Spiele der Spielesammlung liegen als Textdateien in `spiele/` (eine Datei pro Spiel, Format `MANNA-SPIEL v1`, siehe `js/spielformat.js`). Gepflegt werden sie mit dem **Editor**:
 
-**`https://twoyears777.github.io/dergrossepreis/editor/`**
+**`https://twoyears777.github.io/manna/editor/`**
 
 - Funktioniert am Desktop, auf dem iPad und auf dem Handy. Auf iPad/iPhone am besten in Safari „Zum Home-Bildschirm“ hinzufügen, dann bleibt die Anmeldung dauerhaft gespeichert.
 - „Veröffentlichen“ legt die Textdatei auf GitHub an oder ändert sie, „Löschen“ entfernt sie. Jede Fassung bleibt in der GitHub-Historie erhalten.
@@ -23,7 +23,7 @@ Die Spiele der Spielesammlung liegen als Textdateien in `spiele/` (eine Datei pr
 ### Zugangsschlüssel anlegen (einmal pro Jahr)
 1. Auf GitHub: Profilbild → **Settings** → ganz unten **Developer settings** → **Personal access tokens** → **Fine-grained tokens** → **Generate new token**.
 2. Name: `Manna Editor`. Expiration: z. B. 1 Jahr (das Datum kannst du im Editor eintragen, dann erinnert er dich rechtzeitig).
-3. Repository access: **Only select repositories** → `twoyears777/dergrossepreis`.
+3. Repository access: **Only select repositories** → `twoyears777/manna`.
 4. Permissions → Repository permissions: **Contents: Read and write** und **Actions: Read-only**.
 5. **Generate token**, den Schlüssel kopieren (er wird nur einmal angezeigt) und im Editor einfügen.
 

@@ -395,8 +395,8 @@ class FakeGitHub:
         if request.method == 'OPTIONS':
             return route.fulfill(status=204, headers={'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': '*'})
         if request.headers.get('authorization') != 'Bearer ' + self.TOKEN: return js(401, {'message': 'Bad credentials'})
-        base = '/repos/twoyears777/dergrossepreis'
-        if path == base: return js(200, {'full_name': 'twoyears777/dergrossepreis'})
+        base = '/repos/twoyears777/manna'
+        if path == base: return js(200, {'full_name': 'twoyears777/manna'})
         rest = path[len(base):]
         ref = (q.get('ref') or ['main'])[0]
         files = self.commits[self.head if ref == 'main' else ref]['files'] if (ref == 'main' or ref in self.commits) else self.files
