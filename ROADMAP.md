@@ -103,7 +103,10 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 ## Ideen-Sammlung
 Ideen, die noch keiner Etappe fest zugeordnet sind. Neue Ideen kommen hier rein.
 
-- **Texte überarbeiten:** Alle Texte klingen noch zu sehr nach KI (Startseite, Erklärung, Spielbeschreibungen, Hinweise, Changelog). Kommt **ganz am Ende**: Du schreibst sie einmal selbst in deinen Worten, ich baue sie ein. Dafür vorher eine Liste aller Texte zum Überschreiben erstellen.
+- **Alle Texte in deinen eigenen Worten:** Am Ende sollen alle Texte, die Nutzer sehen, von dir selbst formuliert sein, **vor allem der auf der Startseite**. Die bisherigen Texte klingen noch zu sehr nach KI (Startseite, Erklärung, Spielbeschreibungen, Hinweise, Changelog, Rechtliches).
+  - Ab jetzt bei jeder Umsetzung: Ich schicke dir jeden Text, der für Nutzer sichtbar eingebaut werden soll. Du formulierst ihn in deinen Worten, ich übernehme deine Fassung.
+  - Für die bestehenden Texte: Ich schicke sie dir nach und nach, du schreibst sie neu, ich baue sie ein. Anfang: die Erklärung auf der Startseite.
+  - Bei rechtlichen Texten prüfe ich nach deiner Umformulierung, dass alle Pflichtangaben erhalten bleiben.
 
 - Spielesammlung als zweite Säule neben der Gameshow (→ Etappe 1)
 - **Designs für die Zuschaueransicht:** verschiedene Looks für den Beamer zum Auswählen (z. B. passend zu Anlass oder Jahreszeit), gültig für alle Spiele mit Zuschaueransicht
