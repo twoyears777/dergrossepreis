@@ -1199,7 +1199,7 @@ function rolesHtml(r){
   if(r.hinweis)h+=`<p>${esc(r.hinweis)}</p>`;
   return h;
 }
-const TXT_PHASEN='[[Label Gruppenphasen]]';
+const TXT_PHASEN='Passt in diese Gruppenphasen:';
 function openGame(id){
   const g=GAMES.find(x=>x.id===id);if(!g)return;
   const ages=g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).filter(Boolean).join(', ');

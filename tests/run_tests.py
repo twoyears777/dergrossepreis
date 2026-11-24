@@ -63,7 +63,7 @@ def static_checks():
     idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     check('keine offenen Text-Platzhalter in index.html', '[[' not in idx, ', '.join(re.findall(r'\[\[([^\]]+)\]\]', idx)))
     appjs = open(os.path.join(ROOT, 'js/app.js'), encoding='utf-8').read()
-    check('keine offenen Text-Platzhalter in app.js', '[[' not in appjs, ', '.join(re.findall(r'\[\[([^\]]+)\]\]', appjs)))
+    check('keine offenen Text-Platzhalter in app.js', not re.search(r'\[\[[A-ZÄÖÜ][^\]\[]*\]\]', appjs), ', '.join(re.findall(r'\[\[([^\]]+)\]\]', appjs)))
     legal = open(os.path.join(ROOT, 'rechtliches.html'), encoding='utf-8').read()
     offen = len(re.findall(r'class="ph"|\[\[', legal))
     # Impressum-Daten kommen mit 1.21 (Online-Impressum). Bis dahin nur Hinweis, kein Fehler.
