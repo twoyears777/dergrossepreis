@@ -454,7 +454,7 @@ $('#ceremony').onclick=()=>{
   revealWinner(false);$('#others').classList.add('on');$('#endActions').classList.add('on');
 };
 $('#btnEndMenu').onclick=()=>{clearEndTimers();$('#endScreen').classList.remove('show');endShown=false;
-  if(endCtx==='own'){OR=null;saveRun();}endCtx='preis';endTeams=null;closeQ();showScreen('home');};
+  if(endCtx==='own'){OR=null;saveRun();}endCtx='preis';endTeams=null;closeQ();showScreen('shows');};
 function resetRound(){S.teams.forEach(t=>t.score=0);S.used={};S.history=[];S.turn=0;save();renderBoard();}
 
 function confetti(){
@@ -619,7 +619,7 @@ $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!VIEW&&(screenName==='tpl'||screenName==='set'||screenName==='help')&&!$('#dialog').classList.contains('show')){showScreen('gmenu');return;}
   if(e.key==='Escape'&&!VIEW&&screenName==='game'){showScreen('coll');return;}
-  if(e.key==='Escape'&&!VIEW&&screenName==='coll'){showScreen('home');return;}
+  if(e.key==='Escape'&&!VIEW&&(screenName==='coll'||screenName==='shows')){showScreen('home');return;}
   if(e.key==='Escape'&&!VIEW&&screenName==='timer'&&!$('#dialog').classList.contains('show')){$('#btnTimerBack').click();return;}
   if(e.key==='Escape'&&!VIEW){if($('#clDialog').classList.contains('show'))$('#clDialog').classList.remove('show');else if($('#dialog').classList.contains('show'))$('#dialog').classList.remove('show');else if($('#qOverlay').classList.contains('show'))closeQ();else if($('#endScreen').classList.contains('show'))$('#btnEndMenu').click();}
 });
@@ -736,6 +736,8 @@ function showScreen(n){
   screenName=n;
   if(!VIEW)document.title=PREIS_SCREENS.includes(n)?(S.title||'Der große Preis'):'Manna';
   $('#home').classList.toggle('show',n==='home');
+  $('#showsScreen').classList.toggle('show',n==='shows');
+  if(n==='shows')ransom($('#showsTitle'),'Gameshows');
   $('#gmenu').classList.toggle('show',n==='gmenu');
   $('#tplScreen').classList.toggle('show',n==='tpl');
   $('#setScreen').classList.toggle('show',n==='set');
@@ -928,7 +930,9 @@ $('#btnBackup').onclick=()=>backupNow();
 $('#btnRestore').onclick=()=>$('#tplFile').click();
 $('#gcColl').onclick=()=>{loadGames();showScreen('coll');};
 $('#gcPreis').onclick=nurAmPC(()=>showScreen('gmenu'));
-$('#btnGmBack').onclick=()=>showScreen('home');
+$('#btnGmBack').onclick=()=>showScreen('shows');
+$('#gcShows').onclick=nurAmPC(()=>showScreen('shows'));
+$('#btnShowsBack').onclick=()=>showScreen('home');
 $('#lnkVision').onclick=e=>{e.preventDefault();try{$('#vision').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(err){$('#vision').scrollIntoView();}};
 $('#btnGuide').onclick=()=>{try{$('#info').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});}catch(e){$('#info').scrollIntoView();}};
 function finishGame(){
@@ -1235,7 +1239,7 @@ $('#tmPause').onclick=tmPauseToggle;
 $('#tmReset').onclick=tmReset;
 $('#tmViewer').onclick=openViewer;
 $('#gcTimer').onclick=nurAmPC(()=>showScreen('timer'));
-$('#btnTimerBack').onclick=()=>{if(TM.phase==='running'||TM.phase==='paused'){ask('Der Countdown läuft noch. Trotzdem zurück? Der Countdown wird dabei beendet.','Zurück',()=>{tmReset();showScreen('home');});}else{tmReset();showScreen('home');}};
+$('#btnTimerBack').onclick=()=>{if(TM.phase==='running'||TM.phase==='paused'){ask('Der Countdown läuft noch. Trotzdem zurück? Der Countdown wird dabei beendet.','Zurück',()=>{tmReset();showScreen('shows');});}else{tmReset();showScreen('shows');}};
 if(!VIEW)tmRender();
 
 /* ================= EIGENES SPIEL ================= */
@@ -1370,7 +1374,7 @@ function renderOwnList(){
   list.appendChild(tip);
 }
 $('#gcOwn').onclick=nurAmPC(()=>showScreen('own'));
-$('#btnOwnBack').onclick=()=>showScreen('home');
+$('#btnOwnBack').onclick=()=>showScreen('shows');
 
 /* ---------- Einrichten ---------- */
 let OE=null,oeImgTarget=null;

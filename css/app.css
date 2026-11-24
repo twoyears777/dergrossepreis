@@ -955,3 +955,4 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .game-actions{display:flex;justify-content:center;margin:-8px 0 24px}
 .fav-btn.on{background:var(--marker);color:var(--ink);border-color:var(--ink)}
 .gfav{color:var(--marker)}
+#showsScreen .menu-title{margin-bottom:6vh}

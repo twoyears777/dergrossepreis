@@ -46,6 +46,11 @@ def serve():
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd
 
+def go(m, card):
+    # Der große Preis, Eigenes Spiel und Countdown liegen unter „Gameshows“
+    if m.locator('#home.show').count(): m.click('#gcShows'); m.wait_for_timeout(150)
+    m.click(card)
+
 def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
@@ -55,6 +60,8 @@ def static_checks():
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
         check(f'keine Schreibmaschinen-/Handschrift in {f}', not re.search('Courier|Typewriter|Marker Felt|Comic Sans', txt))
+    idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
+    check('keine offenen Text-Platzhalter in index.html', '[[' not in idx, ', '.join(re.findall(r'\[\[([^\]]+)\]\]', idx)))
     legal = open(os.path.join(ROOT, 'rechtliches.html'), encoding='utf-8').read()
     offen = len(re.findall(r'class="ph"|\[\[', legal))
     # Impressum-Daten kommen mit 1.21 (Online-Impressum). Bis dahin nur Hinweis, kein Fehler.
@@ -132,14 +139,19 @@ def browser_checks(p):
     m.goto(URL); m.wait_for_timeout(400)
     format_checks(m)
     check('Startseite sichtbar', m.locator('#home.show').count() == 1)
+    check('Startseite: Kacheln Gameshows und Spielesammlung', m.locator('#home .gcard .wbar').all_inner_texts() == ['Gameshows', 'Spielesammlung'], m.locator('#home .gcard .wbar').all_inner_texts())
+    m.click('#gcShows'); m.wait_for_timeout(200)
+    check('Gameshows: drei Kacheln', m.locator('#showsScreen.show').count() == 1 and m.locator('#showsScreen .gcard .wbar').all_inner_texts() == ['Der große Preis', 'Eigenes Spiel', 'Countdown'], m.locator('#showsScreen .gcard .wbar').all_inner_texts())
+    m.click('#btnShowsBack'); m.wait_for_timeout(150)
+    check('Gameshows: zurück zur Startseite', m.locator('#home.show').count() == 1)
     check('Marke „Manna“ auf der Startseite', m.get_attribute('#homeBrand', 'aria-label') == 'Manna' and m.evaluate("document.querySelector('#homeBrand img').naturalWidth>0") and m.title() == 'Manna')
     check('Screenshot-Collage mit 4 Bildern', m.locator('.collage .shot img').count() == 4)
     loaded = m.evaluate("Promise.all([...document.querySelectorAll('.collage img')].map(i=>{i.loading='eager';return i.decode().then(()=>i.naturalWidth>0,()=>false)}))")
     check('Screenshots laden', all(loaded), loaded)
     heads = m.locator('#home .hblock h2').all_inner_texts()
-    check('Bereiche auf der Startseite', heads == ['Genau das, was du brauchst!', "So funktioniert's", 'Unsere Vision'], heads)
+    check('Bereiche auf der Startseite', heads == ['Wir wissen, was es in der Jugendarbeit braucht!', "So einfach geht's", 'Unsere Vision'], heads)
     intro = m.inner_text('#homeIntro') if m.locator('#homeIntro').count() else ''
-    check('Kurze Erklärung unter dem Titel', m.locator('#homeBrand + #homeIntro + .gamegrid').count() == 1 and 'Gruppenspiele' in intro, intro)
+    check('Kurze Erklärung unter dem Titel', m.locator('#homeBrand + #homeIntro + .gamegrid').count() == 1 and 'Jugendarbeit' in intro, intro)
     m.click('#lnkVision'); m.wait_for_timeout(900)
     check('Link springt zur Vision', m.evaluate("(()=>{const r=document.querySelector('#vision').getBoundingClientRect();return r.top<innerHeight&&r.bottom>0})()") and '#' not in m.url)
     m.evaluate('scrollTo(0,0)')
@@ -149,7 +161,7 @@ def browser_checks(p):
     check('Changelog öffnet', m.locator('#clDialog.show').count() == 1)
     check('Changelog ohne Datum', not re.search(r'\d{1,2}\.\d{1,2}\.\d{4}', m.inner_text('#clBody')))
     m.click('#clX')
-    m.click('#gcPreis'); m.wait_for_timeout(200)
+    go(m, '#gcPreis'); m.wait_for_timeout(200)
     labels = m.locator('#gmList .mbtn').all_inner_texts()
     check('Spielmenü-Einträge', labels == ['Neues Spiel mit aktuellem Spielbrett', 'Neues Spiel mit leerem Spielbrett', 'Vorlagen', 'Erklärung', 'Einstellungen'], labels)
     m.locator('.mbtn', has_text='Erklärung').click(); m.wait_for_timeout(200)
@@ -162,7 +174,7 @@ def browser_checks(p):
     m.click('#btnTplBack')
 
     print('Spielesammlung')
-    m.click('#btnGmBack'); m.click('#gcColl'); m.wait_for_timeout(200)
+    m.click('#btnGmBack'); m.click('#btnShowsBack'); m.click('#gcColl'); m.wait_for_timeout(200)
     check('Spielesammlung öffnet', m.locator('#collScreen.show').count() == 1)
     check('kein Knopf „Spiel erstellen“', m.locator('#btnGameNew').count() == 0 and m.locator('#geScreen').count() == 0)
     check('Filtergruppen', m.locator('.flabel').all_inner_texts() == ['Alter', 'Personen', 'Ort', 'Material', 'Favoriten'], m.locator('.flabel').all_inner_texts())
@@ -249,7 +261,7 @@ def browser_checks(p):
     m.evaluate("navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister())))"); m.reload(); m.wait_for_timeout(600)
     m.click('#gcColl'); m.wait_for_timeout(300)
     m.click('#btnCollBack'); m.wait_for_timeout(200)
-    m.click('#gcPreis'); m.wait_for_timeout(200)
+    go(m, '#gcPreis'); m.wait_for_timeout(200)
 
     print('Spielablauf')
     m.locator('.mbtn', has_text='aktuellem Spielbrett').click(); m.wait_for_timeout(300)
@@ -308,11 +320,11 @@ def browser_checks(p):
     v.wait_for_timeout(6000)
     check('Beamer: Sieger enthüllt', v.locator('#endTitle.on').count() == 1)
     m.click('#btnEndMenu'); m.wait_for_timeout(600)
-    check('zurück zur Startseite', m.locator('#home.show').count() == 1)
+    check('zurück zu den Gameshows', m.locator('#showsScreen.show').count() == 1)
     check('Beamer wieder im Startbild', v.locator('#vSplash.show').count() == 1)
 
     print('Countdown')
-    m.click('#gcTimer'); m.wait_for_timeout(400)
+    go(m, '#gcTimer'); m.wait_for_timeout(400)
     check('Countdown öffnet', m.locator('#timerScreen.show').count() == 1)
     check('Zuschauer: nur Hintergrund', v.locator('#vTimer.show').count() == 1 and v.inner_text('#vtmStage').strip() == '')
     m.locator('#tmPresets .fchip', has_text='30 Sek').click()
@@ -328,10 +340,10 @@ def browser_checks(p):
     check('danach wieder nur Hintergrund', v.inner_text('#vtmStage').strip() == '')
     check('Moderator zeigt wieder eingestellte Zeit', '0:05' in m.inner_text('#tmStage'))
     m.click('#btnTimerBack'); m.wait_for_timeout(400)
-    check('zurück zur Startseite, Beamer im Startbild', m.locator('#home.show').count() == 1 and v.locator('#vSplash.show').count() == 1)
+    check('zurück zu den Gameshows, Beamer im Startbild', m.locator('#showsScreen.show').count() == 1 and v.locator('#vSplash.show').count() == 1)
 
     print('Eigenes Spiel')
-    m.click('#gcOwn'); m.wait_for_timeout(300)
+    go(m, '#gcOwn'); m.wait_for_timeout(300)
     check('Übersicht „Eigenes Spiel“', m.locator('#ownScreen.show').count() == 1)
     m.locator('#ownList .mbtn', has_text='Neues eigenes Spiel').click(); m.wait_for_timeout(300)
     check('Einrichten öffnet mit 5 Runden', m.locator('#ownEdit.show').count() == 1 and m.locator('.oe-round').count() == 5)
@@ -384,8 +396,8 @@ def browser_checks(p):
     v.wait_for_timeout(6000)
     check('Beamer: Sieger Gruppe A', v.get_attribute('#endTitle', 'aria-label') == 'Gruppe A')
     m.click('#btnEndMenu'); m.wait_for_timeout(500)
-    check('Danach Startseite, Spielstand gelöscht', m.locator('#home.show').count() == 1 and m.evaluate("localStorage.grosserPreis_ownRun===undefined"))
-    m.click('#gcOwn'); m.wait_for_timeout(200)
+    check('Danach Gameshows, Spielstand gelöscht', m.locator('#showsScreen.show').count() == 1 and m.evaluate("localStorage.grosserPreis_ownRun===undefined"))
+    go(m, '#gcOwn'); m.wait_for_timeout(200)
     m.locator('#ownList .trow .mbtn', has_text='Testolympiade').click(); m.wait_for_timeout(300)
     with m.expect_download() as di: m.click('#btnOeExport')
     path_own = os.path.join(ROOT, 'tests', '.eigenes.json'); di.value.save_as(path_own)
@@ -401,7 +413,7 @@ def browser_checks(p):
     v.close(); m.wait_for_timeout(500)
 
     print('Vorlagen & Sicherung')
-    m.click('#gcPreis')
+    go(m, '#gcPreis')
     check('Sicherungs-Hinweis nach Änderung', m.locator('#gmList .backup-note').count() == 1)
     with m.expect_download() as di: m.locator('#gmList .backup-note .primary').click()
     path = os.path.join(ROOT, 'tests', '.sicherung.json'); di.value.save_as(path)
@@ -596,7 +608,7 @@ def mobile_checks(p):
         opts.pop('default_browser_type', None)
         ctx = b.new_context(**opts); m = ctx.new_page(); m.goto(URL); m.wait_for_timeout(400)
         if m.locator('#clDialog.show').count(): m.click('#clX')
-        for card, screen in [('#gcPreis', '#gmenu'), ('#gcOwn', '#ownScreen'), ('#gcTimer', '#timerScreen')]:
+        for card, screen in [('#gcShows', '#showsScreen')]:
             m.click(card); m.wait_for_timeout(200)
             ok = m.locator('#dialog.show').count() == 1 and m.inner_text('#dMsg') == msg and not m.locator('#dNo').is_visible()
             check(f'{name}: {card} zeigt Hinweis statt Start', ok and m.locator('#home.show').count() == 1 and m.locator(screen + '.show').count() == 0)

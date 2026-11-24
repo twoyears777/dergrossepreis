@@ -48,6 +48,11 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
   - Eigene Spiele speichern, exportieren oder direkt starten
 - Weitere Ideen: Gruppen einteilen (zufällig, nach Anzahl), Zufallsauswahl (Name ziehen, wer fängt an), Abendplaner (Ablauf eines Jugendkreises mit Zeiten)
 
+### Gameshows: Anleitung und FAQ
+- Ausführliche Anleitung im Bereich „Gameshows“: Beamer anschließen, Anzeige auf „Erweitern“ statt „Spiegeln“ (Windows-Taste + P, Mac: Systemeinstellungen → Displays), Zuschaueransicht öffnen, Fenster auf den Beamer ziehen, Vollbild
+- Dazu ein FAQ mit typischen Fragen und Problemen
+- Die Startseite erklärt nur noch kurz in drei Schritten
+
 ### Etappe 2 – Spielekiste ausbauen
 - ✔ **Spiele pflegen mit Editor** (Version 1.18.0): eigene Web-App unter `/editor/`, Spiele liegen als Textdateien in `spiele/`, Veröffentlichen direkt auf GitHub, neue Spiele erscheinen ohne App-Update
 - Verworfen (Version 1.18.0): „Spiel erstellen“ und „Spiel einsenden“ in der App für alle Nutzer, die App bleibt erst einmal schlank
