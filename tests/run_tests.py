@@ -55,15 +55,16 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/app.js', 'js/data.js', 'js/spielformat.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
+    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
         check(f'keine Schreibmaschinen-/Handschrift in {f}', not re.search('Courier|Typewriter|Marker Felt|Comic Sans', txt))
     idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     check('keine offenen Text-Platzhalter in index.html', '[[' not in idx, ', '.join(re.findall(r'\[\[([^\]]+)\]\]', idx)))
-    appjs = open(os.path.join(ROOT, 'js/app.js'), encoding='utf-8').read()
-    check('keine offenen Text-Platzhalter in app.js', not re.search(r'\[\[[A-ZÄÖÜ][^\]\[]*\]\]', appjs), ', '.join(re.findall(r'\[\[([^\]]+)\]\]', appjs)))
+    APP_JS = ['js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js']
+    appjs = ''.join(open(os.path.join(ROOT, f), encoding='utf-8').read() for f in APP_JS)
+    check('keine offenen Text-Platzhalter im JavaScript', not re.search(r'\[\[[A-ZÄÖÜ][^\]\[]*\]\]', appjs), ', '.join(re.findall(r'\[\[([^\]]+)\]\]', appjs)))
     legal = open(os.path.join(ROOT, 'rechtliches.html'), encoding='utf-8').read()
     offen = len(re.findall(r'class="ph"|\[\[', legal))
     # Impressum-Daten kommen mit 1.21 (Online-Impressum). Bis dahin nur Hinweis, kein Fehler.
@@ -77,7 +78,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/app.js', 'img/shot-brett.jpg', 'img/shot-eigenes.jpg', 'img/shot-countdown.jpg', 'img/shot-sammlung.jpg']:
+    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'img/shot-brett.jpg', 'img/shot-eigenes.jpg', 'img/shot-countdown.jpg', 'img/shot-sammlung.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
@@ -254,7 +255,7 @@ def browser_checks(p):
     for _ in range(12):
         m.click('#btnRandom'); m.wait_for_timeout(120); seen.add(m.inner_text('#gameTitle')); m.click('#btnGameBack'); m.wait_for_timeout(80)
     check('Zufall wählt verschiedene Spiele', len(seen) >= 2, seen)
-    check('Dauerhafter Speicher wird angefragt', m.evaluate("typeof askPersist==='function'") and 'askPersist' in open(os.path.join(ROOT, 'js/app.js'), encoding='utf-8').read())
+    check('Dauerhafter Speicher wird angefragt', m.evaluate("typeof askPersist==='function'") and 'askPersist' in open(os.path.join(ROOT, 'js/sammlung.js'), encoding='utf-8').read())
 
     print('Spielesammlung ohne App-Update')
     d = json.loads(FIXTURE['json']); orig = FIXTURE['json']

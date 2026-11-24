@@ -39,7 +39,8 @@ Wohin es geht und welche Ideen gesammelt sind, steht in der [ROADMAP.md](ROADMAP
 - `index.html` – Aufbau der Seiten
 - `css/app.css` – Aussehen
 - `js/data.js` – Versionsnummer, Changelog, Vorlagen, Filter der Spielesammlung
-- `js/app.js` – Spiellogik
+- `js/kern.js`, `js/preis.js`, `js/system.js`, `js/menues.js`, `js/zuschauer.js`, `js/sammlung.js`, `js/countdown.js`, `js/eigenes-spiel.js` – App-Logik, nach Bereichen aufgeteilt (in dieser Reihenfolge geladen)
+- `js/artikel.js` – Artikel für „Pädagogischer Kram“ (neuer Artikel = neuer Eintrag)
 - `js/spielformat.js` – liest und schreibt das Textformat der Spiele (App, Editor und Bau-Schritt)
 - `spiele/*.txt` – die Spiele der Spielesammlung (`spiele/alle.json` wird beim Veröffentlichen daraus gebaut)
 - `editor/` – Editor für die Spiele
