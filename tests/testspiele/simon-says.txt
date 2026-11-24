@@ -5,6 +5,7 @@ Alter: Jugendliche (13–17)
 Personen: ab 4
 Ort: drinnen, draußen
 Dauer: 5 Minuten
+Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase, Ablösungsphase
 
 Material:
 - keins

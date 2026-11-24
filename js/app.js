@@ -1214,7 +1214,7 @@ function openGame(id){
       <li><b>Ort</b>${esc(ortText(g))}</li>
       <li><b>Dauer</b>${esc(g.dauer||'keine Angabe')}</li>
     </ul>
-    ${g.phasen&&g.phasen.length?`<div class="game-phasen"><span class="gp-label">${TXT_PHASEN}</span>${MannaSpiel.PHASEN.filter(x=>g.phasen.includes(x.id)).map(x=>`<button class="phase-chip" data-p="${x.id}">${esc(x.label)}</button>`).join('')}</div>`:''}
+    ${g.phasen&&g.phasen.length?`<div class="game-phasen"><span class="gp-label">${TXT_PHASEN}</span>${g.phasen.length>=MannaSpiel.PHASEN.length?'<button class="phase-chip" data-p="">Alle Gruppenphasen</button>':MannaSpiel.PHASEN.filter(x=>g.phasen.includes(x.id)).map(x=>`<button class="phase-chip" data-p="${x.id}">${esc(x.label)}</button>`).join('')}</div>`:''}
     <div class="game-notes">
       ${sec('Material',g.material.length?MannaSpiel.listeHtml(g,'material',esc):'<p>Kein Material nötig.</p>')}
       ${g.rollen?sec('Rollen',rolesHtml(g.rollen)):''}
@@ -1226,7 +1226,7 @@ function openGame(id){
   const fb=$('#btnFav');
   const favLabel=()=>{const on=isFav(g.id);fb.textContent='Favorit';fb.classList.toggle('on',on);fb.setAttribute('aria-pressed',on);};
   favLabel();fb.onclick=()=>{toggleFav(g.id);favLabel();};
-  $('#gameSheet').querySelectorAll('.phase-chip').forEach(b=>b.onclick=()=>openPhasen(b.dataset.p,'game'));
+  $('#gameSheet').querySelectorAll('.phase-chip').forEach(b=>b.onclick=()=>openPhasen(b.dataset.p||null,'game'));
   ransom($('#gameTitle'),g.name);
   showScreen('game');
 }

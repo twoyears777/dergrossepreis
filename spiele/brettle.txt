@@ -5,6 +5,7 @@ Alter: Jugendliche (13–17)
 Personen: 6 bis 15
 Ort: drinnen
 Dauer: 10
+Gruppenphasen: Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase
 
 Material:
 - Ein rundes Brett

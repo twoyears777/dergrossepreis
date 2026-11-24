@@ -5,6 +5,7 @@ Alter: Kinder (6–12), Jugendliche (13–17)
 Personen: 5 bis 10
 Ort: drinnen, draußen
 Dauer: 10
+Gruppenphasen: Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase
 
 Material:
 - keins

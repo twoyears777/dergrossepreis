@@ -5,6 +5,7 @@ Alter: Jugendliche (13–17)
 Personen: 12 bis 40
 Ort: drinnen, draußen
 Dauer: 30
+Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase, Ablösungsphase
 
 Material:
 Besen

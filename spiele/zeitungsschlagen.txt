@@ -5,6 +5,7 @@ Alter: Jugendliche (13–17)
 Personen: 8 bis 15
 Ort: drinnen
 Dauer: ca. 10 Minuten
+Gruppenphasen: Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase, Ablösungsphase
 
 Material:
 - Stühle für alle außer einer Person
