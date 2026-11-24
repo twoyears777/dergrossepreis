@@ -32,6 +32,8 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Später überlegen: Filter für Dauer und ruhig/wild, Zufallsknopf
 - Später: Rollen bei „Nachts in Palermo“ anpassen und erweitern (weitere Sonderrollen, andere Verteilung)
 - Hinweise zu Sicherheit und Körperkontakt, niemand wird bloßgestellt
+- In Arbeit: Artikel „Sicherheit“ bei „Pädagogischer Kram“, erster Abschnitt „Was tun im Notfall?“ (Rahmen: Erste-Hilfe-Schein, Material, wo es liegt, Ablauf im Notfall, wen man kontaktiert)
+- Idee für später: Anleitung zur Ersten Hilfe im Artikel „Sicherheit“
 - Ziel: im Alltag schneller ein passendes Spiel finden als bisher
 
 ### Nebenbei – praktische Werkzeuge für den Alltag

@@ -214,14 +214,18 @@ function renderArtTiles(){
     b.onclick=()=>openArticle(a.id,null,'paed');box.appendChild(b);
   });
 }
-const paras=t=>(Array.isArray(t)?t:[t]).filter(Boolean).map(x=>`<p>${esc(x)}</p>`).join('');
+/* Absätze: Text oder Liste von Texten. Zeilen mit „- “ am Anfang werden zu Aufzählungspunkten. */
+const paras=t=>{let h='',ul=[];const fl=()=>{if(ul.length)h+=`<ul>${ul.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;ul=[];};
+  (Array.isArray(t)?t:[t]).filter(Boolean).forEach(x=>{if(/^- /.test(x))ul.push(x.slice(2));else{fl();h+=`<p>${esc(x)}</p>`;}});fl();return h;};
+/* Ein Abschnitt kann Unterpunkte haben (teile: [{titel,text}]), sie stehen als kleine Überschriften darunter. */
+const teileHtml=x=>(x.teile||[]).map(u=>`<h4>${esc(u.titel)}</h4>${paras(u.text)}`).join('');
 function openArticle(id,abschnitt,from){
   const a=ARTIKEL.find(x=>x.id===id);if(!a)return;
   artFrom=from||'paed';
   $('#btnArtBack').textContent=artFrom==='game'?'← Zurück zum Spiel':'← Pädagogischer Kram';
   $('#artLead').textContent=a.untertitel||'';$('#artLead').style.display=a.untertitel?'':'none';
   $('#artBody').innerHTML=(a.einleitung?`<section class="note">${paras(a.einleitung)}</section>`:'')+
-    (a.abschnitte||[]).map(x=>`<section class="note" id="art-${esc(a.id)}-${esc(x.id)}"><h3>${esc(x.titel)}</h3>${paras(x.text)}</section>`).join('');
+    (a.abschnitte||[]).map(x=>`<section class="note" id="art-${esc(a.id)}-${esc(x.id)}"><h3>${esc(x.titel)}</h3>${paras(x.text)}${teileHtml(x)}</section>`).join('');
   showScreen('art');ransom($('#artTitle'),a.titel);
   if(abschnitt){const el=document.getElementById('art-'+a.id+'-'+abschnitt);if(el)setTimeout(()=>{el.scrollIntoView({block:'start'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1600);},60);}
   syncBackTop();

@@ -526,6 +526,8 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 .note p+p{margin-top:10px}
 .note ul,.note ol{padding-left:1.2em;display:grid;gap:6px}
 .note p+ul,.note p+ol,.note ul+p,.note ol+p,.note ul+ol,.note ol+ul{margin-top:10px}
+.note h4{font-family:var(--sans);font-weight:700;font-size:1rem;margin:18px 0 6px;line-height:1.3}
+.note h3+h4{margin-top:4px}
 .note dl{display:grid;grid-template-columns:auto 1fr;gap:10px 14px}
 .note dt{font-family:var(--strong);font-weight:700;white-space:nowrap}
 .note dd{margin:0}
