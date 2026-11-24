@@ -137,7 +137,7 @@ def browser_checks(p):
     errs = []
     b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
     ctx = b.new_context(viewport={'width': 1280, 'height': 800}, accept_downloads=True)
-    m = ctx.new_page(); m.on('pageerror', lambda e: errs.append('Moderator: ' + str(e)))
+    m = ctx.new_page(); m.on('pageerror', lambda e: errs.append('Moderator: ' + str(e))); m.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
     store = lambda: m.evaluate("JSON.parse(localStorage.grosserPreis_v1)")
     scores = lambda: [t['score'] for t in store()['teams']]
 
@@ -333,7 +333,7 @@ def browser_checks(p):
     m.locator('.item').nth(4).locator('.tx').fill('Alle Gruppen: lautester Jubel!')
     m.click('#btnBack'); m.wait_for_timeout(300)
     with m.expect_popup() as pi: m.click('#btnViewer')
-    v = pi.value; v.on('pageerror', lambda e: errs.append('Zuschauer: ' + str(e))); v.wait_for_timeout(1300)
+    v = pi.value; v.on('pageerror', lambda e: errs.append('Zuschauer: ' + str(e))); v.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None)); v.wait_for_timeout(1300)
     check('Zuschaueransicht verbunden', m.evaluate("document.body.classList.contains('mod')"))
     m.locator('.tile').nth(20).click(); m.wait_for_timeout(500)
     check('ACTION-Animation auf beiden Bildschirmen', m.locator('#actionFx.show').count() == 1 and v.locator('#actionFx.show').count() == 1)
@@ -488,7 +488,15 @@ def browser_checks(p):
     m.evaluate("localStorage.setItem('grosserPreis_seenVersion','1.0.0')"); m.reload(); m.wait_for_timeout(1100)
     check('„Was ist neu“ nach Update gefüllt', m.locator('#clDialog.show').count() == 1 and m.locator('#clBody li').count() > 3)
 
-    check('keine JavaScript-Fehler', not errs, '; '.join(errs))
+    # Sicherheit: präparierte Gruppenfarbe beim Import wird verworfen
+    m.evaluate(r"""(()=>{window.__xss=0;const d={categories:[{name:'K',items:[]}],points:[10],teams:[{name:'A',color:'#123456\\"><img src=x onerror=window.__xss=1>'},{name:'B',color:'#00ff00'}]};
+      const n=normalize(d);window.__cols=n.teams.map(t=>t.color);})()""")
+    cols = m.evaluate('window.__cols')
+    check('Sicherheit: ungültige Gruppenfarbe wird ersetzt', cols[0].startswith('#') and len(cols[0]) == 7 and cols[1] == '#00ff00', cols)
+    wf = open(os.path.join(ROOT, '.github/workflows/tests.yml'), encoding='utf-8').read()
+    check('Sicherheit: Workflow standardmäßig nur lesen', 'permissions:\n  contents: read' in wf)
+    check('Sicherheit: Content-Security-Policy gesetzt', 'Content-Security-Policy' in open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read())
+    check('keine JavaScript-Fehler (auch keine CSP-Verstöße)', not errs, '; '.join(errs))
     b.close()
 
 class FakeGitHub:
@@ -552,7 +560,7 @@ def editor_checks(p):
     b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
     ctx = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
     ctx.route('https://api.github.com/**', gh.handle)
-    e = ctx.new_page(); e.on('pageerror', lambda x: errs.append(str(x)))
+    e = ctx.new_page(); e.on('pageerror', lambda x: errs.append(str(x))); e.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
     toast = lambda: e.inner_text('#toast')
     e.goto(EDITOR); e.wait_for_timeout(300)
     check('Editor: Anmeldung', e.locator('#vLogin:not([hidden])').count() == 1)
@@ -628,7 +636,7 @@ def editor_checks(p):
     e.click('#btnBack'); e.wait_for_timeout(200)
     e.click('#btnLogout'); e.locator('#mBtns button', has_text='Abmelden').click(); e.wait_for_timeout(200)
     check('Editor: Abmelden löscht den Schlüssel', e.evaluate("localStorage.getItem('manna-editor-token')") is None and e.locator('#vLogin:not([hidden])').count() == 1)
-    check('Editor: keine JavaScript-Fehler', not errs, '; '.join(errs))
+    check('Editor: keine JavaScript-Fehler (auch keine CSP-Verstöße)', not errs, '; '.join(errs))
     b.close()
 
 def build_text(txt):

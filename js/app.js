@@ -57,7 +57,7 @@ function normalize(d){
     title:typeof d.title==='string'?d.title:s.title,
     points:Array.isArray(d.points)&&d.points.length?d.points.map(n=>Number(n)||0):s.points,
     settings:Object.assign({},s.settings,d.settings||{}),
-    teams:Array.isArray(d.teams)?d.teams.map((t,i)=>({id:t.id||uid(),name:String(t.name||('Gruppe '+(i+1))),color:(()=>{const c=t.color||COLORS[i%COLORS.length];const k=OLD_COLORS.indexOf(c);return k>=0?COLORS[k]:c;})(),score:Number(t.score)||0})):s.teams,
+    teams:Array.isArray(d.teams)?d.teams.filter(t=>t&&typeof t==='object').map((t,i)=>({id:typeof t.id==='string'&&/^[\w-]{1,40}$/.test(t.id)?t.id:uid(),name:String(t.name||('Gruppe '+(i+1))),color:(()=>{const c=t.color||COLORS[i%COLORS.length];const k=OLD_COLORS.indexOf(c);const f=k>=0?COLORS[k]:c;return /^#[0-9a-f]{6}$/i.test(f)?f:COLORS[i%COLORS.length];})(),score:Number(t.score)||0})):s.teams,
     categories:Array.isArray(d.categories)?d.categories.map(c=>({name:String(c.name||''),items:Array.isArray(c.items)?c.items.map(it=>({type:TYPES.includes(it.type)?it.type:'frage',text:String(it.text||''),answer:String(it.answer||''),
       options:[0,1,2,3].map(i=>String((Array.isArray(it.options)&&it.options[i])||'')),correct:Math.min(3,Math.max(0,Number(it.correct)||0)),unit:String(it.unit||'')})):[]})):s.categories,
     used:d.used&&typeof d.used==='object'?d.used:{},
@@ -543,7 +543,7 @@ function renderTeams(){
   if(!S.teams.length)box.innerHTML='<p class="hint" style="margin:0 0 12px">Noch keine Gruppen.</p>';
   S.teams.forEach((t,i)=>{
     const r=document.createElement('div');r.className='teamrow';
-    r.innerHTML=`<input type="color" value="${t.color}"><input class="inp nm" placeholder="Name der Gruppe" maxlength="30"><input class="inp sc" type="number" inputmode="numeric" title="Punktestand"><button class="btn danger small" title="Gruppe löschen">✕</button>`;
+    r.innerHTML=`<input type="color" value="${esc(t.color)}"><input class="inp nm" placeholder="Name der Gruppe" maxlength="30"><input class="inp sc" type="number" inputmode="numeric" title="Punktestand"><button class="btn danger small" title="Gruppe löschen">✕</button>`;
     const [col,nm,sc,del]=r.children;
     nm.value=t.name;sc.value=t.score;
     col.oninput=()=>{t.color=col.value;save();};
