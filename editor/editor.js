@@ -229,14 +229,14 @@
     return {
       name: $('#fName').value, kurz: $('#fKurz').value, alter: chipVals('fAlter'), min: $('#fMin').value, max: $('#fMax').value,
       ort: chipVals('fOrt'), phasen: chipVals('fPhasen'), dauer: $('#fDauer').value, ablauf: $('#fAblauf').value, material: $('#fMaterial').value,
-      varianten: $('#fVarianten').value, rollen: $('#fRollen').value, tabelle: $('#fTabelle').value,
+      varianten: $('#fVarianten').value, paedagogik: $('#fPaed').value, nachgespraech: $('#fNach').value, rollen: $('#fRollen').value, tabelle: $('#fTabelle').value,
       rollenHinweis: $('#fRollenHinweis').value, risiken: $('#fRisiken').value, tipp: $('#fTipp').value
     };
   }
   function setForm(v) {
     $('#fName').value = v.name || ''; $('#fKurz').value = v.kurz || ''; setChips('fAlter', v.alter || []);
     $('#fMin').value = v.min || ''; $('#fMax').value = v.max || ''; setChips('fOrt', v.ort || []); setChips('fPhasen', v.phasen || []); $('#fDauer').value = v.dauer || '';
-    $('#fAblauf').value = v.ablauf || ''; $('#fMaterial').value = v.material || ''; $('#fVarianten').value = v.varianten || '';
+    $('#fAblauf').value = v.ablauf || ''; $('#fMaterial').value = v.material || ''; $('#fVarianten').value = v.varianten || ''; $('#fPaed').value = v.paedagogik || ''; $('#fNach').value = v.nachgespraech || '';
     $('#fRollen').value = v.rollen || ''; $('#fTabelle').value = v.tabelle || ''; $('#fRollenHinweis').value = v.rollenHinweis || '';
     $('#fRisiken').value = v.risiken || ''; $('#fTipp').value = v.tipp || '';
   }
@@ -245,7 +245,7 @@
     return {
       name: g.name, kurz: g.kurz, alter: g.alter.slice(), min: String(g.spieler.min), max: g.spieler.max >= F.OHNE_MAX ? '' : String(g.spieler.max),
       ort: g.ort.slice(), phasen: (g.phasen || []).slice(), dauer: g.dauer || '', ablauf: F.ablaufZeilen(g).join('\n'), material: F.zeilenVon(g, 'material').join('\n'),
-      varianten: F.zeilenVon(g, 'varianten').join('\n'), rollen: (r.liste || []).map(x => x.name + (x.text ? ': ' + x.text : '')).join('\n'),
+      varianten: F.zeilenVon(g, 'varianten').join('\n'), paedagogik: F.zeilenVon(g, 'paedagogik').join('\n'), nachgespraech: F.zeilenVon(g, 'nachgespraech').join('\n'), rollen: (r.liste || []).map(x => x.name + (x.text ? ': ' + x.text : '')).join('\n'),
       tabelle: r.tabelle ? [r.tabelle.kopf].concat(r.tabelle.zeilen).map(z => z.join(' | ')).join('\n') : '',
       rollenHinweis: r.hinweis || '', risiken: F.zeilenVon(g, 'risiken').join('\n'), tipp: g.hinweis || ''
     };
@@ -267,6 +267,8 @@
       if (rh) g.rollen.hinweis = rh;
     }
     const va = items(v.varianten); if (va.length) { g.varianten = va; g.variantenZeilen = frei(v.varianten); }
+    const pg = items(v.paedagogik || ''); if (pg.length) { g.paedagogik = pg; g.paedagogikZeilen = frei(v.paedagogik); }
+    const ng = items(v.nachgespraech || ''); if (ng.length) { g.nachgespraech = ng; g.nachgespraechZeilen = frei(v.nachgespraech); }
     const tipp = v.tipp.replace(/\s+/g, ' ').trim(); if (tipp) g.hinweis = tipp;
     return g;
   }
@@ -325,6 +327,8 @@
     }
     h += '<h3>So geht’s</h3>' + (g.ablauf.length ? F.ablaufHtml(g, esc) : '<p>' + ph('Ablauf fehlt') + '</p>');
     if (g.varianten) h += '<h3>Varianten</h3>' + F.listeHtml(g, 'varianten', esc);
+    if (g.paedagogik) h += '<h3>Pädagogische Gedanken</h3>' + F.listeHtml(g, 'paedagogik', esc);
+    if (g.nachgespraech) h += '<h3>Fragen zum Nachgespräch</h3>' + F.listeHtml(g, 'nachgespraech', esc);
     if (g.risiken.length) h += '<div class="risk"><h3>Gefahren und Risiken</h3>' + F.listeHtml(g, 'risiken', esc) + '</div>';
     if (g.hinweis) h += '<div class="tip"><h3>Tipp</h3><p>' + esc(g.hinweis) + '</p></div>';
     $('#prevCard').innerHTML = h;

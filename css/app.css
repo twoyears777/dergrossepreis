@@ -972,3 +972,4 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .gp-label{color:#d8d2c4;font-family:var(--strong);font-weight:700;font-size:.95rem}
 .phase-chip{background:var(--sage);color:var(--ink);font-family:var(--strong);font-weight:700;font-size:.9rem;padding:6px 12px;border-radius:2px;box-shadow:0 2px 5px #0005}
 .phase-chip:hover{background:var(--marker)}
+.note.paed{border-left:6px solid var(--sage)}

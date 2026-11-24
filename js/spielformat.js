@@ -28,7 +28,7 @@
     'Ort': 'ort', 'Dauer': 'dauer', 'Gruppenphasen': 'phasen', 'Rollen-Hinweis': 'rollenHinweis', 'Tipp': 'hinweis' };
   // Listen „Überschrift:“ und darunter eine Zeile pro Eintrag
   const LISTEN = { 'Material': 'material', 'Ablauf': 'ablauf', 'Rollen': 'rollen', 'Rollen-Tabelle': 'tabelle',
-    'Varianten': 'varianten', 'Gefahren und Risiken': 'risiken' };
+    'Varianten': 'varianten', 'Pädagogische Gedanken': 'paedagogik', 'Fragen zum Nachgespräch': 'nachgespraech', 'Gefahren und Risiken': 'risiken' };
   const MARKER = /^\s*(?:[-*•–]|\d+[.)])\s+/;
 
   function slug(name) {
@@ -77,7 +77,7 @@
      „- Text“ = Aufzählungspunkt, „1. Text“ = nummerierter Schritt, ohne Zeichen = Absatz.
      Die Felder material, ablauf, varianten, risiken enthalten weiter die Einträge ohne Zeichen
      (für ältere App-Versionen und die Filter), die Fassung mit Zeichen steht in <feld>Zeilen. */
-  const FREI = ['material', 'ablauf', 'varianten', 'risiken'];
+  const FREI = ['material', 'ablauf', 'varianten', 'paedagogik', 'nachgespraech', 'risiken'];
   const PUNKT = /^\s*[-*•–]\s+/, NUMMER = /^\s*(\d+)[.)]\s+/;
   function zeile(t) {
     t = String(t || '').trim();
@@ -185,6 +185,8 @@
       if (rh) g.rollen.hinweis = rh;
     }
     const v = list('varianten'); if (v.length) { g.varianten = v; g.variantenZeilen = frei('varianten'); }
+    const pg = list('paedagogik'); if (pg.length) { g.paedagogik = pg; g.paedagogikZeilen = frei('paedagogik'); }
+    const ng = list('nachgespraech'); if (ng.length) { g.nachgespraech = ng; g.nachgespraechZeilen = frei('nachgespraech'); }
     if (clean(raw.hinweis)) g.hinweis = clean(raw.hinweis);
     pflicht(g).forEach(m => fehler.push('Es fehlt: ' + m));
     if (!g.spieler) g.spieler = { min: 1, max: OHNE_MAX };
@@ -241,6 +243,8 @@
       if (one(r.hinweis)) { L.push(''); L.push('Rollen-Hinweis: ' + one(r.hinweis)); }
     }
     frei('Varianten', 'varianten', false);
+    frei('Pädagogische Gedanken', 'paedagogik', false);
+    frei('Fragen zum Nachgespräch', 'nachgespraech', false);
     frei('Gefahren und Risiken', 'risiken', true);
     if (one(g.hinweis)) { L.push(''); L.push('Tipp: ' + one(g.hinweis)); }
     return L.join('\n') + '\n';

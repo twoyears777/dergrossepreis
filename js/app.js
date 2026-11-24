@@ -1220,6 +1220,8 @@ function openGame(id){
       ${g.rollen?sec('Rollen',rolesHtml(g.rollen)):''}
       ${sec('So geht’s',MannaSpiel.ablaufHtml(g,esc))}
       ${g.varianten&&g.varianten.length?sec('Varianten',MannaSpiel.listeHtml(g,'varianten',esc)):''}
+      ${g.paedagogik&&g.paedagogik.length?`<section class="note paed"><h3>Pädagogische Gedanken</h3>${MannaSpiel.listeHtml(g,'paedagogik',esc)}</section>`:''}
+      ${g.nachgespraech&&g.nachgespraech.length?`<section class="note paed"><h3>Fragen zum Nachgespräch</h3>${MannaSpiel.listeHtml(g,'nachgespraech',esc)}</section>`:''}
       ${g.risiken&&g.risiken.length?`<section class="note risk"><h3>Gefahren und Risiken</h3>${MannaSpiel.listeHtml(g,'risiken',esc)}</section>`:''}
       ${g.hinweis?`<section class="note tip"><h3>Tipp</h3><p>${esc(g.hinweis)}</p></section>`:''}
     </div>`;
