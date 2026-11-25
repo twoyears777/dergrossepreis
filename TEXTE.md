@@ -95,84 +95,85 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 201: Fragen auf 10 wirklich leicht wählen, auf 100 auch gerne wirklich richtig schwere Fragen.
 - Z. 205: ← Zurück
 - Z. 209: Spielesammlung
-- Z. 213: (Attribut) Spiel suchen, z. B. Zeitung oder Stuhlkreis
-- Z. 213: (Attribut) Spiele durchsuchen
-- Z. 214: (Attribut) Suche leeren
-- Z. 216: Filter
-- Z. 217: (Attribut) Filter
-- Z. 218: Zufälliges Spiel Filter zurücksetzen
-- Z. 221: ← Startseite
-- Z. 226: ← Zur Spielesammlung
-- Z. 230: Countdown
-- Z. 234: (Attribut) Zeit auswählen
-- Z. 235: (Attribut) Eigene Zeit
-- Z. 236: − 1 Min +
-- Z. 236: (Attribut) Eine Minute weniger
-- Z. 236: (Attribut) Eine Minute mehr
-- Z. 237: − 00 Sek +
-- Z. 237: (Attribut) Fünf Sekunden weniger
-- Z. 237: (Attribut) Fünf Sekunden mehr
-- Z. 240: Start
-- Z. 241: Pause
-- Z. 242: Zurücksetzen
-- Z. 244: Zuschaueransicht zeigen
-- Z. 247: ← Gameshows
-- Z. 251: Eigenes Spiel
-- Z. 253: ← Gameshows
-- Z. 258: Spiel einrichten
-- Z. 261: ← Zurück
-- Z. 263: Exportieren
-- Z. 264: Speichern
-- Z. 265: Spiel starten
-- Z. 271: Einstellungen
-- Z. 273: Spielbrett bearbeiten
-- Z. 274: Zuschaueransicht zeigen
-- Z. 275: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
-- Z. 278: Sicherung erstellen
-- Z. 279: Sicherung einspielen
-- Z. 281: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
-- Z. 283: ← Zurück
-- Z. 288: anna Der große Preis Gleich geht's los
-- Z. 288: (Attribut) Manna
-- Z. 289: (Attribut) Vollbild
-- Z. 289: (Attribut) Vollbild
-- Z. 297: (Attribut) Schließen – Feld bleibt offen
-- Z. 297: (Attribut) Schließen
-- Z. 306: Lösung zeigen
-- Z. 311: Geschafft
-- Z. 312: Nicht geschafft
-- Z. 321: ACTION! SONDERFELD
-- Z. 326: (Attribut) Antippen zeigt sofort alles
-- Z. 327: Spiel beendet
-- Z. 332: Zurück zum Startmenü
-- Z. 340: Einstellungen
-- Z. 341: ▶ Zum Spiel
-- Z. 345: Allgemein
-- Z. 347: Titel der Show
-- Z. 352: Punktwerte der Zeilen
-- Z. 356: Soundeffekte
-- Z. 361: Gruppen
-- Z. 362: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
-- Z. 364: + Gruppe hinzufügen
-- Z. 368: Kategorien, Fragen &amp; Aufgaben
-- Z. 369: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
-- Z. 375: Spiel &amp; Daten
-- Z. 376: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
-- Z. 378: Neue Runde (Punkte &amp; Felder zurücksetzen)
-- Z. 382: Export erzeugen &amp; kopieren
-- Z. 383: Text unten importieren
-- Z. 384: Datei importieren (.json)
-- Z. 386: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
-- Z. 392: Version &amp; Updates
-- Z. 393: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
-- Z. 395: Changelog anzeigen
-- Z. 396: Jetzt nach Updates suchen
-- Z. 403: Manna Abbrechen OK
-- Z. 404: Changelog ✕ Alles klar
-- Z. 404: (Attribut) Schließen
-- Z. 404: (Attribut) Schließen
-- Z. 405: Neue Version geladen! Jetzt aktualisieren ✕
-- Z. 405: (Attribut) Später
+- Z. 210: Alle Spiele und die dazugehörigen Erklärungen sind von Menschen geschrieben und praxiserprobt.
+- Z. 214: (Attribut) Spiel suchen, z. B. Zeitung oder Stuhlkreis
+- Z. 214: (Attribut) Spiele durchsuchen
+- Z. 215: (Attribut) Suche leeren
+- Z. 217: Filter
+- Z. 218: (Attribut) Filter
+- Z. 219: Zufälliges Spiel Filter zurücksetzen
+- Z. 222: ← Startseite
+- Z. 227: ← Zur Spielesammlung
+- Z. 231: Countdown
+- Z. 235: (Attribut) Zeit auswählen
+- Z. 236: (Attribut) Eigene Zeit
+- Z. 237: − 1 Min +
+- Z. 237: (Attribut) Eine Minute weniger
+- Z. 237: (Attribut) Eine Minute mehr
+- Z. 238: − 00 Sek +
+- Z. 238: (Attribut) Fünf Sekunden weniger
+- Z. 238: (Attribut) Fünf Sekunden mehr
+- Z. 241: Start
+- Z. 242: Pause
+- Z. 243: Zurücksetzen
+- Z. 245: Zuschaueransicht zeigen
+- Z. 248: ← Gameshows
+- Z. 252: Eigenes Spiel
+- Z. 254: ← Gameshows
+- Z. 259: Spiel einrichten
+- Z. 262: ← Zurück
+- Z. 264: Exportieren
+- Z. 265: Speichern
+- Z. 266: Spiel starten
+- Z. 272: Einstellungen
+- Z. 274: Spielbrett bearbeiten
+- Z. 275: Zuschaueransicht zeigen
+- Z. 276: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
+- Z. 279: Sicherung erstellen
+- Z. 280: Sicherung einspielen
+- Z. 282: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
+- Z. 284: ← Zurück
+- Z. 289: anna Der große Preis Gleich geht's los
+- Z. 289: (Attribut) Manna
+- Z. 290: (Attribut) Vollbild
+- Z. 290: (Attribut) Vollbild
+- Z. 298: (Attribut) Schließen – Feld bleibt offen
+- Z. 298: (Attribut) Schließen
+- Z. 307: Lösung zeigen
+- Z. 312: Geschafft
+- Z. 313: Nicht geschafft
+- Z. 322: ACTION! SONDERFELD
+- Z. 327: (Attribut) Antippen zeigt sofort alles
+- Z. 328: Spiel beendet
+- Z. 333: Zurück zum Startmenü
+- Z. 341: Einstellungen
+- Z. 342: ▶ Zum Spiel
+- Z. 346: Allgemein
+- Z. 348: Titel der Show
+- Z. 353: Punktwerte der Zeilen
+- Z. 357: Soundeffekte
+- Z. 362: Gruppen
+- Z. 363: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
+- Z. 365: + Gruppe hinzufügen
+- Z. 369: Kategorien, Fragen &amp; Aufgaben
+- Z. 370: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
+- Z. 376: Spiel &amp; Daten
+- Z. 377: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
+- Z. 379: Neue Runde (Punkte &amp; Felder zurücksetzen)
+- Z. 383: Export erzeugen &amp; kopieren
+- Z. 384: Text unten importieren
+- Z. 385: Datei importieren (.json)
+- Z. 387: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
+- Z. 393: Version &amp; Updates
+- Z. 394: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
+- Z. 396: Changelog anzeigen
+- Z. 397: Jetzt nach Updates suchen
+- Z. 404: Manna Abbrechen OK
+- Z. 405: Changelog ✕ Alles klar
+- Z. 405: (Attribut) Schließen
+- Z. 405: (Attribut) Schließen
+- Z. 406: Neue Version geladen! Jetzt aktualisieren ✕
+- Z. 406: (Attribut) Später
 
 ## rechtliches.html
 
@@ -361,18 +362,18 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 ## js/system.js
 
 - Z. 9: Version …${e.items.map(i=>
-- Z. 29: Version …
-- Z. 34: Erst die aktuelle Frage abschließen.
-- Z. 52: Kein Internet – Update-Suche nicht möglich.
-- Z. 53: suche …
-- Z. 55: Update wird geladen …
-- Z. 88: Lösung auf dem Beamer zeigen
-- Z. 88: Lösung zeigen
-- Z. 89: Zuschaueransicht verbunden – die Knöpfe siehst jetzt nur du.
-- Z. 89: Zuschaueransicht verbunden – Lösungen siehst jetzt nur du.
-- Z. 102: Das Fenster wurde blockiert – bitte Pop-ups für diese Seite erlauben.
-- Z. 103: Zuschaueransicht geöffnet – Fenster auf den Beamer ziehen.
-- Z. 104: Fenster konnte nicht geöffnet werden.
+- Z. 30: Version …
+- Z. 35: Erst die aktuelle Frage abschließen.
+- Z. 53: Kein Internet – Update-Suche nicht möglich.
+- Z. 54: suche …
+- Z. 56: Update wird geladen …
+- Z. 89: Lösung auf dem Beamer zeigen
+- Z. 89: Lösung zeigen
+- Z. 90: Zuschaueransicht verbunden – die Knöpfe siehst jetzt nur du.
+- Z. 90: Zuschaueransicht verbunden – Lösungen siehst jetzt nur du.
+- Z. 103: Das Fenster wurde blockiert – bitte Pop-ups für diese Seite erlauben.
+- Z. 104: Zuschaueransicht geöffnet – Fenster auf den Beamer ziehen.
+- Z. 105: Fenster konnte nicht geöffnet werden.
 
 ## js/menues.js
 
@@ -737,53 +738,53 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 77: Das Repo wurde nicht gefunden. Hat der Schlüssel Zugriff auf
 - Z. 103: Bitte den Zugangsschlüssel einfügen.
 - Z. 116: Abmelden? Der Zugangsschlüssel wird auf diesem Gerät gelöscht.
-- Z. 154: Rohfassung
-- Z. 155: Datei fehlerhaft:
-- Z. 182: <div class="notice
-- Z. 183: Dein Zugangsschlüssel ist abgelaufen. Leg bei GitHub einen neuen an, melde dich ab und wieder an.
-- Z. 184: Dein Zugangsschlüssel läuft in
-- Z. 187: – wird geprüft und veröffentlicht …
-- Z. 188: – ist online. In der App erscheint es beim nächsten Öffnen der Spielesammlung.
-- Z. 189: – Veröffentlichung fehlgeschlagen. Online bleibt die vorherige Fassung.
-- Z. 189: <a href="
-- Z. 189: " target="_blank" rel="noopener">Details
-- Z. 192: ✕
-- Z. 208: (Status nicht abrufbar, bitte in der App prüfen)
-- Z. 286: Personen (mindestens 1, höchstens nicht kleiner als mindestens)
-- Z. 292: ein anderer Name – „
-- Z. 292: “ gibt es schon
-- Z. 297: eine gültige Verteilungstabelle
-- Z. 320: drinnen und draußen
-- Z. 322: Personen
-- Z. 324: Gruppenphasen:
-- Z. 325: Kein Material nötig.
-- Z. 333: So geht’s
-- Z. 335: Pädagogische Gedanken
-- Z. 336: Fragen zum Nachgespräch
-- Z. 337: Gefahren und Risiken
-- Z. 338: Tipp
-- Z. 360: Hier gibt es einen nicht veröffentlichten Entwurf vom
-- Z. 360: .Entwurf weiter bearbeitenVerwerfen
-- Z. 371: Deine Änderungen sind noch nicht veröffentlicht. Der Entwurf bleibt auf diesem Gerät gespeichert.
-- Z. 389: Bitte noch ergänzen:
-- Z. 392: Keine Änderungen zum Speichern.
-- Z. 392: Keine Änderungen zum Veröffentlichen.
-- Z. 396: Rohfassung überarbeitet:
-- Z. 398: Spiel überarbeitet:
-- Z. 400: Wird gespeichert …
-- Z. 400: Wird veröffentlicht …
-- Z. 406: Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.
-- Z. 410: Nicht veröffentlicht
-- Z. 422: “ wurde inzwischen auf einem anderen Gerät gelöscht. Trotzdem wieder veröffentlichen?
-- Z. 426: “ wurde inzwischen auf einem anderen Gerät geändert. Wenn du jetzt veröffentlichst, wird diese Änderung überschrieben.
-- Z. 426: Trotzdem überschreiben
-- Z. 434: Ein Spiel mit diesem Namen gibt es inzwischen schon. Lade die Liste neu und wähle einen anderen Namen.
-- Z. 442: “ wirklich aus der Spielesammlung entfernen?\n\nIn der GitHub-Historie bleibt jede Fassung erhalten.
-- Z. 445: Spiel gelöscht:
-- Z. 447: schon gelöscht
-- Z. 448: “ wurde inzwischen auf einem anderen Gerät geändert. Trotzdem löschen?
-- Z. 452: “ gelöscht
-- Z. 453: Gelöscht. Die Spielesammlung wird jetzt aktualisiert.
-- Z. 456: Das Spiel war schon gelöscht.
-- Z. 457: Nicht gelöscht:
+- Z. 159: Rohfassung
+- Z. 160: Datei fehlerhaft:
+- Z. 187: <div class="notice
+- Z. 188: Dein Zugangsschlüssel ist abgelaufen. Leg bei GitHub einen neuen an, melde dich ab und wieder an.
+- Z. 189: Dein Zugangsschlüssel läuft in
+- Z. 192: – wird geprüft und veröffentlicht …
+- Z. 193: – ist online. In der App erscheint es beim nächsten Öffnen der Spielesammlung.
+- Z. 194: – Veröffentlichung fehlgeschlagen. Online bleibt die vorherige Fassung.
+- Z. 194: <a href="
+- Z. 194: " target="_blank" rel="noopener">Details
+- Z. 197: ✕
+- Z. 213: (Status nicht abrufbar, bitte in der App prüfen)
+- Z. 291: Personen (mindestens 1, höchstens nicht kleiner als mindestens)
+- Z. 297: ein anderer Name – „
+- Z. 297: “ gibt es schon
+- Z. 302: eine gültige Verteilungstabelle
+- Z. 325: drinnen und draußen
+- Z. 327: Personen
+- Z. 329: Gruppenphasen:
+- Z. 330: Kein Material nötig.
+- Z. 338: So geht’s
+- Z. 340: Pädagogische Gedanken
+- Z. 341: Fragen zum Nachgespräch
+- Z. 342: Gefahren und Risiken
+- Z. 343: Tipp
+- Z. 365: Hier gibt es einen nicht veröffentlichten Entwurf vom
+- Z. 365: .Entwurf weiter bearbeitenVerwerfen
+- Z. 376: Deine Änderungen sind noch nicht veröffentlicht. Der Entwurf bleibt auf diesem Gerät gespeichert.
+- Z. 394: Bitte noch ergänzen:
+- Z. 397: Keine Änderungen zum Speichern.
+- Z. 397: Keine Änderungen zum Veröffentlichen.
+- Z. 401: Rohfassung überarbeitet:
+- Z. 403: Spiel überarbeitet:
+- Z. 405: Wird gespeichert …
+- Z. 405: Wird veröffentlicht …
+- Z. 411: Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.
+- Z. 415: Nicht veröffentlicht
+- Z. 427: “ wurde inzwischen auf einem anderen Gerät gelöscht. Trotzdem wieder veröffentlichen?
+- Z. 431: “ wurde inzwischen auf einem anderen Gerät geändert. Wenn du jetzt veröffentlichst, wird diese Änderung überschrieben.
+- Z. 431: Trotzdem überschreiben
+- Z. 439: Ein Spiel mit diesem Namen gibt es inzwischen schon. Lade die Liste neu und wähle einen anderen Namen.
+- Z. 447: “ wirklich aus der Spielesammlung entfernen?\n\nIn der GitHub-Historie bleibt jede Fassung erhalten.
+- Z. 450: Spiel gelöscht:
+- Z. 452: schon gelöscht
+- Z. 453: “ wurde inzwischen auf einem anderen Gerät geändert. Trotzdem löschen?
+- Z. 457: “ gelöscht
+- Z. 458: Gelöscht. Die Spielesammlung wird jetzt aktualisiert.
+- Z. 461: Das Spiel war schon gelöscht.
+- Z. 462: Nicht gelöscht:
 

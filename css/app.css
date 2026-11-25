@@ -619,6 +619,7 @@ body.viewer .end-actions{display:none}
 
 /* ---------- Spielesammlung ---------- */
 .coll{width:min(860px,100%);margin-top:14px}
+.coll-note{margin:0 auto;max-width:min(860px,92vw);text-align:center;font-size:.85rem;opacity:.65;color:#d8d2c4;line-height:1.4}
 .coll-search{position:relative;margin-bottom:16px;background:var(--grain-soft),var(--paper);box-shadow:0 6px 16px #0006;border-radius:2px;transform:rotate(.2deg)}
 .coll-search input{width:100%;border:none;background:transparent;font-family:var(--sans);font-size:1.08rem;color:var(--ink);padding:16px 48px 16px 50px;border-radius:2px}
 .coll-search input::-webkit-search-cancel-button{display:none}
