@@ -1,11 +1,12 @@
 MANNA-SPIEL v1
-Name: EP: Auf Händen getragen
+Name: Auf Händen getragen
 Kurzbeschreibung: Eine Person lwird von der Gruppe hochgehoben und getragen.
 Alter: Jugendliche (13–17), Erwachsene (18+)
 Personen: 9 bis 17
 Ort: drinnen, draußen
 Dauer: 10-15
 Gruppenphasen: Vertrautheitsphase, Differenzierungsphase, Ablösungsphase
+Erlebnispädagogik: ja
 
 Material:
 - keins
