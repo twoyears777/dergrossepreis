@@ -32,9 +32,10 @@ const FILTER_DEFS=[
   {key:'phase',label:'Gruppenphase',opts:()=>MannaSpiel.PHASEN.map(x=>({id:x.id,label:x.label.replace(/sphase$|phase$/,'')}))},
   {key:'ort',label:'Ort',opts:()=>[{id:'drinnen',label:'Drinnen'},{id:'draussen',label:'Draußen'}]},
   {key:'material',label:'Material',opts:()=>[{id:'ohne',label:'Ohne Material'},{id:'mit',label:'Mit Material'}]},
+  {key:'erlebnis',label:'Erlebnispädagogik',opts:()=>[{id:'nur',label:'Nur Erlebnispädagogik'}]},
   {key:'fav',label:'Favoriten',opts:()=>[{id:'nur',label:'Nur Favoriten'}]}
 ];
-let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[],phase:[],fav:[]};
+let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[],phase:[],erlebnis:[],fav:[]};
   if(f&&typeof f==='object')Object.keys(e).forEach(k=>{if(Array.isArray(f[k]))e[k]=f[k];});return e;})();
 function saveFilter(){lsSet(FILTER_KEY,JSON.stringify(filter));}
 function gameMatches(g,f){
@@ -43,6 +44,7 @@ function gameMatches(g,f){
   if(f.ort.length&&!f.ort.some(o=>g.ort.includes(o)))return false;
   if(f.material.length){const has=g.material.length>0;if(!f.material.some(m=>(m==='mit')===has))return false;}
   if(f.phase&&f.phase.length&&!f.phase.some(p=>(g.phasen||[]).includes(p)))return false;
+  if(f.erlebnis&&f.erlebnis.length&&!g.erlebnis)return false;
   if(f.fav&&f.fav.length&&!isFav(g.id))return false;
   return true;
 }
@@ -69,6 +71,7 @@ const SUCH_FELDER=[
   {key:'risiken',label:'Gefahren und Risiken',w:8,get:g=>g.risiken||[]},
   {key:'hinweis',label:'Tipp',w:8,get:g=>g.hinweis?[g.hinweis]:[]},
   {key:'eckdaten',label:'Eckdaten',w:15,get:g=>[g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).join(' '),ortText(g),g.dauer||'']},
+  {key:'erlebnis',label:'Erlebnispädagogik',w:15,get:g=>g.erlebnis?['Erlebnispädagogik']:[]},
   {key:'phasen',label:'Gruppenphasen',w:15,get:g=>[(g.phasen||[]).map(id=>(MannaSpiel.PHASEN.find(x=>x.id===id)||{}).label||'').filter(Boolean).join(', ')]}
 ];
 /* Abstand zweier Wörter (Tippfehler: vertauschte, fehlende, falsche oder doppelte Buchstaben), bricht ab, sobald er zu groß wird */
@@ -120,7 +123,7 @@ function sucheIn(g,query,unscharf){
     }
     if(!best)return null;
     score+=best;felder.add(bestF.key);
-    if(!['name','kurz','eckdaten'].includes(bestF.key)&&!fund)fund={label:bestF.label,orig:bestZ.orig};
+    if(!['name','kurz','eckdaten','erlebnis'].includes(bestF.key)&&!fund)fund={label:bestF.label,orig:bestZ.orig};
   }
   if(normTxt(g.name).replace(/ /g,'').startsWith(ganz))score+=60;
   return{score,felder:[...felder],fund};
@@ -200,7 +203,7 @@ function renderColl(){
     const r=sucht?treffer.get(g.id):null,mk=t=>sucht?markiere(t,collQuery,unscharf):esc(t);
     b.innerHTML=`<span class="gname">${isFav(g.id)?'<span class="gfav" aria-label="Favorit">★</span> ':''}${mk(g.name)}</span><span class="gshort">${mk(g.kurz)}</span>
       ${r&&r.fund?`<span class="gfund"><b>Gefunden in ${esc(r.fund.label)}:</b> ${ausschnitt(r.fund.orig,collQuery,unscharf)}</span>`:''}
-      <span class="gtags"><span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
+      <span class="gtags">${g.erlebnis?'<span class="gtag-ep">Erlebnispädagogik</span>':''}<span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
     b.onclick=()=>openGame(g.id);
     li.appendChild(b);list.appendChild(li);
   });
@@ -247,7 +250,7 @@ function openGame(id){
       <li><b>Ort</b>${esc(ortText(g))}</li>
       <li><b>Dauer</b>${esc(g.dauer||'keine Angabe')}</li>
     </ul>
-    ${g.phasen&&g.phasen.length?`<div class="game-phasen"><span class="gp-label">${TXT_PHASEN}</span>${g.phasen.length>=MannaSpiel.PHASEN.length?'<button class="phase-chip" data-p="">Alle Gruppenphasen</button>':MannaSpiel.PHASEN.filter(x=>g.phasen.includes(x.id)).map(x=>`<button class="phase-chip" data-p="${x.id}">${esc(x.label)}</button>`).join('')}</div>`:''}
+    ${(g.phasen&&g.phasen.length)||g.erlebnis?`<div class="game-phasen">${g.phasen&&g.phasen.length?`<span class="gp-label">${TXT_PHASEN}</span>${g.phasen.length>=MannaSpiel.PHASEN.length?'<button class="phase-chip" data-p="">Alle Gruppenphasen</button>':MannaSpiel.PHASEN.filter(x=>g.phasen.includes(x.id)).map(x=>`<button class="phase-chip" data-p="${x.id}">${esc(x.label)}</button>`).join('')}`:''}${g.erlebnis?'<button class="phase-chip ep-chip" id="btnEp">Erlebnispädagogik</button>':''}</div>`:''}
     <div class="game-notes">
       ${sec('Material',g.material.length?MannaSpiel.listeHtml(g,'material',esc):'<p>Kein Material nötig.</p>')}
       ${g.rollen?sec('Rollen',rolesHtml(g.rollen)):''}
@@ -261,7 +264,8 @@ function openGame(id){
   const fb=$('#btnFav');
   const favLabel=()=>{const on=isFav(g.id);fb.textContent='Favorit';fb.classList.toggle('on',on);fb.setAttribute('aria-pressed',on);};
   favLabel();fb.onclick=()=>{toggleFav(g.id);favLabel();};
-  $('#gameSheet').querySelectorAll('.phase-chip').forEach(b=>b.onclick=()=>openPhasen(b.dataset.p||null,'game'));
+  $('#gameSheet').querySelectorAll('.phase-chip:not(.ep-chip)').forEach(b=>b.onclick=()=>openPhasen(b.dataset.p||null,'game'));
+  const ep=$('#btnEp');if(ep)ep.onclick=()=>openArticle('erlebnispaedagogik',null,'game');
   ransom($('#gameTitle'),g.name);
   showScreen('game');
 }

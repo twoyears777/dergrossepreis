@@ -34,5 +34,10 @@ const ARTIKEL=[
       {titel:'Wie reagiere ich im Notfall?',text:['Ruhe bewahren und sich einen Überblick verschaffen. Die Unfallstelle absichern, sich selbst nicht in Gefahr bringen.','Eine Person kümmert sich um die verletzte Person, eine andere um den Rest der Gruppe. Die Gruppe wird beschäftigt und von der Unfallstelle weggebracht.']},
       {titel:'Wen kontaktiere ich?',text:['- Notruf 112 bei allem, was ernst sein könnte. Wer anruft, beantwortet die Fragen der Leitstelle und legt nicht als Erstes auf.','- Ärztlicher Bereitschaftsdienst 116 117, wenn es nicht lebensbedrohlich ist, aber ein Arzt drauf schauen sollte.','- Die Eltern bzw. Erziehungsberechtigten.','- Die verantwortliche Person beim Träger, zum Beispiel Jugendreferent oder Gemeindeleitung.','Danach alles kurz aufschreiben: Was ist wann passiert, und was wurde gemacht? Das hilft, falls später Fragen kommen, zum Beispiel von der Versicherung.']}
      ]}
-  ]}
+  ]},
+  /* PLATZHALTER: Text ist ein Vorschlag von Claude und wird durch Lukas' Fassung ersetzt.
+     Spiele mit „Erlebnispädagogik: ja“ verlinken über ihr Schild auf diesen Artikel. */
+  {id:'erlebnispaedagogik',titel:'Erlebnispädagogik',kachelTitel:'Erlebnispädagogik',kachel:'Lernen durch gemeinsames Erleben',
+   kiHinweis:'Dieser Artikel ist aktuell noch mit KI generiert.',
+   einleitung:'Hier entsteht bald ein Artikel über Erlebnispädagogik. Bis dahin findest du in der Spielesammlung mit dem Filter „Erlebnispädagogik“ alle Spiele, die dazu passen.'}
 ];

@@ -238,14 +238,14 @@
   function formValues() {
     return {
       name: $('#fName').value, kurz: $('#fKurz').value, alter: chipVals('fAlter'), min: $('#fMin').value, max: $('#fMax').value,
-      ort: chipVals('fOrt'), phasen: chipVals('fPhasen'), dauer: $('#fDauer').value, ablauf: $('#fAblauf').value, material: $('#fMaterial').value,
+      ort: chipVals('fOrt'), phasen: chipVals('fPhasen'), erlebnis: chipVals('fErlebnis').length > 0, dauer: $('#fDauer').value, ablauf: $('#fAblauf').value, material: $('#fMaterial').value,
       varianten: $('#fVarianten').value, paedagogik: $('#fPaed').value, nachgespraech: $('#fNach').value, rollen: $('#fRollen').value, tabelle: $('#fTabelle').value,
       rollenHinweis: $('#fRollenHinweis').value, risiken: $('#fRisiken').value, tipp: $('#fTipp').value
     };
   }
   function setForm(v) {
     $('#fName').value = v.name || ''; $('#fKurz').value = v.kurz || ''; setChips('fAlter', v.alter || []);
-    $('#fMin').value = v.min || ''; $('#fMax').value = v.max || ''; setChips('fOrt', v.ort || []); setChips('fPhasen', v.phasen || []); $('#fDauer').value = v.dauer || '';
+    $('#fMin').value = v.min || ''; $('#fMax').value = v.max || ''; setChips('fOrt', v.ort || []); setChips('fPhasen', v.phasen || []); setChips('fErlebnis', v.erlebnis ? ['ja'] : []); $('#fDauer').value = v.dauer || '';
     $('#fAblauf').value = v.ablauf || ''; $('#fMaterial').value = v.material || ''; $('#fVarianten').value = v.varianten || ''; $('#fPaed').value = v.paedagogik || ''; $('#fNach').value = v.nachgespraech || '';
     $('#fRollen').value = v.rollen || ''; $('#fTabelle').value = v.tabelle || ''; $('#fRollenHinweis').value = v.rollenHinweis || '';
     $('#fRisiken').value = v.risiken || ''; $('#fTipp').value = v.tipp || '';
@@ -254,7 +254,7 @@
     const r = g.rollen || {};
     return {
       name: g.name, kurz: g.kurz, alter: g.alter.slice(), min: String(g.spieler.min), max: g.spieler.max >= F.OHNE_MAX ? '' : String(g.spieler.max),
-      ort: g.ort.slice(), phasen: (g.phasen || []).slice(), dauer: g.dauer || '', ablauf: F.ablaufZeilen(g).join('\n'), material: F.zeilenVon(g, 'material').join('\n'),
+      ort: g.ort.slice(), phasen: (g.phasen || []).slice(), erlebnis: !!g.erlebnis, dauer: g.dauer || '', ablauf: F.ablaufZeilen(g).join('\n'), material: F.zeilenVon(g, 'material').join('\n'),
       varianten: F.zeilenVon(g, 'varianten').join('\n'), paedagogik: F.zeilenVon(g, 'paedagogik').join('\n'), nachgespraech: F.zeilenVon(g, 'nachgespraech').join('\n'), rollen: (r.liste || []).map(x => x.name + (x.text ? ': ' + x.text : '')).join('\n'),
       tabelle: r.tabelle ? [r.tabelle.kopf].concat(r.tabelle.zeilen).map(z => z.join(' | ')).join('\n') : '',
       rollenHinweis: r.hinweis || '', risiken: F.zeilenVon(g, 'risiken').join('\n'), tipp: g.hinweis || ''
@@ -280,6 +280,7 @@
     const pg = items(v.paedagogik || ''); if (pg.length) { g.paedagogik = pg; g.paedagogikZeilen = frei(v.paedagogik); }
     const ng = items(v.nachgespraech || ''); if (ng.length) { g.nachgespraech = ng; g.nachgespraechZeilen = frei(v.nachgespraech); }
     const tipp = v.tipp.replace(/\s+/g, ' ').trim(); if (tipp) g.hinweis = tipp;
+    if (v.erlebnis) g.erlebnis = true;
     return g;
   }
   /* Prüft wie der Bau-Schritt auf GitHub: was hier durchgeht, wird auch veröffentlicht. */
@@ -326,7 +327,8 @@
     let h = '<h2>' + (g.name ? esc(g.name) : ph('Name')) + '</h2><p class="lead">' + (g.kurz ? esc(g.kurz) : ph('Kurzbeschreibung')) + '</p>' +
       '<ul class="facts"><li><b>Personen</b>' + (pers || ph('fehlt')) + '</li><li><b>Alter</b>' + (age ? esc(age) : ph('fehlt')) + '</li>' +
       '<li><b>Ort</b>' + (ort || ph('fehlt')) + '</li><li><b>Dauer</b>' + esc(g.dauer || 'keine Angabe') + '</li></ul>' +
-      (g.phasen.length ? '<p class="phasen"><b>Gruppenphasen:</b> ' + F.PHASEN.filter(x => g.phasen.includes(x.id)).map(x => esc(x.label)).join(', ') + '</p>' : '');
+      (g.phasen.length ? '<p class="phasen"><b>Gruppenphasen:</b> ' + F.PHASEN.filter(x => g.phasen.includes(x.id)).map(x => esc(x.label)).join(', ') + '</p>' : '') +
+      (g.erlebnis ? '<p class="phasen"><b>Erlebnispädagogik</b></p>' : '');
     h += '<h3>Material</h3>' + (g.material.length ? F.listeHtml(g, 'material', esc) : '<p>Kein Material nötig.</p>');
     if (g.rollen) {
       h += '<h3>Rollen</h3>';
@@ -468,6 +470,7 @@
   buildChips('fAlter', F.ALTER.map(a => ({ id: a.id, label: a.label })));
   buildChips('fOrt', [{ id: 'drinnen', label: 'Drinnen' }, { id: 'draussen', label: 'Draußen' }]);
   buildChips('fPhasen', F.PHASEN.map(x => ({ id: x.id, label: x.label })));
+  buildChips('fErlebnis', [{ id: 'ja', label: 'Erlebnispädagogisches Spiel' }]);
   $('#form').addEventListener('input', changed);
   $('#form').addEventListener('submit', e => e.preventDefault());
   $('#btnLogin').onclick = login;

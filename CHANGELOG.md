@@ -1,5 +1,10 @@
 # Changelog – Manna
 
+## 1.26.0 – 25.11.2026
+- Neu: Spiele mit dem Label „Erlebnispädagogik“, mit eigenem Filter in der Spielesammlung
+- Neue Kachel „Erlebnispädagogik“ bei „Pädagogischer Kram“
+- Editor: Spiele lassen sich als „Erlebnispädagogik“ markieren (Zeile „Erlebnispädagogik: ja“ im Spieleformat)
+
 ## 1.25.1 – 25.11.2026
 - Intern: Editor kann Spiele als Rohfassung speichern (nur im Editor sichtbar, nicht in der App). Kein Eintrag im App-Changelog.
 

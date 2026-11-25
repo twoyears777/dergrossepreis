@@ -128,6 +128,9 @@ def format_checks(m):
         frei:(()=>{const q=F.serialize(F.parse(t.replace('Material:\n- keins','Material:\nEin Ball')).spiel);return q.slice(q.indexOf('Material:'),q.indexOf('Ablauf:')-1);})(),
         ph:F.parse(t.replace('Dauer: -','Dauer: -\nGruppenphasen: Ablösungsphase, Rollenfindungsphase')).spiel.phasen,
         phErr:F.parse(t.replace('Dauer: -','Dauer: -\nGruppenphasen: Chaosphase')).fehler,
+        ep:(()=>{const q=F.parse(t.replace('Dauer: -','Dauer: -\nErlebnispädagogik: ja'));return {f:q.fehler,ja:q.spiel.erlebnis===true,txt:F.serialize(q.spiel)};})(),
+        epNein:'erlebnis' in p.spiel||'erlebnis' in F.parse(t.replace('Dauer: -','Dauer: -\nErlebnispädagogik: nein')).spiel,
+        epErr:F.parse(t.replace('Dauer: -','Dauer: -\nErlebnispädagogik: vielleicht')).fehler,
         freiRisk:F.serialize(F.parse(t.replace('- Nicht rennen.','Nicht rennen.')).spiel).includes('Gefahren und Risiken:\nNicht rennen.\n')}})()""")
     g = res['g']
     check('Format: lesen ohne Fehler', res['fehler'] == [], res['fehler'])
@@ -141,6 +144,9 @@ def format_checks(m):
     check('Format: Personen „8 bis 15“', res['pers'] == {'min': 8, 'max': 15})
     check('Format: Gruppenphasen lesen', res['ph'] == ['rollen', 'abloesung'], res['ph'])
     check('Format: unbekannte Gruppenphase meldet Fehler', any('Gruppenphasen' in f for f in res['phErr']), res['phErr'])
+    check('Format: Erlebnispädagogik lesen und schreiben', res['ep']['f'] == [] and res['ep']['ja'] and 'Dauer: -\nErlebnispädagogik: ja\n' in res['ep']['txt'], res['ep'])
+    check('Format: ohne Angabe oder „nein“ kein Erlebnispädagogik', not res['epNein'])
+    check('Format: unklare Angabe bei Erlebnispädagogik meldet Fehler', any('Erlebnispädagogik' in f for f in res['epErr']), res['epErr'])
     check('Format: Rollen-Tabelle', res['palermo'] == {'liste': [], 'tabelle': {'kopf': ['A', 'B'], 'zeilen': [['1', '2']]}}, res['palermo'])
     check('Format: Dateiname aus Namen', res['slug'] == 'aechz-uebung-gross', res['slug'])
     check('Format: Pflichtangaben werden geprüft', res['bad'] >= 5)
@@ -164,7 +170,10 @@ def browser_checks(p):
     m.click('#btnShowsBack'); m.wait_for_timeout(150)
     check('Gameshows: zurück zur Startseite', m.locator('#home.show').count() == 1)
     m.click('#gcPaed'); m.wait_for_timeout(200)
-    check('Pädagogischer Kram: Seite mit Artikel Gruppenphasen', m.locator('#paedScreen.show').count() == 1 and m.locator('#paedScreen .gcard .wbar').all_inner_texts() == ['Gruppenphasen', 'Vier-Ohren-Modell – die vier Ebenen der Kommunikation', 'Sicherheit'])
+    check('Pädagogischer Kram: Seite mit Artikel Gruppenphasen', m.locator('#paedScreen.show').count() == 1 and m.locator('#paedScreen .gcard .wbar').all_inner_texts() == ['Gruppenphasen', 'Vier-Ohren-Modell – die vier Ebenen der Kommunikation', 'Sicherheit', 'Erlebnispädagogik'], m.locator('#paedScreen .gcard .wbar').all_inner_texts())
+    m.click('#artTiles [data-art="erlebnispaedagogik"]'); m.wait_for_timeout(200)
+    check('Artikel Erlebnispädagogik: Platzhalter mit KI-Hinweis', m.locator('#artScreen.show').count() == 1 and m.locator('#artBody .ki-hinweis').count() == 1 and 'KI' in m.inner_text('#artBody .ki-hinweis'))
+    m.click('#btnArtBack'); m.wait_for_timeout(150)
     m.click('#artTiles [data-art="vier-ohren"]'); m.wait_for_timeout(200)
     check('Artikel Vier-Ohren-Modell: vier Ebenen', m.locator('#artScreen.show').count() == 1 and m.locator('#artScreen .note h3').all_inner_texts() == ['Sachinhalt', 'Selbstoffenbarung', 'Beziehung', 'Appell'], m.locator('#artScreen .note h3').all_inner_texts())
     m.click('#artScreen .back-top'); m.wait_for_timeout(150)
@@ -210,7 +219,12 @@ def browser_checks(p):
     m.click('#btnGmBack'); m.click('#btnShowsBack'); m.click('#gcColl'); m.wait_for_timeout(200)
     check('Spielesammlung öffnet', m.locator('#collScreen.show').count() == 1)
     check('kein Knopf „Spiel erstellen“', m.locator('#btnGameNew').count() == 0 and m.locator('#geScreen').count() == 0)
-    check('Filtergruppen', m.locator('.flabel').all_inner_texts() == ['Alter', 'Personen', 'Gruppenphase', 'Ort', 'Material', 'Favoriten'], m.locator('.flabel').all_inner_texts())
+    check('Filtergruppen', m.locator('.flabel').all_inner_texts() == ['Alter', 'Personen', 'Gruppenphase', 'Ort', 'Material', 'Erlebnispädagogik', 'Favoriten'], m.locator('.flabel').all_inner_texts())
+    m.locator('.f-erlebnis .fchip').click(); m.wait_for_timeout(80)
+    check('Filter Erlebnispädagogik: nur passende Spiele', m.locator('.game-row .gname').all_inner_texts() == ['Nachts in Palermo'], m.locator('.game-row .gname').all_inner_texts())
+    check('Spielübersicht: Label Erlebnispädagogik', m.locator('.game-row .gtag-ep').count() == 1 and m.inner_text('.game-row .gtag-ep') == 'Erlebnispädagogik')
+    m.click('#btnFilterReset'); m.wait_for_timeout(80)
+    check('Label Erlebnispädagogik nur bei passenden Spielen', m.locator('.game-row .gtag-ep').count() == 1)
     check('Gruppenphasen-Filter mit kurzen Namen', m.locator('.f-phase .fchip').all_inner_texts() == ['Anfang', 'Rollenfindung', 'Vertrautheit', 'Differenzierung', 'Ablösung'], m.locator('.f-phase .fchip').all_inner_texts())
     m.locator('.f-phase .fchip', has_text='Rollenfindung').click(); m.wait_for_timeout(80)
     check('Filter Rollenfindung: nur Spiele mit dieser Phase', m.locator('.game-row .gname').all_inner_texts() == ['Simon Says'], m.locator('.game-row .gname').all_inner_texts())
@@ -219,6 +233,8 @@ def browser_checks(p):
     m.click('#btnFilterReset'); m.wait_for_timeout(80)
     box = m.evaluate("(()=>{const o=document.querySelector('.f-ort').getBoundingClientRect(),t=document.querySelector('.f-material').getBoundingClientRect();return [Math.round(o.top),Math.round(t.top)]})()")
     check('PC: Ort und Material teilen sich eine Zeile', abs(box[0] - box[1]) <= 8, box)
+    box2 = m.evaluate("(()=>{const o=document.querySelector('.f-erlebnis').getBoundingClientRect(),t=document.querySelector('.f-fav').getBoundingClientRect();return [Math.round(o.top),Math.round(t.top)]})()")
+    check('PC: Erlebnispädagogik und Favoriten teilen sich eine Zeile', abs(box2[0] - box2[1]) <= 8, box2)
     check('Personen-Filter 3–9, 10–19, 20–39, 40+', m.locator('.fgroup').nth(1).locator('.fchip').all_inner_texts() == ['3–9', '10–19', '20–39', '40 und mehr'])
     rows = m.locator('.game-row .gname').all_inner_texts()
     check('Spiele gelistet', rows == ['Nachts in Palermo', 'Simon Says', 'Zeitungsschlagen'], rows)
@@ -254,6 +270,12 @@ def browser_checks(p):
     m.click('#btnGameBack'); m.locator('.game-row', has_text='Zeitungsschlagen').click(); m.wait_for_timeout(300)
     m.click('#btnGameBack'); m.locator('.game-row', has_text='Palermo').click(); m.wait_for_timeout(300)
     check('Palermo: Rollen mit Verteilungstabelle', m.locator('.role-table tbody tr').count() == 4 and 'Kommissar' in m.inner_text('#gameSheet'))
+    check('Detailseite: Schild Erlebnispädagogik', m.locator('#gameSheet .ep-chip').all_inner_texts() == ['Erlebnispädagogik'], m.locator('#gameSheet .phase-chip').all_inner_texts())
+    m.click('#gameSheet .ep-chip'); m.wait_for_timeout(300)
+    check('Schild Erlebnispädagogik führt zum Artikel', m.locator('#artScreen.show').count() == 1 and m.locator('#artBody .ki-hinweis').count() == 1 and m.inner_text('#btnArtBack') == '← Zurück zum Spiel')
+    m.click('#btnArtBack'); m.wait_for_timeout(200)
+    check('Vom Artikel zurück zu Palermo', m.locator('#gameScreen.show').count() == 1 and 'Kommissar' in m.inner_text('#gameSheet'))
+    check('Ohne Erlebnispädagogik kein Schild', m.evaluate("(()=>{openGame('simon-says');return document.querySelectorAll('#gameSheet .ep-chip').length})()") == 0)
     m.click('#btnGameBack'); m.wait_for_timeout(200)
 
     print('Suche')
@@ -642,6 +664,7 @@ def editor_checks(p):
 
     e.locator('.game', has_text='Palermo').click(); e.wait_for_timeout(200)
     check('Editor: Palermo vollständig im Formular', 'Kommissar' in e.input_value('#fRollen') and '8–10 | 2 | 1 | –' in e.input_value('#fTabelle') and e.input_value('#fMax') == '25')
+    check('Editor: Erlebnispädagogik ist ausgewählt', e.locator('#fErlebnis .chip.on').count() == 1 and 'Erlebnispädagogik' in e.inner_text('#prevCard'))
     e.click('#btnPublish'); e.wait_for_timeout(300)
     check('Editor: unverändert ergibt dieselbe Datei', 'Keine Änderungen' in toast() and gh.log == [], toast())
     e.click('#btnBack'); e.wait_for_timeout(200)
@@ -653,6 +676,7 @@ def editor_checks(p):
     e.fill('#fAblauf', '- Eine Person steht an der Wand.\n2. Die anderen schleichen sich an.\n\nwer sich bewegt muss zurück')
     e.locator('#fOrt .chip', has_text='Draußen').click()
     e.locator('#fPhasen .chip', has_text='Anfangsphase').click()
+    e.locator('#fErlebnis .chip').click()
     e.fill('#fRisiken', 'Nicht rennen, wenn der Boden rutschig ist.')
     check('Editor: Vorschau', 'Die anderen schleichen sich an.' in e.inner_text('#prevCard'))
     check('Editor: Felder „Pädagogische Gedanken“ und „Fragen zum Nachgespräch“', e.locator('#fPaed').count() == 1 and e.locator('#fNach').count() == 1)
@@ -663,7 +687,7 @@ def editor_checks(p):
     txt = gh.files.get('spiele/ochs-am-berg.txt', '')
     check('Editor: neues Spiel als Textdatei veröffentlicht', gh.log == ['Neues Spiel: Ochs am Berg'] and txt == (
         'MANNA-SPIEL v1\nName: Ochs am Berg\nKurzbeschreibung: Anschleichen,solange niemand hinschaut .\nAlter: Jugendliche (13–17)\n'
-        'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\nGruppenphasen: Anfangsphase\n\nMaterial:\n- keins\n\nAblauf:\n- Eine Person steht an der Wand.\n'
+        'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\nGruppenphasen: Anfangsphase\nErlebnispädagogik: ja\n\nMaterial:\n- keins\n\nAblauf:\n- Eine Person steht an der Wand.\n'
         '2. Die anderen schleichen sich an.\nwer sich bewegt muss zurück\n\nGefahren und Risiken:\nNicht rennen, wenn der Boden rutschig ist.\n'), txt)
     check('Editor: keine automatischen Aufzählungszeichen bei Gefahren', '\n- Nicht rennen' not in txt)
     check('Editor: Wortlaut unverändert (keine Korrekturen)', 'wer sich bewegt muss zurück' in txt and 'Anschleichen,solange' in txt)

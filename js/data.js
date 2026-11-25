@@ -3,8 +3,12 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.25.1';
+const APP_VERSION='1.26.0';
 const CHANGELOG=[
+  {v:'1.26.0',d:'25.11.2026',items:[
+    'Neu: Spiele mit dem Label „Erlebnispädagogik“, mit eigenem Filter in der Spielesammlung',
+    'Neue Kachel „Erlebnispädagogik“ bei „Pädagogischer Kram“'
+  ]},
   {v:'1.25.0',d:'24.11.2026',items:[
     'Neu: Suche in der Spielesammlung',
     'Neuer Filter nach Gruppenphase',

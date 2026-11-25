@@ -23,9 +23,17 @@
     { id: 'abloesung', label: 'Ablösungsphase', wort: 'abl' }
   ];
   const OHNE_MAX = 9999;
+  // Erlebnispädagogik (optional): „Erlebnispädagogik: ja“. Fehlt die Zeile, ist das Spiel nicht erlebnispädagogisch.
+  function parseJaNein(feld, v, err) {
+    const s = clean(v).toLowerCase();
+    if (/^(ja|j|x)$/.test(s)) return true;
+    if (/^(nein|n|-|–)?$/.test(s)) return false;
+    err(feld + ': „' + clean(v) + '“ nicht verstanden (ja oder nein)');
+    return false;
+  }
   // einzeilige Angaben „Schlüssel: Wert“
   const FELDER = { 'Name': 'name', 'Kurzbeschreibung': 'kurz', 'Alter': 'alter', 'Personen': 'personen',
-    'Ort': 'ort', 'Dauer': 'dauer', 'Gruppenphasen': 'phasen', 'Rollen-Hinweis': 'rollenHinweis', 'Tipp': 'hinweis' };
+    'Ort': 'ort', 'Dauer': 'dauer', 'Gruppenphasen': 'phasen', 'Erlebnispädagogik': 'erlebnis', 'Rollen-Hinweis': 'rollenHinweis', 'Tipp': 'hinweis' };
   // Listen „Überschrift:“ und darunter eine Zeile pro Eintrag
   const LISTEN = { 'Material': 'material', 'Ablauf': 'ablauf', 'Rollen': 'rollen', 'Rollen-Tabelle': 'tabelle',
     'Varianten': 'varianten', 'Pädagogische Gedanken': 'paedagogik', 'Fragen zum Nachgespräch': 'nachgespraech', 'Gefahren und Risiken': 'risiken' };
@@ -188,6 +196,7 @@
     const pg = list('paedagogik'); if (pg.length) { g.paedagogik = pg; g.paedagogikZeilen = frei('paedagogik'); }
     const ng = list('nachgespraech'); if (ng.length) { g.nachgespraech = ng; g.nachgespraechZeilen = frei('nachgespraech'); }
     if (clean(raw.hinweis)) g.hinweis = clean(raw.hinweis);
+    if ('erlebnis' in raw && parseJaNein('Erlebnispädagogik', raw.erlebnis, err)) g.erlebnis = true;
     pflicht(g).forEach(m => fehler.push('Es fehlt: ' + m));
     if (!g.spieler) g.spieler = { min: 1, max: OHNE_MAX };
     return { spiel: g, fehler };
@@ -217,6 +226,7 @@
     L.push('Ort: ' + ORTE.filter(o => (g.ort || []).includes(o.id)).map(o => o.label).join(', '));
     L.push('Dauer: ' + (one(g.dauer) || '-'));
     if (g.phasen && g.phasen.length) L.push('Gruppenphasen: ' + PHASEN.filter(x => g.phasen.includes(x.id)).map(x => x.label).join(', '));
+    if (g.erlebnis) L.push('Erlebnispädagogik: ja');
     const block = (title, a, num, leer) => {
       a = (a || []).map(one).filter(Boolean);
       if (!a.length && !leer) return;

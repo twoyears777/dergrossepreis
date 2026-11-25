@@ -644,12 +644,13 @@ body.viewer .end-actions{display:none}
 .filters{background:var(--grain-soft),var(--paper);color:var(--ink);padding:20px 22px 12px;box-shadow:0 6px 16px #0006;border-radius:2px;transform:rotate(-.3deg)}
 .fgroup{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:start;padding:8px 0;border-bottom:1px dashed #1d1d1b30}
 .fgroup:last-child{border-bottom:none}
-/* Breite Bildschirme: Ort und Material teilen sich eine Zeile, damit der Filterbereich kompakt bleibt */
+/* Breite Bildschirme: Ort und Material teilen sich eine Zeile, ebenso Erlebnispädagogik und Favoriten, damit der Filterbereich kompakt bleibt */
 @media (min-width:860px){
   .filters{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}
   .fgroup{grid-column:1/-1}
-  .fgroup.f-ort,.fgroup.f-material{grid-column:auto}
-  .fgroup.f-material{grid-template-columns:auto 1fr}
+  .fgroup.f-ort,.fgroup.f-material,.fgroup.f-erlebnis,.fgroup.f-fav{grid-column:auto}
+  .fgroup.f-material,.fgroup.f-fav{grid-template-columns:auto 1fr}
+  .fgroup.f-erlebnis{grid-template-columns:auto 1fr;border-bottom:none}
 }
 .flabel{font-family:var(--strong);font-weight:700;padding-top:9px}
 .fchips{display:flex;flex-wrap:wrap;gap:8px}
@@ -666,6 +667,7 @@ body.viewer .end-actions{display:none}
 .gshort{font-family:var(--sans);color:var(--ink2);line-height:1.45}
 .gtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .gtags span{font-family:var(--sans);font-size:.82rem;font-weight:700;background:#1d1d1b12;padding:.2em .6em;border-radius:2px}
+.gtags .gtag-ep{background:var(--marker)}
 .games-empty{color:#d8d2c4;font-family:var(--serif);font-style:italic;text-align:center;padding:30px 10px}
 .game-sheet{width:min(760px,100%);display:flex;flex-direction:column;align-items:center}
 .game-lead{color:#e6e0d3;font-family:var(--serif);font-style:italic;font-size:1.1rem;text-align:center;max-width:56ch;line-height:1.5;margin:4px 0 22px}
@@ -858,6 +860,9 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .gp-label{color:#d8d2c4;font-family:var(--strong);font-weight:700;font-size:.95rem}
 .phase-chip{background:var(--sage);color:var(--ink);font-family:var(--strong);font-weight:700;font-size:.9rem;padding:6px 12px;border-radius:2px;box-shadow:0 2px 5px #0005}
 .phase-chip:hover{background:var(--marker)}
+.phase-chip.ep-chip{background:var(--marker)}
+.phase-chip.ep-chip:hover{background:var(--sage)}
+.gp-label~.ep-chip{margin-left:10px}
 .note.paed{border-left:6px solid var(--sage)}
 /* Kacheln: gut lesbarer Text, einzelne Kacheln nicht über die ganze Breite ziehen */
 .gcard .gbody{font-size:1.08rem}
