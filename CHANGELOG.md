@@ -1,5 +1,8 @@
 # Changelog – Manna
 
+## 1.25.1 – 25.11.2026
+- Intern: Editor kann Spiele als Rohfassung speichern (nur im Editor sichtbar, nicht in der App). Kein Eintrag im App-Changelog.
+
 ## 1.25.0 – 24.11.2026
 - Neu: Suche in der Spielesammlung
 - Neuer Filter nach Gruppenphase

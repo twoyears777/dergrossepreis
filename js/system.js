@@ -18,7 +18,8 @@ function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
 (function whatsNew(){
   if(VIEW)return;
   const seen=lsGet('grosserPreis_seenVersion');
-  if(seen&&cmpVer(APP_VERSION,seen)>0)setTimeout(()=>showChangelog(true,seen),600);
+  // nur anzeigen, wenn es seit der zuletzt gesehenen Version wirklich neue Einträge gibt (kleine Updates ohne Eintrag zeigen nichts)
+  if(seen&&cmpVer(APP_VERSION,seen)>0&&CHANGELOG.some(e=>cmpVer(e.v,seen)>0))setTimeout(()=>showChangelog(true,seen),600);
   lsSet('grosserPreis_seenVersion',APP_VERSION);
 })();
 

@@ -3,7 +3,7 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.25.0';
+const APP_VERSION='1.25.1';
 const CHANGELOG=[
   {v:'1.25.0',d:'24.11.2026',items:[
     'Neu: Suche in der Spielesammlung',
