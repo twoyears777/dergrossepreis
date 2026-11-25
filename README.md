@@ -55,8 +55,7 @@ Wohin es geht und welche Ideen gesammelt sind, steht in der [ROADMAP.md](ROADMAP
 2. In `js/data.js` **`APP_VERSION`** hochzählen und oben in `CHANGELOG` einen Eintrag ergänzen.
 3. In `sw.js` **`VERSION`** auf dieselbe Nummer setzen, sonst merkt das iPad das Update nicht.
 4. `CHANGELOG.md` ergänzen.
-5. Neue Spiele seit der letzten Version: `python tools/neue-spiele.py` ausführen und, falls es welche gibt, die ausgegebene Zeile „Neue Spiele in der Spielesammlung: …“ in beide Changelogs übernehmen.
-6. Spiele bauen und Tests lokal laufen lassen: `node tools/build-spiele.js` und `python tests/run_tests.py`
-7. Push auf `main`. GitHub veröffentlicht nur, wenn alle Tests grün sind.
+5. Spiele bauen und Tests lokal laufen lassen: `node tools/build-spiele.js` und `python tests/run_tests.py`
+6. Push auf `main`. GitHub veröffentlicht nur, wenn alle Tests grün sind.
 
 Ist das iPad im WLAN, lädt es die neue Version automatisch und zeigt „Neue Version geladen“ an.

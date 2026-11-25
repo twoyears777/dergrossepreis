@@ -17,5 +17,5 @@
 - Texte, die für Nutzer sichtbar eingebaut werden, Lukas vorher schicken. Er formuliert sie in eigenen Worten, seine Fassung wird übernommen. Bei rechtlichen Texten danach prüfen, dass alle Pflichtangaben erhalten bleiben.
 - Wünsche werden gesammelt (ROADMAP.md, Todoist-Projekt „Manna Roadmap“), umgesetzt wird auf Ansage.
 - Neue Funktion = neue Version: `APP_VERSION` in `js/data.js` und `VERSION` in `sw.js` gleich hochzählen, Eintrag in `CHANGELOG` (js/data.js) und `CHANGELOG.md`.
-- Neue Spiele in der Spielesammlung ändern die Version nicht, sie kommen erst beim nächsten Funktions-Update in den Changelog.
+- Neue Spiele in der Spielesammlung ändern die Version nicht und kommen nicht in den Changelog.
 - Vor dem Einbauen: `python3 tests/run_tests.py` muss komplett grün sein.
