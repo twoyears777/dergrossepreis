@@ -14,7 +14,7 @@
   // Rohfassungen: liegen nur im Repo, nicht in der App und nicht auf der Website. Erst „Veröffentlichen“ verschiebt sie nach spiele/.
   const ROH = 'rohfassungen';
   const API = 'https://api.github.com', R = '/repos/' + OWNER + '/' + REPO;
-  const K_TOKEN = 'manna-editor-token', K_EXP = 'manna-editor-ablauf', K_DRAFT = 'manna-editor-entwurf', K_RUNS = 'manna-editor-laeufe';
+  const K_TOKEN = 'manna-editor-token', K_EXP = 'manna-editor-ablauf', K_DRAFT = 'manna-editor-entwurf', K_RUNS = 'manna-editor-laeufe', K_CACHE = 'manna-editor-dateien';
 
   const $ = s => document.querySelector(s);
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -114,7 +114,7 @@
   }
   async function logout() {
     if (!(await confirmBox('Abmelden? Der Zugangsschlüssel wird auf diesem Gerät gelöscht.', 'Abmelden'))) return;
-    token = ''; store.del(K_TOKEN); store.del(K_EXP); games = [];
+    token = ''; store.del(K_TOKEN); store.del(K_EXP); store.del(K_CACHE); games = [];
     updateTop(); show('vLogin');
   }
   function updateTop() {
@@ -127,17 +127,22 @@
     const liste = dir => gh(fileUrl(dir)).catch(e => { if (e.status === 404) return []; throw e; });
     const [list, roh] = await Promise.all([liste(DIR), liste(ROH)]);
     const files = list.concat(roh).filter(f => f.type === 'file' && /\.txt$/.test(f.name));
+    // Zwischenspeicher auf diesem Gerät: Inhalt je Datei-Fassung (sha). Geladen wird nur, was neu oder geändert ist.
+    const cache = store.json(K_CACHE, {}), keep = {};
     const out = new Array(files.length);
     let i = 0;
     async function worker() {
       while (i < files.length) {
         const n = i++, f = files[n];
-        const d = await gh(fileUrl(f.path));
-        const text = b64decode(d.content), p = F.parse(text);
-        out[n] = { id: f.name.slice(0, -4), path: f.path, roh: f.path.startsWith(ROH + '/'), sha: d.sha, text, spiel: p.spiel, fehler: p.fehler };
+        let text = typeof cache[f.sha] === 'string' ? cache[f.sha] : null, sha = f.sha;
+        if (text === null) { const d = await gh(fileUrl(f.path)); text = b64decode(d.content); sha = d.sha; }
+        keep[sha] = text;
+        const p = F.parse(text);
+        out[n] = { id: f.name.slice(0, -4), path: f.path, roh: f.path.startsWith(ROH + '/'), sha, text, spiel: p.spiel, fehler: p.fehler };
       }
     }
-    await Promise.all([0, 1, 2, 3, 4, 5].map(worker));
+    await Promise.all(Array.from({ length: 10 }, worker));
+    if (!store.set(K_CACHE, JSON.stringify(keep))) store.del(K_CACHE);
     games = out.sort((a, b) => (a.spiel.name || a.id).localeCompare(b.spiel.name || b.id, 'de'));
   }
   function renderList() {

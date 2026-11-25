@@ -564,7 +564,7 @@ class FakeGitHub:
     def __init__(self, files):
         self.files = dict(files); self.commits = {}; self.trees = {}; self.n = 0
         self.head = self.new_commit(dict(self.files), None, 'Start')
-        self.log = []
+        self.log = []; self.reads = 0
     def new_commit(self, files, parent, msg):
         self.n += 1; sha = hashlib.sha1(f'commit{self.n}'.encode()).hexdigest()
         self.commits[sha] = {'files': files, 'parent': parent, 'msg': msg}; return sha
@@ -589,6 +589,7 @@ class FakeGitHub:
         if rest.startswith('/contents/'):
             k = rest[len('/contents/'):]
             if k not in files: return js(404, {'message': 'Not Found'})
+            self.reads += 1
             return js(200, {'path': k, 'sha': self.blob(files[k]), 'content': base64.b64encode(files[k].encode()).decode()})
         if rest == '/git/ref/heads/main': return js(200, {'object': {'sha': self.head}})
         if rest.startswith('/git/commits/') and request.method == 'GET': return js(200, {'tree': {'sha': 'tree-' + rest.split('/')[-1]}})
@@ -632,6 +633,12 @@ def editor_checks(p):
     check('Editor: Spiele gelistet', names == ['Nachts in Palermo', 'Simon Says', 'Zeitungsschlagen'], names)
     e.reload(); e.wait_for_timeout(600)
     check('Editor: Schlüssel bleibt gespeichert', e.locator('#vList:not([hidden])').count() == 1)
+    check('Editor: lädt beim zweiten Öffnen nichts neu, was sich nicht geändert hat', gh.reads == 3, gh.reads)
+    alt = gh.files['spiele/simon-says.txt']
+    gh.change_elsewhere('spiele/simon-says.txt', alt.replace('Kurzbeschreibung: ', 'Kurzbeschreibung: GEÄNDERT '))
+    e.reload(); e.wait_for_timeout(600)
+    check('Editor: geänderte Datei wird neu geladen', gh.reads == 4 and 'GEÄNDERT' in e.inner_text('#gameList'), gh.reads)
+    gh.change_elsewhere('spiele/simon-says.txt', alt); e.reload(); e.wait_for_timeout(600)
 
     e.locator('.game', has_text='Palermo').click(); e.wait_for_timeout(200)
     check('Editor: Palermo vollständig im Formular', 'Kommissar' in e.input_value('#fRollen') and '8–10 | 2 | 1 | –' in e.input_value('#fTabelle') and e.input_value('#fMax') == '25')
