@@ -87,6 +87,7 @@ onMsg(m=>{
 ['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' – was ist neu?';$(id).onclick=()=>showChangelog(false);});
 if(VIEW){
   document.title='Manna – Zuschaueransicht';
+  $('#home').classList.remove('show'); // Startseite ist im HTML sichtbar, die Zuschaueransicht braucht sie nicht
   ransom($('#vsTitle'),S.title||'Der große Preis');
   $('#vSplash').classList.add('show','brand-mode');
   renderBoard();
