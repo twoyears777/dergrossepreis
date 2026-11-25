@@ -3,7 +3,7 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.27.0';
+const APP_VERSION='1.27.1';
 const CHANGELOG=[
   {v:'1.27.0',d:'25.11.2026',items:[
     'Startseite: zwei neue Kacheln „Eine starke Spielesammlung“ und „Fertige Gameshows für den Beamer“',

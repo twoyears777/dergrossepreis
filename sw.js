@@ -2,7 +2,7 @@
    Macht die App offline-fähig und lädt Updates automatisch.
    WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in js/data.js).
    Die Spiele (spiele/alle.json) brauchen kein Update: Sie werden immer zuerst frisch geladen. */
-const VERSION = '1.27.0';
+const VERSION = '1.27.1';
 const CACHE = 'grosser-preis-' + VERSION;
 const GAMES_CACHE = 'manna-spiele';
 const GAMES_FILE = './spiele/alle.json';
@@ -23,10 +23,8 @@ const FILES = [
   './js/countdown.js',
   './js/eigenes-spiel.js',
   './js/zaehler.js',
-  './img/shot-suche.jpg',
   './img/shot-filter.jpg',
   './img/shot-spiel.jpg',
-  './img/shot-brett.jpg',
   './img/manna-mark.svg',
   './manifest.webmanifest',
   './icon-192.png',

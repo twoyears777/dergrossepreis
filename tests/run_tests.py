@@ -78,7 +78,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'img/shot-suche.jpg', 'img/shot-filter.jpg', 'img/shot-spiel.jpg', 'img/shot-brett.jpg']:
+    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'img/shot-filter.jpg', 'img/shot-spiel.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
@@ -187,7 +187,7 @@ def browser_checks(p):
     m.click('#btnArtBack'); m.wait_for_timeout(150); m.click('#paedScreen .back-top'); m.wait_for_timeout(150)
     check('Zurück-Knopf oben auf Unterseiten', m.locator('#home.show').count() == 1)
     check('Marke „Manna“ auf der Startseite', m.get_attribute('#homeBrand', 'aria-label') == 'Manna' and m.evaluate("document.querySelector('#homeBrand img').naturalWidth>0") and m.title() == 'Manna')
-    check('Screenshot-Collage mit 4 Bildern', m.locator('.collage .shot img').count() == 4)
+    check('Screenshot-Collage mit 2 Bildern', m.locator('.collage .shot img').count() == 2)
     loaded = m.evaluate("Promise.all([...document.querySelectorAll('.collage img')].map(i=>{i.loading='eager';return i.decode().then(()=>i.naturalWidth>0,()=>false)}))")
     check('Screenshots laden', all(loaded), loaded)
     heads = m.locator('#home .hblock h2').all_inner_texts()
