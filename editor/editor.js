@@ -11,6 +11,8 @@
   const OWNER = GH_PAGES ? GH_PAGES[1] : 'twoyears777';
   const REPO = (GH_PAGES && location.pathname.split('/')[1] && location.pathname.split('/')[1] !== 'editor') ? location.pathname.split('/')[1] : 'manna';
   const BRANCH = 'main', DIR = 'spiele';
+  // Rohfassungen: liegen nur im Repo, nicht in der App und nicht auf der Website. Erst „Veröffentlichen“ verschiebt sie nach spiele/.
+  const ROH = 'rohfassungen';
   const API = 'https://api.github.com', R = '/repos/' + OWNER + '/' + REPO;
   const K_TOKEN = 'manna-editor-token', K_EXP = 'manna-editor-ablauf', K_DRAFT = 'manna-editor-entwurf', K_RUNS = 'manna-editor-laeufe';
 
@@ -122,8 +124,9 @@
 
   /* ---------- Liste ---------- */
   async function loadGames() {
-    const list = await gh(fileUrl(DIR)).catch(e => { if (e.status === 404) return []; throw e; });
-    const files = list.filter(f => f.type === 'file' && /\.txt$/.test(f.name));
+    const liste = dir => gh(fileUrl(dir)).catch(e => { if (e.status === 404) return []; throw e; });
+    const [list, roh] = await Promise.all([liste(DIR), liste(ROH)]);
+    const files = list.concat(roh).filter(f => f.type === 'file' && /\.txt$/.test(f.name));
     const out = new Array(files.length);
     let i = 0;
     async function worker() {
@@ -131,7 +134,7 @@
         const n = i++, f = files[n];
         const d = await gh(fileUrl(f.path));
         const text = b64decode(d.content), p = F.parse(text);
-        out[n] = { id: f.name.slice(0, -4), path: f.path, sha: d.sha, text, spiel: p.spiel, fehler: p.fehler };
+        out[n] = { id: f.name.slice(0, -4), path: f.path, roh: f.path.startsWith(ROH + '/'), sha: d.sha, text, spiel: p.spiel, fehler: p.fehler };
       }
     }
     await Promise.all([0, 1, 2, 3, 4, 5].map(worker));
@@ -139,14 +142,16 @@
   }
   function renderList() {
     const q = $('#inSearch').value.trim().toLowerCase();
-    const hits = games.filter(g => !q || (g.spiel.name + ' ' + g.spiel.kurz).toLowerCase().includes(q));
-    $('#listCount').textContent = games.length === 1 ? '1 Spiel' : games.length + ' Spiele' + (q ? ', ' + hits.length + ' gefunden' : '');
+    const art = $('#inArt').value, nRoh = games.filter(g => g.roh).length;
+    const hits = games.filter(g => (art === 'alle' || (art === 'roh') === g.roh) && (!q || (g.spiel.name + ' ' + g.spiel.kurz).toLowerCase().includes(q)));
+    $('#listCount').textContent = (games.length === 1 ? '1 Spiel' : games.length + ' Spiele') + (nRoh ? ', davon ' + nRoh + (nRoh === 1 ? ' Rohfassung' : ' Rohfassungen') : '') +
+      (q || art !== 'alle' ? ', ' + hits.length + ' angezeigt' : '');
     const ul = $('#gameList'); ul.innerHTML = '';
     if (!hits.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = q ? 'Nichts gefunden.' : 'Noch keine Spiele.'; ul.appendChild(li); }
     hits.forEach(g => {
       const li = document.createElement('li'), b = document.createElement('button');
-      b.className = 'game';
-      b.innerHTML = '<b>' + esc(g.spiel.name || g.id) + '</b><span>' + esc(g.spiel.kurz) + '</span>' +
+      b.className = 'game' + (g.roh ? ' roh' : '');
+      b.innerHTML = '<b>' + esc(g.spiel.name || g.id) + (g.roh ? ' <em class="tag">Rohfassung</em>' : '') + '</b><span>' + esc(g.spiel.kurz) + '</span>' +
         (g.fehler.length ? '<span class="bad">Datei fehlerhaft: ' + esc(g.fehler[0]) + '</span>' : '');
       b.onclick = () => openEdit(g);
       li.appendChild(b); ul.appendChild(li);
@@ -344,8 +349,10 @@
     const base = orig ? valuesFromGame(orig.spiel) : { alter: ['jugend'], ort: ['drinnen'], min: '6', max: '' };
     ED = { orig, sig: '' };
     setForm(base); ED.sig = JSON.stringify(formValues());
-    $('#editTitle').textContent = orig ? 'Spiel bearbeiten' : 'Neues Spiel';
+    $('#editTitle').textContent = orig ? (orig.roh ? 'Rohfassung bearbeiten' : 'Spiel bearbeiten') : 'Neues Spiel';
     $('#btnDelete').hidden = !orig;
+    $('#btnRoh').hidden = !!(orig && !orig.roh);
+    $('#rohInfo').hidden = !(orig && orig.roh);
     const box = $('#draftBox'), d = store.json(K_DRAFT, null);
     box.hidden = true;
     if (d && d.key === (orig ? orig.id : '') && JSON.stringify(d.v) !== ED.sig) {
@@ -375,30 +382,36 @@
   }
 
   let busy = false;
-  async function publish() {
+  async function publish(alsRoh) {
     if (busy || !ED) return;
+    alsRoh = alsRoh === true;
     const v = formValues(), res = validate(v);
     if (res.miss.length) { toast('Bitte noch ergänzen: ' + res.miss.map(m => m[1]).join(', ') + '.'); markBad(res.miss); return; }
     if (res.fehler.length) { toast('Das Spiel passt nicht ins Format: ' + res.fehler.join('; ')); return; }
-    const orig = ED.orig, path = DIR + '/' + res.id + '.txt';
-    if (orig && orig.text === res.text) { toast('Keine Änderungen zum Veröffentlichen.'); return; }
+    const orig = ED.orig, path = (alsRoh ? ROH : DIR) + '/' + res.id + '.txt';
+    if (orig && orig.text === res.text && orig.path === path) { toast(alsRoh ? 'Keine Änderungen zum Speichern.' : 'Keine Änderungen zum Veröffentlichen.'); return; }
     const changes = [{ path, content: res.text }];
     if (orig && orig.path !== path) changes.push({ path: orig.path, del: true });
-    const label = orig ? (orig.spiel.name !== res.g.name ? 'Spiel überarbeitet: ' + orig.spiel.name + ' → ' + res.g.name : 'Spiel überarbeitet: ' + res.g.name) : 'Neues Spiel: ' + res.g.name;
-    busy = true; $('#btnPublish').disabled = true; $('#btnPublish').textContent = 'Wird veröffentlicht …';
+    const umben = orig && orig.spiel.name !== res.g.name ? orig.spiel.name + ' → ' + res.g.name : res.g.name;
+    const label = alsRoh ? (orig ? 'Rohfassung überarbeitet: ' + umben : 'Neue Rohfassung: ' + res.g.name)
+      : orig && orig.roh ? 'Neues Spiel aus Rohfassung: ' + umben
+      : orig ? 'Spiel überarbeitet: ' + umben : 'Neues Spiel: ' + res.g.name;
+    const btn = alsRoh ? $('#btnRoh') : $('#btnPublish'), btnText = btn.textContent;
+    busy = true; $('#btnPublish').disabled = true; $('#btnRoh').disabled = true; btn.textContent = alsRoh ? 'Wird gespeichert …' : 'Wird veröffentlicht …';
     let force = false;
     try {
       const sha = await commitWithChecks(changes, label, orig, path, () => force, f => { force = f; });
       store.del(K_DRAFT);
-      addRun(sha, '„' + res.g.name + '“');
-      toast('Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.');
+      if (alsRoh) toast('Als Rohfassung gespeichert. In der App ist sie nicht zu sehen.');
+      else { addRun(sha, '„' + res.g.name + '“'); toast('Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.'); }
       await refreshAfter();
       ED = null; show('vList'); renderList();
     } catch (e) {
-      if (e.abgebrochen) toast('Nicht veröffentlicht. Dein Entwurf bleibt gespeichert.');
-      else toast('Nicht veröffentlicht: ' + explain(e) + ' Dein Entwurf bleibt gespeichert.');
+      const nicht = alsRoh ? 'Nicht gespeichert' : 'Nicht veröffentlicht';
+      if (e.abgebrochen) toast(nicht + '. Dein Entwurf bleibt gespeichert.');
+      else toast(nicht + ': ' + explain(e) + ' Dein Entwurf bleibt gespeichert.');
     } finally {
-      busy = false; $('#btnPublish').disabled = false; $('#btnPublish').textContent = 'Veröffentlichen';
+      busy = false; $('#btnPublish').disabled = false; $('#btnRoh').disabled = false; btn.textContent = btnText;
     }
   }
   async function commitWithChecks(changes, message, orig, path, getForce, setForce) {
@@ -415,8 +428,11 @@
         }
       }
       if (!orig || orig.path !== path) {
-        const exists = await fileSha(path, head);
-        if (exists !== null) throw new Error('Ein Spiel mit diesem Namen gibt es inzwischen schon. Lade die Liste neu und wähle einen anderen Namen.');
+        const name = path.split('/').pop();
+        for (const p of [DIR + '/' + name, ROH + '/' + name]) {
+          if (orig && orig.path === p) continue;
+          if ((await fileSha(p, head)) !== null) throw new Error('Ein Spiel mit diesem Namen gibt es inzwischen schon. Lade die Liste neu und wähle einen anderen Namen.');
+        }
       }
     });
   }
@@ -455,7 +471,9 @@
   $('#btnNew').onclick = () => openEdit(null);
   $('#inSearch').addEventListener('input', renderList);
   $('#btnBack').onclick = leaveEdit;
-  $('#btnPublish').onclick = publish;
+  $('#btnPublish').onclick = () => publish(false);
+  $('#btnRoh').onclick = () => publish(true);
+  $('#inArt').addEventListener('change', renderList);
   $('#btnDelete').onclick = remove;
   $('#tabPrev').onclick = () => setTab(false);
   $('#tabTxt').onclick = () => setTab(true);

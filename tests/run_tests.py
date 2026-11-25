@@ -104,6 +104,17 @@ def spiele_checks():
         open(os.path.join(t, 'kaputt.txt'), 'w', encoding='utf-8').write(open(os.path.join(ROOT, 'tests', 'testspiele', 'simon-says.txt'), encoding='utf-8').read())
         r = build(t, os.path.join(t, 'alle.json'))
         check('Dateiname muss zum Namen passen', r.returncode == 1 and 'simon-says.txt' in r.stderr, r.stderr)
+    rd = os.path.join(ROOT, 'rohfassungen')
+    if os.path.isdir(rd):
+        with tempfile.TemporaryDirectory() as t:
+            r = build(rd, os.path.join(t, 'alle.json'))
+            check('Rohfassungen passen ins Spieleformat', r.returncode == 0, (r.stdout + r.stderr).strip()[:2000])
+            roh = {x['name'].lower() for x in json.load(open(os.path.join(t, 'alle.json'), encoding='utf-8'))['spiele']} if r.returncode == 0 else set()
+        live = {x['name'].lower() for x in json.load(open(os.path.join(ROOT, 'spiele', 'alle.json'), encoding='utf-8'))['spiele']}
+        check('Rohfassungen nicht in der App', not (roh & live), sorted(roh & live))
+        check('Rohfassung und Spiel haben nie denselben Dateinamen', not (set(os.listdir(rd)) & set(os.listdir(os.path.join(ROOT, 'spiele')))))
+    wf = open(os.path.join(ROOT, '.github/workflows/tests.yml'), encoding='utf-8').read()
+    check('Rohfassungen kommen nicht auf die Website', "--exclude 'rohfassungen'" in wf)
 
 def format_checks(m):
     print('Textformat')
@@ -567,8 +578,10 @@ class FakeGitHub:
         rest = path[len(base):]
         ref = (q.get('ref') or ['main'])[0]
         files = self.commits[self.head if ref == 'main' else ref]['files'] if (ref == 'main' or ref in self.commits) else self.files
-        if rest == '/contents/spiele':
-            return js(200, [{'name': k.split('/')[-1], 'path': k, 'sha': self.blob(v), 'type': 'file'} for k, v in sorted(files.items())])
+        if rest in ('/contents/spiele', '/contents/rohfassungen'):
+            d = rest[len('/contents/'):] + '/'
+            hits = [{'name': k.split('/')[-1], 'path': k, 'sha': self.blob(v), 'type': 'file'} for k, v in sorted(files.items()) if k.startswith(d)]
+            return js(200, hits) if hits else js(404, {'message': 'Not Found'})
         if rest.startswith('/contents/'):
             k = rest[len('/contents/'):]
             if k not in files: return js(404, {'message': 'Not Found'})
@@ -674,6 +687,41 @@ def editor_checks(p):
     check('Editor: Löschen fragt nach', 'wirklich' in e.inner_text('#mMsg'))
     e.locator('#mBtns button', has_text='Löschen').click(); e.wait_for_timeout(800)
     check('Editor: Spiel gelöscht', 'spiele/ochs-am-berg-variante.txt' not in gh.files and gh.log[-1] == 'Spiel gelöscht: Ochs am Berg (Variante)' and e.locator('.game b', has_text='Variante').count() == 0)
+
+    # Rohfassungen: nur im Editor, erst „Veröffentlichen“ bringt sie in die App
+    roh = open(os.path.join(ROOT, 'tests', 'testspiele', 'simon-says.txt'), encoding='utf-8').read().replace('Name: Simon Says', 'Name: Rohes Spiel')
+    gh.change_elsewhere('rohfassungen/rohes-spiel.txt', roh)
+    e.reload(); e.wait_for_timeout(700)
+    check('Editor: Rohfassung markiert in der Liste', e.locator('.game.roh b', has_text='Rohes Spiel').count() == 1 and e.locator('.game.roh .tag').count() == 1)
+    check('Editor: Zähler nennt Rohfassungen', '1 Rohfassung' in e.inner_text('#listCount'), e.inner_text('#listCount'))
+    e.select_option('#inArt', 'roh'); e.wait_for_timeout(100)
+    check('Editor: Filter „Nur Rohfassungen“', e.locator('.game').count() == 1 and e.locator('.game.roh', has_text='Rohes Spiel').count() == 1, e.locator('.game b').all_inner_texts())
+    e.select_option('#inArt', 'live'); e.wait_for_timeout(100)
+    check('Editor: Filter „Nur veröffentlichte“', e.locator('.game.roh').count() == 0 and e.locator('.game').count() >= 2)
+    e.select_option('#inArt', 'alle'); e.wait_for_timeout(100)
+    e.locator('.game', has_text='Rohes Spiel').click(); e.wait_for_timeout(200)
+    check('Editor: Rohfassung zeigt Hinweis und beide Knöpfe', e.is_visible('#rohInfo') and e.is_visible('#btnRoh') and e.is_visible('#btnPublish'))
+    n = len(gh.log)
+    e.fill('#fTipp', 'Geht auch zu zweit.'); e.click('#btnRoh'); e.wait_for_timeout(800)
+    check('Editor: Rohfassung speichern bleibt im Ordner rohfassungen', len(gh.log) == n + 1 and gh.log[-1] == 'Rohfassung überarbeitet: Rohes Spiel'
+          and 'Geht auch zu zweit.' in gh.files['rohfassungen/rohes-spiel.txt'] and 'spiele/rohes-spiel.txt' not in gh.files, gh.log)
+    check('Editor: Rohfassung speichern meldet nichts als veröffentlicht', 'Rohfassung' in toast() and 'Rohes Spiel' not in e.inner_text('#notices'), toast())
+    e.locator('.game', has_text='Rohes Spiel').click(); e.wait_for_timeout(200)
+    e.click('#btnPublish'); e.wait_for_timeout(800)
+    check('Editor: Rohfassung veröffentlichen verschiebt nach spiele/ in einem Commit', len(gh.log) == n + 2 and gh.log[-1] == 'Neues Spiel aus Rohfassung: Rohes Spiel'
+          and 'spiele/rohes-spiel.txt' in gh.files and 'rohfassungen/rohes-spiel.txt' not in gh.files, gh.log)
+    check('Editor: veröffentlichtes Spiel ohne Rohfassungs-Knopf', (e.locator('.game', has_text='Rohes Spiel').click() or e.wait_for_timeout(200) or True) and not e.is_visible('#btnRoh') and not e.is_visible('#rohInfo'))
+    e.click('#btnBack'); e.wait_for_timeout(200)
+    e.click('#btnNew'); e.wait_for_timeout(200)
+    e.fill('#fName', 'Simon Says'); e.click('#btnRoh'); e.wait_for_timeout(300)
+    check('Editor: neue Rohfassung mit vorhandenem Namen abgelehnt', len(gh.log) == n + 2)
+    e.fill('#fName', 'Ganz neu'); e.fill('#fKurz', 'Kurz.'); e.fill('#fAblauf', 'Los geht es.'); e.click('#btnRoh'); e.wait_for_timeout(800)
+    check('Editor: neues Spiel direkt als Rohfassung', gh.log[-1] == 'Neue Rohfassung: Ganz neu' and 'rohfassungen/ganz-neu.txt' in gh.files, gh.log)
+    gh.change_elsewhere('rohfassungen/nachts-in-palermo.txt', gh.files['spiele/simon-says.txt'].replace('Simon Says', 'Nachts in Palermo'))
+    e.locator('.game', has_text='Ganz neu').click(); e.wait_for_timeout(200)
+    e.fill('#fName', 'Nachts in Palermo'); e.click('#btnRoh'); e.wait_for_timeout(500)
+    check('Editor: Namensprüfung beim Speichern über beide Ordner', 'gibt es' in toast() and 'rohfassungen/ganz-neu.txt' in gh.files, toast())
+    e.click('#btnBack'); e.locator('#mBtns button', has_text='Entwurf verwerfen').click(); e.wait_for_timeout(200)
 
     e.set_viewport_size({'width': 390, 'height': 844}); e.click('#btnNew'); e.wait_for_timeout(200)
     check('Editor: Handy ohne seitliches Scrollen', e.evaluate("document.documentElement.scrollWidth<=window.innerWidth"))

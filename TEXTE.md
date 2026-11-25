@@ -241,49 +241,55 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 39: Wie du den Schlüssel anlegst, steht in der Anleitung .
 - Z. 47: Spielesammlung
 - Z. 49: Neues Spiel
-- Z. 51: (Attribut) Suchen …
-- Z. 51: (Attribut) Spiele durchsuchen
-- Z. 60: Neues Spiel
-- Z. 63: Das Spiel
-- Z. 64: Name
-- Z. 64: (Attribut) z. B. Zeitungsschlagen
-- Z. 65: Kurzbeschreibung (ein Satz)
-- Z. 65: (Attribut) Worum geht es?
-- Z. 68: Für wen und wo
-- Z. 69: Alter
-- Z. 69: (Attribut) Alter
-- Z. 71: Personen mindestens
-- Z. 72: Personen höchstens (leer = egal)
-- Z. 72: (Attribut) egal
-- Z. 74: Ort
-- Z. 74: (Attribut) Ort
-- Z. 75: Dauer
-- Z. 75: (Attribut) z. B. ca. 15 Minuten
-- Z. 76: Gruppenphasen
-- Z. 76: (Attribut) Gruppenphasen
-- Z. 79: Ablauf
-- Z. 80: Verwende „-“ für Aufzählungen und „1.“ ... für Nummerierungen etc.
-- Z. 81: So geht’s
-- Z. 82: Material (eins pro Zeile, leer = kein Material)
-- Z. 83: Varianten (optional, eine pro Zeile)
-- Z. 84: Pädagogische Gedanken (optional)
-- Z. 85: Fragen zum Nachgespräch (optional)
-- Z. 88: Rollen (optional)
-- Z. 89: Rollen, eine pro Zeile: „Name: Beschreibung“
-- Z. 89: (Attribut) Mafia: Wacht nachts auf und wählt ein Opfer.
-- Z. 90: Verteilungstabelle, eine Zeile pro Reihe, Spalten mit | trennen. Erste Zeile = Überschriften.
-- Z. 90: (Attribut) Personen | Mafia | Arzt&#10;8–10 | 2 | –
-- Z. 91: Hinweis zu den Rollen
-- Z. 94: Sicherheit und Tipp
-- Z. 95: Gefahren und Risiken (eins pro Zeile)
-- Z. 95: (Attribut) Worauf muss die Spielleitung achten?
-- Z. 96: Tipp (optional)
-- Z. 102: Vorschau
-- Z. 103: Textdatei
-- Z. 111: ← Zur Liste
-- Z. 113: Löschen
-- Z. 114: Veröffentlichen
-- Z. 118: Wird geladen …
+- Z. 52: (Attribut) Suchen …
+- Z. 52: (Attribut) Spiele durchsuchen
+- Z. 53: (Attribut) Welche Spiele anzeigen
+- Z. 54: Alle Spiele
+- Z. 55: Nur Rohfassungen
+- Z. 56: Nur veröffentlichte
+- Z. 67: Neues Spiel
+- Z. 69: Das ist eine Rohfassung. Sie ist nur hier im Editor zu sehen. In die App kommt sie erst, wenn du sie veröffentlichst.
+- Z. 71: Das Spiel
+- Z. 72: Name
+- Z. 72: (Attribut) z. B. Zeitungsschlagen
+- Z. 73: Kurzbeschreibung (ein Satz)
+- Z. 73: (Attribut) Worum geht es?
+- Z. 76: Für wen und wo
+- Z. 77: Alter
+- Z. 77: (Attribut) Alter
+- Z. 79: Personen mindestens
+- Z. 80: Personen höchstens (leer = egal)
+- Z. 80: (Attribut) egal
+- Z. 82: Ort
+- Z. 82: (Attribut) Ort
+- Z. 83: Dauer
+- Z. 83: (Attribut) z. B. ca. 15 Minuten
+- Z. 84: Gruppenphasen
+- Z. 84: (Attribut) Gruppenphasen
+- Z. 87: Ablauf
+- Z. 88: Verwende „-“ für Aufzählungen und „1.“ ... für Nummerierungen etc.
+- Z. 89: So geht’s
+- Z. 90: Material (eins pro Zeile, leer = kein Material)
+- Z. 91: Varianten (optional, eine pro Zeile)
+- Z. 92: Pädagogische Gedanken (optional)
+- Z. 93: Fragen zum Nachgespräch (optional)
+- Z. 96: Rollen (optional)
+- Z. 97: Rollen, eine pro Zeile: „Name: Beschreibung“
+- Z. 97: (Attribut) Mafia: Wacht nachts auf und wählt ein Opfer.
+- Z. 98: Verteilungstabelle, eine Zeile pro Reihe, Spalten mit | trennen. Erste Zeile = Überschriften.
+- Z. 98: (Attribut) Personen | Mafia | Arzt&#10;8–10 | 2 | –
+- Z. 99: Hinweis zu den Rollen
+- Z. 102: Sicherheit und Tipp
+- Z. 103: Gefahren und Risiken (eins pro Zeile)
+- Z. 103: (Attribut) Worauf muss die Spielleitung achten?
+- Z. 104: Tipp (optional)
+- Z. 110: Vorschau
+- Z. 111: Textdatei
+- Z. 119: ← Zur Liste
+- Z. 121: Löschen
+- Z. 122: Als Rohfassung speichern
+- Z. 123: Veröffentlichen
+- Z. 127: Wird geladen …
 
 ## js/kern.js
 
@@ -725,57 +731,59 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 
 ## editor/editor.js
 
-- Z. 64: Keine Verbindung zu GitHub. Bist du online?
-- Z. 72: Der Zugangsschlüssel ist ungültig oder abgelaufen. Melde dich ab und trag einen neuen ein.
-- Z. 74: Der Zugangsschlüssel darf das nicht. Er braucht für dieses Repo „Contents: Read and write“ und „Actions: Read-only“.
-- Z. 75: Das Repo wurde nicht gefunden. Hat der Schlüssel Zugriff auf
-- Z. 101: Bitte den Zugangsschlüssel einfügen.
-- Z. 114: Abmelden? Der Zugangsschlüssel wird auf diesem Gerät gelöscht.
-- Z. 150: Datei fehlerhaft:
-- Z. 177: <div class="notice
-- Z. 178: Dein Zugangsschlüssel ist abgelaufen. Leg bei GitHub einen neuen an, melde dich ab und wieder an.
-- Z. 179: Dein Zugangsschlüssel läuft in
-- Z. 182: – wird geprüft und veröffentlicht …
-- Z. 183: – ist online. In der App erscheint es beim nächsten Öffnen der Spielesammlung.
-- Z. 184: – Veröffentlichung fehlgeschlagen. Online bleibt die vorherige Fassung.
-- Z. 184: <a href="
-- Z. 184: " target="_blank" rel="noopener">Details
-- Z. 187: ✕
-- Z. 203: (Status nicht abrufbar, bitte in der App prüfen)
-- Z. 281: Personen (mindestens 1, höchstens nicht kleiner als mindestens)
-- Z. 287: ein anderer Name – „
-- Z. 287: “ gibt es schon
-- Z. 292: eine gültige Verteilungstabelle
-- Z. 315: drinnen und draußen
-- Z. 317: Personen
-- Z. 319: Gruppenphasen:
-- Z. 320: Kein Material nötig.
-- Z. 328: So geht’s
-- Z. 330: Pädagogische Gedanken
-- Z. 331: Fragen zum Nachgespräch
-- Z. 332: Gefahren und Risiken
-- Z. 333: Tipp
-- Z. 353: Hier gibt es einen nicht veröffentlichten Entwurf vom
-- Z. 353: .Entwurf weiter bearbeitenVerwerfen
-- Z. 364: Deine Änderungen sind noch nicht veröffentlicht. Der Entwurf bleibt auf diesem Gerät gespeichert.
-- Z. 381: Bitte noch ergänzen:
-- Z. 384: Keine Änderungen zum Veröffentlichen.
-- Z. 387: Spiel überarbeitet:
-- Z. 387: Spiel überarbeitet:
-- Z. 388: Wird veröffentlicht …
-- Z. 394: Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.
-- Z. 398: Nicht veröffentlicht. Dein Entwurf bleibt gespeichert.
-- Z. 399: Nicht veröffentlicht:
-- Z. 409: “ wurde inzwischen auf einem anderen Gerät gelöscht. Trotzdem wieder veröffentlichen?
-- Z. 413: “ wurde inzwischen auf einem anderen Gerät geändert. Wenn du jetzt veröffentlichst, wird diese Änderung überschrieben.
-- Z. 413: Trotzdem überschreiben
-- Z. 419: Ein Spiel mit diesem Namen gibt es inzwischen schon. Lade die Liste neu und wähle einen anderen Namen.
-- Z. 426: “ wirklich aus der Spielesammlung entfernen?\n\nIn der GitHub-Historie bleibt jede Fassung erhalten.
-- Z. 429: Spiel gelöscht:
-- Z. 431: schon gelöscht
-- Z. 432: “ wurde inzwischen auf einem anderen Gerät geändert. Trotzdem löschen?
-- Z. 436: “ gelöscht
-- Z. 437: Gelöscht. Die Spielesammlung wird jetzt aktualisiert.
-- Z. 440: Das Spiel war schon gelöscht.
-- Z. 441: Nicht gelöscht:
+- Z. 66: Keine Verbindung zu GitHub. Bist du online?
+- Z. 74: Der Zugangsschlüssel ist ungültig oder abgelaufen. Melde dich ab und trag einen neuen ein.
+- Z. 76: Der Zugangsschlüssel darf das nicht. Er braucht für dieses Repo „Contents: Read and write“ und „Actions: Read-only“.
+- Z. 77: Das Repo wurde nicht gefunden. Hat der Schlüssel Zugriff auf
+- Z. 103: Bitte den Zugangsschlüssel einfügen.
+- Z. 116: Abmelden? Der Zugangsschlüssel wird auf diesem Gerät gelöscht.
+- Z. 154: Rohfassung
+- Z. 155: Datei fehlerhaft:
+- Z. 182: <div class="notice
+- Z. 183: Dein Zugangsschlüssel ist abgelaufen. Leg bei GitHub einen neuen an, melde dich ab und wieder an.
+- Z. 184: Dein Zugangsschlüssel läuft in
+- Z. 187: – wird geprüft und veröffentlicht …
+- Z. 188: – ist online. In der App erscheint es beim nächsten Öffnen der Spielesammlung.
+- Z. 189: – Veröffentlichung fehlgeschlagen. Online bleibt die vorherige Fassung.
+- Z. 189: <a href="
+- Z. 189: " target="_blank" rel="noopener">Details
+- Z. 192: ✕
+- Z. 208: (Status nicht abrufbar, bitte in der App prüfen)
+- Z. 286: Personen (mindestens 1, höchstens nicht kleiner als mindestens)
+- Z. 292: ein anderer Name – „
+- Z. 292: “ gibt es schon
+- Z. 297: eine gültige Verteilungstabelle
+- Z. 320: drinnen und draußen
+- Z. 322: Personen
+- Z. 324: Gruppenphasen:
+- Z. 325: Kein Material nötig.
+- Z. 333: So geht’s
+- Z. 335: Pädagogische Gedanken
+- Z. 336: Fragen zum Nachgespräch
+- Z. 337: Gefahren und Risiken
+- Z. 338: Tipp
+- Z. 360: Hier gibt es einen nicht veröffentlichten Entwurf vom
+- Z. 360: .Entwurf weiter bearbeitenVerwerfen
+- Z. 371: Deine Änderungen sind noch nicht veröffentlicht. Der Entwurf bleibt auf diesem Gerät gespeichert.
+- Z. 389: Bitte noch ergänzen:
+- Z. 392: Keine Änderungen zum Speichern.
+- Z. 392: Keine Änderungen zum Veröffentlichen.
+- Z. 396: Rohfassung überarbeitet:
+- Z. 398: Spiel überarbeitet:
+- Z. 400: Wird gespeichert …
+- Z. 400: Wird veröffentlicht …
+- Z. 406: Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.
+- Z. 410: Nicht veröffentlicht
+- Z. 422: “ wurde inzwischen auf einem anderen Gerät gelöscht. Trotzdem wieder veröffentlichen?
+- Z. 426: “ wurde inzwischen auf einem anderen Gerät geändert. Wenn du jetzt veröffentlichst, wird diese Änderung überschrieben.
+- Z. 426: Trotzdem überschreiben
+- Z. 434: Ein Spiel mit diesem Namen gibt es inzwischen schon. Lade die Liste neu und wähle einen anderen Namen.
+- Z. 442: “ wirklich aus der Spielesammlung entfernen?\n\nIn der GitHub-Historie bleibt jede Fassung erhalten.
+- Z. 445: Spiel gelöscht:
+- Z. 447: schon gelöscht
+- Z. 448: “ wurde inzwischen auf einem anderen Gerät geändert. Trotzdem löschen?
+- Z. 452: “ gelöscht
+- Z. 453: Gelöscht. Die Spielesammlung wird jetzt aktualisiert.
+- Z. 456: Das Spiel war schon gelöscht.
+- Z. 457: Nicht gelöscht:
 

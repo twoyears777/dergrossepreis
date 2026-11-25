@@ -130,3 +130,8 @@ legend{font-family:var(--strong);font-weight:700;font-size:1.05rem;padding-right
   .bar{padding-left:16px;padding-right:16px}
   .bar .primary,.bar .danger{padding:.6em 1em}
 }
+/* Rohfassungen: nur im Editor sichtbar */
+.list-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search.art{width:auto;max-width:100%}
+.game.roh{background:repeating-linear-gradient(-45deg,var(--paper),var(--paper) 14px,#f3ead3 14px,#f3ead3 28px)}
+.game .tag{display:inline-block;font-style:normal;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle;margin-left:6px;padding:2px 6px;border:1.5px solid var(--stamp);color:var(--stamp);border-radius:2px}

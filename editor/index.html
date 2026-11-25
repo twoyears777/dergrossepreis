@@ -48,7 +48,14 @@
       <span class="top-gap"></span>
       <button class="primary" id="btnNew">Neues Spiel</button>
     </div>
-    <input class="search" id="inSearch" type="search" placeholder="Suchen …" aria-label="Spiele durchsuchen">
+    <div class="list-tools">
+      <input class="search" id="inSearch" type="search" placeholder="Suchen …" aria-label="Spiele durchsuchen">
+      <select class="search art" id="inArt" aria-label="Welche Spiele anzeigen">
+        <option value="alle">Alle Spiele</option>
+        <option value="roh">Nur Rohfassungen</option>
+        <option value="live">Nur veröffentlichte</option>
+      </select>
+    </div>
     <p class="count" id="listCount"></p>
     <ul class="games" id="gameList"></ul>
   </section>
@@ -59,6 +66,7 @@
       <form class="sheet form" id="form" autocomplete="off" novalidate>
         <h1 id="editTitle">Neues Spiel</h1>
         <div class="draft" id="draftBox" hidden></div>
+        <div class="draft roh-info" id="rohInfo" hidden><p>Das ist eine Rohfassung. Sie ist nur hier im Editor zu sehen. In die App kommt sie erst, wenn du sie veröffentlichst.</p></div>
 
         <fieldset><legend>Das Spiel</legend>
           <label class="field" data-f="name"><span>Name</span><input id="fName" maxlength="60" placeholder="z. B. Zeitungsschlagen"></label>
@@ -111,6 +119,7 @@
       <button class="link" id="btnBack">← Zur Liste</button>
       <span class="top-gap"></span>
       <button class="danger" id="btnDelete" hidden>Löschen</button>
+      <button class="btn" id="btnRoh">Als Rohfassung speichern</button>
       <button class="primary" id="btnPublish">Veröffentlichen</button>
     </div>
   </section>
