@@ -1,5 +1,10 @@
 # Changelog – Manna
 
+## 1.28.0 – 25.11.2026
+- Neu: Du kannst selbst ein Spiel für die Spielesammlung einreichen (Knopf ganz unten in der Spielesammlung)
+- Editor: neuer Bereich „Eingereicht“ (Anmeldung mit dem Supabase-Admin-Login). Einreichungen lassen sich als Rohfassung übernehmen oder ablehnen (wird gelöscht)
+- Intern: Einreichungen liegen in Supabase (Frankfurt), Tabelle „einreichungen“. Ohne Anmeldung darf man dort nur einreichen, nicht lesen. Schutz gegen Bots: verstecktes Feld, Mindestzeit, höchstens 30 Einreichungen pro Stunde
+
 ## 1.27.1 – 25.11.2026
 - Startseite: nur noch zwei Screenshots (Filter und Spiel). Kein Eintrag im App-Changelog.
 - Intern: Geländespiele aus den Rohfassungen entfernt, sie bekommen später eine eigene Rubrik.

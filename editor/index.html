@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.github.com https://atdfiktajxmhjqrhwgbb.supabase.co; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,6 +43,19 @@
   <!-- Liste -->
   <section class="view" id="vList" hidden>
     <div class="notices" id="notices"></div>
+    <section class="einr" id="einrBox">
+      <div class="list-head"><h2>Eingereicht <span class="einr-n" id="einrCount"></span></h2><span class="top-gap"></span><button class="link" id="btnEinrReload" hidden>Neu laden</button><button class="link" id="btnSbLogout" hidden>Abmelden</button></div>
+      <form class="einr-login" id="einrLogin" hidden autocomplete="on">
+        <p class="hint">Eingereichte Spiele liegen bei Supabase. Melde dich dort mit deinem Admin-Login an.</p>
+        <div class="pair">
+          <label class="field"><span>E-Mail</span><input id="inSbMail" type="email" autocomplete="username"></label>
+          <label class="field"><span>Passwort</span><input id="inSbPass" type="password" autocomplete="current-password"></label>
+        </div>
+        <div class="row"><button class="primary" id="btnSbLogin" type="submit">Anmelden</button></div>
+        <p class="msg" id="sbMsg" role="alert"></p>
+      </form>
+      <ul class="games einr-list" id="einrList" hidden></ul>
+    </section>
     <div class="list-head">
       <h1>Spielesammlung</h1>
       <span class="top-gap"></span>
@@ -66,6 +79,7 @@
       <form class="sheet form" id="form" autocomplete="off" novalidate>
         <h1 id="editTitle">Neues Spiel</h1>
         <div class="draft" id="draftBox" hidden></div>
+        <div class="draft einr-info" id="einrInfo" hidden></div>
         <div class="draft roh-info" id="rohInfo" hidden><p>Das ist eine Rohfassung. Sie ist nur hier im Editor zu sehen. In die App kommt sie erst, wenn du sie veröffentlichst.</p></div>
 
         <fieldset><legend>Das Spiel</legend>
@@ -133,6 +147,7 @@
 <div class="toast" id="toast" role="status"></div>
 
 <script src="../js/spielformat.js"></script>
+<script src="../js/supabase.js"></script>
 <script src="editor.js"></script>
 </body>
 </html>

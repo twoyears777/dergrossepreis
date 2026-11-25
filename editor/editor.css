@@ -135,3 +135,19 @@ legend{font-family:var(--strong);font-weight:700;font-size:1.05rem;padding-right
 .search.art{width:auto;max-width:100%}
 .game.roh{background:repeating-linear-gradient(-45deg,var(--paper),var(--paper) 14px,#f3ead3 14px,#f3ead3 28px)}
 .game .tag{display:inline-block;font-style:normal;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle;margin-left:6px;padding:2px 6px;border:1.5px solid var(--stamp);color:var(--stamp);border-radius:2px}
+
+/* Eingereicht (Supabase) */
+.einr{margin:10px 0 26px;padding-bottom:22px;border-bottom:1px solid #ffffff1f}
+.einr h2{font-family:var(--strong);font-size:1.25rem}
+.einr-n{display:inline-block;min-width:1.6em;padding:1px 8px;margin-left:6px;border-radius:999px;background:var(--marker);color:var(--ink);font-size:.85rem;text-align:center;vertical-align:middle}
+.einr-n:empty{display:none}
+.einr-login{background:var(--paper);color:var(--ink);border-radius:3px;padding:18px 20px;max-width:640px}
+.einr-login .hint{margin-bottom:12px}
+.einr-login .field{margin-bottom:10px}
+.einr-item{background:var(--paper);color:var(--ink);border-radius:3px;padding:16px 18px;box-shadow:0 6px 16px #0005;display:flex;flex-direction:column;gap:6px}
+.einr-item b{font-family:var(--strong);font-size:1.1rem}
+.einr-item span{font-size:.9rem;color:var(--ink2);overflow-wrap:anywhere}
+.einr-item .von{font-size:.8rem}
+.einr-item .row{margin-top:auto;padding-top:6px}
+.einr-info p{margin:0;overflow-wrap:anywhere}
+.einr-item .row .primary,.einr-item .row .btn{padding:.5em 1em;min-height:40px;font-size:.92rem}

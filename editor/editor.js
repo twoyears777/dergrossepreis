@@ -114,7 +114,7 @@
   }
   async function logout() {
     if (!(await confirmBox('Abmelden? Der Zugangsschlüssel wird auf diesem Gerät gelöscht.', 'Abmelden'))) return;
-    token = ''; store.del(K_TOKEN); store.del(K_EXP); store.del(K_CACHE); games = [];
+    token = ''; store.del(K_TOKEN); store.del(K_EXP); store.del(K_CACHE); games = []; sbLogout();
     updateTop(); show('vLogin');
   }
   function updateTop() {
@@ -172,7 +172,7 @@
       if (e.status === 401) { token = ''; store.del(K_TOKEN); updateTop(); show('vLogin'); $('#loginMsg').textContent = explain(e); return; }
       show('vList'); games = []; renderList(); toast(explain(e)); return;
     }
-    show('vList'); renderList(); pollRuns();
+    show('vList'); renderList(); pollRuns(); loadEinr();
   }
 
   /* ---------- Hinweise: Ablauf des Schlüssels, Veröffentlichungen ---------- */
@@ -355,6 +355,7 @@
   function openEdit(orig) {
     const base = orig ? valuesFromGame(orig.spiel) : { alter: ['jugend'], ort: ['drinnen'], min: '6', max: '' };
     ED = { orig, sig: '' };
+    $('#einrInfo').hidden = true;
     setForm(base); ED.sig = JSON.stringify(formValues());
     $('#editTitle').textContent = orig ? (orig.roh ? 'Rohfassung bearbeiten' : 'Spiel bearbeiten') : 'Neues Spiel';
     $('#btnDelete').hidden = !orig;
@@ -409,6 +410,7 @@
     try {
       const sha = await commitWithChecks(changes, label, orig, path, () => force, f => { force = f; });
       store.del(K_DRAFT);
+      if (ED.einreichung) await einrErledigt(ED.einreichung);
       if (alsRoh) toast('Als Rohfassung gespeichert. In der App ist sie nicht zu sehen.');
       else { addRun(sha, '„' + res.g.name + '“'); toast('Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.'); }
       await refreshAfter();
@@ -466,6 +468,126 @@
   }
   async function refreshAfter() { try { await loadGames(); } catch (e) {} }
 
+  /* ---------- Eingereicht (Supabase) ----------
+     Besucher reichen in der App Spiele ein (js/einreichen.js). Sie landen in der Supabase-Tabelle „einreichungen“.
+     Lesen, ändern und löschen darf dort nur der Admin-Login (Zugriffsregeln in der Datenbank).
+     „Übernehmen“ öffnet die Einreichung im Formular. Gespeichert wird wie immer über GitHub (Rohfassung oder veröffentlichen). */
+  const DB = window.MannaDB, K_SB = 'manna-editor-supabase';
+  let sb = store.json(K_SB, null);   // {access, refresh, exp}
+  let einr = [];
+  function sbSave(d) { sb = d ? { access: d.access_token, refresh: d.refresh_token, exp: d.expires_at || Math.floor(Date.now() / 1000) + (d.expires_in || 3600) } : null; if (sb) store.set(K_SB, JSON.stringify(sb)); else store.del(K_SB); }
+  async function sbAuth(grant, body) {
+    let r;
+    try { r = await fetch(DB.url + '/auth/v1/token?grant_type=' + grant, { method: 'POST', cache: 'no-store', headers: { apikey: DB.key, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); }
+    catch (e) { throw Object.assign(new Error('Keine Verbindung zu Supabase. Bist du online?'), { status: 0 }); }
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error(r.status === 400 ? 'E-Mail oder Passwort stimmt nicht.' : (d.msg || d.error_description || ('Fehler ' + r.status))), { status: r.status });
+    return d;
+  }
+  async function sbRefresh() {
+    if (!sb) throw Object.assign(new Error('Nicht angemeldet.'), { status: 401 });
+    try { sbSave(await sbAuth('refresh_token', { refresh_token: sb.refresh })); }
+    catch (e) { if (e.status) { sbSave(null); e.status = 401; } throw e; }
+  }
+  async function sbFetch(path, opts, again) {
+    opts = opts || {};
+    if (!sb) throw Object.assign(new Error('Nicht angemeldet.'), { status: 401 });
+    if (sb.exp * 1000 < Date.now() + 60e3) await sbRefresh();
+    let r;
+    try {
+      r = await fetch(DB.url + path, { method: opts.method || 'GET', cache: 'no-store',
+        headers: Object.assign({ apikey: DB.key, Authorization: 'Bearer ' + sb.access }, opts.body ? { 'Content-Type': 'application/json' } : {}, opts.method && opts.method !== 'GET' ? { Prefer: 'return=minimal' } : {}),
+        body: opts.body ? JSON.stringify(opts.body) : undefined });
+    } catch (e) { throw Object.assign(new Error('Keine Verbindung zu Supabase. Bist du online?'), { status: 0 }); }
+    if (r.status === 401 && !again) { await sbRefresh(); return sbFetch(path, opts, true); }
+    if (!r.ok) { const d = await r.json().catch(() => ({})); throw Object.assign(new Error(d.message || ('Fehler ' + r.status)), { status: r.status }); }
+    const t = await r.text();
+    return t ? JSON.parse(t) : null;
+  }
+  async function sbLogin(ev) {
+    if (ev) ev.preventDefault();
+    const mail = $('#inSbMail').value.trim(), pass = $('#inSbPass').value, msg = $('#sbMsg');
+    if (!mail || !pass) { msg.textContent = 'Bitte E-Mail und Passwort eingeben.'; return; }
+    msg.textContent = ''; $('#btnSbLogin').disabled = true;
+    try { sbSave(await sbAuth('password', { email: mail, password: pass })); $('#inSbPass').value = ''; await loadEinr(); }
+    catch (e) { msg.textContent = e.message; }
+    $('#btnSbLogin').disabled = false;
+  }
+  async function sbLogout() {
+    const s = sb; sbSave(null); einr = []; renderEinr();
+    if (s) fetch(DB.url + '/auth/v1/logout', { method: 'POST', headers: { apikey: DB.key, Authorization: 'Bearer ' + s.access } }).catch(() => {});
+  }
+  async function loadEinr() {
+    if (!sb) { einr = []; renderEinr(); return; }
+    try {
+      const d = await sbFetch('/rest/v1/einreichungen?select=id,erstellt_am,titel,spiel,name,email&status=eq.neu&order=erstellt_am.asc');
+      einr = Array.isArray(d) ? d.filter(x => x && typeof x.id === 'string') : [];
+    } catch (e) {
+      if (e.status === 401) { einr = []; renderEinr(); $('#sbMsg').textContent = 'Bitte neu anmelden.'; return; }
+      toast('Einreichungen nicht geladen: ' + e.message);
+    }
+    renderEinr();
+  }
+  const str = (v, n) => (typeof v === 'string' ? v : '').slice(0, n);
+  const zahl = v => { const s = str(v, 4).trim(); return /^\d{1,3}$/.test(s) ? s : ''; };
+  /* Eingereichte Werte -> Formularwerte. Alles kommt von Fremden: nur Text, nur bekannte Auswahlwerte, Längen begrenzt. */
+  function werteAus(e) {
+    const w = (e.spiel && typeof e.spiel === 'object' && e.spiel.werte && typeof e.spiel.werte === 'object') ? e.spiel.werte : {};
+    const nur = (a, ids) => Array.isArray(a) ? ids.filter(id => a.includes(id)) : [];
+    return {
+      name: str(w.name || e.titel, 60), kurz: str(w.kurz, 300), alter: nur(w.alter, F.ALTER.map(a => a.id)), min: zahl(w.min), max: zahl(w.max),
+      ort: nur(w.ort, F.ORTE.map(o => o.id)), phasen: [], erlebnis: false, dauer: str(w.dauer, 40), ablauf: str(w.ablauf, 4000), material: str(w.material, 1000),
+      varianten: str(w.varianten, 1500), paedagogik: str(w.paedagogik, 1500), nachgespraech: str(w.nachgespraech, 1000), rollen: '', tabelle: '', rollenHinweis: '',
+      risiken: str(w.risiken, 1500), tipp: str(w.tipp, 500)
+    };
+  }
+  const datum = t => { const d = new Date(t); return isNaN(d) ? '' : d.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }); };
+  const vonText = e => [str(e.name, 80).trim(), str(e.email, 200).trim()].filter(Boolean).join(', ');
+  function renderEinr() {
+    $('#einrLogin').hidden = !!sb; $('#einrList').hidden = !sb;
+    $('#btnSbLogout').hidden = !sb; $('#btnEinrReload').hidden = !sb;
+    $('#einrCount').textContent = sb && einr.length ? String(einr.length) : '';
+    const ul = $('#einrList'); ul.innerHTML = '';
+    if (!sb) return;
+    if (!einr.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = 'Gerade nichts Neues.'; ul.appendChild(li); return; }
+    einr.forEach(e => {
+      const w = werteAus(e), li = document.createElement('li'), box = document.createElement('div');
+      box.className = 'einr-item';
+      const von = vonText(e);
+      box.innerHTML = '<b></b><span class="kurz"></span><span class="von"></span><div class="row"><button class="primary">Übernehmen</button><button class="btn">Ablehnen</button></div>';
+      box.querySelector('b').textContent = w.name || 'Ohne Namen';
+      box.querySelector('.kurz').textContent = w.kurz;
+      box.querySelector('.von').textContent = 'Eingereicht am ' + datum(e.erstellt_am) + (von ? ' von ' + von : '');
+      box.querySelector('.primary').onclick = () => uebernehmen(e);
+      box.querySelector('.btn').onclick = () => ablehnen(e);
+      li.appendChild(box); ul.appendChild(li);
+    });
+  }
+  function uebernehmen(e) {
+    openEdit(null);
+    setForm(werteAus(e));
+    ED.einreichung = e; ED.sig = JSON.stringify(formValues());
+    $('#editTitle').textContent = 'Einreichung übernehmen';
+    $('#draftBox').hidden = true;
+    const von = vonText(e), info = $('#einrInfo');
+    info.innerHTML = '<p></p>';
+    info.querySelector('p').textContent = 'Eingereicht am ' + datum(e.erstellt_am) + (von ? ' von ' + von : '') +
+      '. Ergänze, was fehlt, und speichere als Rohfassung oder veröffentliche direkt. Danach verschwindet die Einreichung aus der Liste.';
+    info.hidden = false;
+    renderPreview(formValues()); growAll();
+  }
+  async function einrErledigt(e) {
+    try { await sbFetch('/rest/v1/einreichungen?id=eq.' + encodeURIComponent(e.id), { method: 'PATCH', body: { status: 'uebernommen' } }); }
+    catch (er) { toast('Gespeichert, aber die Einreichung ist noch als neu markiert: ' + er.message); }
+    await loadEinr();
+  }
+  async function ablehnen(e) {
+    if (!(await confirmBox('Einreichung „' + (str(e.titel, 60) || 'Ohne Namen') + '“ ablehnen? Sie wird endgültig gelöscht.', 'Ablehnen', 'danger'))) return;
+    try { await sbFetch('/rest/v1/einreichungen?id=eq.' + encodeURIComponent(e.id), { method: 'DELETE' }); toast('Einreichung gelöscht.'); }
+    catch (er) { toast('Nicht gelöscht: ' + er.message); }
+    await loadEinr();
+  }
+
   /* ---------- Start ---------- */
   buildChips('fAlter', F.ALTER.map(a => ({ id: a.id, label: a.label })));
   buildChips('fOrt', [{ id: 'drinnen', label: 'Drinnen' }, { id: 'draussen', label: 'Draußen' }]);
@@ -483,6 +605,9 @@
   $('#btnRoh').onclick = () => publish(true);
   $('#inArt').addEventListener('change', renderList);
   $('#btnDelete').onclick = remove;
+  $('#einrLogin').addEventListener('submit', sbLogin);
+  $('#btnSbLogout').onclick = sbLogout;
+  $('#btnEinrReload').onclick = loadEinr;
   $('#tabPrev').onclick = () => setTab(false);
   $('#tabTxt').onclick = () => setTab(true);
   window.addEventListener('beforeunload', e => { if (ED && JSON.stringify(formValues()) !== ED.sig) { e.preventDefault(); e.returnValue = ''; } });

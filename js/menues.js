@@ -9,6 +9,7 @@ const SCREENS={
   home:{el:'#home'},
   coll:{el:'#collScreen',show:()=>renderColl()},
   game:{el:'#gameScreen'},
+  submit:{el:'#submitScreen',title:'Hilf uns beim Content!',show:()=>renderSubmit()},
   paed:{el:'#paedScreen',title:'Pädagogischer Kram',show:()=>renderArtTiles()},
   art:{el:'#artScreen'},
   shows:{el:'#showsScreen',title:'Gameshows'},

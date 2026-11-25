@@ -865,3 +865,24 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .gcard .gbody{font-size:1.08rem}
 .gamegrid{grid-template-columns:repeat(auto-fit,minmax(250px,340px));justify-content:center}
 #paedScreen .menu-title{margin-bottom:6vh}
+
+/* ---------- Spiel einreichen ---------- */
+.coll-submit{display:flex;justify-content:center;margin:26px 0 4px}
+.sub-form{width:min(760px,100%);margin-top:14px}
+.sub-form[hidden],.sub-done[hidden]{display:none}
+.sub-intro{text-align:center;color:#d8d2c4;line-height:1.45;max-width:58ch;margin:0 auto 6px}
+.sub-form .sec{display:flex;flex-direction:column;gap:14px}
+.sub-form .sec h2{margin-bottom:0}
+.sub-form .sec p.hint{margin:-6px 0 0}
+.sub-form div.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--muted);font-weight:600}
+.sub-form .f .fchips{margin-top:2px}
+.sub-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sub-form .bad .inp,.sub-form .bad .ta{border-color:var(--stamp);box-shadow:0 0 0 3px #b8432f55}
+.sub-form .check.bad span{color:#ffb4a6}
+.sub-form .check{align-items:flex-start;line-height:1.4}
+.sub-form .check input{flex:none;margin-top:1px}
+.sub-hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.sub-send{justify-content:flex-end}
+.sub-msg{color:#ffcf7a;min-height:1.2em;font-weight:600}
+.sub-done{width:min(640px,100%);margin-top:22px;background:var(--grain-soft),var(--marker);color:var(--ink);padding:22px 24px;box-shadow:0 6px 14px #0006;transform:rotate(-.6deg);border-radius:2px;font-size:1.1rem;line-height:1.45;text-align:center}
+@media (max-width:560px){.sub-pair{grid-template-columns:1fr}}

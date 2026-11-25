@@ -55,7 +55,7 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
+    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
@@ -580,6 +580,136 @@ def browser_checks(p):
     check('keine JavaScript-Fehler (auch keine CSP-Verstöße)', not errs, '; '.join(errs))
     b.close()
 
+class FakeSupabase:
+    """Nachgebautes Supabase (nur was App und Editor brauchen). Spielt die Zugriffsregeln der Datenbank nach:
+    ohne Anmeldung nur einreichen, mit Admin-Login lesen, ändern, löschen."""
+    KEY = 'sb_publishable_XVvHrzG_pDKErkF37hsN4A_NYzt-Dc-'
+    def __init__(self):
+        self.rows = []; self.n = 0; self.voll = False; self.offline = False; self.posts = []
+    def handle(self, route, request):
+        u = urlparse(request.url); path = u.path; q = parse_qs(u.query)
+        cors = {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': '*'}
+        js = lambda code, body: route.fulfill(status=code, content_type='application/json', body=json.dumps(body) if body is not None else '', headers=cors)
+        if request.method == 'OPTIONS': return route.fulfill(status=204, headers=cors)
+        if self.offline: return route.abort()
+        h = request.headers
+        if h.get('apikey') != self.KEY: return js(401, {'message': 'Invalid API key'})
+        admin = h.get('authorization') in ('Bearer admin-1', 'Bearer admin-2')
+        body = json.loads(request.post_data) if request.post_data else {}
+        if path == '/auth/v1/token':
+            g = q.get('grant_type', [''])[0]
+            if g == 'password' and body.get('email') == 'kontakt@manna-games.de' and body.get('password') == 'Pw-7xQ!test':
+                return js(200, {'access_token': 'admin-1', 'refresh_token': 'r1', 'expires_in': 3600})
+            if g == 'refresh_token' and body.get('refresh_token') == 'r1':
+                return js(200, {'access_token': 'admin-2', 'refresh_token': 'r1', 'expires_in': 3600})
+            return js(400, {'error_description': 'Invalid login credentials'})
+        if path == '/auth/v1/logout': return js(204, None)
+        if path != '/rest/v1/einreichungen': return js(404, {'message': 'not found'})
+        if request.method == 'POST':
+            self.posts.append({'headers': dict(h), 'body': body})
+            erlaubt = {'titel', 'spiel', 'name', 'email', 'rechte_bestaetigt'}
+            if set(body) - erlaubt or body.get('rechte_bestaetigt') is not True: return js(403, {'message': 'permission denied'})
+            if self.voll: return js(400, {'message': 'limit_erreicht'})
+            self.n += 1
+            self.rows.append(dict(body, id=f'00000000-0000-0000-0000-{self.n:012d}', erstellt_am='2026-11-25T14:00:00Z', status='neu'))
+            return js(201, None)
+        if not admin: return js(200, []) if request.method == 'GET' else js(401, {'message': 'JWT invalid'})
+        rid = (q.get('id', [''])[0]).replace('eq.', '')
+        if request.method == 'GET':
+            return js(200, [r for r in self.rows if r['status'] == 'neu'])
+        if request.method == 'PATCH':
+            for r in self.rows:
+                if r['id'] == rid: r.update(body)
+            return js(204, None)
+        if request.method == 'DELETE':
+            self.rows = [r for r in self.rows if r['id'] != rid]; return js(204, None)
+        return js(405, {'message': 'nope'})
+
+def einreichen_checks(p):
+    print('Spiel einreichen')
+    errs = []
+    sb = FakeSupabase()
+    b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
+    ctx = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
+    ctx.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
+    m = ctx.new_page(); m.on('pageerror', lambda e: errs.append(str(e))); m.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
+    m.goto(URL); m.wait_for_timeout(400)
+    if m.locator('#clDialog.show').count(): m.click('#clX')
+    m.click('#gcColl'); m.wait_for_timeout(300)
+    check('Einreichen: Knopf in der Spielesammlung', m.inner_text('#btnSubmitOpen') == 'Selbst ein Spiel einreichen')
+    m.click('#btnSubmitOpen'); m.wait_for_timeout(300)
+    check('Einreichen: Formular öffnet sich', m.locator('#submitScreen.show').count() == 1 and m.get_attribute('#submitTitle', 'aria-label') == 'Hilf uns beim Content!')
+    m.click('#btnSubmitSend'); m.wait_for_timeout(200)
+    check('Einreichen: Pflichtfelder und Häkchen werden verlangt', 'Name' in m.inner_text('#subMsg') and 'Häkchen' in m.inner_text('#subMsg') and not sb.posts)
+    m.fill('#sName', 'Wäscheklammern klauen'); m.fill('#sKurz', 'Alle  jagen\nKlammern.'); m.fill('#sAblauf', '- Jeder bekommt Klammern\n- Los geht’s')
+    m.fill('#sMin', '8'); m.click('#sAlter .fchip >> nth=1'); m.click('#sOrt .fchip >> nth=0'); m.fill('#sRisiken', 'Nicht an Haaren ziehen')
+    m.fill('#sVon', 'Anna'); m.check('#sRechte')
+    m.evaluate('subOpened=Date.now()'); m.click('#btnSubmitSend'); m.wait_for_timeout(300)
+    check('Einreichen: zu schnelles Absenden gilt als Bot, nichts wird geschickt', not sb.posts and m.locator('#subDone:not([hidden])').count() == 1)
+    m.click('#btnSubmitBack'); m.click('#btnSubmitOpen'); m.wait_for_timeout(200)
+    check('Einreichen: Formular nach dem Absenden wieder leer', m.input_value('#sName') == '' and not m.is_checked('#sRechte'))
+    def ausfuellen():
+        m.fill('#sName', 'Wäscheklammern klauen'); m.fill('#sKurz', 'Alle jagen Klammern.'); m.fill('#sAblauf', '- Jeder bekommt Klammern\n- Los geht’s')
+        m.fill('#sMin', '8'); m.click('#sAlter .fchip >> nth=1'); m.click('#sOrt .fchip >> nth=0'); m.fill('#sRisiken', 'Nicht an Haaren ziehen')
+        m.fill('#sVon', 'Anna'); m.fill('#sMail', 'anna@example.org'); m.check('#sRechte'); m.evaluate('subOpened=Date.now()-10000')
+    ausfuellen(); m.fill('#sWebsite', 'http://spam.example'); m.click('#btnSubmitSend'); m.wait_for_timeout(300)
+    check('Einreichen: verstecktes Bot-Feld ausgefüllt, nichts wird geschickt', not sb.posts)
+    m.click('#btnSubmitBack'); m.click('#btnSubmitOpen'); m.wait_for_timeout(200)
+    sb.voll = True; ausfuellen(); m.click('#btnSubmitSend'); m.wait_for_timeout(400)
+    check('Einreichen: Fehlermeldung, wenn die Datenbank bremst', 'später erneut' in m.inner_text('#subMsg') and m.input_value('#sName') == 'Wäscheklammern klauen')
+    sb.voll = False; m.click('#btnSubmitSend'); m.wait_for_timeout(400)
+    post = sb.posts[-1] if sb.posts else {'headers': {}, 'body': {}}
+    check('Einreichen: landet in der Datenbank', len(sb.rows) == 1 and m.locator('#subDone:not([hidden])').count() == 1)
+    check('Einreichen: nur öffentlicher Schlüssel, keine Anmeldung', post['headers'].get('apikey') == sb.KEY and 'authorization' not in post['headers'])
+    w = post['body'].get('spiel', {}).get('werte', {})
+    check('Einreichen: Werte im Editor-Format', post['body'].get('titel') == 'Wäscheklammern klauen' and w.get('alter') == ['jugend'] and w.get('ort') == ['drinnen'] and w.get('min') == '8' and post['body'].get('email') == 'anna@example.org', post['body'])
+    check('Einreichen: Danke-Text', 'Liebe geht raus! <3' in m.inner_text('#subDone'))
+    sb.offline = True; m.click('#btnSubmitBack'); m.click('#btnSubmitOpen'); ausfuellen(); m.click('#btnSubmitSend'); m.wait_for_timeout(400)
+    check('Einreichen: Fehlermeldung ohne Internet', 'später erneut' in m.inner_text('#subMsg'))
+    sb.offline = False
+    m.set_viewport_size({'width': 390, 'height': 844}); m.wait_for_timeout(200)
+    check('Einreichen: Handy ohne seitliches Scrollen', not m.evaluate('document.documentElement.scrollWidth > innerWidth'))
+    check('Einreichen: keine JavaScript-Fehler (auch keine CSP-Verstöße)', not errs, '; '.join(errs))
+    ctx.close()
+
+    print('Editor: Eingereicht')
+    errs = []
+    sb.rows.append({'id': '00000000-0000-0000-0000-000000000099', 'erstellt_am': '2026-11-25T15:00:00Z', 'status': 'neu', 'titel': '<img src=x onerror=window.__xss=1>', 'name': '<b>Böse</b>', 'email': None, 'rechte_bestaetigt': True,
+                    'spiel': {'format': 'manna-einreichung-1', 'werte': {'name': '<img src=x onerror=window.__xss=1>', 'kurz': '<script>window.__xss=1</script>', 'alter': ['jugend', 'hacker'], 'ort': 'drinnen', 'min': '1e9', 'ablauf': 'x' * 9000}}})
+    d = os.path.join(ROOT, 'tests', 'testspiele')
+    gh = FakeGitHub({'spiele/' + f: open(os.path.join(d, f), encoding='utf-8').read() for f in os.listdir(d) if f.endswith('.txt')})
+    ctx = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
+    ctx.route('https://api.github.com/**', gh.handle); ctx.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
+    e = ctx.new_page(); e.on('pageerror', lambda x: errs.append(str(x))); e.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
+    e.goto(EDITOR); e.wait_for_timeout(300); e.fill('#inToken', 'testtoken'); e.click('#btnLogin'); e.wait_for_timeout(700)
+    check('Eingereicht: Anmeldung bei Supabase wird angeboten', e.locator('#einrLogin:not([hidden])').count() == 1)
+    e.fill('#inSbMail', 'kontakt@manna-games.de'); e.fill('#inSbPass', 'falsch'); e.click('#btnSbLogin'); e.wait_for_timeout(300)
+    check('Eingereicht: falsches Passwort abgelehnt', 'stimmt nicht' in e.inner_text('#sbMsg') and e.evaluate("localStorage.getItem('manna-editor-supabase')") is None)
+    e.fill('#inSbPass', 'Pw-7xQ!test'); e.click('#btnSbLogin'); e.wait_for_timeout(500)
+    titel = e.locator('.einr-item b').all_inner_texts()
+    check('Eingereicht: Liste nach Anmeldung', titel[0] == 'Wäscheklammern klauen' and len(titel) == 2 and e.inner_text('#einrCount') == '2', titel)
+    check('Eingereicht: Passwort wird nicht gespeichert', 'Pw-7xQ!test' not in (e.evaluate("JSON.stringify(localStorage)") or ''))
+    check('Sicherheit: Einreichungen werden nur als Text angezeigt', e.evaluate('window.__xss') is None and e.locator('.einr-item img, .einr-item script, .einr-item .von b').count() == 0)
+    e.locator('.einr-item').nth(1).locator('.primary').click(); e.wait_for_timeout(300)
+    check('Sicherheit: fremde Werte begrenzt und gefiltert', e.evaluate('window.__xss') is None and len(e.input_value('#fAblauf')) <= 4000 and e.input_value('#fMin') == '' and
+          e.locator('#fAlter .chip.on').count() == 1 and e.locator('#fOrt .chip.on').count() == 0 and e.locator('#prevCard img').count() == 0)
+    e.click('#btnBack'); e.wait_for_timeout(200)
+    e.locator('.einr-item').nth(0).locator('.primary').click(); e.wait_for_timeout(300)
+    check('Übernehmen: Formular mit den eingereichten Werten', e.input_value('#fName') == 'Wäscheklammern klauen' and e.input_value('#fMin') == '8' and e.inner_text('#editTitle') == 'Einreichung übernehmen')
+    check('Übernehmen: zeigt, von wem es kommt', 'Anna, anna@example.org' in e.inner_text('#einrInfo'))
+    e.click('#btnRoh'); e.wait_for_timeout(800)
+    check('Übernehmen: als Rohfassung gespeichert', 'rohfassungen/waescheklammern-klauen.txt' in gh.files and 'Nicht an Haaren ziehen' in gh.files.get('rohfassungen/waescheklammern-klauen.txt', ''))
+    check('Übernehmen: Einreichung als erledigt markiert und aus der Liste', [r['status'] for r in sb.rows if r['titel'] == 'Wäscheklammern klauen'] == ['uebernommen'] and e.locator('.einr-item').count() == 1)
+    e.evaluate("(()=>{const s=JSON.parse(localStorage.getItem('manna-editor-supabase'));s.exp=1;localStorage.setItem('manna-editor-supabase',JSON.stringify(s));})()")
+    e.reload(); e.wait_for_timeout(800)
+    check('Eingereicht: abgelaufene Anmeldung wird erneuert', e.locator('.einr-item').count() == 1 and 'admin-2' in e.evaluate("localStorage.getItem('manna-editor-supabase')"))
+    e.locator('.einr-item').nth(0).locator('.btn').click(); e.wait_for_timeout(200); e.click('#mBtns .danger'); e.wait_for_timeout(500)
+    check('Ablehnen: Einreichung gelöscht', not any(r['id'].endswith('99') for r in sb.rows) and 'Gerade nichts Neues' in e.inner_text('#einrList'))
+    e.click('#btnSbLogout'); e.wait_for_timeout(200)
+    check('Eingereicht: Abmelden löscht die Anmeldung', e.evaluate("localStorage.getItem('manna-editor-supabase')") is None and e.locator('#einrLogin:not([hidden])').count() == 1)
+    check('Eingereicht: keine JavaScript-Fehler (auch keine CSP-Verstöße)', not errs, '; '.join(errs))
+    b.close()
+
 class FakeGitHub:
     """Nachgebautes GitHub (nur was der Editor braucht). Hält die Dateien im Speicher."""
     TOKEN = 'testtoken'
@@ -818,6 +948,7 @@ if __name__ == '__main__':
             browser_checks(p)
             mobile_checks(p)
             editor_checks(p)
+            einreichen_checks(p)
     except Exception:
         traceback.print_exc(); results.append(('Testlauf ohne Absturz', False, ''))
     finally:

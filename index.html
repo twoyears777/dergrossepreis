@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://twoyears.goatcounter.com; font-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://twoyears.goatcounter.com; font-src 'self' data:; connect-src 'self' https://atdfiktajxmhjqrhwgbb.supabase.co; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -217,8 +217,59 @@
     <div class="filters" id="filters" role="group" aria-label="Filter"></div>
     <div class="coll-head"><span id="collCount"></span><span class="coll-tools"><button class="btn" id="btnRandom">Zufälliges Spiel</button><button class="btn" id="btnFilterReset">Filter zurücksetzen</button></span></div>
     <ul class="games" id="gameList"></ul>
+    <div class="coll-submit"><button class="btn" id="btnSubmitOpen">Selbst ein Spiel einreichen</button></div>
   </div>
   <button class="back-link" id="btnCollBack">← Startseite</button>
+</div>
+
+<div class="screen" id="submitScreen">
+  <h1 class="menu-title" id="submitTitle">Hilf uns beim Content!</h1>
+  <form class="sub-form" id="subForm" novalidate autocomplete="off">
+    <p class="sub-intro">Irgendwie hat doch jeder so eigene Perlen. Schick uns deine, damit viele andere davon profitieren können.</p>
+    <section class="sec">
+      <h2>Das Spiel</h2>
+      <label class="f" data-s="name">Name<input class="inp" id="sName" maxlength="60" placeholder="z. B. Zeitungsschlagen"></label>
+      <label class="f" data-s="kurz">Kurzbeschreibung (ein Satz)<textarea class="ta" id="sKurz" rows="2" maxlength="300" placeholder="Worum geht es?"></textarea></label>
+    </section>
+    <section class="sec">
+      <h2>Für wen und wo (optional)</h2>
+      <div class="f">Alter<div class="fchips" id="sAlter" role="group" aria-label="Alter"></div></div>
+      <div class="sub-pair">
+        <label class="f">Personen mindestens<input class="inp" id="sMin" type="number" min="1" max="999" inputmode="numeric"></label>
+        <label class="f">Personen höchstens (leer = egal)<input class="inp" id="sMax" type="number" min="1" max="999" inputmode="numeric" placeholder="egal"></label>
+      </div>
+      <div class="f">Ort<div class="fchips" id="sOrt" role="group" aria-label="Ort"></div></div>
+      <label class="f">Dauer<input class="inp" id="sDauer" maxlength="40" placeholder="z. B. ca. 15 Minuten"></label>
+    </section>
+    <section class="sec">
+      <h2>Ablauf</h2>
+      <p class="hint">Verwende „-“ für Aufzählungen und „1.“ ... für Nummerierungen etc.</p>
+      <label class="f" data-s="ablauf">So geht’s<textarea class="ta" id="sAblauf" rows="7" maxlength="3500"></textarea></label>
+      <label class="f">Material (eins pro Zeile, leer = kein Material)<textarea class="ta" id="sMaterial" rows="3" maxlength="800"></textarea></label>
+      <label class="f">Varianten (optional, eine pro Zeile)<textarea class="ta" id="sVarianten" rows="3" maxlength="1200"></textarea></label>
+      <label class="f">Pädagogische Gedanken (optional)<textarea class="ta" id="sPaed" rows="3" maxlength="1200"></textarea></label>
+      <label class="f">Fragen zum Nachgespräch (optional)<textarea class="ta" id="sNach" rows="3" maxlength="800"></textarea></label>
+    </section>
+    <section class="sec">
+      <h2>Sicherheit und Tipp</h2>
+      <label class="f">Gefahren und Risiken (eins pro Zeile)<textarea class="ta" id="sRisiken" rows="3" maxlength="1200" placeholder="Worauf muss die Spielleitung achten?"></textarea></label>
+      <label class="f">Tipp (optional)<textarea class="ta" id="sTipp" rows="2" maxlength="400"></textarea></label>
+    </section>
+    <section class="sec">
+      <h2>Von dir</h2>
+      <p class="hint">freiwillig, nur falls wir Rückfragen haben</p>
+      <div class="sub-pair">
+        <label class="f">Dein Name<input class="inp" id="sVon" maxlength="80" autocomplete="name"></label>
+        <label class="f">E-Mail<input class="inp" id="sMail" type="email" maxlength="200" autocomplete="email"></label>
+      </div>
+      <label class="sub-hp" aria-hidden="true">Website<input id="sWebsite" tabindex="-1" autocomplete="off"></label>
+      <label class="check" data-s="rechte"><input type="checkbox" id="sRechte"><span>Ich habe das Spiel selbst beschrieben oder darf es teilen. Das Manna-Team darf es bearbeiten und ggf. veröffentlichen.</span></label>
+      <div class="row sub-send"><button type="submit" class="primary" id="btnSubmitSend">Einreichen</button></div>
+      <p class="sub-msg" id="subMsg" role="alert"></p>
+    </section>
+  </form>
+  <div class="sub-done" id="subDone" hidden><p>Danke, dass du mithilfst, unsere Sammlung gigantisch zu machen. Liebe geht raus! &lt;3</p></div>
+  <button class="back-link" id="btnSubmitBack">← Zur Spielesammlung</button>
 </div>
 
 <div class="screen" id="gameScreen">
@@ -414,6 +465,8 @@
 <script src="js/menues.js"></script>
 <script src="js/zuschauer.js"></script>
 <script src="js/sammlung.js"></script>
+<script src="js/supabase.js"></script>
+<script src="js/einreichen.js"></script>
 <script src="js/countdown.js"></script>
 <script src="js/eigenes-spiel.js"></script>
 </body>

@@ -3,8 +3,11 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.27.1';
+const APP_VERSION='1.28.0';
 const CHANGELOG=[
+  {v:'1.28.0',d:'25.11.2026',items:[
+    'Neu: Du kannst selbst ein Spiel für die Spielesammlung einreichen (Knopf ganz unten in der Spielesammlung)'
+  ]},
   {v:'1.27.0',d:'25.11.2026',items:[
     'Startseite: zwei neue Kacheln „Eine starke Spielesammlung“ und „Fertige Gameshows für den Beamer“',
     'Manna zählt jetzt anonym, wie viele Leute die Seite besuchen (ohne Cookies, mit GoatCounter). Mehr dazu im Datenschutz'
