@@ -410,6 +410,7 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 225: ← Zurück zum Spiel
 - Z. 225: ← Pädagogischer Kram
 - Z. 227: …
+- Z. 227: …
 - Z. 228: ………
 - Z. 250: Spiel jetzt beenden? … … noch offen. Danach kommt die Siegerehrung.
 - Z. 250: Spiel beenden und Siegerehrung zeigen?
@@ -711,24 +712,25 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 20: Was ich von mir zeige: Gefühle, Haltung, Befinden. Beim Satz „Die Tür ist offen.“ zum Beispiel: „Mir ist kalt.“ Wer auf diesem Ohr hört, fragt sich: Was ist mit der Person los?
 - Z. 21: Was ich von dir halte und wie wir zueinander stehen. Beim Satz „Die Tür ist offen.“ zum Beispiel: „Du denkst nie daran, sie zu schließen.“ Wer auf diesem Ohr hört, fühlt sich schnell angegriffen oder bestätigt.
 - Z. 22: Wozu ich dich bringen möchte. Beim Satz „Die Tür ist offen.“ zum Beispiel: „Mach sie bitte zu.“ Wer auf diesem Ohr hört, fragt sich: Was soll ich jetzt tun?
-- Z. 26: Wo Gruppen spielen, toben und unterwegs sind, kann immer etwas passieren. Gute Vorbereitung sorgt dafür, dass im Ernstfall niemand lange überlegen muss.
-- Z. 28: Was tun im Notfall?
-- Z. 28: Hier geht es um den Rahmen, den es für den Notfall braucht. Eine Anleitung zur Ersten Hilfe ersetzt das nicht, dafür gibt es Erste-Hilfe-Kurse.
-- Z. 30: Bei jeder Gruppenstunde und jeder Aktion sollte mindestens eine Person aus dem Team einen aktuellen Erste-Hilfe-Kurs haben. Für die Juleica muss der Kurs meist innerhalb der letzten zwei Jahre gemacht worden sein. Bei Kindergruppen ist ein Kurs „Erste Hilfe am Kind“ sinnvoll.
-- Z. 31: Welches Material sollte da sein?
-- Z. 31: - Ein vollständiger Verbandkasten, der regelmäßig geprüft wird (Ablaufdaten!)
-- Z. 31: - Kühlpacks
-- Z. 31: - Bei Ausflügen und Freizeiten: eine Erste-Hilfe-Tasche zum Mitnehmen
-- Z. 32: Wo ist das Material?
-- Z. 32: Alle im Team sollten wissen, wo Verbandkasten, Notfallnummern und Feuerlöscher sind, und wie man zur Not ins Gebäude und wieder hinaus kommt. Am besten zeigt man das jedem neuen Teammitglied einmal.
-- Z. 33: Wie reagiere ich im Notfall?
-- Z. 33: Ruhe bewahren und sich einen Überblick verschaffen. Die Unfallstelle absichern, sich selbst nicht in Gefahr bringen.
-- Z. 33: Eine Person kümmert sich um die verletzte Person, eine andere um den Rest der Gruppe. Die Gruppe wird beschäftigt und von der Unfallstelle weggebracht.
-- Z. 34: Wen kontaktiere ich?
-- Z. 34: - Notruf 112 bei allem, was ernst sein könnte. Wer anruft, beantwortet die Fragen der Leitstelle und legt nicht als Erstes auf.
-- Z. 34: - Ärztlicher Bereitschaftsdienst 116 117, wenn es nicht lebensbedrohlich ist, aber ein Arzt drauf schauen sollte.
-- Z. 34: - Die verantwortliche Person beim Träger, zum Beispiel Jugendreferent oder Gemeindeleitung.
-- Z. 34: Danach alles kurz aufschreiben: Was ist wann passiert, und was wurde gemacht? Das hilft, falls später Fragen kommen, zum Beispiel von der Versicherung.
+- Z. 25: Praktisches Wissen für den Notfall
+- Z. 27: Wo Gruppen spielen, toben und unterwegs sind, kann immer etwas passieren. Gute Vorbereitung sorgt dafür, dass im Ernstfall niemand lange überlegen muss.
+- Z. 29: Was tun im Notfall?
+- Z. 29: Hier geht es um den Rahmen, den es für den Notfall braucht. Eine Anleitung zur Ersten Hilfe ersetzt das nicht, dafür gibt es Erste-Hilfe-Kurse.
+- Z. 31: Bei jeder Gruppenstunde und jeder Aktion sollte mindestens eine Person aus dem Team einen aktuellen Erste-Hilfe-Kurs haben. Für die Juleica muss der Kurs meist innerhalb der letzten zwei Jahre gemacht worden sein. Bei Kindergruppen ist ein Kurs „Erste Hilfe am Kind“ sinnvoll.
+- Z. 32: Welches Material sollte da sein?
+- Z. 32: - Ein vollständiger Verbandkasten, der regelmäßig geprüft wird (Ablaufdaten!)
+- Z. 32: - Kühlpacks
+- Z. 32: - Bei Ausflügen und Freizeiten: eine Erste-Hilfe-Tasche zum Mitnehmen
+- Z. 33: Wo ist das Material?
+- Z. 33: Alle im Team sollten wissen, wo Verbandkasten, Notfallnummern und Feuerlöscher sind, und wie man zur Not ins Gebäude und wieder hinaus kommt. Am besten zeigt man das jedem neuen Teammitglied einmal.
+- Z. 34: Wie reagiere ich im Notfall?
+- Z. 34: Ruhe bewahren und sich einen Überblick verschaffen. Die Unfallstelle absichern, sich selbst nicht in Gefahr bringen.
+- Z. 34: Eine Person kümmert sich um die verletzte Person, eine andere um den Rest der Gruppe. Die Gruppe wird beschäftigt und von der Unfallstelle weggebracht.
+- Z. 35: Wen kontaktiere ich?
+- Z. 35: - Notruf 112 bei allem, was ernst sein könnte. Wer anruft, beantwortet die Fragen der Leitstelle und legt nicht als Erstes auf.
+- Z. 35: - Ärztlicher Bereitschaftsdienst 116 117, wenn es nicht lebensbedrohlich ist, aber ein Arzt drauf schauen sollte.
+- Z. 35: - Die verantwortliche Person beim Träger, zum Beispiel Jugendreferent oder Gemeindeleitung.
+- Z. 35: Danach alles kurz aufschreiben: Was ist wann passiert, und was wurde gemacht? Das hilft, falls später Fragen kommen, zum Beispiel von der Versicherung.
 
 ## editor/editor.js
 

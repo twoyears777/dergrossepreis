@@ -22,7 +22,8 @@ const ARTIKEL=[
     {id:'appell',titel:'Appell',text:'Wozu ich dich bringen möchte. Beim Satz „Die Tür ist offen.“ zum Beispiel: „Mach sie bitte zu.“ Wer auf diesem Ohr hört, fragt sich: Was soll ich jetzt tun?'}
   ]},
   /* ENTWURF: Texte sind Vorschläge von Claude und werden durch Lukas' Fassung ersetzt. */
-  {id:'sicherheit',titel:'Sicherheit',kachelTitel:'Sicherheit',kachel:'Damit im Ernstfall alle wissen, was zu tun ist.',
+  {id:'sicherheit',titel:'Sicherheit',kachelTitel:'Sicherheit',kachel:'Praktisches Wissen für den Notfall',
+   kiHinweis:'Dieser Artikel ist aktuell noch mit KI generiert.',
    einleitung:'Wo Gruppen spielen, toben und unterwegs sind, kann immer etwas passieren. Gute Vorbereitung sorgt dafür, dass im Ernstfall niemand lange überlegen muss.',
    abschnitte:[
     {id:'notfall',titel:'Was tun im Notfall?',text:'Hier geht es um den Rahmen, den es für den Notfall braucht. Eine Anleitung zur Ersten Hilfe ersetzt das nicht, dafür gibt es Erste-Hilfe-Kurse.',

@@ -136,6 +136,7 @@ Ideen, die noch keiner Etappe fest zugeordnet sind. Neue Ideen kommen hier rein.
   - Stattdessen: SongSelect-Dateien importieren oder Text einfügen, automatisch in Folien aufteilen, Anzeige über die Zuschaueransicht
   - CCLI-Angaben unten auf jeder Folie, Liste der gezeigten Lieder für die CCLI-Meldung
   - Keine Liedtexte mitliefern, nur was Nutzer selbst importieren (CCLI-Lizenz der Gemeinde nötig)
+- Später: **Feedback-Button**, damit Nutzer Rückmeldung geben können (erst zur Testphase, Button-Text formuliert Lukas selbst)
 - Später denkbar: Jugendliche spielen mit dem eigenen Handy mit (Buzzer, Schätzzahlen eintippen)
 
 ---
