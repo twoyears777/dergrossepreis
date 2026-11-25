@@ -1,5 +1,10 @@
 # Changelog – Manna
 
+## 1.27.0 – 25.11.2026
+- Startseite: zwei neue Kacheln „Eine starke Spielesammlung“ und „Fertige Gameshows für den Beamer“
+- Manna zählt jetzt anonym, wie viele Leute die Seite besuchen (ohne Cookies, mit GoatCounter). Mehr dazu im Datenschutz
+- Intern: eigenes Zählscript js/zaehler.js (kein Nachladen von fremden Servern), zählt nur auf manna-games.de und nicht im Editor; eigene Besuche ausschließen über manna-games.de/#nicht-zaehlen
+
 ## 1.26.0 – 25.11.2026
 - Neu: Spiele mit dem Label „Erlebnispädagogik“, mit eigenem Filter in der Spielesammlung
 - Neue Kachel „Erlebnispädagogik“ bei „Pädagogischer Kram“

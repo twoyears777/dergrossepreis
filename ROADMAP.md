@@ -69,7 +69,8 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Am Laptop und PC voll nutzbar, mit allen Beamer-Funktionen
 - ✔ Auf Handy und Tablet startet kein Beamer-Spiel (Der große Preis, Eigenes Spiel, Countdown). Stattdessen kommt die Meldung „Diese Funktion ist aktuell nur auf einem Laptop oder PC verfügbar.“, ohne dass etwas startet. Tablets über den Touchscreen erkennen (iPad meldet sich im Browser als Mac) (Version 1.19.0)
 - ✔ Startseite: kurze Erklärung mit Link zur Vision, neue Screenshots (Version 1.19.0)
-- Startseite entschlankt: nur noch zwei Kacheln („Du brauchst spontan einen Ersatz?“ und „Erstelle eigene Quizze und Gameshows!“). Diese zwei inhaltlich neu schreiben (Lukas)
+- ✔ Startseite entschlankt: zwei Kacheln, von Lukas neu geschrieben („Eine starke Spielesammlung“ und „Fertige Gameshows für den Beamer“) (Version 1.27.0)
+- ✔ Anonyme Besucherzählung mit GoatCounter, ohne Cookies, Datenschutz angepasst (Version 1.27.0)
 - Alles ohne Beamer (Spielesammlung, Vorlagen, Vorbereiten) bleibt auf Handy und Tablet nutzbar
 - ✔ Arbeitgeber geklärt (24.11.2026), er befürwortet das Projekt
 - ✔ Impressum und Datenschutzhinweis (Version 1.24.0)

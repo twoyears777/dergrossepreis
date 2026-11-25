@@ -46,8 +46,8 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 88: (Attribut) Spiel Zeitungsschlagen: Eckdaten, passende Gruppenphasen, Material und Ablauf
 - Z. 89: (Attribut) Der große Preis: Spielbrett mit fünf Kategorien und dem Punktestand der Gruppen
 - Z. 93: Wir wissen, was es in der Jugendarbeit braucht!
-- Z. 95: Du brauchst spontan einen Ersatz? Jemand ist ausgefallen? Kein Problem! Wähle einfach eine Vorlage aus und starte direkt in den Spieleabend rein!
-- Z. 96: Erstelle eigene Quizze und Gameshows! Eigene Fragen, verschiedene Fragetypen, automatische Punktezähler. Es war noch nie so einfach!
+- Z. 95: Eine starke Spielesammlung. Spiele sind immer gut, wissen wir, also liefern wir. Aber mit Fokus auf Qualität, wir schreiben unsere Spiele alle selbst auf Basis eigener Erfahrungen und ordnen sie pädagogisch ein!
+- Z. 96: Fertige Gameshows für den Beamer. Manchmal braucht man schnell ein Abendprogramm. Here we go. Ist noch in Arbeit, aber das soll mal richtig nice werden!
 - Z. 101: Was wollen wir?
 - Z. 103: Ey, ganz im Ernst: Soviel wir planen und machen und tun, sooft erleben wir es, dass wir spontan sein müssen. Spontan ein Icebreaker, spontan einen Abend füllen – das ist doch ehrlich Alltag in der Kinder- und Jugendarbeit. Es gibt viele Tools, die uns da helfen sollen. Doch so richtig hat uns nie eins überzeugt.
 - Z. 104: Wir wollten etwas, das uns verlässlich „versorgt“, wo wir immer ein passendes Spiel bekommen. Wie krass wäre es bitte, das eigene Smartphone einfach an den Beamer anzuschließen und eine fertig vorbereitete Spieleshow auf dem Handy spontan parat zu haben? Inklusive interaktiver Beameransicht und Moderatorenansicht auf dem Handy, Tablet oder Laptop?
