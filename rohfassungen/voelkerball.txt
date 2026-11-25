@@ -1,0 +1,24 @@
+MANNA-SPIEL v1
+Name: Völkerball
+Kurzbeschreibung: Zwei Teams werfen sich gegenseitig ab. Wer getroffen wird, muss ins Außenfeld.
+Alter: Kinder (6–12), Jugendliche (13–17), Erwachsene (18+)
+Personen: 12 bis 30
+Ort: drinnen, draußen
+Dauer: 15-30
+Gruppenphasen: Rollenfindungsphase, Differenzierungsphase
+
+Material:
+- Ein weicher Ball
+- Ein Spielfeld mit Mittellinie und Außenfeldern
+
+Ablauf:
+Zwei Teams, jedes hat ein Innenfeld und ein Außenfeld hinter dem gegnerischen Feld. Zu Beginn geht aus jedem Team eine Person ins Außenfeld.
+Die Teams werfen den Ball auf die Gegner im Innenfeld. Wer getroffen wird und den Ball nicht fängt, geht ins Außenfeld.
+Aus dem Außenfeld darf man ebenfalls abwerfen. Wer von dort trifft, darf (je nach Absprache) zurück ins Innenfeld.
+Das Team, dessen Innenfeld zuerst leer ist, hat verloren.
+
+Varianten:
+Mit zwei Bällen, oder mit einem „König“, der drei Leben hat.
+
+Gefahren und Risiken:
+- Nur weiche Bälle, keine Kopftreffer (zählen nicht).

@@ -1,0 +1,20 @@
+MANNA-SPIEL v1
+Name: Jägerball
+Kurzbeschreibung: Jeder getroffene Hase wird zum Jäger, bis niemand mehr übrig ist.
+Alter: Kinder (6–12), Jugendliche (13–17)
+Personen: 10 bis 40
+Ort: drinnen, draußen
+Dauer: 10-15
+Gruppenphasen: Anfangsphase
+
+Material:
+- Ein weicher Ball
+
+Ablauf:
+Eine Person ist Jäger und hat den Ball, alle anderen sind Hasen.
+Der Jäger darf mit dem Ball nicht laufen. Er versucht, Hasen abzuwerfen.
+Wer getroffen wird, wird ebenfalls Jäger. Die Jäger spielen sich den Ball zu und dürfen dabei nicht mit dem Ball laufen.
+Wer zuletzt übrig ist, ist der Sieger und fängt in der nächsten Runde als Jäger an.
+
+Gefahren und Risiken:
+- Nur weiche Bälle, keine Kopftreffer.

@@ -1,0 +1,21 @@
+MANNA-SPIEL v1
+Name: Kartenrutschen
+Kurzbeschreibung: Wer seine Farbe hört, rutscht einen Platz weiter, notfalls auf den Schoß des Nachbarn.
+Alter: Kinder (6–12), Jugendliche (13–17)
+Personen: 8 bis 30
+Ort: drinnen
+Dauer: 10-15
+Gruppenphasen: Anfangsphase, Rollenfindungsphase
+
+Material:
+- Ein Kartenspiel
+- Stühle im Kreis
+
+Ablauf:
+Alle sitzen im Stuhlkreis. Jede Person bekommt eine Kartenfarbe zugeteilt (Kreuz, Pik, Herz, Karo).
+Die Leitung deckt Karte um Karte auf und sagt die Farbe. Alle mit dieser Farbe rutschen einen Stuhl nach rechts, auch wenn dort schon jemand sitzt, dann eben auf den Schoß.
+Wer jemanden auf dem Schoß hat, darf nicht rutschen, bis er wieder frei ist.
+Gewonnen hat, wer zuerst wieder auf seinem Ausgangsplatz ankommt.
+
+Gefahren und Risiken:
+- Wer zu viele auf dem Schoß hat, darf abbrechen. Ab drei Personen pro Stuhl gilt die Runde als gestoppt.
