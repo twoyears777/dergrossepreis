@@ -54,22 +54,26 @@ function emptyGame(){
   s.categories=[1,2,3,4,5].map(i=>({name:'Kategorie '+i,items:s.points.map(blank)}));
   return s;
 }
+/* Obergrenzen für alles, was aus dem Speicher oder aus Dateien kommt (Dateien können von anderen stammen) */
+const LIM={teams:8,points:10,cats:50,team:30,cat:40,title:60,text:5000,answer:2000,option:500,unit:40};
+const isObj=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+const cut=(v,n)=>String(v==null?'':v).slice(0,n);
 function normalize(d){
   const s=sample();
-  if(!d||typeof d!=='object') return s;
+  if(!isObj(d)) return s;
   const o={
-    title:typeof d.title==='string'?d.title:s.title,
-    points:Array.isArray(d.points)&&d.points.length?d.points.map(n=>Number(n)||0):s.points,
-    settings:Object.assign({},s.settings,d.settings||{}),
-    teams:Array.isArray(d.teams)?d.teams.filter(t=>t&&typeof t==='object').map((t,i)=>({id:typeof t.id==='string'&&/^[\w-]{1,40}$/.test(t.id)?t.id:uid(),name:String(t.name||('Gruppe '+(i+1))),color:(()=>{const c=t.color||COLORS[i%COLORS.length];const k=OLD_COLORS.indexOf(c);const f=k>=0?COLORS[k]:c;return /^#[0-9a-f]{6}$/i.test(f)?f:COLORS[i%COLORS.length];})(),score:Number(t.score)||0})):s.teams,
-    categories:Array.isArray(d.categories)?d.categories.map(c=>({name:String(c.name||''),items:Array.isArray(c.items)?c.items.map(it=>({type:TYPES.includes(it.type)?it.type:'frage',text:String(it.text||''),answer:String(it.answer||''),
-      options:[0,1,2,3].map(i=>String((Array.isArray(it.options)&&it.options[i])||'')),correct:Math.min(3,Math.max(0,Number(it.correct)||0)),unit:String(it.unit||'')})):[]})):s.categories,
-    used:d.used&&typeof d.used==='object'?d.used:{},
-    history:Array.isArray(d.history)?d.history:[],
+    title:typeof d.title==='string'?cut(d.title,LIM.title):s.title,
+    points:Array.isArray(d.points)&&d.points.length?d.points.slice(0,LIM.points).map(n=>{n=Math.round(Number(n));return Number.isFinite(n)?Math.min(99999,Math.max(-99999,n)):0;}):s.points,
+    settings:Object.assign({},s.settings,isObj(d.settings)?d.settings:{}),
+    teams:Array.isArray(d.teams)?d.teams.filter(isObj).slice(0,LIM.teams).map((t,i)=>({id:typeof t.id==='string'&&/^[\w-]{1,40}$/.test(t.id)?t.id:uid(),name:cut(t.name||('Gruppe '+(i+1)),LIM.team),color:(()=>{const c=t.color||COLORS[i%COLORS.length];const k=OLD_COLORS.indexOf(c);const f=k>=0?COLORS[k]:c;return /^#[0-9a-f]{6}$/i.test(f)?f:COLORS[i%COLORS.length];})(),score:Number(t.score)||0})):s.teams,
+    categories:Array.isArray(d.categories)?d.categories.filter(isObj).slice(0,LIM.cats).map(c=>({name:cut(c.name,LIM.cat),items:Array.isArray(c.items)?c.items.map(it=>isObj(it)?it:{}).map(it=>({type:TYPES.includes(it.type)?it.type:'frage',text:cut(it.text,LIM.text),answer:cut(it.answer,LIM.answer),
+      options:[0,1,2,3].map(i=>cut((Array.isArray(it.options)&&it.options[i])||'',LIM.option)),correct:Math.min(3,Math.max(0,Number(it.correct)||0)),unit:cut(it.unit,LIM.unit)})):[]})):s.categories,
+    used:isObj(d.used)?d.used:{},
+    history:Array.isArray(d.history)?d.history.filter(h=>isObj(h)&&typeof h.k==='string'):[],
     turn:Number(d.turn)||0
   };
-  o.categories.forEach(c=>{while(c.items.length<o.points.length)c.items.push(blank());});
-  if(o.turn>=o.teams.length)o.turn=0;
+  o.categories.forEach(c=>{c.items=c.items.slice(0,o.points.length);while(c.items.length<o.points.length)c.items.push(blank());});
+  if(!(o.turn>=0&&o.turn<o.teams.length))o.turn=0;
   return o;
 }
 function load(){try{const r=localStorage.getItem(KEY);if(r)return normalize(JSON.parse(r));}catch(e){}return sample();}

@@ -1,5 +1,17 @@
 # Changelog – Manna
 
+## 1.28.1 – (noch nicht veröffentlicht)
+- Fehlerbehebungen aus der Sicherheits- und Stabilitätsprüfung. Kein Eintrag im App-Changelog.
+- Import: kaputte Dateien (leere Einträge) stürzen nicht mehr still ab; Obergrenzen für Gruppen (8), Punktwerte, Kategorien, Textlängen, Vorlagen und Bilder aus Dateien
+- Zwei offene Manna-Tabs überschreiben sich das Spielbrett nicht mehr gegenseitig; neue Bilder sind 24 Stunden vor dem Aufräumen eines anderen Tabs geschützt
+- Gruppe löschen: der Zug bleibt bei derselben Gruppe
+- „Jetzt aktualisieren“ wartet, solange ein Countdown läuft
+- Spiel einreichen: ohne Internet eigene Meldung statt „zu viele Einsendungen“
+- Editor: Entwürfe je Spiel getrennt (vorher überschrieb ein Entwurf den anderen); übernommene Einreichungen behalten ihren Entwurf
+- Editor: übernommene Einreichungen werden in Supabase gelöscht (wie in der Datenschutzerklärung zugesagt), nicht nur markiert
+- Editor: kann der Schlüssel den Veröffentlichungsstatus nicht abfragen, heißt es nicht mehr „ist online“
+- Intern: Playwright-Version in den Tests fest (1.63.0), Countdown-Länge aus dem Speicher nach oben begrenzt, laufendes eigenes Spiel wird beim Laden geprüft
+
 ## 1.28.0 – 25.11.2026
 - Neu: Du kannst selbst ein Spiel für die Spielesammlung einreichen (Knopf ganz unten in der Spielesammlung)
 - Editor: neuer Bereich „Eingereicht“ (Anmeldung mit dem Supabase-Admin-Login). Einreichungen lassen sich als Rohfassung übernehmen oder ablehnen (wird gelöscht)

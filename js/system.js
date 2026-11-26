@@ -14,7 +14,7 @@ $('#clDialog').onclick=e=>{if(e.target.id==='clDialog')$('#clDialog').classList.
 $('#btnChangelog').onclick=()=>showChangelog(false);
 function cmpVer(a,b){const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return (x[i]||0)-(y[i]||0);}return 0;}
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
-function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true;}catch(e){return false;}}
 (function whatsNew(){
   if(VIEW)return;
   const seen=lsGet('grosserPreis_seenVersion');
@@ -33,6 +33,8 @@ function showUpdateBar(){if(!VIEW)$('#updBar').classList.add('show');}
 $('#updX').onclick=()=>$('#updBar').classList.remove('show');
 $('#updNow').onclick=()=>{
   if(cur||$('#endScreen').classList.contains('show')){toast('Erst die aktuelle Frage abschließen.');return;}
+  // TEXT-VORSCHLAG, wartet auf Lukas' Fassung
+  if(typeof TM!=='undefined'&&(TM.phase==='running'||TM.phase==='paused')){toast('Erst den Countdown beenden.');return;}
   reloading=true;location.reload();
 };
 try{

@@ -25,6 +25,22 @@
     json(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
   };
 
+  /* Entwürfe: einer je Spiel (Schlüssel = Spiel-id, '' = neues Spiel, 'einr:<id>' = übernommene Einreichung).
+     Früher gab es nur einen Entwurf für alles; der wird beim ersten Lesen übernommen. */
+  const drafts = {
+    all() {
+      let d = store.json(K_DRAFT, {});
+      if (!d || typeof d !== 'object' || Array.isArray(d)) d = {};
+      if (typeof d.key === 'string' && d.v) d = { [d.key]: { v: d.v, t: d.t } };
+      const out = {}, alt = Date.now() - 90 * 864e5;
+      Object.keys(d).filter(k => d[k] && d[k].v && Number(d[k].t) > alt).sort((a, b) => d[b].t - d[a].t).slice(0, 30).forEach(k => { out[k] = d[k]; });
+      return out;
+    },
+    write(d) { if (Object.keys(d).length) { if (!store.set(K_DRAFT, JSON.stringify(d))) toast('Entwurf konnte auf diesem Gerät nicht gespeichert werden (Speicher voll).'); } else store.del(K_DRAFT); },
+    get(k) { return this.all()[k] || null; },
+    set(k, v) { const d = this.all(); d[k] = { v, t: Date.now() }; this.write(d); },
+    del(k) { const d = this.all(); delete d[k]; this.write(d); }
+  };
   let token = store.get(K_TOKEN) || '';
   let games = [];          // {id, path, sha, text, spiel, fehler}
   let ED = null;           // aktuelles Formular: {orig, sig}
@@ -191,6 +207,7 @@
     runs().forEach((r, i) => {
       const txt = r.state === 'run' ? esc(r.text) + ' – wird geprüft und veröffentlicht …'
         : r.state === 'ok' ? esc(r.text) + ' – ist online. In der App erscheint es beim nächsten Öffnen der Spielesammlung.'
+        : r.state === 'unklar' ? esc(r.text) + ' – ob es online ist, kann der Editor nicht abfragen (dem Schlüssel fehlt „Actions: Read-only“). Bitte in der App nachsehen.'
         : esc(r.text) + ' – Veröffentlichung fehlgeschlagen. Online bleibt die vorherige Fassung.' + (r.url ? ' <a href="' + esc(r.url) + '" target="_blank" rel="noopener">Details</a>' : '');
       const el = document.createElement('div');
       el.className = 'notice ' + r.state;
@@ -210,7 +227,7 @@
         const run = (d.workflow_runs || []).find(x => /tests\.yml$/.test(x.path || '')) || null;
         if (run && run.status === 'completed') { r.state = run.conclusion === 'success' ? 'ok' : 'err'; r.url = run.html_url; }
         else if (!run && Date.now() - r.t > 10 * 60e3) { r.state = 'err'; }
-      } catch (e) { if (e.status === 403 || e.status === 404) { r.state = 'ok'; r.text += ' (Status nicht abrufbar, bitte in der App prüfen)'; } }
+      } catch (e) { if (e.status === 403 || e.status === 404) r.state = 'unklar'; }
       if (r.state === 'run' && Date.now() - r.t > 20 * 60e3) r.state = 'err';
     }
     saveRuns(a); renderNotices();
@@ -312,8 +329,8 @@
     if (!ED) return;
     const v = formValues();
     const sig = JSON.stringify(v);
-    if (sig !== ED.sig) store.set(K_DRAFT, JSON.stringify({ key: ED.orig ? ED.orig.id : '', v, t: Date.now() }));
-    else store.del(K_DRAFT);
+    if (sig !== ED.sig) drafts.set(ED.key, v);
+    else drafts.del(ED.key);
     document.querySelectorAll('#form .bad').forEach(el => el.classList.remove('bad'));
     renderPreview(v);
   }
@@ -352,23 +369,23 @@
     $('#prevCard').hidden = txt; $('#prevTxt').hidden = !txt;
   }
 
-  function openEdit(orig) {
-    const base = orig ? valuesFromGame(orig.spiel) : { alter: ['jugend'], ort: ['drinnen'], min: '6', max: '' };
-    ED = { orig, sig: '' };
+  function openEdit(orig, einreichung) {
+    const base = orig ? valuesFromGame(orig.spiel) : einreichung ? werteAus(einreichung) : { alter: ['jugend'], ort: ['drinnen'], min: '6', max: '' };
+    ED = { orig, sig: '', key: orig ? orig.id : einreichung ? 'einr:' + einreichung.id : '', einreichung: einreichung || null };
     $('#einrInfo').hidden = true;
     setForm(base); ED.sig = JSON.stringify(formValues());
     $('#editTitle').textContent = orig ? (orig.roh ? 'Rohfassung bearbeiten' : 'Spiel bearbeiten') : 'Neues Spiel';
     $('#btnDelete').hidden = !orig;
     $('#btnRoh').hidden = !!(orig && !orig.roh);
     $('#rohInfo').hidden = !(orig && orig.roh);
-    const box = $('#draftBox'), d = store.json(K_DRAFT, null);
+    const box = $('#draftBox'), d = drafts.get(ED.key);
     box.hidden = true;
-    if (d && d.key === (orig ? orig.id : '') && JSON.stringify(d.v) !== ED.sig) {
+    if (d && JSON.stringify(d.v) !== ED.sig) {
       const when = new Date(d.t).toLocaleString('de-DE', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
       box.innerHTML = '<p>Hier gibt es einen nicht veröffentlichten Entwurf vom ' + esc(when) + '.</p><div class="row"><button type="button" class="primary" id="dRestore">Entwurf weiter bearbeiten</button><button type="button" class="btn" id="dDrop">Verwerfen</button></div>';
       box.hidden = false;
       $('#dRestore').onclick = () => { setForm(d.v); box.hidden = true; changed(); growAll(); };
-      $('#dDrop').onclick = () => { store.del(K_DRAFT); box.hidden = true; };
+      $('#dDrop').onclick = () => { drafts.del(ED.key); box.hidden = true; };
     }
     if (orig && orig.fehler.length) toast('Die Datei hat Fehler: ' + orig.fehler.join('; '));
     setTab(false); renderPreview(formValues()); show('vEdit'); growAll();
@@ -379,7 +396,7 @@
       const a = await dialog('Deine Änderungen sind noch nicht veröffentlicht. Der Entwurf bleibt auf diesem Gerät gespeichert.', [
         { label: 'Weiter bearbeiten', value: 'stay' }, { label: 'Entwurf verwerfen', value: 'drop' }, { label: 'Zur Liste', value: 'keep', cls: 'primary' }]);
       if (a === 'stay') return;
-      if (a === 'drop') store.del(K_DRAFT);
+      if (a === 'drop') drafts.del(ED.key);
     }
     ED = null; show('vList'); renderList();
   }
@@ -409,7 +426,7 @@
     let force = false;
     try {
       const sha = await commitWithChecks(changes, label, orig, path, () => force, f => { force = f; });
-      store.del(K_DRAFT);
+      drafts.del(ED.key);
       if (ED.einreichung) await einrErledigt(ED.einreichung);
       if (alsRoh) toast('Als Rohfassung gespeichert. In der App ist sie nicht zu sehen.');
       else { addRun(sha, '„' + res.g.name + '“'); toast('Veröffentlicht. GitHub prüft das Spiel jetzt und stellt es online.'); }
@@ -457,7 +474,7 @@
         if (now !== orig.sha && !(await confirmBox('„' + orig.spiel.name + '“ wurde inzwischen auf einem anderen Gerät geändert. Trotzdem löschen?', 'Löschen', 'danger')))
           throw Object.assign(new Error(''), { abgebrochen: true });
       });
-      store.del(K_DRAFT);
+      drafts.del(ED.key);
       addRun(sha, '„' + orig.spiel.name + '“ gelöscht');
       toast('Gelöscht. Die Spielesammlung wird jetzt aktualisiert.');
       await refreshAfter(); ED = null; show('vList'); renderList();
@@ -564,11 +581,8 @@
     });
   }
   function uebernehmen(e) {
-    openEdit(null);
-    setForm(werteAus(e));
-    ED.einreichung = e; ED.sig = JSON.stringify(formValues());
+    openEdit(null, e);
     $('#editTitle').textContent = 'Einreichung übernehmen';
-    $('#draftBox').hidden = true;
     const von = vonText(e), info = $('#einrInfo');
     info.innerHTML = '<p></p>';
     info.querySelector('p').textContent = 'Eingereicht am ' + datum(e.erstellt_am) + (von ? ' von ' + von : '') +
@@ -576,14 +590,16 @@
     info.hidden = false;
     renderPreview(formValues()); growAll();
   }
+  /* Übernommen = entschieden: Laut Datenschutzerklärung wird die Einreichung (mit Name und E-Mail) dann gelöscht.
+     Das Spiel selbst liegt ab jetzt als Datei im Repo. */
   async function einrErledigt(e) {
-    try { await sbFetch('/rest/v1/einreichungen?id=eq.' + encodeURIComponent(e.id), { method: 'PATCH', body: { status: 'uebernommen' } }); }
-    catch (er) { toast('Gespeichert, aber die Einreichung ist noch als neu markiert: ' + er.message); }
+    try { await sbFetch('/rest/v1/einreichungen?id=eq.' + encodeURIComponent(e.id), { method: 'DELETE' }); drafts.del('einr:' + e.id); }
+    catch (er) { toast('Gespeichert, aber die Einreichung ist noch nicht gelöscht: ' + er.message); }
     await loadEinr();
   }
   async function ablehnen(e) {
     if (!(await confirmBox('Einreichung „' + (str(e.titel, 60) || 'Ohne Namen') + '“ ablehnen? Sie wird endgültig gelöscht.', 'Ablehnen', 'danger'))) return;
-    try { await sbFetch('/rest/v1/einreichungen?id=eq.' + encodeURIComponent(e.id), { method: 'DELETE' }); toast('Einreichung gelöscht.'); }
+    try { await sbFetch('/rest/v1/einreichungen?id=eq.' + encodeURIComponent(e.id), { method: 'DELETE' }); drafts.del('einr:' + e.id); toast('Einreichung gelöscht.'); }
     catch (er) { toast('Nicht gelöscht: ' + er.message); }
     await loadEinr();
   }

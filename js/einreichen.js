@@ -53,7 +53,10 @@ async function sendSubmit(e){
     if(!r.ok)throw new Error(r.status);
     subDone();
   }catch(err){
-    msg.textContent='Crazy. Aktuell bekommen wir wohl zu viele Einsendungen. Versuche es bitte später erneut!';
+    // ohne Internet kommt fetch gar nicht erst an (TypeError) – dann nicht „zu viele Einsendungen“ behaupten
+    // TEXT-VORSCHLAG (offline), wartet auf Lukas' Fassung
+    if(navigator.onLine===false||err instanceof TypeError)msg.textContent='Du bist gerade offline. Dein Spiel ist noch hier – schick es ab, sobald du wieder Internet hast.';
+    else msg.textContent='Crazy. Aktuell bekommen wir wohl zu viele Einsendungen. Versuche es bitte später erneut!';
   }finally{subBusy=false;btn.disabled=false;}
 }
 function subDone(){

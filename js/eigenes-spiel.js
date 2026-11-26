@@ -50,7 +50,11 @@ function idb(){
   return idbP;
 }
 function idbDo(mode,fn){return idb().then(db=>new Promise((res,rej)=>{const tx=db.transaction('bilder',mode),rq=fn(tx.objectStore('bilder'));tx.oncomplete=()=>res(rq?rq.result:undefined);tx.onerror=()=>rej(tx.error);}));}
-function imgPut(id,data){IMG[id]=data;return idbDo('readwrite',st=>st.put(data,id)).catch(()=>{});}
+// Neue Bilder sind 24 Stunden vor dem Aufräumen geschützt: Sonst könnte ein zweiter offener Manna-Tab
+// Bilder löschen, die hier gerade in ein noch nicht gespeichertes Spiel eingefügt wurden.
+const NEWIMG_KEY='grosserPreis_neueBilder',NEWIMG_MS=864e5;
+function newImgs(){const o=jget(NEWIMG_KEY,{}),now=Date.now(),r={};if(o&&typeof o==='object')Object.keys(o).forEach(k=>{if(now-Number(o[k])<NEWIMG_MS)r[k]=Number(o[k]);});return r;}
+function imgPut(id,data){IMG[id]=data;const n=newImgs();n[id]=Date.now();lsSet(NEWIMG_KEY,JSON.stringify(n));return idbDo('readwrite',st=>st.put(data,id)).catch(()=>{});}
 function imgGet(id){if(IMG[id])return Promise.resolve(IMG[id]);return idbDo('readonly',st=>st.get(id)).then(v=>{if(v)IMG[id]=v;return v||'';}).catch(()=>'');}
 function imgDel(id){delete IMG[id];return idbDo('readwrite',st=>st.delete(id)).catch(()=>{});}
 function fillImgs(root){root.querySelectorAll('img[data-img]').forEach(el=>imgGet(el.dataset.img).then(src=>{if(src)el.src=src;else el.closest('figure')&&el.closest('figure').classList.add('missing');}));}
@@ -64,6 +68,7 @@ function gcImages(){
   const keep=new Set();ownGames().forEach(g=>ownImgRefs(g).forEach(i=>keep.add(i)));
   if(OE)ownImgRefs(OE.g).forEach(i=>keep.add(i));
   if(OR)ownImgRefs(OR.game).forEach(i=>keep.add(i));
+  const fresh=newImgs();Object.keys(fresh).forEach(i=>keep.add(i));lsSet(NEWIMG_KEY,JSON.stringify(fresh));
   idbDo('readonly',st=>st.getAllKeys()).then(ks=>(ks||[]).forEach(k=>{if(!keep.has(k))imgDel(k);})).catch(()=>{});
 }
 // Bild verkleinern (max. 1600 px), als JPEG speichern
@@ -90,13 +95,15 @@ function exportOwn(games){
   });
 }
 function importOwnData(d){
-  const arr=Array.isArray(d.spiele)?d.spiele:(d.spiel?[d.spiel]:[]);
+  const arr=(Array.isArray(d.spiele)?d.spiele:(d.spiel?[d.spiel]:[])).slice(0,50);
   const bilder=d.bilder&&typeof d.bilder==='object'?d.bilder:{};
+  // eigene Bilder sind verkleinerte JPEGs (deutlich unter 1 MB); größere oder fremde Formate aus Dateien werden nicht übernommen
+  const IMG_OK=/^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/;
   const list=ownGames();let n=0;
   arr.forEach(raw=>{
     if(!raw||typeof raw!=='object')return;
     const g=normOwn(Object.assign({},raw,{id:''}));
-    const remap=o=>{const src=bilder[o.img];if(typeof src==='string'&&src.startsWith('data:image/')){const nid='img-'+uid()+uid();imgPut(nid,src);o.img=nid;}else o.img='';};
+    const remap=o=>{const src=bilder[o.img];if(typeof src==='string'&&src.length<=3e6&&IMG_OK.test(src)){const nid='img-'+uid()+uid();imgPut(nid,src);o.img=nid;}else o.img='';};
     g.rounds.forEach(r=>{if(r.img)remap(r);r.extra.forEach(x=>{if(x.img)remap(x);});});
     list.push(g);n++;
   });
@@ -105,7 +112,7 @@ function importOwnData(d){
 }
 $('#ownFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
   r.onload=()=>{let d;try{d=JSON.parse(String(r.result));}catch(x){toast('Die Datei ist kein gültiges Spiel.');return;}
-    const n=d&&d.typ==='sicherung'?importOwnData({spiele:d.eigeneSpiele||[],bilder:d.bilder}):importOwnData(d||{});
+    let n=0;try{n=d&&d.typ==='sicherung'?importOwnData({spiele:d.eigeneSpiele||[],bilder:d.bilder}):importOwnData(d||{});}catch(x){toast('Die Datei ist kein gültiges Spiel.');return;}
     toast(n?`${n} Spiel${n>1?'e':''} importiert.`:'In der Datei wurde kein eigenes Spiel gefunden.');renderOwnList();};
   r.readAsText(f);e.target.value='';};
 
@@ -279,7 +286,9 @@ $('#btnOeBack').onclick=()=>{
 /* ---------- Spielen ---------- */
 let OR=VIEW?null:(()=>{const r=jget(OWN_RUN_KEY,null);if(!r||!r.game||!Array.isArray(r.teams))return null;
   r.game=normOwn(r.game);r.round=clampInt(r.round,0,r.game.rounds.length-1,0);r.slide=Number(r.slide)||0;
-  r.phase=['play','award','done'].includes(r.phase)?r.phase:'play';r.history=Array.isArray(r.history)?r.history:[];r.sel=Array.isArray(r.sel)?r.sel:[];return r;})();
+  r.phase=['play','award','done'].includes(r.phase)?r.phase:'play';r.history=Array.isArray(r.history)?r.history:[];r.sel=Array.isArray(r.sel)?r.sel:[];
+  r.teams=r.teams.filter(t=>t&&typeof t==='object').slice(0,8).map((t,i)=>({...t,id:typeof t.id==='string'&&/^[\w-]{1,40}$/.test(t.id)?t.id:'ot-'+uid(),name:String(t.name||'').slice(0,30),color:/^#[0-9a-f]{6}$/i.test(t.color)?t.color:COLORS[i%COLORS.length],score:Number(t.score)||0}));
+  return r.teams.length?r:null;})();
 let opStageKey='',opEndT=null;
 function saveRun(){if(VIEW)return;try{if(OR)localStorage.setItem(OWN_RUN_KEY,JSON.stringify(OR));else localStorage.removeItem(OWN_RUN_KEY);}catch(e){}}
 function startOwn(g){

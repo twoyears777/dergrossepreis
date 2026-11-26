@@ -123,14 +123,16 @@ function importTemplates(txt){
   const nOwn=d&&d.typ==='sicherung'&&Array.isArray(d.eigeneSpiele)?importOwnData({spiele:d.eigeneSpiele,bilder:d.bilder}):0;
   if(!arr.length){toast(nOwn?`${nOwn} eigene${nOwn>1?' Spiele':'s Spiel'} eingespielt.`:'In der Datei wurden keine Vorlagen gefunden.');return;}
   const own=ownTpl();
+  arr=arr.slice(0,50);
   arr.forEach(t=>{const cats=t.cats||t.categories;
     const n=normalize({title:t.title||t.name,points:t.points,categories:cats,teams:[]});
-    own.push({id:'own-'+uid(),name:String(t.name||t.title||'Importierte Vorlage'),title:n.title,points:n.points,
-      desc:String(t.desc||n.categories.map(c=>c.name).join(', ')),cats:n.categories});});
-  lsSet(TPL_KEY,JSON.stringify(own));renderTpl();
+    own.push({id:'own-'+uid(),name:String(t.name||t.title||'Importierte Vorlage').slice(0,60),title:n.title,points:n.points,
+      desc:String(t.desc||n.categories.map(c=>c.name).join(', ')).slice(0,300),cats:n.categories});});
+  if(!lsSet(TPL_KEY,JSON.stringify(own))){toast('Speichern nicht möglich – der Speicher des Browsers ist voll.');return;}
+  renderTpl();
   toast(`${arr.length} Vorlage${arr.length>1?'n':''} importiert.`+(d&&d.typ==='sicherung'?' Du findest sie unter „Vorlagen“.':'')+(nOwn?` Dazu ${nOwn} eigene${nOwn>1?' Spiele':'s Spiel'}.`:''));
 }
-$('#tplFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>importTemplates(String(r.result));r.readAsText(f);e.target.value='';};
+$('#tplFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{importTemplates(String(r.result));}catch(x){toast('Die Datei ist keine gültige Vorlagen-Datei.');}};r.readAsText(f);e.target.value='';};
 function menuBtn(list,title,fn,cls){
   const b=document.createElement('button');b.className='mbtn'+(cls?' '+cls:'');
   const t=document.createElement('b');t.textContent=title;b.appendChild(t);b.onclick=fn;list.appendChild(b);return b;

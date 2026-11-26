@@ -415,6 +415,8 @@ function renderTeams(){
     sc.oninput=()=>{t.score=Number(sc.value)||0;save();};
     del.onclick=()=>ask(`Gruppe „${t.name}“ löschen?`,'Löschen',()=>{
       S.teams.splice(i,1);
+      // steht die gelöschte Gruppe vor der Gruppe am Zug, rückt der Zug mit (sonst wäre plötzlich die übernächste dran)
+      if(i<S.turn)S.turn--;
       if(S.turn>=S.teams.length)S.turn=0;
       save();renderTeams();});
     box.appendChild(r);
@@ -509,8 +511,10 @@ $('#btnExport').onclick=()=>{
 function doImport(txt){
   const st=$('#ioStatus');
   try{const d=JSON.parse(txt);if(!d||!Array.isArray(d.categories))throw 0;
+    // vorher prüfen, damit eine kaputte Datei nicht erst nach „Importieren“ still scheitert
+    const n=normalize(Object.assign({},d,{used:{},history:[],turn:0}));n.teams.forEach(t=>t.score=0);
     ask('Import übernehmen? Kategorien, Fragen und Gruppen werden ersetzt, die Punkte auf 0 gesetzt.','Importieren',()=>{
-      S=normalize(Object.assign({},d,{used:{},history:[],turn:0}));S.teams.forEach(t=>t.score=0);save();selCat=0;renderSettings();st.textContent='Import erfolgreich.';});
+      S=n;save();selCat=0;renderSettings();st.textContent='Import erfolgreich.';});
   }catch(e){st.style.color='#ff8fa3';st.textContent='Das sieht nicht nach einem gültigen Export aus.';setTimeout(()=>st.style.color='',3000);}
 }
 $('#btnImport').onclick=()=>doImport($('#ioText').value.trim());

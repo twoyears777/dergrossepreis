@@ -99,6 +99,13 @@ if(VIEW){
   ['mousemove','touchstart','keydown'].forEach(ev=>addEventListener(ev,wake));wake();
   $('#vFull').onclick=()=>{const el=document.documentElement;try{const f=el.requestFullscreen||el.webkitRequestFullscreen;if(f){const r=f.call(el);if(r&&r.catch)r.catch(()=>{});}}catch(e){}};
 }else{
+  /* Zweiter Manna-Tab hat das Spielbrett geändert: hier übernehmen, damit dieser Tab beim nächsten Speichern
+     nicht den älteren Stand zurückschreibt. Während einer offenen Frage bleibt es beim Stand dieses Tabs. */
+  addEventListener('storage',e=>{
+    if(e.key!==KEY||!e.newValue||cur)return;
+    S=load();renderBoard();
+    if(screenName==='set')renderSettings();
+  });
   applyMode();renderBoard();showScreen('home');
   setInterval(updViewerStatus,2000);
 }

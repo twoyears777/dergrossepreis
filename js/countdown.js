@@ -4,7 +4,7 @@
 /* ================= COUNTDOWN ================= */
 const TM_KEY='grosserPreis_timer';
 const TM_PRESETS=[30,60,120,180,300,600];
-const TM={phase:'idle',total:Math.max(5,Number(lsGet(TM_KEY))||60)*1000,endAt:0,left:0,doneAt:0};
+const TM={phase:'idle',total:Math.min(5999,Math.max(5,Number(lsGet(TM_KEY))||60))*1000,endAt:0,left:0,doneAt:0};
 let tmTick=null,tmLastBeep=-1,tmDoneT=null;
 const tmFmt=ms=>{const s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
 const tmLabel=s=>s<60?s+' Sek':(s%60?Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+' Min':(s/60)+' Min');
