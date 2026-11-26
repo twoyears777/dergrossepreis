@@ -831,7 +831,7 @@ body.viewer #ownPlay{padding-bottom:3vh}
 
 /* ---------- Spielesammlung: Kopfzeile ---------- */
 .coll-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.game-actions{display:flex;justify-content:center;margin:-8px 0 24px}
+.game-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:-8px 0 24px}
 .fav-btn.on{background:var(--marker);color:var(--ink);border-color:var(--ink)}
 .gfav{color:var(--marker)}
 #showsScreen .menu-title{margin-bottom:6vh}
@@ -901,3 +901,14 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .konto-link:hover{color:#fff}
 .mbtn.konto-gefahr b{color:var(--stamp)}
 .viewer .konto-btn{display:none}
+
+/* ---------- Daumen hoch (js/daumen.js) ---------- */
+.daumen-ico{width:1.15em;height:1.15em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.daumen-btn{display:inline-flex;align-items:center;gap:.5em}
+.daumen-btn .daumen-n{font-family:var(--serif);font-weight:700;padding-left:.5em;border-left:1px solid currentColor}
+.daumen-btn.on{background:var(--marker);color:var(--ink);border-color:var(--ink)}
+.daumen-btn.on .daumen-ico,.gdaumen.an .daumen-ico{fill:currentColor;fill-opacity:.25}
+.gtags .gdaumen{display:inline-flex;align-items:center;gap:.35em;background:none;padding-left:0}
+.gtags .gdaumen .daumen-ico{width:1.05em;height:1.05em}
+.gtags .gdaumen.an{color:var(--stamp)}
+#kNameMsg:empty{display:none}

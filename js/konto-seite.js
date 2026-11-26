@@ -14,6 +14,7 @@ function kontoUI(){
   if(!an)$('#kNeuForm').hidden=true;
   if(an)$('#kWer').textContent=konto.email||'';
   kontoStandUI();
+  if(typeof daumenKontoGewechselt==='function')daumenKontoGewechselt();   // js/daumen.js
 }
 function kontoStandUI(){
   const el=$('#kStand');if(!el)return;

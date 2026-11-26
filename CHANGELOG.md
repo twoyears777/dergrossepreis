@@ -1,5 +1,13 @@
 # Changelog – Manna
 
+## 1.30.0 – [Datum beim Veröffentlichen]
+- Testphase wie bei 1.29.0: kein Eintrag im App-Changelog, solange Konten nur für Tester offen sind
+- Neu: Username im Konto (Konto-Seite, Feld „Username“). 3–20 Zeichen, eindeutig ohne Rücksicht auf Groß-/Kleinschreibung, ein paar Namen gesperrt (admin, manna, …). Abfrage bei der Registrierung folgt später
+- Neu: Daumen hoch für Spiele der Spielesammlung (erster Teil von Rezensionen). Nur mit Konto und Username, ein Daumen pro Spiel, nochmal tippen nimmt ihn zurück, kein Daumen runter. Knopf auf der Detailseite neben „Favorit“, in der Liste ein kleines Daumen-Symbol mit Anzahl (nur bei Spielen mit mindestens einem Daumen)
+- Datenschutz: Wer welches Spiel mag, sieht nur der Nutzer selbst; für alle sichtbar ist nur die Anzahl. Die Anzahl wird erst beim Öffnen der Spielesammlung bei Supabase abgefragt (nicht schon auf der Startseite)
+- Intern: Supabase-Tabellen `profile` und `daumen` mit Zugriffsregeln (nur eigene Zeilen), Funktion `daumen_zahlen()` (für alle, nur Zahlen), Obergrenze 3000 Daumen pro Konto. SQL in `supabase/username-und-daumen.sql`. Neue Datei js/daumen.js
+- Tests: Username (zu kurz, vergeben, reserviert) und Daumen (ohne Username, setzen, zurücknehmen, Anzahl für andere und für Gäste)
+
 ## 1.29.0 – [Datum beim Veröffentlichen]
 - Testphase: Kein Eintrag im App-Changelog. Anmelden ist sichtbar, Registrieren ausgeblendet (`kontenFuerAlle: false` in js/supabase.js); Testkonten werden von Hand im Supabase-Dashboard angelegt. Der App-Changelog-Eintrag kommt mit der Freischaltung für alle
 - Neu: Konten (freiwillig). Mit Login werden Spielbrett, eigene Vorlagen, eigene Spiele mit Bildern, Favoriten und ausgeblendete Standard-Vorlagen automatisch zwischen Geräten abgeglichen. Ohne Login bleibt alles wie bisher im Browser

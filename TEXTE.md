@@ -177,53 +177,56 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 352: Für ein Konto speichern wir deine E-Mail-Adresse und das, was du in Manna anlegst, auf Servern in Frankfurt. Mehr dazu im Datenschutz .
 - Z. 357: Angemeldet als
 - Z. 360: Jetzt abgleichen Passwort ändern
-- Z. 363: Abmelden
-- Z. 364: Abmelden und Daten von diesem Gerät entfernen Sinnvoll an fremden oder geteilten Geräten
-- Z. 365: Konto löschen
-- Z. 369: Neues Passwort (mindestens 8 Zeichen)
-- Z. 370: Passwort speichern
-- Z. 373: ← Zurück
-- Z. 378: anna Der große Preis Gleich geht's los
-- Z. 378: (Attribut) Manna
-- Z. 379: (Attribut) Vollbild
-- Z. 379: (Attribut) Vollbild
-- Z. 387: (Attribut) Schließen – Feld bleibt offen
-- Z. 387: (Attribut) Schließen
-- Z. 396: Lösung zeigen
-- Z. 401: Geschafft
-- Z. 402: Nicht geschafft
-- Z. 411: ACTION! SONDERFELD
-- Z. 416: (Attribut) Antippen zeigt sofort alles
-- Z. 417: Spiel beendet
-- Z. 422: Zurück zum Startmenü
-- Z. 430: Einstellungen
-- Z. 431: ▶ Zum Spiel
-- Z. 435: Allgemein
-- Z. 437: Titel der Show
-- Z. 442: Punktwerte der Zeilen
-- Z. 446: Soundeffekte
-- Z. 451: Gruppen
-- Z. 452: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
-- Z. 454: + Gruppe hinzufügen
-- Z. 458: Kategorien, Fragen &amp; Aufgaben
-- Z. 459: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
-- Z. 465: Spiel &amp; Daten
-- Z. 466: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
-- Z. 468: Neue Runde (Punkte &amp; Felder zurücksetzen)
-- Z. 472: Export erzeugen &amp; kopieren
-- Z. 473: Text unten importieren
-- Z. 474: Datei importieren (.json)
-- Z. 476: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
-- Z. 482: Version &amp; Updates
-- Z. 483: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
-- Z. 485: Changelog anzeigen
-- Z. 486: Jetzt nach Updates suchen
-- Z. 493: Manna Abbrechen OK
-- Z. 494: Changelog ✕ Alles klar
-- Z. 494: (Attribut) Schließen
-- Z. 494: (Attribut) Schließen
-- Z. 495: Neue Version geladen! Jetzt aktualisieren ✕
-- Z. 495: (Attribut) Später
+- Z. 363: Username
+- Z. 364: Mit einem Username kannst du Spiele mit Daumen hoch bewerten. Andere sehen nur, wie viele Daumen ein Spiel hat, nicht von wem.
+- Z. 365: Username speichern
+- Z. 369: Abmelden
+- Z. 370: Abmelden und Daten von diesem Gerät entfernen Sinnvoll an fremden oder geteilten Geräten
+- Z. 371: Konto löschen
+- Z. 375: Neues Passwort (mindestens 8 Zeichen)
+- Z. 376: Passwort speichern
+- Z. 379: ← Zurück
+- Z. 384: anna Der große Preis Gleich geht's los
+- Z. 384: (Attribut) Manna
+- Z. 385: (Attribut) Vollbild
+- Z. 385: (Attribut) Vollbild
+- Z. 393: (Attribut) Schließen – Feld bleibt offen
+- Z. 393: (Attribut) Schließen
+- Z. 402: Lösung zeigen
+- Z. 407: Geschafft
+- Z. 408: Nicht geschafft
+- Z. 417: ACTION! SONDERFELD
+- Z. 422: (Attribut) Antippen zeigt sofort alles
+- Z. 423: Spiel beendet
+- Z. 428: Zurück zum Startmenü
+- Z. 436: Einstellungen
+- Z. 437: ▶ Zum Spiel
+- Z. 441: Allgemein
+- Z. 443: Titel der Show
+- Z. 448: Punktwerte der Zeilen
+- Z. 452: Soundeffekte
+- Z. 457: Gruppen
+- Z. 458: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
+- Z. 460: + Gruppe hinzufügen
+- Z. 464: Kategorien, Fragen &amp; Aufgaben
+- Z. 465: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
+- Z. 471: Spiel &amp; Daten
+- Z. 472: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
+- Z. 474: Neue Runde (Punkte &amp; Felder zurücksetzen)
+- Z. 478: Export erzeugen &amp; kopieren
+- Z. 479: Text unten importieren
+- Z. 480: Datei importieren (.json)
+- Z. 482: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
+- Z. 488: Version &amp; Updates
+- Z. 489: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
+- Z. 491: Changelog anzeigen
+- Z. 492: Jetzt nach Updates suchen
+- Z. 499: Manna Abbrechen OK
+- Z. 500: Changelog ✕ Alles klar
+- Z. 500: (Attribut) Schließen
+- Z. 500: (Attribut) Schließen
+- Z. 501: Neue Version geladen! Jetzt aktualisieren ✕
+- Z. 501: (Attribut) Später
 
 ## rechtliches.html
 

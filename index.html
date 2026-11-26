@@ -359,6 +359,12 @@
       <p class="hint warn" id="kWarnung" hidden></p>
       <div class="row"><button class="btn" id="btnKSync" type="button">Jetzt abgleichen</button><button class="btn" id="btnKPw" type="button">Passwort ändern</button></div>
     </div>
+    <form class="sec konto-form" id="kNameForm" novalidate>
+      <label class="f">Username<input class="inp" id="kName" type="text" minlength="3" maxlength="20" autocomplete="username" autocapitalize="off" spellcheck="false"></label>
+      <p class="hint" id="kNameStand">Mit einem Username kannst du Spiele mit Daumen hoch bewerten. Andere sehen nur, wie viele Daumen ein Spiel hat, nicht von wem.</p>
+      <div class="row"><button type="submit" class="primary" id="btnKName">Username speichern</button></div>
+      <p class="sub-msg" id="kNameMsg" role="alert"></p>
+    </form>
     <div class="menu-list">
       <button class="mbtn" id="btnKAbmelden" type="button"><b>Abmelden</b></button>
       <button class="mbtn" id="btnKEntfernen" type="button"><span><b>Abmelden und Daten von diesem Gerät entfernen</b><small>Sinnvoll an fremden oder geteilten Geräten</small></span></button>
@@ -511,5 +517,6 @@
 <script src="js/konto.js"></script>
 <script src="js/sync.js"></script>
 <script src="js/konto-seite.js"></script>
+<script src="js/daumen.js"></script>
 </body>
 </html>

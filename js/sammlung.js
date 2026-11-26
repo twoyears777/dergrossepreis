@@ -222,7 +222,7 @@ function renderColl(){
     const r=sucht?treffer.get(g.id):null,mk=t=>sucht?markiere(t,collQuery,unscharf):esc(t);
     b.innerHTML=`<span class="gname">${isFav(g.id)?'<span class="gfav" aria-label="Favorit">★</span> ':''}${mk(g.name)}</span><span class="gshort">${mk(g.kurz)}</span>
       ${r&&r.fund?`<span class="gfund"><b>Gefunden in ${esc(r.fund.label)}:</b> ${ausschnitt(r.fund.orig,collQuery,unscharf)}</span>`:''}
-      <span class="gtags">${g.erlebnis?'<span class="gtag-ep">Erlebnispädagogik</span>':''}<span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
+      <span class="gtags">${typeof daumenTag==='function'?daumenTag(g):''}${g.erlebnis?'<span class="gtag-ep">Erlebnispädagogik</span>':''}<span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
     b.onclick=()=>openGame(g.id);
     li.appendChild(b);list.appendChild(li);
   });
@@ -262,7 +262,7 @@ function openGame(id){
   $('#gameSheet').innerHTML=`
     <h1 class="menu-title" id="gameTitle"></h1>
     <p class="game-lead">${esc(g.kurz)}</p>
-    <div class="game-actions"><button class="btn fav-btn" id="btnFav"></button></div>
+    <div class="game-actions"><button class="btn fav-btn" id="btnFav"></button><button class="btn daumen-btn" id="btnDaumen" data-id="${esc(g.id)}"></button></div>
     <ul class="game-facts">
       <li><b>Personen</b>${esc(personText(g))}</li>
       <li><b>Alter</b>${esc(ages)}</li>
@@ -283,6 +283,7 @@ function openGame(id){
   const fb=$('#btnFav');
   const favLabel=()=>{const on=isFav(g.id);fb.textContent='Favorit';fb.classList.toggle('on',on);fb.setAttribute('aria-pressed',on);};
   favLabel();fb.onclick=()=>{toggleFav(g.id);favLabel();};
+  if(typeof daumenKnopf==='function')daumenKnopf($('#btnDaumen'),g.id);else $('#btnDaumen').remove();   // js/daumen.js
   $('#gameSheet').querySelectorAll('.phase-chip:not(.ep-chip)').forEach(b=>b.onclick=()=>openPhasen(b.dataset.p||null,'game'));
   const ep=$('#btnEp');if(ep)ep.onclick=()=>openArticle('erlebnispaedagogik',null,'game');
   ransom($('#gameTitle'),g.name);
