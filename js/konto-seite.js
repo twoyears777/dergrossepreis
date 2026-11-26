@@ -31,6 +31,7 @@ function kontoUI(){
   if(an)$('#kWer').textContent=konto.email||'';
   kontoStandUI();
   if(typeof daumenKontoGewechselt==='function')daumenKontoGewechselt();   // js/daumen.js
+  if(typeof klicksKontoGewechselt==='function')klicksKontoGewechselt();   // js/klicks.js
 }
 function kontoStandUI(){
   const el=$('#kStand');if(!el)return;

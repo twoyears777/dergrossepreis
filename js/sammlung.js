@@ -200,6 +200,9 @@ function renderColl(){
   if(sucht){treffer=suche(false);if(!treffer.size){treffer=suche(true);unscharf=treffer.size>0;}}
   const hits=GAMES.filter(g=>gameMatches(g,filter)&&(!sucht||treffer.has(g.id)))
     .sort((a,b)=>sucht?(treffer.get(b.id).score-treffer.get(a.id).score)||a.name.localeCompare(b.name,'de'):a.name.localeCompare(b.name,'de'));
+  // Angemeldet und ohne Suche: das selbst am häufigsten geöffnete Spiel nach oben (js/klicks.js)
+  const empf=!sucht&&typeof empfehlungAus==='function'?empfehlungAus(hits):null;
+  if(empf){hits.splice(hits.indexOf(empf),1);hits.unshift(empf);}
   const versteckt=sucht&&active?treffer.size-hits.length:0;
   $('#collSearchClear').hidden=!collQuery;
   const nAktiv=Object.values(filter).reduce((n,x)=>n+x.length,0);
@@ -218,9 +221,9 @@ function renderColl(){
   }
   hits.forEach(g=>{
     const li=document.createElement('li');
-    const b=document.createElement('button');b.className='game-row';
+    const b=document.createElement('button');b.className='game-row'+(g===empf?' empf':'');
     const r=sucht?treffer.get(g.id):null,mk=t=>sucht?markiere(t,collQuery,unscharf):esc(t);
-    b.innerHTML=`<span class="gname">${isFav(g.id)?'<span class="gfav" aria-label="Favorit">★</span> ':''}${mk(g.name)}</span><span class="gshort">${mk(g.kurz)}</span>
+    b.innerHTML=`${g===empf?empfehlungTag():''}<span class="gname">${isFav(g.id)?'<span class="gfav" aria-label="Favorit">★</span> ':''}${mk(g.name)}</span><span class="gshort">${mk(g.kurz)}</span>
       ${r&&r.fund?`<span class="gfund"><b>Gefunden in ${esc(r.fund.label)}:</b> ${ausschnitt(r.fund.orig,collQuery,unscharf)}</span>`:''}
       <span class="gtags">${typeof daumenTag==='function'?daumenTag(g):''}${g.erlebnis?'<span class="gtag-ep">Erlebnispädagogik</span>':''}<span>${esc(personText(g))}</span><span>${esc(ortText(g))}</span><span>${esc(matText(g))}</span>${g.dauer?`<span>${esc(g.dauer)}</span>`:''}</span>`;
     b.onclick=()=>openGame(g.id);
@@ -257,6 +260,7 @@ function rolesHtml(r){
 const TXT_PHASEN='Passt in diese Gruppenphasen:';
 function openGame(id){
   const g=GAMES.find(x=>x.id===id);if(!g)return;
+  if(typeof klickZaehlen==='function')klickZaehlen(g.id);   // js/klicks.js
   const ages=g.alter.map(a=>(AGE_GROUPS.find(x=>x.id===a)||{}).label).filter(Boolean).join(', ');
   const sec=(title,html)=>html?`<section class="note"><h3>${title}</h3>${html}</section>`:'';
   $('#gameSheet').innerHTML=`

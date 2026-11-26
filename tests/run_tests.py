@@ -61,7 +61,7 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'js/daumen.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
+    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'js/daumen.js', 'js/klicks.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
@@ -1038,7 +1038,7 @@ class FakeSupabaseKonten:
     KEY = 'sb_publishable_XVvHrzG_pDKErkF37hsN4A_NYzt-Dc-'
     def __init__(self):
         self.users = {}; self.tokens = {}; self.refresh = {}; self.n = 0; self.t = 0
-        self.eintraege = {}; self.bilder = {}; self.profile = {}; self.daumen = set(); self.offline = False; self.log = []; self.abgelaufen = set(); self.mails = []
+        self.eintraege = {}; self.bilder = {}; self.profile = {}; self.daumen = set(); self.klicks = {}; self.offline = False; self.log = []; self.abgelaufen = set(); self.mails = []
         self.codes = {}; self.code_n = 0   # (mail, typ) -> zuletzt verschickter Code
     def neuer_code(self, mail, typ):
         self.code_n += 1; c = f'{123450 + self.code_n}'; self.codes[(mail, typ)] = c; return c
@@ -1118,7 +1118,7 @@ class FakeSupabaseKonten:
             del self.users[mail]
             self.eintraege = {k: v for k, v in self.eintraege.items() if k[0] != me}
             self.bilder = {k: v for k, v in self.bilder.items() if k[0] != me}
-            self.profile.pop(me, None); self.daumen = {d for d in self.daumen if d[0] != me}
+            self.profile.pop(me, None); self.daumen = {d for d in self.daumen if d[0] != me}; self.klicks = {k: v for k, v in self.klicks.items() if k[0] != me}
             self.tokens = {t: i for t, i in self.tokens.items() if i != me}
             return js(204, None)
         if path == '/rest/v1/profile':
@@ -1130,6 +1130,13 @@ class FakeSupabaseKonten:
                 if name.lower() in ('admin', 'manna'): return js(400, {'code': 'P0001', 'message': 'Dieser Username ist leider nicht möglich.'})
                 if any(n.lower() == name.lower() for u, n in self.profile.items() if u != me): return js(409, {'code': '23505', 'message': 'duplicate key'})
                 self.profile[me] = name; return js(201, [{'username': name}])
+        if path == '/rest/v1/klicks':   # nur lesen, nur eigene
+            if request.method != 'GET': return js(403, {'code': '42501', 'message': 'rls'})
+            return js(200, [{'spiel_id': k[1], 'anzahl': v} for k, v in self.klicks.items() if k[0] == me])
+        if path == '/rest/v1/rpc/klick_zaehlen':   # Konto kommt aus dem Login, nicht aus der Anfrage
+            sid = body.get('spiel') or ''
+            if not re.match(r'^[a-z0-9-]{1,60}$', sid): return js(400, {'code': 'P0001', 'message': 'ungueltig'})
+            self.klicks[(me, sid)] = self.klicks.get((me, sid), 0) + 1; return js(200, self.klicks[(me, sid)])
         if path == '/rest/v1/daumen':
             if request.method == 'GET': return js(200, [{'spiel_id': s} for u, s in self.daumen if u == me])
             if request.method == 'POST':
@@ -1421,13 +1428,30 @@ def konto_checks(p):
     G.click('#btnDaumen'); G.wait_for_timeout(200)
     check('Daumen: ohne Konto Hinweis zum Anmelden, nichts gespeichert', G.locator('#dialog.show').count() == 1 and 'Melde dich an' in G.inner_text('#dMsg') and len(sb.daumen) == 2)
     check('Daumen: ohne Konto nur die Zahlen abgefragt', all(x[1] == '/rest/v1/rpc/daumen_zahlen' for x in sb.log[n_vorher:]))
+    check('Klicks: ohne Konto nichts gezählt', not [x for x in sb.log[n_vorher:] if 'klick' in x[1]])
+    G.evaluate("showScreen('coll')"); G.wait_for_timeout(300)
+    check('Klicks: ohne Konto keine Empfehlung, alphabetisch', G.locator('.gempf').count() == 0)
     gast.close()
+
+    # Klicks & „Empfehlung für dich“
+    for _ in range(3): spiel(A, 'simon-says'); A.wait_for_timeout(100)
+    A.wait_for_timeout(300)
+    check('Klicks: Öffnen zählt pro Konto und Spiel hoch', sb.klicks.get((a_id, 'simon-says')) == 3 and sb.klicks.get((a_id, 'zeitungsschlagen'), 0) >= 1)
+    check('Klicks: anderes Konto zählt getrennt', sb.klicks.get((ben_id, 'zeitungsschlagen'), 0) >= 1 and (ben_id, 'simon-says') not in sb.klicks)
+    A.evaluate("showScreen('coll')"); A.wait_for_timeout(300)
+    erste = A.locator('.game-row').first
+    check('Empfehlung: meistgeöffnetes Spiel steht oben mit Hinweis', A.locator('.gempf').count() == 1 and 'Simon' in erste.inner_text() and erste.locator('.gempf').inner_text() == 'Empfehlung für dich')
+    A.fill('#collSearch', 'zeitung'); A.wait_for_timeout(200)
+    check('Empfehlung: bei der Suche nicht', A.locator('.gempf').count() == 0)
+    A.fill('#collSearch', ''); A.wait_for_timeout(200)
+    spiel(B, 'nachts-in-palermo'); B.wait_for_timeout(200); B.evaluate("showScreen('coll')"); B.wait_for_timeout(300)
+    check('Empfehlung: jedes Konto bekommt seine eigene', 'Palermo' in B.locator('.game-row.empf').inner_text() or 'Zeitung' in B.locator('.game-row.empf').inner_text())
 
     # Konto löschen
     B.evaluate("showScreen('konto')"); B.click('#btnKLoeschen'); B.wait_for_timeout(100)
     check('Konto löschen: deutliche Warnung', 'endgültig' in B.inner_text('#dMsg'))
     B.click('#dYes'); B.wait_for_timeout(400)
-    check('Konto löschen: Konto und Daten weg, abgemeldet', 'ben@example.org' not in sb.users and not [k for k in sb.eintraege if k[0] == ben] and ben not in sb.profile and not [d for d in sb.daumen if d[0] == ben] and B.evaluate("localStorage.getItem('manna_konto')") is None)
+    check('Konto löschen: Konto und Daten weg, abgemeldet', 'ben@example.org' not in sb.users and not [k for k in sb.eintraege if k[0] == ben] and ben not in sb.profile and not [d for d in sb.daumen if d[0] == ben] and not [k for k in sb.klicks if k[0] == ben] and B.evaluate("localStorage.getItem('manna_konto')") is None)
 
     v = gameshows_an(b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')); v.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
     vp = v.new_page(); vp.on('pageerror', lambda e: errs.append('Zuschauer: ' + str(e))); vp.goto(URL + '#zuschauer'); vp.wait_for_timeout(400)

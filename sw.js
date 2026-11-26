@@ -28,6 +28,7 @@ const FILES = [
   './js/sync.js',
   './js/konto-seite.js',
   './js/daumen.js',
+  './js/klicks.js',
   './js/zaehler.js',
   './img/manna-mark.svg',
   './manifest.webmanifest',

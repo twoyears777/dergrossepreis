@@ -665,6 +665,8 @@ body.viewer .end-actions{display:none}
 .games li:nth-child(odd) .game-row{transform:rotate(-.25deg)}
 .gname{font-family:var(--strong);font-weight:700;font-size:1.15rem}
 .gshort{font-family:var(--sans);color:var(--ink2);line-height:1.45}
+.game-row.empf{position:relative}
+.gempf{position:absolute;top:-8px;right:12px;font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.02em;background:var(--marker);color:var(--ink);padding:.15em .55em;border-radius:2px;box-shadow:0 1px 3px #0004;transform:rotate(1.5deg);pointer-events:none}
 .gtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .gtags span{font-family:var(--sans);font-size:.82rem;font-weight:700;background:#1d1d1b12;padding:.2em .6em;border-radius:2px}
 .gtags .gtag-ep{background:var(--marker)}

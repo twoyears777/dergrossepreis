@@ -6,8 +6,11 @@
 - Die freiwilligen Felder Name und E-Mail sind weg, das Konto reicht für Rückfragen
 - Editor: Bei Einreichungen steht „von @username“ (ältere Einreichungen weiter mit Name/E-Mail)
 - Wird ein Konto gelöscht, verschwinden auch seine noch offenen Einreichungen
+- Neu: „Empfehlung für dich“: Angemeldet und ohne Suche steht in der Spielesammlung das Spiel ganz oben, das man selbst am häufigsten geöffnet hat, mit kleinem Hinweis in der Ecke der Kachel. Ohne Konto bleibt alles alphabetisch, es wird nichts gezählt
+- Klicks: Jedes Öffnen eines Spiels zählt bei Angemeldeten in der Tabelle `klicks` (Konto, Spiel, Anzahl, zuletzt) um 1 hoch. Zählen nur über `klick_zaehlen()` (Konto setzt die Datenbank), lesen nur eigene Zahlen, max. 3000 Spiele pro Konto, wird mit dem Konto gelöscht. Neue Datei js/klicks.js
+- Intern: SQL in `supabase/klicks.sql` (Reihenfolge egal)
 - Intern: SQL in `supabase/einreichen-mit-konto.sql` (erst NACH dem Veröffentlichen einspielen)
-- Tests: Einreichen ohne Konto, ohne Username, mit Konto; Anzeige im Editor
+- Tests: Einreichen ohne Konto, ohne Username, mit Konto; Anzeige im Editor; Klicks und Empfehlung (ohne Konto, pro Konto getrennt, nicht bei der Suche)
 
 ## 1.31.0 – 26.11.2026
 - Neu: Registrieren für alle (`kontenFuerAlle: true` in js/supabase.js). Eigene Ansicht „Konto erstellen“ mit E-Mail, Username und Passwort; der Username wird vorab geprüft (Funktion `username_frei()`) und beim ersten Login als Profil angelegt
