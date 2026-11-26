@@ -14,6 +14,9 @@ html,body{height:100%}
 body{overflow:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 button{font-family:inherit;cursor:pointer;border:none;color:inherit}
 input,textarea,select{font-family:inherit;user-select:text;-webkit-user-select:text}
+/* Lesetexte markier- und kopierbar (Spiel, Artikel, Erklärung, Startseite); Spielbrett und Knöpfe bleiben gesperrt */
+#gameSheet,#artScreen,#helpScreen,#home,.coll-note{user-select:text;-webkit-user-select:text}
+#gameSheet button,#artScreen button,#helpScreen button,#home button{user-select:none;-webkit-user-select:none}
 
 /* ---------- Spielbrett ---------- */
 #game{height:100vh;height:100dvh;display:flex;flex-direction:column;padding:1.2vh 1.4vw 1.6vh;gap:1.4vh}
