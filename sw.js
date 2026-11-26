@@ -26,8 +26,6 @@ const FILES = [
   './js/eigenes-spiel.js',
   './js/konto.js',
   './js/zaehler.js',
-  './img/shot-filter.jpg',
-  './img/shot-spiel.jpg',
   './img/manna-mark.svg',
   './manifest.webmanifest',
   './icon-192.png',

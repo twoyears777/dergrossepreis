@@ -504,13 +504,11 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 .guide-link{margin-top:3vh;background:none;color:#d8d2c4;font-family:var(--serif);font-style:italic;font-size:1.05rem;text-decoration:underline;text-underline-offset:4px}
 .guide-link:hover{color:#fff}
 .info{width:min(980px,100%);margin-top:5vh;scroll-margin-top:24px}
-.collage{display:grid;grid-template-columns:1fr 1fr;gap:34px 30px;padding:14px 8px;margin-bottom:9vh}
-.shot{position:relative;margin:0;background:#f7f3ea;padding:10px 10px 14px;box-shadow:0 14px 30px #0008}
-.shot img{display:block;width:100%;height:auto}
-.shot::before{content:"";position:absolute;top:-12px;left:50%;width:110px;height:24px;transform:translateX(-50%) rotate(-4deg);background:var(--tape);z-index:1;clip-path:polygon(0 12%,4% 0,96% 8%,100% 0,98% 50%,100% 100%,3% 92%,0 100%,2% 50%)}
-.shot:nth-child(1){transform:rotate(-2.2deg) translate(8px,6px)}
-.shot:nth-child(2){transform:rotate(1.8deg) translate(-6px,26px)}
-.shot:nth-child(2)::before{transform:translateX(-50%) rotate(5deg)}
+.gcount{display:flex;justify-content:center;padding:14px 8px;margin-bottom:9vh}
+.gcount.leer .gcount-note{visibility:hidden}
+.gcount-note{display:flex;flex-direction:column;align-items:center;gap:6px;padding:34px 48px 26px;transform:rotate(-1.4deg);text-align:center}
+.gcount-num{font-family:var(--strong);font-weight:700;font-size:clamp(3.6rem,13vh,6.5rem);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;padding:0 .18em;background:linear-gradient(transparent 52%,var(--marker) 52%,var(--marker) 88%,transparent 88%)}
+.gcount-label{font-family:var(--serif);font-weight:700;font-size:clamp(1.05rem,2.6vh,1.35rem);color:var(--ink2)}
 .hblock{margin-bottom:9vh}
 .hblock h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,4vh,2.2rem);color:#f1ede4;text-align:center;margin-bottom:12px}
 .lead{font-family:var(--serif);font-style:italic;color:#d8d2c4;text-align:center;max-width:60ch;margin:0 auto 30px;line-height:1.5}
@@ -544,7 +542,6 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
   .perks{grid-template-columns:1fr}
 }
 @media (max-width:720px){
-  .collage{grid-template-columns:1fr}
   .note dl{grid-template-columns:1fr;gap:2px}
   .note dd{margin-bottom:8px}
 }

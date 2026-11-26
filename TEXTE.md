@@ -41,191 +41,189 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 81: Gameshows
 - Z. 82: Gameshow-Content und weitere hilfreiche Tools für Beamer-Connection
 - Z. 85: Mehr erfahren ↓
-- Z. 88: (Attribut) Screenshots aus Manna
-- Z. 89: (Attribut) Spielesammlung: Filter nach Alter, Personen, Gruppenphase, Ort, Material und Favoriten
-- Z. 90: (Attribut) Spiel Zeitungsschlagen: Eckdaten, passende Gruppenphasen, Material und Ablauf
-- Z. 94: Wir wissen, was es in der Jugendarbeit braucht!
-- Z. 96: Eine starke Spielesammlung Spiele sind immer gut, wissen wir, also liefern wir. Aber mit Fokus auf Qualität, wir schreiben unsere Spiele alle selbst auf Basis eigener Erfahrungen und ordnen sie pädagogisch ein!
-- Z. 97: Fertige Gameshows für den Beamer Manchmal braucht man schnell ein Abendprogramm. Here we go. Ist noch in Arbeit, aber das soll mal richtig nice werden!
-- Z. 102: Was wollen wir?
-- Z. 104: Ey, ganz im Ernst: Soviel wir planen und machen und tun, sooft erleben wir es, dass wir spontan sein müssen. Spontan ein Icebreaker, spontan einen Abend füllen – das ist doch ehrlich Alltag in der Kinder- und Jugendarbeit. Es gibt viele Tools, die uns da helfen sollen. Doch so richtig hat uns nie eins überzeugt.
-- Z. 105: Wir wollten etwas, das uns verlässlich „versorgt“, wo wir immer ein passendes Spiel bekommen. Wie krass wäre es bitte, das eigene Smartphone einfach an den Beamer anzuschließen und eine fertig vorbereitete Spieleshow auf dem Handy spontan parat zu haben? Inklusive interaktiver Beameransicht und Moderatorenansicht auf dem Handy, Tablet oder Laptop?
-- Z. 106: Das ist unser Ziel: Eine App, die genau das kann! Unser Retter in der Not – damit möglichst viele Jugendliche durch gute Erfahrungen in der Jugendarbeit Jesus kennenlernen dürfen, den echten Retter in der Not!
-- Z. 107: Aktuell geht das nur auf dem Laptop/PC. Wir arbeiten aber dran, es als App in den App Store zu bringen. Am meisten hilfst du uns, wenn du Manna nutzt und uns deine Erfahrungen berichtest! Viel Spaß!
-- Z. 112: Impressum und Datenschutz
-- Z. 116: Pädagogischer Kram
-- Z. 118: ← Startseite
-- Z. 125: ← Pädagogischer Kram
-- Z. 129: Gameshows
-- Z. 132: Der große Preis
-- Z. 133: Der absolute Klassiker als interaktives Template!
-- Z. 136: Eigenes Spiel
-- Z. 137: Erstelle deine eigene Gameshow mit unserem Gameshow-Editor und präsentiere sie direkt über den Browser!
-- Z. 140: Countdown
-- Z. 141: Brauch man doch ständig so n Countdown. Schnell, einfach, riesig
-- Z. 144: ← Startseite
-- Z. 148: Der große Preis
-- Z. 150: ← Gameshows
-- Z. 156: Vorlagen
-- Z. 158: ← Zurück
-- Z. 162: Erklärung
-- Z. 165: Worum es geht
-- Z. 166: Mehrere Gruppen treten gegeneinander an. Auf dem Spielbrett gibt es Kategorien mit Feldern von 10 bis 100 Punkten. Je mehr Punkte, desto schwerer. Die Gruppen wählen abwechselnd Felder und müssen die entsprechende Frage beantworten oder Aufgabe lösen, um die Punkte zu bekommen. Wer am Ende die meisten Punkte hat, gewinnt.
-- Z. 169: So läuft eine Runde
-- Z. 171: Eine Gruppe wählt ein Feld. Zum Beispiel „Sport 40“.
-- Z. 172: Die Frage erscheint. Es könnte auch eine Aufgabe oder ein Actionspiel erscheinen. Dazu unten mehr.
-- Z. 173: Die Gruppe beantwortet die Frage. Ist die Antwort richtig, erhält die Gruppe die volle Punktzahl. Ist die Antwort falsch, hat eine andere, zufällig ausgewählte Gruppe die Möglichkeit, die Frage für die Hälfte der Punktzahl zu beantworten. Bei bestimmten Fragetypen (s. u.) antworten alle Gruppen.
-- Z. 174: Danach ist die nächste Gruppe dran. Gespielte Felder sind aus dem Spiel.
-- Z. 175: Wenn alle Felder gespielt sind, ist das Spiel vorbei.
-- Z. 179: Die Feldtypen
-- Z. 181: Frage Eine einfache Frage ohne sichtbare Antwortmöglichkeit. Es gibt richtig oder falsch.
-- Z. 182: Multiple Choice Vier Antwortmöglichkeiten. Die Gruppe kann eine einloggen.
-- Z. 183: Schätzfrage Alle Gruppen geben eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.
-- Z. 184: Aufgabe Eine Spezialaufgabe! Hier gilt: Geschafft gibt Punkte, sonst gibts nichts.
-- Z. 185: ACTION Volle Action! Alle Gruppen spielen um die Punkte! Der Gewinner bekommt die volle Punktzahl! Wenn die Gruppe, die das Feld gezogen hat, das Spiel gewinnt, verdoppeln sich für sie die Punkte!
-- Z. 189: Sonderregeln
-- Z. 191: Gleichstand: Haben am Ende mehrere Gruppen gleich viele Punkte, teilen sie sich den Sieg.
-- Z. 195: Tipps für die Spielleitung
-- Z. 197: Die optimale Anzahl an Gruppen liegt erfahrungsgemäß bei drei bis – wirklich maximal – sechs. Die Gruppen sollten nicht allzu groß sein.
-- Z. 198: Es hilft, wenn jede Gruppe einen Gruppenleiter festlegt, der die Antworten der Gruppe übermittelt.
-- Z. 199: Bei Schätzfragen die Einheit klug wählen.
-- Z. 200: Nicht zu viele ACTION-Felder – das bremst erfahrungsgemäß das ganze Spiel.
-- Z. 201: Aufgaben wählen, bei denen am besten alle mal mitmachen können und niemand bloßgestellt wird.
-- Z. 202: Fragen auf 10 wirklich leicht wählen, auf 100 auch gerne wirklich richtig schwere Fragen.
-- Z. 206: ← Zurück
-- Z. 210: Spielesammlung
-- Z. 211: Alle Spiele und die dazugehörigen Erklärungen sind von Menschen geschrieben und praxiserprobt.
-- Z. 215: (Attribut) Spiel suchen, z. B. Zeitung oder Stuhlkreis
-- Z. 215: (Attribut) Spiele durchsuchen
-- Z. 216: (Attribut) Suche leeren
-- Z. 218: Filter
-- Z. 219: (Attribut) Filter
-- Z. 220: Zufälliges Spiel Filter zurücksetzen
-- Z. 222: Selbst ein Spiel einreichen
-- Z. 224: ← Startseite
-- Z. 228: Hilf uns beim Content!
-- Z. 230: Irgendwie hat doch jeder so eigene Perlen. Schick uns deine, damit viele andere davon profitieren können.
-- Z. 232: Das Spiel
-- Z. 233: Name
-- Z. 233: (Attribut) z. B. Zeitungsschlagen
-- Z. 234: Kurzbeschreibung (ein Satz)
-- Z. 234: (Attribut) Worum geht es?
-- Z. 237: Für wen und wo (optional)
-- Z. 238: Alter
-- Z. 238: (Attribut) Alter
-- Z. 240: Personen mindestens
-- Z. 241: Personen höchstens (leer = egal)
-- Z. 241: (Attribut) egal
-- Z. 243: Ort
-- Z. 243: (Attribut) Ort
-- Z. 244: Dauer
-- Z. 244: (Attribut) z. B. ca. 15 Minuten
-- Z. 247: Ablauf
-- Z. 248: Verwende „-“ für Aufzählungen und „1.“ ... für Nummerierungen etc.
-- Z. 249: So geht’s
-- Z. 250: Material (eins pro Zeile, leer = kein Material)
-- Z. 251: Varianten (optional, eine pro Zeile)
-- Z. 252: Pädagogische Gedanken (optional)
-- Z. 253: Fragen zum Nachgespräch (optional)
-- Z. 256: Sicherheit und Tipp
-- Z. 257: Gefahren und Risiken (eins pro Zeile)
-- Z. 257: (Attribut) Worauf muss die Spielleitung achten?
-- Z. 258: Tipp (optional)
-- Z. 261: Von dir
-- Z. 262: freiwillig, nur falls wir Rückfragen haben
-- Z. 264: Dein Name
-- Z. 265: E-Mail
-- Z. 267: Website
-- Z. 268: Ich habe das Spiel selbst beschrieben oder darf es teilen. Das Manna-Team darf es bearbeiten und ggf. veröffentlichen.
-- Z. 269: Einreichen
-- Z. 273: Danke, dass du mithilfst, unsere Sammlung gigantisch zu machen. Liebe geht raus! &lt;3
-- Z. 274: ← Zur Spielesammlung
-- Z. 279: ← Zur Spielesammlung
-- Z. 283: Countdown
-- Z. 287: (Attribut) Zeit auswählen
-- Z. 288: (Attribut) Eigene Zeit
-- Z. 289: − 1 Min +
-- Z. 289: (Attribut) Eine Minute weniger
-- Z. 289: (Attribut) Eine Minute mehr
-- Z. 290: − 00 Sek +
-- Z. 290: (Attribut) Fünf Sekunden weniger
-- Z. 290: (Attribut) Fünf Sekunden mehr
-- Z. 293: Start
-- Z. 294: Pause
-- Z. 295: Zurücksetzen
-- Z. 297: Zuschaueransicht zeigen
-- Z. 300: ← Gameshows
-- Z. 304: Eigenes Spiel
-- Z. 306: ← Gameshows
-- Z. 311: Spiel einrichten
-- Z. 314: ← Zurück
-- Z. 316: Exportieren
-- Z. 317: Speichern
-- Z. 318: Spiel starten
-- Z. 324: Einstellungen
-- Z. 326: Spielbrett bearbeiten
-- Z. 327: Zuschaueransicht zeigen
-- Z. 328: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
-- Z. 331: Sicherung erstellen
-- Z. 332: Sicherung einspielen
-- Z. 334: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
-- Z. 336: ← Zurück
-- Z. 341: Konto
-- Z. 343: Mit einem Konto hast du deine eigenen Spiele, Vorlagen, Favoriten und dein Spielbrett auf jedem Gerät. Ohne Konto funktioniert Manna wie bisher.
-- Z. 345: E-Mail
-- Z. 346: Passwort
-- Z. 347: Anmelden Konto erstellen
-- Z. 348: Passwort vergessen?
-- Z. 350: Für ein Konto speichern wir deine E-Mail-Adresse und das, was du in Manna anlegst, auf Servern in Frankfurt. Mehr dazu im Datenschutz .
-- Z. 355: Angemeldet als
-- Z. 358: Jetzt abgleichen Passwort ändern
-- Z. 361: Abmelden
-- Z. 362: Abmelden und Daten von diesem Gerät entfernen Sinnvoll an fremden oder geteilten Geräten
-- Z. 363: Konto löschen
-- Z. 367: Neues Passwort (mindestens 8 Zeichen)
-- Z. 368: Passwort speichern
-- Z. 371: ← Zurück
-- Z. 376: anna Der große Preis Gleich geht's los
-- Z. 376: (Attribut) Manna
-- Z. 377: (Attribut) Vollbild
-- Z. 377: (Attribut) Vollbild
-- Z. 385: (Attribut) Schließen – Feld bleibt offen
-- Z. 385: (Attribut) Schließen
-- Z. 394: Lösung zeigen
-- Z. 399: Geschafft
-- Z. 400: Nicht geschafft
-- Z. 409: ACTION! SONDERFELD
-- Z. 414: (Attribut) Antippen zeigt sofort alles
-- Z. 415: Spiel beendet
-- Z. 420: Zurück zum Startmenü
-- Z. 428: Einstellungen
-- Z. 429: ▶ Zum Spiel
-- Z. 433: Allgemein
-- Z. 435: Titel der Show
-- Z. 440: Punktwerte der Zeilen
-- Z. 444: Soundeffekte
-- Z. 449: Gruppen
-- Z. 450: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
-- Z. 452: + Gruppe hinzufügen
-- Z. 456: Kategorien, Fragen &amp; Aufgaben
-- Z. 457: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
-- Z. 463: Spiel &amp; Daten
-- Z. 464: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
-- Z. 466: Neue Runde (Punkte &amp; Felder zurücksetzen)
-- Z. 470: Export erzeugen &amp; kopieren
-- Z. 471: Text unten importieren
-- Z. 472: Datei importieren (.json)
-- Z. 474: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
-- Z. 480: Version &amp; Updates
-- Z. 481: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
-- Z. 483: Changelog anzeigen
-- Z. 484: Jetzt nach Updates suchen
-- Z. 491: Manna Abbrechen OK
-- Z. 492: Changelog ✕ Alles klar
-- Z. 492: (Attribut) Schließen
-- Z. 492: (Attribut) Schließen
-- Z. 493: Neue Version geladen! Jetzt aktualisieren ✕
-- Z. 493: (Attribut) Später
+- Z. 91: Spiele haben wir schon am Start
+- Z. 96: Wir wissen, was es in der Jugendarbeit braucht!
+- Z. 98: Eine starke Spielesammlung Spiele sind immer gut, wissen wir, also liefern wir. Aber mit Fokus auf Qualität, wir schreiben unsere Spiele alle selbst auf Basis eigener Erfahrungen und ordnen sie pädagogisch ein!
+- Z. 99: Fertige Gameshows für den Beamer Manchmal braucht man schnell ein Abendprogramm. Here we go. Ist noch in Arbeit, aber das soll mal richtig nice werden!
+- Z. 104: Was wollen wir?
+- Z. 106: Ey, ganz im Ernst: Soviel wir planen und machen und tun, sooft erleben wir es, dass wir spontan sein müssen. Spontan ein Icebreaker, spontan einen Abend füllen – das ist doch ehrlich Alltag in der Kinder- und Jugendarbeit. Es gibt viele Tools, die uns da helfen sollen. Doch so richtig hat uns nie eins überzeugt.
+- Z. 107: Wir wollten etwas, das uns verlässlich „versorgt“, wo wir immer ein passendes Spiel bekommen. Wie krass wäre es bitte, das eigene Smartphone einfach an den Beamer anzuschließen und eine fertig vorbereitete Spieleshow auf dem Handy spontan parat zu haben? Inklusive interaktiver Beameransicht und Moderatorenansicht auf dem Handy, Tablet oder Laptop?
+- Z. 108: Das ist unser Ziel: Eine App, die genau das kann! Unser Retter in der Not – damit möglichst viele Jugendliche durch gute Erfahrungen in der Jugendarbeit Jesus kennenlernen dürfen, den echten Retter in der Not!
+- Z. 109: Aktuell geht das nur auf dem Laptop/PC. Wir arbeiten aber dran, es als App in den App Store zu bringen. Am meisten hilfst du uns, wenn du Manna nutzt und uns deine Erfahrungen berichtest! Viel Spaß!
+- Z. 114: Impressum und Datenschutz
+- Z. 118: Pädagogischer Kram
+- Z. 120: ← Startseite
+- Z. 127: ← Pädagogischer Kram
+- Z. 131: Gameshows
+- Z. 134: Der große Preis
+- Z. 135: Der absolute Klassiker als interaktives Template!
+- Z. 138: Eigenes Spiel
+- Z. 139: Erstelle deine eigene Gameshow mit unserem Gameshow-Editor und präsentiere sie direkt über den Browser!
+- Z. 142: Countdown
+- Z. 143: Brauch man doch ständig so n Countdown. Schnell, einfach, riesig
+- Z. 146: ← Startseite
+- Z. 150: Der große Preis
+- Z. 152: ← Gameshows
+- Z. 158: Vorlagen
+- Z. 160: ← Zurück
+- Z. 164: Erklärung
+- Z. 167: Worum es geht
+- Z. 168: Mehrere Gruppen treten gegeneinander an. Auf dem Spielbrett gibt es Kategorien mit Feldern von 10 bis 100 Punkten. Je mehr Punkte, desto schwerer. Die Gruppen wählen abwechselnd Felder und müssen die entsprechende Frage beantworten oder Aufgabe lösen, um die Punkte zu bekommen. Wer am Ende die meisten Punkte hat, gewinnt.
+- Z. 171: So läuft eine Runde
+- Z. 173: Eine Gruppe wählt ein Feld. Zum Beispiel „Sport 40“.
+- Z. 174: Die Frage erscheint. Es könnte auch eine Aufgabe oder ein Actionspiel erscheinen. Dazu unten mehr.
+- Z. 175: Die Gruppe beantwortet die Frage. Ist die Antwort richtig, erhält die Gruppe die volle Punktzahl. Ist die Antwort falsch, hat eine andere, zufällig ausgewählte Gruppe die Möglichkeit, die Frage für die Hälfte der Punktzahl zu beantworten. Bei bestimmten Fragetypen (s. u.) antworten alle Gruppen.
+- Z. 176: Danach ist die nächste Gruppe dran. Gespielte Felder sind aus dem Spiel.
+- Z. 177: Wenn alle Felder gespielt sind, ist das Spiel vorbei.
+- Z. 181: Die Feldtypen
+- Z. 183: Frage Eine einfache Frage ohne sichtbare Antwortmöglichkeit. Es gibt richtig oder falsch.
+- Z. 184: Multiple Choice Vier Antwortmöglichkeiten. Die Gruppe kann eine einloggen.
+- Z. 185: Schätzfrage Alle Gruppen geben eine Zahl ab. Wer am nächsten dran ist, bekommt die Punkte.
+- Z. 186: Aufgabe Eine Spezialaufgabe! Hier gilt: Geschafft gibt Punkte, sonst gibts nichts.
+- Z. 187: ACTION Volle Action! Alle Gruppen spielen um die Punkte! Der Gewinner bekommt die volle Punktzahl! Wenn die Gruppe, die das Feld gezogen hat, das Spiel gewinnt, verdoppeln sich für sie die Punkte!
+- Z. 191: Sonderregeln
+- Z. 193: Gleichstand: Haben am Ende mehrere Gruppen gleich viele Punkte, teilen sie sich den Sieg.
+- Z. 197: Tipps für die Spielleitung
+- Z. 199: Die optimale Anzahl an Gruppen liegt erfahrungsgemäß bei drei bis – wirklich maximal – sechs. Die Gruppen sollten nicht allzu groß sein.
+- Z. 200: Es hilft, wenn jede Gruppe einen Gruppenleiter festlegt, der die Antworten der Gruppe übermittelt.
+- Z. 201: Bei Schätzfragen die Einheit klug wählen.
+- Z. 202: Nicht zu viele ACTION-Felder – das bremst erfahrungsgemäß das ganze Spiel.
+- Z. 203: Aufgaben wählen, bei denen am besten alle mal mitmachen können und niemand bloßgestellt wird.
+- Z. 204: Fragen auf 10 wirklich leicht wählen, auf 100 auch gerne wirklich richtig schwere Fragen.
+- Z. 208: ← Zurück
+- Z. 212: Spielesammlung
+- Z. 213: Alle Spiele und die dazugehörigen Erklärungen sind von Menschen geschrieben und praxiserprobt.
+- Z. 217: (Attribut) Spiel suchen, z. B. Zeitung oder Stuhlkreis
+- Z. 217: (Attribut) Spiele durchsuchen
+- Z. 218: (Attribut) Suche leeren
+- Z. 220: Filter
+- Z. 221: (Attribut) Filter
+- Z. 222: Zufälliges Spiel Filter zurücksetzen
+- Z. 224: Selbst ein Spiel einreichen
+- Z. 226: ← Startseite
+- Z. 230: Hilf uns beim Content!
+- Z. 232: Irgendwie hat doch jeder so eigene Perlen. Schick uns deine, damit viele andere davon profitieren können.
+- Z. 234: Das Spiel
+- Z. 235: Name
+- Z. 235: (Attribut) z. B. Zeitungsschlagen
+- Z. 236: Kurzbeschreibung (ein Satz)
+- Z. 236: (Attribut) Worum geht es?
+- Z. 239: Für wen und wo (optional)
+- Z. 240: Alter
+- Z. 240: (Attribut) Alter
+- Z. 242: Personen mindestens
+- Z. 243: Personen höchstens (leer = egal)
+- Z. 243: (Attribut) egal
+- Z. 245: Ort
+- Z. 245: (Attribut) Ort
+- Z. 246: Dauer
+- Z. 246: (Attribut) z. B. ca. 15 Minuten
+- Z. 249: Ablauf
+- Z. 250: Verwende „-“ für Aufzählungen und „1.“ ... für Nummerierungen etc.
+- Z. 251: So geht’s
+- Z. 252: Material (eins pro Zeile, leer = kein Material)
+- Z. 253: Varianten (optional, eine pro Zeile)
+- Z. 254: Pädagogische Gedanken (optional)
+- Z. 255: Fragen zum Nachgespräch (optional)
+- Z. 258: Sicherheit und Tipp
+- Z. 259: Gefahren und Risiken (eins pro Zeile)
+- Z. 259: (Attribut) Worauf muss die Spielleitung achten?
+- Z. 260: Tipp (optional)
+- Z. 263: Von dir
+- Z. 264: freiwillig, nur falls wir Rückfragen haben
+- Z. 266: Dein Name
+- Z. 267: E-Mail
+- Z. 269: Website
+- Z. 270: Ich habe das Spiel selbst beschrieben oder darf es teilen. Das Manna-Team darf es bearbeiten und ggf. veröffentlichen.
+- Z. 271: Einreichen
+- Z. 275: Danke, dass du mithilfst, unsere Sammlung gigantisch zu machen. Liebe geht raus! &lt;3
+- Z. 276: ← Zur Spielesammlung
+- Z. 281: ← Zur Spielesammlung
+- Z. 285: Countdown
+- Z. 289: (Attribut) Zeit auswählen
+- Z. 290: (Attribut) Eigene Zeit
+- Z. 291: − 1 Min +
+- Z. 291: (Attribut) Eine Minute weniger
+- Z. 291: (Attribut) Eine Minute mehr
+- Z. 292: − 00 Sek +
+- Z. 292: (Attribut) Fünf Sekunden weniger
+- Z. 292: (Attribut) Fünf Sekunden mehr
+- Z. 295: Start
+- Z. 296: Pause
+- Z. 297: Zurücksetzen
+- Z. 299: Zuschaueransicht zeigen
+- Z. 302: ← Gameshows
+- Z. 306: Eigenes Spiel
+- Z. 308: ← Gameshows
+- Z. 313: Spiel einrichten
+- Z. 316: ← Zurück
+- Z. 318: Exportieren
+- Z. 319: Speichern
+- Z. 320: Spiel starten
+- Z. 326: Einstellungen
+- Z. 328: Spielbrett bearbeiten
+- Z. 329: Zuschaueransicht zeigen
+- Z. 330: Die Zuschaueransicht öffnet ein zweites Fenster. Dieses kannst du nun auf den Beamer ziehen (dort am besten einmal auf das Vollbild-Symbol klicken). Im ersten Fenster hast du jetzt eine Moderatorenansicht, mit so hilfreichem Kram, wie den Antworten, der Möglichkeit der Punktevergabe und mehr. Die Zuschauer sehen nur eine Zuschaueransicht, mit tollen Animationen, aber keine Insights.
+- Z. 333: Sicherung erstellen
+- Z. 334: Sicherung einspielen
+- Z. 336: Eine Sicherung enthält dein aktuelles Spielbrett, alle eigenen Vorlagen und deine eigenen Spiele. Beim Einspielen landen Spielbrett und Vorlagen unter „Vorlagen“, die eigenen Spiele unter „Eigenes Spiel“. Dein aktuelles Spielbrett bleibt unverändert.
+- Z. 338: ← Zurück
+- Z. 343: Konto
+- Z. 345: Mit einem Konto hast du deine eigenen Spiele, Vorlagen, Favoriten und dein Spielbrett auf jedem Gerät. Ohne Konto funktioniert Manna wie bisher.
+- Z. 347: E-Mail
+- Z. 348: Passwort
+- Z. 349: Anmelden Konto erstellen
+- Z. 350: Passwort vergessen?
+- Z. 352: Für ein Konto speichern wir deine E-Mail-Adresse und das, was du in Manna anlegst, auf Servern in Frankfurt. Mehr dazu im Datenschutz .
+- Z. 357: Angemeldet als
+- Z. 360: Jetzt abgleichen Passwort ändern
+- Z. 363: Abmelden
+- Z. 364: Abmelden und Daten von diesem Gerät entfernen Sinnvoll an fremden oder geteilten Geräten
+- Z. 365: Konto löschen
+- Z. 369: Neues Passwort (mindestens 8 Zeichen)
+- Z. 370: Passwort speichern
+- Z. 373: ← Zurück
+- Z. 378: anna Der große Preis Gleich geht's los
+- Z. 378: (Attribut) Manna
+- Z. 379: (Attribut) Vollbild
+- Z. 379: (Attribut) Vollbild
+- Z. 387: (Attribut) Schließen – Feld bleibt offen
+- Z. 387: (Attribut) Schließen
+- Z. 396: Lösung zeigen
+- Z. 401: Geschafft
+- Z. 402: Nicht geschafft
+- Z. 411: ACTION! SONDERFELD
+- Z. 416: (Attribut) Antippen zeigt sofort alles
+- Z. 417: Spiel beendet
+- Z. 422: Zurück zum Startmenü
+- Z. 430: Einstellungen
+- Z. 431: ▶ Zum Spiel
+- Z. 435: Allgemein
+- Z. 437: Titel der Show
+- Z. 442: Punktwerte der Zeilen
+- Z. 446: Soundeffekte
+- Z. 451: Gruppen
+- Z. 452: Farbe antippen zum Ändern. Den Punktestand kannst du hier auch von Hand korrigieren.
+- Z. 454: + Gruppe hinzufügen
+- Z. 458: Kategorien, Fragen &amp; Aufgaben
+- Z. 459: Klassisch: Die Lösung bleibt verdeckt, bis du auf „Lösung zeigen“ tippst. Multiple Choice: Antwort antippen zum Einloggen, dann auflösen. Bei beiden kann eine andere Gruppe die halbe Punktzahl bekommen. Schätzfrage: Jede Gruppe gibt eine Zahl ab, wer am nächsten dran ist, gewinnt. Aufgabe: Nur die Gruppe am Zug spielt. ACTION: Alle Gruppen spielen mit, du wählst den Gewinner. Auf dem Spielbrett sieht das Feld normal aus, erst beim Antippen gibt es die Überraschung.
+- Z. 465: Spiel &amp; Daten
+- Z. 466: Alles wird automatisch auf diesem Gerät gespeichert. Zum Sichern oder Übertragen auf ein anderes Gerät: Export kopieren und z. B. in eine Notiz einfügen.
+- Z. 468: Neue Runde (Punkte &amp; Felder zurücksetzen)
+- Z. 472: Export erzeugen &amp; kopieren
+- Z. 473: Text unten importieren
+- Z. 474: Datei importieren (.json)
+- Z. 476: (Attribut) Hier erscheint der Export – oder füge einen Export zum Importieren ein.
+- Z. 482: Version &amp; Updates
+- Z. 483: Ist das iPad im WLAN, lädt die App neue Versionen automatisch im Hintergrund. Ohne Internet läuft sie einfach mit der zuletzt geladenen Version weiter.
+- Z. 485: Changelog anzeigen
+- Z. 486: Jetzt nach Updates suchen
+- Z. 493: Manna Abbrechen OK
+- Z. 494: Changelog ✕ Alles klar
+- Z. 494: (Attribut) Schließen
+- Z. 494: (Attribut) Schließen
+- Z. 495: Neue Version geladen! Jetzt aktualisieren ✕
+- Z. 495: (Attribut) Später
 
 ## rechtliches.html
 
@@ -502,40 +500,40 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 
 ## js/sammlung.js
 
-- Z. 35: Nur Erlebnispädagogik
-- Z. 51: ab … Personen
-- Z. 51: …–… Personen
-- Z. 52: drinnen und draußen
-- Z. 66: …: …
-- Z. 67: So geht’s
-- Z. 69: Pädagogische Gedanken
-- Z. 70: Fragen zum Nachgespräch
-- Z. 153: …
-- Z. 153: …
-- Z. 187: Filter (… aktiv)
-- Z. 189: 1 ähnliches Spiel
-- Z. 189: ähnliche Spiele
-- Z. 194: Die Spiele konnten nicht geladen werden. Öffne die Spielesammlung noch einmal, sobald du Internet hast.
-- Z. 194: Spiele werden geladen …
-- Z. 195: Kein Spiel gefunden für „…“. Prüf die Schreibweise oder versuch ein anderes Wort.
-- Z. 196: Kein Spiel gefunden für „…“, solange die Filter aktiv sind.
-- Z. 204: ★
-- Z. 205: Gefunden in …: …
-- Z. 206: Erlebnispädagogik
-- Z. 214: …, wenn du die Filter zurücksetzt.
-- Z. 215: Filter zurücksetzen
-- Z. 233: …
-- Z. 234: …
-- Z. 242: ……
-- Z. 253: ${g.phasen&&g.phasen.length?
-- Z. 253: Alle Gruppenphasen
+- Z. 54: Nur Erlebnispädagogik
+- Z. 70: ab … Personen
+- Z. 70: …–… Personen
+- Z. 71: drinnen und draußen
+- Z. 85: …: …
+- Z. 86: So geht’s
+- Z. 88: Pädagogische Gedanken
+- Z. 89: Fragen zum Nachgespräch
+- Z. 172: …
+- Z. 172: …
+- Z. 206: Filter (… aktiv)
+- Z. 208: 1 ähnliches Spiel
+- Z. 208: ähnliche Spiele
+- Z. 213: Die Spiele konnten nicht geladen werden. Öffne die Spielesammlung noch einmal, sobald du Internet hast.
+- Z. 213: Spiele werden geladen …
+- Z. 214: Kein Spiel gefunden für „…“. Prüf die Schreibweise oder versuch ein anderes Wort.
+- Z. 215: Kein Spiel gefunden für „…“, solange die Filter aktiv sind.
+- Z. 223: ★
+- Z. 224: Gefunden in …: …
+- Z. 225: Erlebnispädagogik
+- Z. 233: …, wenn du die Filter zurücksetzt.
+- Z. 234: Filter zurücksetzen
+- Z. 252: …
 - Z. 253: …
-- Z. 255: Kein Material nötig.
-- Z. 257: So geht’s
-- Z. 259: Pädagogische Gedanken…
-- Z. 260: Fragen zum Nachgespräch…
-- Z. 261: Gefahren und Risiken…
-- Z. 262: Tipp…
+- Z. 261: ……
+- Z. 272: ${g.phasen&&g.phasen.length?
+- Z. 272: Alle Gruppenphasen
+- Z. 272: …
+- Z. 274: Kein Material nötig.
+- Z. 276: So geht’s
+- Z. 278: Pädagogische Gedanken…
+- Z. 279: Fragen zum Nachgespräch…
+- Z. 280: Gefahren und Risiken…
+- Z. 281: Tipp…
 
 ## js/countdown.js
 
