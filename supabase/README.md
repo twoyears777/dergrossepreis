@@ -7,4 +7,4 @@ nicht von hier aus.
   Zugriffsregeln (jeder sieht nur seine eigenen Daten), Obergrenzen gegen Missbrauch, Funktion `konto_loeschen()`, dazu `wach()` für den Wach-Halter (`.github/workflows/wach-halten.yml`).
 - Die Tabellen `einreichungen` (Spiel einreichen) und `admins` (Editor-Login) gibt es seit Version 1.28.0.
 - `username-und-daumen.sql` – Username & Daumen hoch (ab Version 1.30.0): Tabellen `profile` und `daumen`, Zugriffsregeln
-  (nur eigene Zeilen), Funktion `daumen_zahlen()` (Anzahl pro Spiel, für alle). **Noch nicht eingespielt**, erst mit Freigabe.
+  (nur eigene Zeilen), Funktion `daumen_zahlen()` (Anzahl pro Spiel, für alle). Eingespielt am 26.11.2026.

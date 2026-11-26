@@ -1,6 +1,6 @@
 # Changelog – Manna
 
-## 1.30.0 – [Datum beim Veröffentlichen]
+## 1.30.0 – 26.11.2026
 - Testphase wie bei 1.29.0: kein Eintrag im App-Changelog, solange Konten nur für Tester offen sind
 - Neu: Username im Konto (Konto-Seite, Feld „Username“). 3–20 Zeichen, eindeutig ohne Rücksicht auf Groß-/Kleinschreibung, ein paar Namen gesperrt (admin, manna, …). Abfrage bei der Registrierung folgt später
 - Neu: Daumen hoch für Spiele der Spielesammlung (erster Teil von Rezensionen). Nur mit Konto und Username, ein Daumen pro Spiel, nochmal tippen nimmt ihn zurück, kein Daumen runter. Knopf auf der Detailseite neben „Favorit“, in der Liste ein kleines Daumen-Symbol mit Anzahl (nur bei Spielen mit mindestens einem Daumen)

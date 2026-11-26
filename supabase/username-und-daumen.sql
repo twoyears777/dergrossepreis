@@ -1,5 +1,4 @@
--- Manna – Username & Daumen hoch (Migration „username_und_daumen“, vorbereitet für Version 1.30.0)
--- NOCH NICHT EINGESPIELT. Erst nach Lukas' Okay im Supabase-Projekt „manna“ ausführen.
+-- Manna – Username & Daumen hoch (Migration „username_und_daumen“, eingespielt am 26.11.2026, ab Version 1.30.0)
 --
 -- Username: einer pro Konto, eindeutig (Groß-/Kleinschreibung zählt nicht: „Lukas“ und „lukas“ sind derselbe).
 --   Vorerst sieht jeder nur seinen eigenen. Sollen später bei Rezensionen Namen anderer erscheinen,
