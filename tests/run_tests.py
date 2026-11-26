@@ -601,10 +601,11 @@ def browser_checks(p):
 
 class FakeSupabase:
     """Nachgebautes Supabase (nur was App und Editor brauchen). Spielt die Zugriffsregeln der Datenbank nach:
-    ohne Anmeldung nur einreichen, mit Admin-Login lesen, ändern, löschen."""
+    einreichen nur mit Konto und Username (die Datenbank setzt user_id und username selbst), mit Admin-Login lesen, ändern, löschen."""
     KEY = 'sb_publishable_XVvHrzG_pDKErkF37hsN4A_NYzt-Dc-'
     def __init__(self):
         self.rows = []; self.n = 0; self.voll = False; self.offline = False; self.posts = []
+        self.nutzer = {'Bearer user-1': {'id': 'u-1', 'username': 'anna_jugend'}, 'Bearer user-noname': {'id': 'u-2', 'username': None}}
     def handle(self, route, request):
         u = urlparse(request.url); path = u.path; q = parse_qs(u.query)
         cors = {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': '*'}
@@ -623,14 +624,21 @@ class FakeSupabase:
                 return js(200, {'access_token': 'admin-2', 'refresh_token': 'r1', 'expires_in': 3600})
             return js(400, {'error_description': 'Invalid login credentials'})
         if path == '/auth/v1/logout': return js(204, None)
+        nutzer = self.nutzer.get(h.get('authorization'))
+        if path == '/rest/v1/rpc/daumen_zahlen': return js(200, [])
+        if path == '/rest/v1/daumen': return js(200, [])
+        if path == '/rest/v1/profile':
+            return js(200, [{'username': nutzer['username']}] if nutzer and nutzer['username'] else [])
         if path != '/rest/v1/einreichungen': return js(404, {'message': 'not found'})
         if request.method == 'POST':
             self.posts.append({'headers': dict(h), 'body': body})
-            erlaubt = {'titel', 'spiel', 'name', 'email', 'rechte_bestaetigt'}
+            erlaubt = {'titel', 'spiel', 'rechte_bestaetigt'}
+            if not nutzer: return js(401, {'message': 'permission denied'})
             if set(body) - erlaubt or body.get('rechte_bestaetigt') is not True: return js(403, {'message': 'permission denied'})
-            if self.voll: return js(400, {'message': 'limit_erreicht'})
+            if self.voll: return js(400, {'code': 'P0001', 'message': 'limit_erreicht'})
+            if not nutzer['username']: return js(400, {'code': 'P0001', 'message': 'kein_username'})
             self.n += 1
-            self.rows.append(dict(body, id=f'00000000-0000-0000-0000-{self.n:012d}', erstellt_am='2026-11-25T14:00:00Z', status='neu'))
+            self.rows.append(dict(body, id=f'00000000-0000-0000-0000-{self.n:012d}', erstellt_am='2026-11-25T14:00:00Z', status='neu', user_id=nutzer['id'], username=nutzer['username'], name=None, email=None))
             return js(201, None)
         if not admin: return js(200, []) if request.method == 'GET' else js(401, {'message': 'JWT invalid'})
         rid = (q.get('id', [''])[0]).replace('eq.', '')
@@ -657,12 +665,32 @@ def einreichen_checks(p):
     m.click('#gcColl'); m.wait_for_timeout(300)
     check('Einreichen: Knopf in der Spielesammlung', m.inner_text('#btnSubmitOpen') == 'Selbst ein Spiel einreichen')
     m.click('#btnSubmitOpen'); m.wait_for_timeout(300)
+    check('Einreichen ohne Konto: Hinweis statt Formular', m.locator('#subGate:not([hidden])').count() == 1 and m.locator('#subForm[hidden]').count() == 1 and 'Konto' in m.inner_text('#subGateText'))
+    m.click('#btnSubGate'); m.wait_for_timeout(300)
+    check('Einreichen ohne Konto: „Anmelden“ führt zum Konto', m.locator('#kontoScreen.show').count() == 1)
+    m.click('#btnKontoBack'); m.wait_for_timeout(300)
+    check('Einreichen ohne Konto: zurück landet wieder beim Einreichen', m.locator('#submitScreen.show').count() == 1)
+    konto = lambda token, uid: m.evaluate("([t,u])=>{localStorage.setItem('manna_konto',JSON.stringify({access:t,refresh:'rr',exp:Math.floor(Date.now()/1000)+3600,id:u,email:u+'@example.org'}));}", [token, uid])
+    konto('user-noname', 'u-2'); m.reload(); m.wait_for_timeout(500)
+    if m.locator('#clDialog.show').count(): m.click('#clX')
+    m.click('#gcColl'); m.wait_for_timeout(200); m.click('#btnSubmitOpen'); m.wait_for_timeout(300)
+    check('Einreichen ohne Username: Formular da, kein „Du reichst ein als“', m.locator('#subForm:not([hidden])').count() == 1 and m.inner_text('#subVon') == '')
+    m.fill('#sName', 'X'); m.fill('#sKurz', 'Y'); m.fill('#sAblauf', 'Z'); m.check('#sRechte'); m.evaluate('subOpened=Date.now()-10000')
+    m.click('#btnSubmitSend'); m.wait_for_timeout(300)
+    check('Einreichen ohne Username: Bitte, erst einen festzulegen, nichts geschickt', m.locator('#dialog.show').count() == 1 and 'Username' in m.inner_text('#dMsg') and not sb.posts)
+    m.click('#dYes'); m.wait_for_timeout(300)
+    check('Einreichen ohne Username: führt zum Konto', m.locator('#kontoScreen.show').count() == 1)
+    konto('user-1', 'u-1'); m.reload(); m.wait_for_timeout(500)
+    if m.locator('#clDialog.show').count(): m.click('#clX')
+    m.click('#gcColl'); m.wait_for_timeout(200); m.click('#btnSubmitOpen'); m.wait_for_timeout(300)
     check('Einreichen: Formular öffnet sich', m.locator('#submitScreen.show').count() == 1 and m.get_attribute('#submitTitle', 'aria-label') == 'Hilf uns beim Content!')
+    check('Einreichen: zeigt „Du reichst ein als @anna_jugend“', '@anna_jugend' in m.inner_text('#subVon') and m.locator('#subGate[hidden]').count() == 1)
+    check('Einreichen: keine Felder mehr für Name und E-Mail', m.locator('#sVon, #sMail').count() == 0)
     m.click('#btnSubmitSend'); m.wait_for_timeout(200)
     check('Einreichen: Pflichtfelder und Häkchen werden verlangt', 'Name' in m.inner_text('#subMsg') and 'Häkchen' in m.inner_text('#subMsg') and not sb.posts)
     m.fill('#sName', 'Wäscheklammern klauen'); m.fill('#sKurz', 'Alle  jagen\nKlammern.'); m.fill('#sAblauf', '- Jeder bekommt Klammern\n- Los geht’s')
     m.fill('#sMin', '8'); m.click('#sAlter .fchip >> nth=1'); m.click('#sOrt .fchip >> nth=0'); m.fill('#sRisiken', 'Nicht an Haaren ziehen')
-    m.fill('#sVon', 'Anna'); m.check('#sRechte')
+    m.check('#sRechte')
     m.evaluate('subOpened=Date.now()'); m.click('#btnSubmitSend'); m.wait_for_timeout(300)
     check('Einreichen: zu schnelles Absenden gilt als Bot, nichts wird geschickt', not sb.posts and m.locator('#subDone:not([hidden])').count() == 1)
     m.click('#btnSubmitBack'); m.click('#btnSubmitOpen'); m.wait_for_timeout(200)
@@ -670,7 +698,7 @@ def einreichen_checks(p):
     def ausfuellen():
         m.fill('#sName', 'Wäscheklammern klauen'); m.fill('#sKurz', 'Alle jagen Klammern.'); m.fill('#sAblauf', '- Jeder bekommt Klammern\n- Los geht’s')
         m.fill('#sMin', '8'); m.click('#sAlter .fchip >> nth=1'); m.click('#sOrt .fchip >> nth=0'); m.fill('#sRisiken', 'Nicht an Haaren ziehen')
-        m.fill('#sVon', 'Anna'); m.fill('#sMail', 'anna@example.org'); m.check('#sRechte'); m.evaluate('subOpened=Date.now()-10000')
+        m.check('#sRechte'); m.evaluate('subOpened=Date.now()-10000')
     ausfuellen(); m.fill('#sWebsite', 'http://spam.example'); m.click('#btnSubmitSend'); m.wait_for_timeout(300)
     check('Einreichen: verstecktes Bot-Feld ausgefüllt, nichts wird geschickt', not sb.posts)
     m.click('#btnSubmitBack'); m.click('#btnSubmitOpen'); m.wait_for_timeout(200)
@@ -679,9 +707,10 @@ def einreichen_checks(p):
     sb.voll = False; m.click('#btnSubmitSend'); m.wait_for_timeout(400)
     post = sb.posts[-1] if sb.posts else {'headers': {}, 'body': {}}
     check('Einreichen: landet in der Datenbank', len(sb.rows) == 1 and m.locator('#subDone:not([hidden])').count() == 1)
-    check('Einreichen: nur öffentlicher Schlüssel, keine Anmeldung', post['headers'].get('apikey') == sb.KEY and 'authorization' not in post['headers'])
+    check('Einreichen: mit Anmeldung, ohne Konto/Username im Inhalt (setzt die Datenbank)', post['headers'].get('apikey') == sb.KEY and post['headers'].get('authorization') == 'Bearer user-1' and not {'user_id', 'username', 'name', 'email'} & set(post['body']))
+    check('Einreichen: merkt sich „eingereicht von“', sb.rows and sb.rows[-1].get('username') == 'anna_jugend' and sb.rows[-1].get('user_id') == 'u-1')
     w = post['body'].get('spiel', {}).get('werte', {})
-    check('Einreichen: Werte im Editor-Format', post['body'].get('titel') == 'Wäscheklammern klauen' and w.get('alter') == ['jugend'] and w.get('ort') == ['drinnen'] and w.get('min') == '8' and post['body'].get('email') == 'anna@example.org', post['body'])
+    check('Einreichen: Werte im Editor-Format', post['body'].get('titel') == 'Wäscheklammern klauen' and w.get('alter') == ['jugend'] and w.get('ort') == ['drinnen'] and w.get('min') == '8', post['body'])
     check('Einreichen: Danke-Text', 'Liebe geht raus! <3' in m.inner_text('#subDone'))
     sb.offline = True; m.click('#btnSubmitBack'); m.click('#btnSubmitOpen'); ausfuellen(); m.click('#btnSubmitSend'); m.wait_for_timeout(400)
     check('Einreichen: eigene Meldung ohne Internet', 'offline' in m.inner_text('#subMsg') and 'zu viele' not in m.inner_text('#subMsg') and m.input_value('#sName') != '')
@@ -715,11 +744,11 @@ def einreichen_checks(p):
     e.click('#btnBack'); e.wait_for_timeout(200)
     e.locator('.einr-item').nth(0).locator('.primary').click(); e.wait_for_timeout(300)
     check('Übernehmen: Formular mit den eingereichten Werten', e.input_value('#fName') == 'Wäscheklammern klauen' and e.input_value('#fMin') == '8' and e.inner_text('#editTitle') == 'Einreichung übernehmen')
-    check('Übernehmen: zeigt, von wem es kommt', 'Anna, anna@example.org' in e.inner_text('#einrInfo'))
+    check('Übernehmen: zeigt, von wem es kommt', 'von @anna_jugend' in e.inner_text('#einrInfo'))
     e.fill('#fTipp', 'Klammern vorher zählen.'); e.click('#btnBack'); e.wait_for_timeout(200)
     e.locator('#mBtns button', has_text='Zur Liste').click(); e.wait_for_timeout(200)
     e.locator('.einr-item').nth(0).locator('.primary').click(); e.wait_for_timeout(300)
-    check('Übernehmen: Entwurf gehört zur Einreichung', e.locator('#draftBox:not([hidden])').count() == 1 and 'Anna' in e.inner_text('#einrInfo'))
+    check('Übernehmen: Entwurf gehört zur Einreichung', e.locator('#draftBox:not([hidden])').count() == 1 and 'anna_jugend' in e.inner_text('#einrInfo'))
     e.click('#dRestore'); e.wait_for_timeout(200)
     check('Übernehmen: Entwurf wiederhergestellt', e.input_value('#fTipp') == 'Klammern vorher zählen.')
     e.click('#btnRoh'); e.wait_for_timeout(800)

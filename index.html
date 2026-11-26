@@ -228,6 +228,7 @@
 
 <div class="screen" id="submitScreen">
   <h1 class="menu-title" id="submitTitle">Hilf uns beim Content!</h1>
+  <div class="sub-gate" id="subGate" hidden><p id="subGateText"></p><div class="row"><button class="primary" id="btnSubGate"></button></div></div>
   <form class="sub-form" id="subForm" novalidate autocomplete="off">
     <p class="sub-intro">Irgendwie hat doch jeder so eigene Perlen. Schick uns deine, damit viele andere davon profitieren können.</p>
     <section class="sec">
@@ -261,11 +262,7 @@
     </section>
     <section class="sec">
       <h2>Von dir</h2>
-      <p class="hint">freiwillig, nur falls wir Rückfragen haben</p>
-      <div class="sub-pair">
-        <label class="f">Dein Name<input class="inp" id="sVon" maxlength="80" autocomplete="name"></label>
-        <label class="f">E-Mail<input class="inp" id="sMail" type="email" maxlength="200" autocomplete="email"></label>
-      </div>
+      <p class="hint" id="subVon"></p>
       <label class="sub-hp" aria-hidden="true">Website<input id="sWebsite" tabindex="-1" autocomplete="off"></label>
       <label class="check" data-s="rechte"><input type="checkbox" id="sRechte"><span>Ich habe das Spiel selbst beschrieben oder darf es teilen. Das Manna-Team darf es bearbeiten und ggf. veröffentlichen.</span></label>
       <div class="row sub-send"><button type="submit" class="primary" id="btnSubmitSend">Einreichen</button></div>

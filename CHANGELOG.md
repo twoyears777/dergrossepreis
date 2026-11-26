@@ -1,5 +1,14 @@
 # Changelog – Manna
 
+## 1.32.0 – [Datum beim Veröffentlichen]
+- Spiel einreichen nur noch mit Konto: Ohne Anmeldung zeigt die Seite einen Hinweis mit „Anmelden“ statt des Formulars. Ohne Username kommt die Bitte, erst einen festzulegen
+- „Eingereicht von …“: Jede Einreichung merkt sich Konto und Username (setzt die Datenbank selbst, nicht fälschbar). Das Formular zeigt „Du reichst ein als @…“
+- Die freiwilligen Felder Name und E-Mail sind weg, das Konto reicht für Rückfragen
+- Editor: Bei Einreichungen steht „von @username“ (ältere Einreichungen weiter mit Name/E-Mail)
+- Wird ein Konto gelöscht, verschwinden auch seine noch offenen Einreichungen
+- Intern: SQL in `supabase/einreichen-mit-konto.sql` (erst NACH dem Veröffentlichen einspielen)
+- Tests: Einreichen ohne Konto, ohne Username, mit Konto; Anzeige im Editor
+
 ## 1.31.0 – 26.11.2026
 - Neu: Registrieren für alle (`kontenFuerAlle: true` in js/supabase.js). Eigene Ansicht „Konto erstellen“ mit E-Mail, Username und Passwort; der Username wird vorab geprüft (Funktion `username_frei()`) und beim ersten Login als Profil angelegt
 - Neu: Bestätigen per Code: Nach dem Registrieren und bei „Passwort vergessen?“ kann man den Code aus der Mail in Manna eintippen (zusätzlich zum Link). Hilft, wenn Virenscanner bei Dienstadressen den Link schon automatisch öffnen. „Code nochmal schicken“ und „Zurück zur Anmeldung“

@@ -135,6 +135,7 @@ function usernameUI(){
   const f=$('#kName'),s=$('#kNameStand');if(!f)return;
   if(document.activeElement!==f)f.value=username||nameVorschlag||'';
   if(s)s.hidden=!!username;
+  if(typeof subKontoUI==='function')subKontoUI();   // js/einreichen.js: „Eingereicht als …“
 }
 
 /* ---------- Konto-Seite: Username festlegen ---------- */

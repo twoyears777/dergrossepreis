@@ -10,6 +10,8 @@ nicht von hier aus.
   (nur eigene Zeilen), Funktion `daumen_zahlen()` (Anzahl pro Spiel, für alle). Eingespielt am 26.11.2026.
 - `registrierung.sql` – Registrierung für alle (ab Version 1.31.0): Funktion `username_frei()` (ist ein Username noch frei?).
   Eingespielt am 26.11.2026.
+- `einreichen-mit-konto.sql` – Einreichen nur mit Konto (ab Version 1.32.0): Spalten `user_id` und `username`,
+  Trigger setzt beides aus dem Login, nur Angemeldete mit Username dürfen einreichen. Noch nicht eingespielt.
 
 ## Einstellungen im Dashboard für die Registrierung (ab Version 1.31.0)
 

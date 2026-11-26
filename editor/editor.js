@@ -537,7 +537,7 @@
   async function loadEinr() {
     if (!sb) { einr = []; renderEinr(); return; }
     try {
-      const d = await sbFetch('/rest/v1/einreichungen?select=id,erstellt_am,titel,spiel,name,email&status=eq.neu&order=erstellt_am.asc');
+      const d = await sbFetch('/rest/v1/einreichungen?select=*&status=eq.neu&order=erstellt_am.asc');
       einr = Array.isArray(d) ? d.filter(x => x && typeof x.id === 'string') : [];
     } catch (e) {
       if (e.status === 401) { einr = []; renderEinr(); $('#sbMsg').textContent = 'Bitte neu anmelden.'; return; }
@@ -559,7 +559,8 @@
     };
   }
   const datum = t => { const d = new Date(t); return isNaN(d) ? '' : d.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }); };
-  const vonText = e => [str(e.name, 80).trim(), str(e.email, 200).trim()].filter(Boolean).join(', ');
+  // Ab Version 1.32.0 nur mit Konto: „@username“ (von der Datenbank gesetzt). Ältere Einreichungen: freiwilliger Name und E-Mail
+  const vonText = e => str(e.username, 20).trim() ? '@' + str(e.username, 20).trim() : [str(e.name, 80).trim(), str(e.email, 200).trim()].filter(Boolean).join(', ');
   function renderEinr() {
     $('#einrLogin').hidden = !!sb; $('#einrList').hidden = !sb;
     $('#btnSbLogout').hidden = !sb; $('#btnEinrReload').hidden = !sb;
