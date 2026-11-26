@@ -2,10 +2,11 @@ MANNA-SPIEL v1
 Name: Blinde Schlange
 Kurzbeschreibung: Eine Schlange mit verbundenen Augen folgt den Signalen des einzigen Sehenden am Ende.
 Alter: Jugendliche (13–17), Erwachsene (18+)
-Personen: 6 bis 15
+Personen: 6 bis 30
 Ort: drinnen, draußen
 Dauer: 15-20
 Gruppenphasen: Vertrautheitsphase, Differenzierungsphase
+Erlebnispädagogik: ja
 
 Material:
 - Augenbinden
@@ -15,10 +16,19 @@ Ablauf:
 Die Gruppe stellt sich hintereinander, die Hände auf den Schultern der Person vorne. Alle außer der letzten Person haben die Augen verbunden.
 Die letzte Person steuert die Schlange, ohne zu sprechen, nur über Signale, die von hinten nach vorne weitergegeben werden: Tippen auf die linke Schulter = links, rechte = rechts, auf den Kopf = stopp, beide Schultern = geradeaus.
 Die Schlange soll ein Ziel erreichen oder einen Parcours schaffen.
+Kann auch als Wettbewerb auf Zeit mit mehreren Gruppen gespielt werden.
+
+Varianten:
+Steuern über Zurrufen
+All sind verbunden durch ein Seil, dass sie niemals loslassen dürfen
 
 Fragen zum Nachgespräch:
-- Wo sind Signale verloren gegangen?
-- Wie war es, ganz vorne zu laufen?
+- Wie habt ihr den Parcour gemeistert?
+- Was würdet ihr nächstes Mal anders machen? Warum?
+- Was war wichtig für die Übermittlung von Signalen?
+- Was können wir aus dieser Übung für uns als Gruppe mitnehmen?
 
 Gefahren und Risiken:
 - Sehr langsam gehen, die Leitung läuft neben der Schlange mit.
+- Gelände sorgfältig auf Gefahren prüfen
+- Augen verbinden braucht immer Freiwilligkeit und kann für einzelne unangenehm sein: Übelkeit, Panik ...
