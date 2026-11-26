@@ -4,5 +4,5 @@ Hier liegt zum Nachlesen, was in der Datenbank eingerichtet ist. Ausgeführt wir
 nicht von hier aus.
 
 - `konten-und-sync.sql` – Konten & Sync (ab Version 1.29.0): Tabellen `sync_eintraege` und `sync_bilder`,
-  Zugriffsregeln (jeder sieht nur seine eigenen Daten), Obergrenzen gegen Missbrauch, Funktion `konto_loeschen()`.
+  Zugriffsregeln (jeder sieht nur seine eigenen Daten), Obergrenzen gegen Missbrauch, Funktion `konto_loeschen()`, dazu `wach()` für den Wach-Halter (`.github/workflows/wach-halten.yml`).
 - Die Tabellen `einreichungen` (Spiel einreichen) und `admins` (Editor-Login) gibt es seit Version 1.28.0.

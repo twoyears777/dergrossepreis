@@ -74,3 +74,10 @@ begin
 end $$;
 revoke all on function public.konto_loeschen() from public, anon;
 grant execute on function public.konto_loeschen() to authenticated;
+
+-- Wach-Halter (Migration „wach_halten“, 26.11.2026): wird alle 3 Tage von .github/workflows/wach-halten.yml aufgerufen,
+-- damit das Projekt im kostenlosen Tarif nicht pausiert. Liest nichts, gibt nur true zurück.
+create or replace function public.wach() returns boolean
+language sql stable security invoker set search_path = '' as $$ select true $$;
+revoke all on function public.wach() from public;
+grant execute on function public.wach() to anon, authenticated;

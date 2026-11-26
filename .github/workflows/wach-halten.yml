@@ -1,0 +1,28 @@
+name: Supabase wach halten
+
+# Im kostenlosen Supabase-Tarif wird ein Projekt nach einer Woche ohne Aktivität pausiert.
+# Diese Action ruft alle 3 Tage die Funktion wach() in der Datenbank auf (gibt nur true zurück, liest nichts).
+# Der Schlüssel ist der ÖFFENTLICHE (derselbe wie in js/supabase.js), kein Geheimnis.
+# Hinweis: Geplante Actions laufen nur vom Haupt-Zweig (main). GitHub schaltet sie bei öffentlichen Repos ab,
+# wenn 60 Tage lang nichts ins Repo kommt; dann unter „Actions“ wieder einschalten.
+# Mit dem Pro-Tarif wird diese Action überflüssig und kann gelöscht werden.
+
+on:
+  schedule:
+    - cron: '17 6 */3 * *'   # alle 3 Tage um 6:17 Uhr UTC
+  workflow_dispatch:          # zum Testen: Actions -> „Supabase wach halten“ -> „Run workflow“
+
+permissions: {}
+
+jobs:
+  wach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Supabase anpingen
+        run: |
+          curl --fail --silent --show-error --retry 3 --retry-delay 20 \
+            -X POST 'https://atdfiktajxmhjqrhwgbb.supabase.co/rest/v1/rpc/wach' \
+            -H 'apikey: sb_publishable_XVvHrzG_pDKErkF37hsN4A_NYzt-Dc-' \
+            -H 'Content-Type: application/json' \
+            -d '{}'

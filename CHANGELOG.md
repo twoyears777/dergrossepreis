@@ -6,6 +6,7 @@
 - Abgleich: geht nichts verloren. Ändern zwei Geräte dasselbe, bleibt die eigene Fassung als Kopie, Favoriten werden zusammengelegt, ein überschriebenes Spielbrett wird als Vorlage gesichert. Ein laufendes Spiel wird nie ausgetauscht, das neue Brett wartet im Gameshow-Menü. Offline wird nachgeholt
 - Sicherheit: anderes Konto auf demselben Gerät übernimmt nichts ungefragt; Anmeldelink aus der Mail wird sofort aus der Adresszeile entfernt; das Admin-Konto lässt sich in der App nicht löschen
 - Intern: Supabase-Tabellen `sync_eintraege` und `sync_bilder` mit Zugriffsregeln (nur eigene Zeilen), Obergrenzen (2000 Einträge, 500 Bilder bzw. 100 MB pro Konto), Funktion `konto_loeschen()`. SQL zum Nachlesen in `supabase/`. Abgleich lädt nur geänderte Inhalte (erst Zeitstempel, dann Inhalte)
+- Intern: Wach-Halter für den kostenlosen Supabase-Tarif: GitHub Action ruft alle 3 Tage `wach()` auf, damit das Projekt nicht pausiert (läuft erst, wenn es auf main ist)
 - Tests: neuer Testblock „Konto & Sync“ mit nachgebautem Supabase und zwei Geräten
 
 ## 1.28.1 – 26.11.2026
