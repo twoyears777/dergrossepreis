@@ -1,6 +1,7 @@
 # Changelog – Manna
 
 ## 1.29.0 – [Datum beim Veröffentlichen]
+- Testphase: Kein Eintrag im App-Changelog. Anmelden ist sichtbar, Registrieren ausgeblendet (`kontenFuerAlle: false` in js/supabase.js); Testkonten werden von Hand im Supabase-Dashboard angelegt. Der App-Changelog-Eintrag kommt mit der Freischaltung für alle
 - Neu: Konten (freiwillig). Mit Login werden Spielbrett, eigene Vorlagen, eigene Spiele mit Bildern, Favoriten und ausgeblendete Standard-Vorlagen automatisch zwischen Geräten abgeglichen. Ohne Login bleibt alles wie bisher im Browser
 - Konto: Registrieren mit E-Mail-Bestätigung, Anmelden, Passwort vergessen/ändern, Abmelden (wahlweise mit Entfernen der Daten vom Gerät), Konto löschen
 - Abgleich: geht nichts verloren. Ändern zwei Geräte dasselbe, bleibt die eigene Fassung als Kopie, Favoriten werden zusammengelegt, ein überschriebenes Spielbrett wird als Vorlage gesichert. Ein laufendes Spiel wird nie ausgetauscht, das neue Brett wartet im Gameshow-Menü. Offline wird nachgeholt

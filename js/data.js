@@ -5,9 +5,6 @@
 /* ---------- Version & Changelog ---------- */
 const APP_VERSION='1.29.0';
 const CHANGELOG=[
-  {v:'1.29.0',d:'[Datum beim Veröffentlichen]',items:[
-    'Neu: Konten! Melde dich an, dann hast du deine eigenen Spiele, Vorlagen, Favoriten und dein Spielbrett auf jedem Gerät (Knopf „Anmelden“ oben rechts auf der Startseite). Ohne Konto funktioniert Manna wie bisher'
-  ]},
   {v:'1.28.0',d:'25.11.2026',items:[
     'Neu: Du kannst selbst ein Spiel für die Spielesammlung einreichen (Knopf ganz unten in der Spielesammlung)'
   ]},
