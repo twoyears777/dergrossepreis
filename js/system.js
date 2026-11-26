@@ -33,7 +33,6 @@ function showUpdateBar(){if(!VIEW)$('#updBar').classList.add('show');}
 $('#updX').onclick=()=>$('#updBar').classList.remove('show');
 $('#updNow').onclick=()=>{
   if(cur||$('#endScreen').classList.contains('show')){toast('Erst die aktuelle Frage abschließen.');return;}
-  // TEXT-VORSCHLAG, wartet auf Lukas' Fassung
   if(typeof TM!=='undefined'&&(TM.phase==='running'||TM.phase==='paused')){toast('Erst den Countdown beenden.');return;}
   reloading=true;location.reload();
 };

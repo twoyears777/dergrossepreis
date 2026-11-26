@@ -1,6 +1,6 @@
 # Changelog – Manna
 
-## 1.28.1 – (noch nicht veröffentlicht)
+## 1.28.1 – 26.11.2026
 - Fehlerbehebungen aus der Sicherheits- und Stabilitätsprüfung. Kein Eintrag im App-Changelog.
 - Import: kaputte Dateien (leere Einträge) stürzen nicht mehr still ab; Obergrenzen für Gruppen (8), Punktwerte, Kategorien, Textlängen, Vorlagen und Bilder aus Dateien
 - Zwei offene Manna-Tabs überschreiben sich das Spielbrett nicht mehr gegenseitig; neue Bilder sind 24 Stunden vor dem Aufräumen eines anderen Tabs geschützt
