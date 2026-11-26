@@ -70,6 +70,7 @@ const KT={
 };
 
 const KONTO_KEY='manna_konto',SYNC_KEY='manna_sync';
+const K_FUER_ALLE=!!(window.MannaDB&&window.MannaDB.kontenFuerAlle);   // siehe js/supabase.js
 const K_DB=window.MannaDB;
 const K_KEY_RE=/^(brett|favoriten|ausgeblendet|(vorlage|spiel):[A-Za-z0-9_-]{1,60})$/;
 const K_BILD_RE=/^img-[a-z0-9]{1,40}$/;
@@ -557,6 +558,7 @@ function kontoZeigeNeuesPw(an){$('#kNeuForm').hidden=!an;if(an)setTimeout(()=>$(
 function kontoUI(){
   const an=!!konto;
   const hb=$('#btnKonto');if(hb){hb.textContent=an?KT.homeAn:KT.homeAus;hb.classList.toggle('an',an);}
+  $('#btnKReg').hidden=!K_FUER_ALLE;
   $('#kontoAus').hidden=an;$('#kontoAn').hidden=!an;
   if(!an)$('#kNeuForm').hidden=true;
   if(an)$('#kWer').textContent=konto.email||'';
@@ -596,6 +598,7 @@ $('#kForm').addEventListener('submit',e=>{e.preventDefault();kBusy($('#btnKLogin
   await kontoAnmelden(f.mail,f.pass);$('#kPass').value='';
 })();});
 $('#btnKReg').onclick=kBusy($('#btnKReg'),async()=>{
+  if(!K_FUER_ALLE)return;
   const f=kFelder(true);if(!f)return;
   if(f.pass.length<8){kMsg(KT.pwKurz);return;}
   kMsg('');

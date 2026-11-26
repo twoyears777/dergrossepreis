@@ -886,6 +886,7 @@ body.viewer #ownPlay{padding-bottom:3vh}
 
 /* ---------- Konto (ab 1.29.0) ---------- */
 .konto-btn{position:absolute;top:14px;right:16px;z-index:2;background:#ffffff10;color:#f1ede4;border:1px solid #ffffff2a;border-radius:3px;padding:.45em .9em;font-family:var(--sans);font-size:.92rem}
+#btnKReg[hidden]{display:none}
 .konto-btn:hover{background:#ffffff1e}
 .konto-btn.an::before{content:"";display:inline-block;width:.55em;height:.55em;border-radius:50%;background:var(--sage);margin-right:.45em;vertical-align:.05em}
 .konto{width:min(560px,100%);margin-top:14px}
