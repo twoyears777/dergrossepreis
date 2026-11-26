@@ -26,11 +26,16 @@ const KT={
   mail:'Bitte gib deine E-Mail-Adresse ein.',
   mailUngueltig:'Diese E-Mail-Adresse sieht nicht richtig aus.',
   pwKurz:'Das Passwort muss mindestens 8 Zeichen haben.',
-  registriert:'Fast geschafft! Wir haben dir eine E-Mail geschickt. Klick auf den Link darin, dann ist dein Konto fertig.',
+  registriert:'Fast geschafft! Wir haben dir eine E-Mail an {mail} geschickt. Gib den Code daraus hier ein oder klick auf den Link in der Mail.',
+  bestaetigenInfo:'Dein Konto ist noch nicht bestätigt. Gib den Code aus unserer E-Mail an {mail} ein. Keine Mail bekommen? Lass dir einen neuen Code schicken.',
+  vergessenInfo:'Falls es ein Konto mit {mail} gibt, haben wir dir eine E-Mail geschickt. Gib den Code daraus hier ein oder klick auf den Link in der Mail.',
+  code:'Bitte gib den Code aus der E-Mail ein.',
+  codeFalsch:'Der Code stimmt nicht oder ist abgelaufen. Lass dir einen neuen schicken.',
+  codeNeu:'Wir haben dir einen neuen Code geschickt.',
+  felderReg:'Bitte E-Mail, Username und Passwort eingeben.',
   angemeldet:'Du bist angemeldet. Deine Daten werden abgeglichen.',
   bestaetigt:'Deine E-Mail-Adresse ist bestätigt. Du bist jetzt angemeldet.',
-  linkKaputt:'Der Link ist abgelaufen oder wurde schon benutzt. Fordere bitte einen neuen an.',
-  vergessenGesendet:'Falls es ein Konto mit dieser E-Mail-Adresse gibt, haben wir dir einen Link zum Zurücksetzen geschickt.',
+  linkKaputt:'Der Link ist abgelaufen oder wurde schon benutzt. Hast du dein Konto schon bestätigt? Dann melde dich einfach an. Sonst fordere bitte einen neuen Code an.',
   neuesPw:'Wähle jetzt ein neues Passwort.',
   pwGeaendert:'Dein neues Passwort ist gespeichert.',
   abmeldenFrage:'Abmelden? Deine Spiele und Vorlagen bleiben auf diesem Gerät.',
@@ -82,12 +87,16 @@ function kSession(d,alt){
   const u=d.user||{};
   return {access:d.access_token,refresh:d.refresh_token,
     exp:Number(d.expires_at)||Math.floor(Date.now()/1000)+(Number(d.expires_in)||3600),
-    id:u.id||(alt&&alt.id)||'',email:u.email||(alt&&alt.email)||''};
+    id:u.id||(alt&&alt.id)||'',email:u.email||(alt&&alt.email)||'',
+    wunsch:kWunsch(u)||(alt&&alt.wunsch)||''};
 }
+// Username, der bei der Registrierung gewählt wurde (steht bis zum ersten Login nur beim Nutzer in Supabase)
+const kWunsch=u=>u&&u.user_metadata&&typeof u.user_metadata.username==='string'?u.user_metadata.username:'';
 function kAuthMsg(status,d){
   const c=String(d.error_code||d.code||d.error||'');
   if(c==='invalid_credentials'||c==='invalid_grant'&&/credentials/i.test(d.error_description||''))return KT.falsch;
   if(c==='email_not_confirmed')return KT.nichtBestaetigt;
+  if(c==='otp_expired'||c==='otp_disabled')return KT.codeFalsch;
   if(c==='over_email_send_rate_limit')return KT.zuVieleMails;
   if(c==='weak_password')return KT.pwSchwach;
   if(c==='same_password')return KT.pwGleich;
@@ -153,14 +162,47 @@ async function kontoAnmelden(mail,pass){
   const k=kSession(d);
   kontoNachLogin(k,KT.angemeldet);
 }
-async function kontoRegistrieren(mail,pass){
-  const d=await kAuth('signup?redirect_to='+encodeURIComponent(kRedirect()),{email:mail,password:pass});
+/* Ist der Username noch frei? Fragt die Datenbank (Funktion username_frei, supabase/registrierung.sql).
+   Antwort: 'frei', 'vergeben', 'gesperrt' oder 'ungueltig'. Ist die Funktion nicht erreichbar, kommt '' zurück:
+   Dann wird trotzdem registriert und der Name beim ersten Login geprüft (siehe profilLaden in js/daumen.js). */
+async function usernameFrei(name){
+  try{
+    const r=await kFetch(K_DB.url+'/rest/v1/rpc/username_frei',{method:'POST',cache:'no-store',
+      headers:{apikey:K_DB.key,'Content-Type':'application/json'},body:JSON.stringify({wunsch:name})});
+    if(!r.ok)return '';
+    const t=await r.json();
+    return typeof t==='string'?t:'';
+  }catch(e){return '';}
+}
+/* Registrieren: Supabase schickt eine Mail mit Link UND Code. Der Code hilft, wenn ein Virenscanner (z. B. bei
+   Dienstadressen) den Link schon automatisch geöffnet hat. Der Username wird beim Nutzer mitgespeichert und beim
+   ersten Login als Profil angelegt. */
+async function kontoRegistrieren(mail,pass,name){
+  const d=await kAuth('signup?redirect_to='+encodeURIComponent(kRedirect()),{email:mail,password:pass,data:{username:name}});
   // Ohne E-Mail-Bestätigung kommt sofort eine Sitzung zurück, sonst nur der (noch unbestätigte) Nutzer
   if(d.access_token){kontoNachLogin(kSession(d),KT.angemeldet);return 'an';}
+  kWartet={mail,typ:'signup'};
   return 'mail';
 }
 async function kontoVergessen(mail){
   await kAuth('recover?redirect_to='+encodeURIComponent(kRedirect()),{email:mail});
+  kWartet={mail,typ:'recovery'};
+}
+/* Code aus der E-Mail: bestätigt die Registrierung (typ 'signup') oder meldet zum Passwort-Zurücksetzen an ('recovery') */
+let kWartet=null;   // {mail, typ}: worauf gerade ein Code erwartet wird
+async function kontoCodePruefen(code){
+  const w=kWartet;if(!w)throw kErr(KT.fehler,0);
+  const d=await kAuth('verify',{type:w.typ,email:w.mail,token:code});
+  if(!d.access_token)throw kErr(KT.codeFalsch,400);
+  kWartet=null;
+  const k=kSession(d);
+  if(w.typ==='recovery')kontoNachLogin(k,KT.neuesPw,()=>{kontoZeigeNeuesPw(true);});
+  else kontoNachLogin(k,KT.bestaetigt);
+}
+async function kontoCodeNeu(){
+  const w=kWartet;if(!w)throw kErr(KT.fehler,0);
+  if(w.typ==='recovery')await kontoVergessen(w.mail);
+  else await kAuth('resend?redirect_to='+encodeURIComponent(kRedirect()),{type:'signup',email:w.mail});
 }
 async function kontoNeuesPasswort(pass){
   kontoFrisch();if(!konto)throw kErr(KT.abgemeldet,401);
@@ -223,7 +265,7 @@ function kontoAusLink(){
   if(!k.access||!k.refresh)return;
   // Wer angemeldet ist, steht im Zugangsschlüssel selbst; die E-Mail holen wir beim Server ab
   kAuth('user',null,{method:'GET',token:k.access}).then(u=>{
-    k.id=u.id;k.email=u.email||'';
+    k.id=u.id;k.email=u.email||'';k.wunsch=kWunsch(u);
     if(typ==='recovery'){showScreen('konto');kontoNachLogin(k,KT.neuesPw,()=>{kontoZeigeNeuesPw(true);kMsg(KT.neuesPw);});}
     else{kontoNachLogin(k,KT.bestaetigt);showScreen('konto');}
   }).catch(e=>{setTimeout(()=>{showScreen('konto');kMsg(e.status===0?KT.offline:KT.linkKaputt);},50);});

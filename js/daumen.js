@@ -1,7 +1,7 @@
 /* Manna – Username und Daumen hoch (ab Version 1.30.0)
    Teil von app.js, wird NACH den Konto-Dateien geladen (braucht konto, kRest, kErr aus js/konto.js).
-   Username: steht in der Tabelle „profile“ (einer pro Konto, eindeutig). Festlegen auf der Konto-Seite,
-   später zusätzlich bei der Registrierung.
+   Username: steht in der Tabelle „profile“ (einer pro Konto, eindeutig). Wird bei der Registrierung gewählt
+   (ab Version 1.31.0) und beim ersten Login angelegt; ändern auf der Konto-Seite.
    Daumen hoch: nur mit Konto und Username, ein Daumen pro Spiel, kein Daumen runter.
    Die Anzahl pro Spiel sieht jeder (auch ohne Konto), wer welches Spiel mag, sieht nur der Nutzer selbst.
    Sicherheit: Was erlaubt ist, regeln die Zugriffsregeln in supabase/username-und-daumen.sql. */
@@ -18,12 +18,15 @@ const DT={
   nameUngueltig:'Der Username muss 3 bis 20 Zeichen lang sein: Buchstaben, Zahlen, Punkt, Bindestrich oder Unterstrich. Am Anfang und Ende steht ein Buchstabe oder eine Zahl.',
   nameVergeben:'Diesen Username gibt es schon. Such dir bitte einen anderen aus.',
   nameGespeichert:'Dein Username ist gespeichert.',
-  nameGleich:'Das ist schon dein Username.'
+  nameGleich:'Das ist schon dein Username.',
+  nameGesperrt:'Dieser Username ist leider nicht möglich. Such dir bitte einen anderen aus.',
+  nameDochVergeben:'Dein gewünschter Username „{name}“ ist inzwischen leider vergeben. Such dir im Konto bitte einen anderen aus.'
 };
 const NAME_MUSTER=/^[A-Za-z0-9ÄÖÜäöüß][A-Za-z0-9ÄÖÜäöüß_.-]{1,18}[A-Za-z0-9ÄÖÜäöüß]$/;
 const D_ZAHLEN_KEY='manna_daumen_zahlen';   // letzte bekannte Anzahl pro Spiel, damit offline etwas angezeigt wird
 
 let username=null;          // null = noch nicht geladen oder keiner festgelegt
+let nameVorschlag='';       // gewünschter Username aus der Registrierung, der inzwischen vergeben war (steht im Feld zum Anpassen)
 let meineDaumen=new Set();  // Spiele, denen ich einen Daumen gegeben habe
 let daumenZahlen=(()=>{const z=jget(D_ZAHLEN_KEY,{});return z&&typeof z==='object'&&!Array.isArray(z)?z:{};})();
 const daumenZahl=id=>Math.max(0,Number(daumenZahlen[id])||0);
@@ -57,6 +60,18 @@ async function profilLaden(){
     if(!konto||konto.id!==id)return;
     username=Array.isArray(p)&&p[0]?p[0].username:null;
     meineDaumen=new Set((Array.isArray(d)?d:[]).map(x=>x.spiel_id));
+    // Erster Login nach der Registrierung: den dort gewählten Username jetzt als Profil anlegen
+    const w=konto.wunsch;
+    if(!username&&w&&NAME_MUSTER.test(w)){
+      let ok=true;
+      try{await usernameSpeichern(w);}
+      catch(e){
+        if(e.status===0)ok=false;   // offline: beim nächsten Mal nochmal versuchen
+        else if(konto&&konto.id===id){notice(DT.nameDochVergeben.replace('{name}',w));nameVorschlag=w;}
+      }
+      // Nur einmal versuchen, damit die Meldung nicht bei jedem Login kommt
+      if(ok&&konto&&konto.id===id)kontoSave(Object.assign({},konto,{wunsch:''}));
+    }
   }catch(e){/* offline: alter Stand bleibt */}
   usernameUI();daumenNeuZeichnen();
 }
@@ -67,6 +82,7 @@ async function usernameSpeichern(name){
   try{
     const r=await kRest('/rest/v1/profile?on_conflict=user_id',{method:'POST',prefer:'resolution=merge-duplicates,return=representation',body:{user_id:konto.id,username:name}});
     username=Array.isArray(r)&&r[0]?r[0].username:name;
+    nameVorschlag='';
   }catch(e){
     if(e.code==='23505')throw kErr(DT.nameVergeben,409,e.code);   // eindeutiger Index: Name schon vergeben
     throw e;
@@ -117,7 +133,7 @@ function daumenNeuZeichnen(){
 }
 function usernameUI(){
   const f=$('#kName'),s=$('#kNameStand');if(!f)return;
-  if(document.activeElement!==f)f.value=username||'';
+  if(document.activeElement!==f)f.value=username||nameVorschlag||'';
   if(s)s.hidden=!!username;
 }
 
@@ -136,7 +152,7 @@ let dKontoId=null;
 function daumenKontoGewechselt(){
   if(VIEW)return;
   const id=konto?konto.id:null;
-  if(id!==dKontoId){dKontoId=id;if(!id)username=null;profilLaden();}
+  if(id!==dKontoId){dKontoId=id;nameVorschlag='';if(!id)username=null;profilLaden();}
   usernameUI();
 }
 APP_HOOKS.seite.push(()=>{if(screenName==='coll')daumenZahlenLaden();});

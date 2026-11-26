@@ -899,6 +899,10 @@ body.viewer #ownPlay{padding-bottom:3vh}
 #kontoScreen>.konto-form{margin-top:14px}
 .konto-link{align-self:flex-start;background:none;border:none;padding:0;color:#d8d2c4;text-decoration:underline;text-underline-offset:3px;font-size:.92rem}
 .konto-link:hover{color:#fff}
+.konto-link[hidden]{display:none}
+.konto-h{margin:0;font-size:1.15rem}
+#kCodeInfo{margin:0;line-height:1.45}
+#kCode{letter-spacing:.25em;font-size:1.2rem}
 .mbtn.konto-gefahr b{color:var(--stamp)}
 .viewer .konto-btn{display:none}
 

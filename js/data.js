@@ -3,8 +3,12 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
-const APP_VERSION='1.30.0';
+const APP_VERSION='1.31.0';
 const CHANGELOG=[
+  {v:'1.31.0',d:'[Datum beim Veröffentlichen]',items:[
+    'Neu: Konten für alle. Mit einem Konto hast du deine eigenen Spiele, Vorlagen, Favoriten und dein Spielbrett auf jedem Gerät. Ohne Konto funktioniert Manna wie bisher',
+    'Neu: Mit Konto und Username kannst du Spiele in der Spielesammlung mit Daumen hoch bewerten'
+  ]},
   {v:'1.28.0',d:'25.11.2026',items:[
     'Neu: Du kannst selbst ein Spiel für die Spielesammlung einreichen (Knopf ganz unten in der Spielesammlung)'
   ]},

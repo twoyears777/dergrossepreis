@@ -980,16 +980,19 @@ class FakeSupabaseKonten:
     def __init__(self):
         self.users = {}; self.tokens = {}; self.refresh = {}; self.n = 0; self.t = 0
         self.eintraege = {}; self.bilder = {}; self.profile = {}; self.daumen = set(); self.offline = False; self.log = []; self.abgelaufen = set(); self.mails = []
+        self.codes = {}; self.code_n = 0   # (mail, typ) -> zuletzt verschickter Code
+    def neuer_code(self, mail, typ):
+        self.code_n += 1; c = f'{123450 + self.code_n}'; self.codes[(mail, typ)] = c; return c
     def nutzer(self, mail, pw, bestaetigt=True):
         uid = f'00000000-0000-4000-8000-{len(self.users) + 1:012d}'
-        self.users[mail] = {'id': uid, 'pw': pw, 'ok': bestaetigt}; return uid
+        self.users[mail] = {'id': uid, 'pw': pw, 'ok': bestaetigt, 'meta': {}}; return uid
     def zeit(self):
         self.t += 1; return f'2026-11-26T12:{self.t // 60:02d}:{self.t % 60:02d}.{self.t:06d}+00:00'
     def sitzung(self, mail):
         self.n += 1; u = self.users[mail]
         tok = f'tok-{u["id"][-4:]}-{self.n}'; ref = f'ref-{u["id"][-4:]}-{self.n}'
         self.tokens[tok] = u['id']; self.refresh[ref] = mail
-        return {'access_token': tok, 'refresh_token': ref, 'expires_in': 3600, 'user': {'id': u['id'], 'email': mail}}
+        return {'access_token': tok, 'refresh_token': ref, 'expires_in': 3600, 'user': {'id': u['id'], 'email': mail, 'user_metadata': u['meta']}}
     def handle(self, route, request):
         u = urlparse(request.url); path = u.path; q = parse_qs(u.query)
         cors = {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': '*'}
@@ -1016,10 +1019,30 @@ class FakeSupabaseKonten:
             return js(400, {'error_code': 'unsupported_grant_type'})
         if path == '/auth/v1/signup':
             self.mails.append(('signup', body.get('email'), q.get('redirect_to', [''])[0]))
-            if body.get('email') not in self.users: self.nutzer(body.get('email'), body.get('password'), bestaetigt=False)
+            if body.get('email') not in self.users:
+                self.nutzer(body.get('email'), body.get('password'), bestaetigt=False)
+                self.users[body['email']]['meta'] = body.get('data') or {}
+                self.neuer_code(body['email'], 'signup')
             return js(200, {'id': 'x', 'email': body.get('email'), 'identities': []})
         if path == '/auth/v1/recover':
-            self.mails.append(('recover', body.get('email'), q.get('redirect_to', [''])[0])); return js(200, {})
+            self.mails.append(('recover', body.get('email'), q.get('redirect_to', [''])[0]))
+            if body.get('email') in self.users: self.neuer_code(body['email'], 'recovery')
+            return js(200, {})
+        if path == '/auth/v1/resend':
+            self.mails.append(('resend', body.get('email'), q.get('redirect_to', [''])[0]))
+            usr = self.users.get(body.get('email'))
+            if usr and not usr['ok'] and body.get('type') == 'signup': self.neuer_code(body['email'], 'signup')
+            return js(200, {})
+        if path == '/auth/v1/verify':
+            key = (body.get('email'), body.get('type'))
+            if not body.get('token') or self.codes.get(key) != body.get('token'): return js(403, {'error_code': 'otp_expired', 'msg': 'Token has expired or is invalid'})
+            del self.codes[key]; self.users[key[0]]['ok'] = True
+            return js(200, self.sitzung(key[0]))
+        if path == '/rest/v1/rpc/username_frei':   # für alle; gibt nur den Status heraus
+            w = (body.get('wunsch') or '').strip()
+            if not re.match(r'^[A-Za-z0-9ÄÖÜäöüß][A-Za-z0-9ÄÖÜäöüß_.-]{1,18}[A-Za-z0-9ÄÖÜäöüß]$', w): return js(200, 'ungueltig')
+            if w.lower() in ('admin', 'manna'): return js(200, 'gesperrt')
+            return js(200, 'vergeben' if any(n.lower() == w.lower() for n in self.profile.values()) else 'frei')
         if path == '/auth/v1/logout': return js(204, None)
         if path == '/rest/v1/rpc/daumen_zahlen':   # für alle, auch ohne Login; gibt nur Zahlen heraus
             z = {}
@@ -1031,7 +1054,7 @@ class FakeSupabaseKonten:
             if request.method == 'PUT':
                 if len(body.get('password', '')) < 8: return js(422, {'error_code': 'weak_password'})
                 self.users[mail]['pw'] = body['password']
-            return js(200, {'id': me, 'email': mail})
+            return js(200, {'id': me, 'email': mail, 'user_metadata': self.users[mail]['meta']})
         if path == '/rest/v1/rpc/konto_loeschen':
             del self.users[mail]
             self.eintraege = {k: v for k, v in self.eintraege.items() if k[0] != me}
@@ -1092,10 +1115,11 @@ def konto_checks(p):
     sb.nutzer('anna@example.org', 'Geheim-123'); sb.nutzer('ben@example.org', 'Geheim-456')
     b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
     sbjs = open(os.path.join(ROOT, 'js', 'supabase.js'), encoding='utf-8').read()
-    check('Testphase: Konten sind noch nicht für alle freigeschaltet', 'kontenFuerAlle: false' in sbjs)
-    alle = lambda route, request: route.fulfill(status=200, content_type='application/javascript', body=sbjs.replace('kontenFuerAlle: false', 'kontenFuerAlle: true'))
-    # Testphase (so wie veröffentlicht): anmelden ja, registrieren nein
-    t = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'); t.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
+    check('Registrierung: Konten sind für alle freigeschaltet', 'kontenFuerAlle: true' in sbjs)
+    alle = lambda route, request: route.fulfill(status=200, content_type='application/javascript', body=sbjs)
+    testphase = lambda route, request: route.fulfill(status=200, content_type='application/javascript', body=sbjs.replace('kontenFuerAlle: true', 'kontenFuerAlle: false'))
+    # Testphase (falls wieder zurückgeschaltet wird): anmelden ja, registrieren nein
+    t = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'); t.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle); t.route('**/js/supabase.js', testphase)
     tp = t.new_page(); tp.on('pageerror', lambda e: errs.append('Testphase: ' + str(e))); tp.goto(URL); tp.wait_for_timeout(400)
     if tp.locator('#clDialog.show').count(): tp.click('#clX')
     tp.click('#btnKonto'); tp.wait_for_timeout(200)
@@ -1123,14 +1147,56 @@ def konto_checks(p):
     check('Konto: leere Felder werden bemängelt', 'E-Mail und Passwort' in A.inner_text('#kMsg') and not sb.log)
     A.fill('#kMail', 'anna@example.org'); A.fill('#kPass', 'falsch'); A.click('#btnKLogin'); A.wait_for_timeout(300)
     check('Konto: falsches Passwort abgelehnt', 'stimmt nicht' in A.inner_text('#kMsg') and A.evaluate("localStorage.getItem('manna_konto')") is None)
-    A.fill('#kMail', 'neu@example.org'); A.fill('#kPass', 'kurz'); A.click('#btnKReg'); A.wait_for_timeout(100)
-    check('Konto: Registrieren verlangt 8 Zeichen', '8 Zeichen' in A.inner_text('#kMsg') and not any(x[0] == 'signup' for x in sb.mails))
-    A.fill('#kPass', 'Lang-genug-1'); A.click('#btnKReg'); A.wait_for_timeout(300)
-    check('Konto: Registrieren schickt Bestätigungsmail mit Rücksprung zur App', 'E-Mail geschickt' in A.inner_text('#kMsg') and sb.mails[-1][0] == 'signup' and sb.mails[-1][2].startswith('http://localhost') and A.input_value('#kPass') == '')
-    A.fill('#kMail', 'neu@example.org'); A.fill('#kPass', 'Lang-genug-1'); A.click('#btnKLogin'); A.wait_for_timeout(300)
-    check('Konto: unbestätigte E-Mail wird erklärt', 'bestätige' in A.inner_text('#kMsg'))
+    # Registrieren
+    A.fill('#kMail', 'neu@example.org'); A.click('#btnKReg'); A.wait_for_timeout(200)
+    check('Registrierung: eigene Ansicht, E-Mail wird übernommen', A.locator('#kRegForm').is_visible() and not A.locator('#kForm').is_visible() and A.input_value('#kRMail') == 'neu@example.org')
+    A.click('#btnKRegLos'); A.wait_for_timeout(100)
+    check('Registrierung: leere Felder werden bemängelt', 'Username' in A.inner_text('#kRegMsg') and not any(x[0] == 'signup' for x in sb.mails))
+    A.fill('#kRName', 'ab'); A.fill('#kRPass', 'Lang-genug-1'); A.click('#btnKRegLos'); A.wait_for_timeout(100)
+    check('Registrierung: ungültiger Username abgelehnt', '3 bis 20' in A.inner_text('#kRegMsg') and not any(x[0] == 'signup' for x in sb.mails))
+    A.fill('#kRName', 'Neuling'); A.fill('#kRPass', 'kurz'); A.click('#btnKRegLos'); A.wait_for_timeout(100)
+    check('Registrierung: verlangt 8 Zeichen', '8 Zeichen' in A.inner_text('#kRegMsg') and not any(x[0] == 'signup' for x in sb.mails))
+    sb.profile['00000000-0000-4000-8000-000000000099'] = 'Vergeben'
+    A.fill('#kRName', 'vergeben'); A.fill('#kRPass', 'Lang-genug-1'); A.click('#btnKRegLos'); A.wait_for_timeout(300)
+    check('Registrierung: vergebener Username wird vorher erkannt', 'gibt es schon' in A.inner_text('#kRegMsg') and not any(x[0] == 'signup' for x in sb.mails))
+    A.fill('#kRName', 'Admin'); A.click('#btnKRegLos'); A.wait_for_timeout(300)
+    check('Registrierung: gesperrter Username abgelehnt', 'nicht möglich' in A.inner_text('#kRegMsg') and not any(x[0] == 'signup' for x in sb.mails))
+    del sb.profile['00000000-0000-4000-8000-000000000099']
+    A.fill('#kRName', 'Neuling'); A.fill('#kRPass', 'Lang-genug-1'); A.click('#btnKRegLos'); A.wait_for_timeout(400)
+    check('Registrierung: Mail mit Rücksprung zur App, danach Code-Eingabe', sb.mails[-1][0] == 'signup' and sb.mails[-1][2].startswith('http://localhost') and A.locator('#kCodeForm').is_visible() and 'neu@example.org' in A.inner_text('#kCodeInfo') and A.input_value('#kRPass') == '')
+    check('Registrierung: Username wird beim Nutzer mitgeschickt', sb.users['neu@example.org']['meta'] == {'username': 'Neuling'})
+    A.fill('#kCode', '999999'); A.click('#btnKCode'); A.wait_for_timeout(300)
+    check('Code: falscher Code abgelehnt', 'stimmt nicht' in A.inner_text('#kCodeMsg') and A.evaluate("localStorage.getItem('manna_konto')") is None)
+    alt = sb.codes[('neu@example.org', 'signup')]
+    A.click('#btnKCodeNeu'); A.wait_for_timeout(300)
+    check('Code: „nochmal schicken“ schickt neuen Code', sb.mails[-1][:2] == ('resend', 'neu@example.org') and sb.codes[('neu@example.org', 'signup')] != alt and 'neuen Code' in A.inner_text('#kCodeMsg'))
+    A.click('#btnKCodeZurueck'); A.wait_for_timeout(150)
+    A.fill('#kPass', 'Lang-genug-1'); A.click('#btnKLogin'); A.wait_for_timeout(300)
+    check('Code: unbestätigtes Konto beim Anmelden führt zur Code-Eingabe', A.locator('#kCodeForm').is_visible() and 'noch nicht bestätigt' in A.inner_text('#kCodeInfo') and A.evaluate("localStorage.getItem('manna_konto')") is None)
+    A.fill('#kCode', alt); A.click('#btnKCode'); A.wait_for_timeout(300)
+    check('Code: alter Code gilt nicht mehr', 'stimmt nicht' in A.inner_text('#kCodeMsg'))
+    A.fill('#kCode', ' ' + sb.codes[('neu@example.org', 'signup')] + ' '); A.click('#btnKCode'); A.wait_for_timeout(800); A.wait_for_function("!syncLaeuft")
+    check('Code: richtiger Code bestätigt und meldet an', A.locator('#kontoAn').is_visible() and A.inner_text('#kWer') == 'neu@example.org' and sb.users['neu@example.org']['ok'])
+    A.wait_for_timeout(300)
+    check('Registrierung: Username wird beim ersten Login angelegt', '00000000-0000-4000-8000-000000000003' in sb.profile and sb.profile['00000000-0000-4000-8000-000000000003'] == 'Neuling' and A.input_value('#kName') == 'Neuling')
+    check('Registrierung: Wunsch-Username danach nicht mehr gespeichert', A.evaluate("JSON.parse(localStorage.manna_konto).wunsch") == '')
+    A.evaluate("showScreen('konto')"); A.click('#btnKAbmelden'); A.wait_for_timeout(100); A.click('#dYes'); A.wait_for_timeout(200)
+    check('Konto: nach dem Abmelden wieder die Anmeldung', A.locator('#kForm').is_visible() and not A.locator('#kCodeForm').is_visible())
+    # Username ist inzwischen vergeben (zwischen Registrierung und erstem Login)
+    sb.nutzer('spaet@example.org', 'Lang-genug-2', bestaetigt=True); sb.users['spaet@example.org']['meta'] = {'username': 'neuling'}
+    anmelden(A, 'spaet@example.org', 'Lang-genug-2'); A.wait_for_timeout(300)
+    check('Registrierung: inzwischen vergebener Username wird erklärt', A.locator('#dialog.show').count() == 1 and 'inzwischen' in A.inner_text('#dMsg') and A.input_value('#kName') == 'neuling')
+    A.evaluate("document.querySelector('#dialog').classList.remove('show')")
+    A.evaluate("showScreen('konto')"); A.click('#btnKAbmelden'); A.wait_for_timeout(100); A.click('#dYes'); A.wait_for_timeout(200)
+    # Passwort vergessen per Code
     A.fill('#kMail', 'anna@example.org'); A.click('#btnKVergessen'); A.wait_for_timeout(300)
-    check('Konto: Passwort vergessen schickt Link', sb.mails[-1][:2] == ('recover', 'anna@example.org') and 'Link' in A.inner_text('#kMsg'))
+    check('Passwort vergessen: Mail und Code-Eingabe', sb.mails[-1][:2] == ('recover', 'anna@example.org') and A.locator('#kCodeForm').is_visible() and 'anna@example.org' in A.inner_text('#kCodeInfo'))
+    A.fill('#kCode', sb.codes[('anna@example.org', 'recovery')]); A.click('#btnKCode'); A.wait_for_timeout(600)
+    check('Passwort vergessen: Code meldet an und fragt neues Passwort', A.locator('#kNeuForm').is_visible() and A.evaluate("JSON.parse(localStorage.manna_konto).email") == 'anna@example.org')
+    A.fill('#kNeuPass', 'Geheim-123'); A.click('#btnKNeu'); A.wait_for_timeout(300); A.wait_for_function("!syncLaeuft")
+    A.evaluate("showScreen('konto')"); A.click('#btnKEntfernen'); A.wait_for_timeout(100); A.click('#dYes'); A.wait_for_timeout(200)
+    sb.eintraege = {k: v for k, v in sb.eintraege.items() if k[0] != sb.users['anna@example.org']['id']}
+    A.evaluate("localStorage.removeItem('manna_sync')")
 
     # Gerät A hat schon Daten, bevor es ein Konto gibt
     A.evaluate("""(async()=>{
@@ -1267,7 +1333,7 @@ def konto_checks(p):
     zu(B); B.evaluate("showScreen('konto')"); B.wait_for_timeout(100)
     check('Username: Feld auf der Konto-Seite', B.locator('#kNameForm').is_visible() and B.input_value('#kName') == '')
     B.fill('#kName', 'b'); B.click('#btnKName'); B.wait_for_timeout(200)
-    check('Username: zu kurzer Name wird abgelehnt', '3 bis 20' in B.inner_text('#kNameMsg') and not sb.profile)
+    check('Username: zu kurzer Name wird abgelehnt', '3 bis 20' in B.inner_text('#kNameMsg') and sb.users['ben@example.org']['id'] not in sb.profile)
     B.fill('#kName', 'Ben_77'); B.click('#btnKName'); B.wait_for_timeout(300)
     ben_id = sb.users['ben@example.org']['id']
     check('Username: wird gespeichert', sb.profile.get(ben_id) == 'Ben_77' and B.inner_text('#kNameMsg') == '')

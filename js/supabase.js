@@ -8,10 +8,8 @@
   root.MannaDB = Object.freeze({
     url: 'https://atdfiktajxmhjqrhwgbb.supabase.co',
     key: 'sb_publishable_XVvHrzG_pDKErkF37hsN4A_NYzt-Dc-',
-    // Testphase: Konten gibt es nur für Tester (von Hand im Supabase-Dashboard angelegt).
-    // Anmelden geht für alle, der Knopf „Konto erstellen“ ist ausgeblendet.
-    // Für alle freischalten: hier true eintragen UND im Supabase-Dashboard „Allow new users to sign up“ einschalten
-    // (vorher eigenen Mailversand einrichten, sonst kommen keine Bestätigungsmails an).
-    kontenFuerAlle: false
+    // Registrieren für alle (ab Version 1.31.0). Gehört zusammen mit „Allow new users to sign up“ im Supabase-Dashboard
+    // und dem eigenen Mailversand über Strato (siehe supabase/README.md). false = Testphase: nur Anmelden, kein „Konto erstellen“.
+    kontenFuerAlle: true
   });
 })(typeof window !== 'undefined' ? window : globalThis);

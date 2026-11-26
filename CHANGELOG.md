@@ -1,5 +1,14 @@
 # Changelog – Manna
 
+## 1.31.0 – [Datum beim Veröffentlichen]
+- Neu: Registrieren für alle (`kontenFuerAlle: true` in js/supabase.js). Eigene Ansicht „Konto erstellen“ mit E-Mail, Username und Passwort; der Username wird vorab geprüft (Funktion `username_frei()`) und beim ersten Login als Profil angelegt
+- Neu: Bestätigen per Code: Nach dem Registrieren und bei „Passwort vergessen?“ kann man den Code aus der Mail in Manna eintippen (zusätzlich zum Link). Hilft, wenn Virenscanner bei Dienstadressen den Link schon automatisch öffnen. „Code nochmal schicken“ und „Zurück zur Anmeldung“
+- Wer sich mit einem noch nicht bestätigten Konto anmeldet, landet direkt bei der Code-Eingabe
+- Mails kommen über den eigenen Mailversand (Strato, kontakt@manna-games.de) statt über Supabase
+- Erster App-Changelog-Eintrag für Konten und Daumen hoch (bisher Testphase)
+- Intern: SQL in `supabase/registrierung.sql`, Dashboard-Einstellungen in `supabase/README.md`
+- Tests: Registrierung mit Username (vergeben, gesperrt), Code bestätigen (falsch, richtig, neu schicken), Passwort zurücksetzen per Code, unbestätigtes Konto beim Anmelden
+
 ## 1.30.0 – 26.11.2026
 - Testphase wie bei 1.29.0: kein Eintrag im App-Changelog, solange Konten nur für Tester offen sind
 - Neu: Username im Konto (Konto-Seite, Feld „Username“). 3–20 Zeichen, eindeutig ohne Rücksicht auf Groß-/Kleinschreibung, ein paar Namen gesperrt (admin, manna, …). Abfrage bei der Registrierung folgt später

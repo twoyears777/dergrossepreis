@@ -346,10 +346,30 @@
     <form class="sec konto-form" id="kForm" novalidate>
       <label class="f">E-Mail<input class="inp" id="kMail" type="email" maxlength="200" autocomplete="email" inputmode="email"></label>
       <label class="f">Passwort<input class="inp" id="kPass" type="password" maxlength="72" autocomplete="current-password"></label>
-      <div class="row"><button type="submit" class="primary" id="btnKLogin">Anmelden</button><button type="button" class="btn" id="btnKReg">Konto erstellen</button></div>
+      <div class="row"><button type="submit" class="primary" id="btnKLogin">Anmelden</button></div>
       <button type="button" class="konto-link" id="btnKVergessen">Passwort vergessen?</button>
       <p class="sub-msg" id="kMsg" role="alert"></p>
+      <button type="button" class="konto-link" id="btnKReg" hidden>Noch kein Konto? Konto erstellen</button>
       <p class="hint">Für ein Konto speichern wir deine E-Mail-Adresse und das, was du in Manna anlegst, auf Servern in Frankfurt. Mehr dazu im <a href="rechtliches.html#datenschutz">Datenschutz</a>.</p>
+    </form>
+    <form class="sec konto-form" id="kRegForm" novalidate hidden>
+      <h2 class="konto-h">Konto erstellen</h2>
+      <label class="f">E-Mail<input class="inp" id="kRMail" type="email" maxlength="200" autocomplete="email" inputmode="email"></label>
+      <label class="f">Username<input class="inp" id="kRName" type="text" minlength="3" maxlength="20" autocomplete="username" autocapitalize="off" spellcheck="false"></label>
+      <p class="hint">Mit deinem Username kannst du Spiele mit Daumen hoch bewerten. Du kannst ihn später im Konto ändern.</p>
+      <label class="f">Passwort (mindestens 8 Zeichen)<input class="inp" id="kRPass" type="password" maxlength="72" autocomplete="new-password"></label>
+      <div class="row"><button type="submit" class="primary" id="btnKRegLos">Konto erstellen</button></div>
+      <p class="sub-msg" id="kRegMsg" role="alert"></p>
+      <button type="button" class="konto-link" id="btnKZurLogin">Ich habe schon ein Konto</button>
+      <p class="hint">Für ein Konto speichern wir deine E-Mail-Adresse, deinen Username und das, was du in Manna anlegst, auf Servern in Frankfurt. Mehr dazu im <a href="rechtliches.html#datenschutz">Datenschutz</a>.</p>
+    </form>
+    <form class="sec konto-form" id="kCodeForm" novalidate hidden>
+      <p id="kCodeInfo"></p>
+      <label class="f">Code aus der E-Mail<input class="inp" id="kCode" type="text" maxlength="10" autocomplete="one-time-code" inputmode="numeric" autocapitalize="off" spellcheck="false"></label>
+      <div class="row"><button type="submit" class="primary" id="btnKCode">Bestätigen</button></div>
+      <p class="sub-msg" id="kCodeMsg" role="alert"></p>
+      <button type="button" class="konto-link" id="btnKCodeNeu">Code nochmal schicken</button>
+      <button type="button" class="konto-link" id="btnKCodeZurueck">Zurück zur Anmeldung</button>
     </form>
   </div>
   <div class="konto" id="kontoAn" hidden>
