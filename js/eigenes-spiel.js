@@ -10,7 +10,7 @@ function newRound(){return {title:'',text:'',img:'',extra:[]};}
 function defaultOwnTeams(){const src=S.teams.length>=2?S.teams:sample().teams;return src.map((t,i)=>({name:t.name,color:t.color||COLORS[i%COLORS.length]}));}
 function normOwn(g){
   g=g&&typeof g==='object'?g:{};
-  const sc=g.scoring||{},img=v=>typeof v==='string'&&/^img-[a-z0-9]+$/.test(v)?v:'';
+  const sc=g.scoring||{},img=v=>typeof v==='string'&&/^img-[a-z0-9]{1,40}$/.test(v)?v:'';
   const teams=(Array.isArray(g.teams)&&g.teams.length>=2?g.teams:defaultOwnTeams()).slice(0,8);
   return {
     id:typeof g.id==='string'&&g.id?g.id:'og-'+uid(),

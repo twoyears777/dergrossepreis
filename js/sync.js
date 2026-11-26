@@ -182,7 +182,7 @@ async function syncLauf(){
     const [art,id]=key.split(/:(.*)/s);
     if(art==='spiel'&&spielGesperrt(id))return;
     // Eigene Fassung als Kopie behalten, die aus dem Konto übernehmen
-    if(art==='spiel'){const k=normOwn(Object.assign({},l,{id:'og-'+uid()+uid()}));k.name=(l.name+KT.kopie).slice(0,60);games.push(k);}
+    if(art==='spiel'){const k=normOwn(Object.assign({},l,{id:'og-'+uid()+uid()}));k.name=String(l.name||'Eigenes Spiel').slice(0,60-KT.kopie.length)+KT.kopie;games.push(k);}
     else{tpls.push(Object.assign({},l,{id:'own-'+uid()+uid(),name:String(l.name||'Vorlage').slice(0,60-KT.kopie.length)+KT.kopie}));}
     neuerAbgleich=true;
     if(setzeLokal(key,r))uebernommen[key]=r;
