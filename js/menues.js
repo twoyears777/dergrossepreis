@@ -22,7 +22,10 @@ const SCREENS={
   ownedit:{el:'#ownEdit',show:()=>renderOwnEditor()},
   ownplay:{el:'#ownPlay'}
 };
+/* Seiten, die zu den Gameshows gehören. Sind die Gameshows aus (GAMESHOWS in js/data.js), führt jeder Weg dorthin zur Startseite. */
+const SHOW_SCREENS=['shows','timer','own','ownedit','ownplay'].concat(PREIS_SCREENS);
 function showScreen(n){
+  if(!GAMESHOWS&&!VIEW&&SHOW_SCREENS.includes(n))n='home';
   screenName=n;
   if(!VIEW)document.title=PREIS_SCREENS.includes(n)?(S.title||'Der große Preis'):'Manna';
   Object.entries(SCREENS).forEach(([k,d])=>$(d.el).classList.toggle('show',k===n));
@@ -209,6 +212,7 @@ $('#btnRestore').onclick=()=>$('#tplFile').click();
 $('#gcColl').onclick=()=>{loadGames();showScreen('coll');};
 $('#gcPreis').onclick=nurAmPC(()=>showScreen('gmenu'));
 $('#btnGmBack').onclick=()=>showScreen('shows');
+if(GAMESHOWS){$('#gcShows').hidden=false;$('#perkShows').hidden=false;}
 $('#gcShows').onclick=nurAmPC(()=>showScreen('shows'));
 $('#btnShowsBack').onclick=()=>showScreen('home');
 /* Pädagogischer Kram: Kacheln und Artikelseite entstehen aus ARTIKEL (js/artikel.js) */

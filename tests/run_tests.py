@@ -46,6 +46,12 @@ def serve():
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd
 
+# Die Gameshows sind in der App ausgeblendet (GAMESHOWS_AN in js/data.js). Für ihre Tests werden sie
+# pro Browser-Kontext über den Test-Schalter im localStorage eingeschaltet.
+def gameshows_an(ctx):
+    ctx.add_init_script("try{localStorage.setItem('manna_gameshows','1')}catch(e){}")
+    return ctx
+
 def go(m, card):
     # Der große Preis, Eigenes Spiel und Countdown liegen unter „Gameshows“
     if m.locator('#home.show').count(): m.click('#gcShows'); m.wait_for_timeout(150)
@@ -154,7 +160,7 @@ def format_checks(m):
 def browser_checks(p):
     errs = []
     b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
-    ctx = b.new_context(viewport={'width': 1280, 'height': 800}, accept_downloads=True)
+    ctx = gameshows_an(b.new_context(viewport={'width': 1280, 'height': 800}, accept_downloads=True))
     m = ctx.new_page(); m.on('pageerror', lambda e: errs.append('Moderator: ' + str(e))); m.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
     store = lambda: m.evaluate("JSON.parse(localStorage.grosserPreis_v1)")
     scores = lambda: [t['score'] for t in store()['teams']]
@@ -966,6 +972,30 @@ def build_text(txt):
         open(os.path.join(t, slug + '.txt'), 'w', encoding='utf-8').write(txt)
         return build(t, os.path.join(t, 'alle.json'))
 
+def gameshows_aus_checks(p):
+    print('Gameshows ausgeblendet')
+    errs = []
+    b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
+    ctx = b.new_context(viewport={'width': 1280, 'height': 800}, service_workers='block')
+    m = ctx.new_page(); m.on('pageerror', lambda e: errs.append(str(e)))
+    m.goto(URL); m.wait_for_timeout(400)
+    if m.locator('#clDialog.show').count(): m.click('#clX')
+    check('Aus: Startseite nur Spielesammlung und Pädagogischer Kram', [t for t, v in zip(m.locator('#home .gcard .wbar').all_inner_texts(), [m.locator('#home .gcard').nth(i).is_visible() for i in range(m.locator('#home .gcard').count())]) if v] == ['Spielesammlung', 'Pädagogischer Kram'])
+    check('Aus: Kachel „Fertige Gameshows“ unter „Wir wissen, was es braucht“ ausgeblendet', not m.locator('#perkShows').is_visible() and m.locator('#needTitle').count() == 1)
+    check('Aus: Code ist noch da (Seiten vorhanden)', m.locator('#showsScreen').count() == 1 and m.locator('#gmenu').count() == 1 and m.locator('#timerScreen').count() == 1 and m.locator('#ownScreen').count() == 1)
+    for n in ['shows', 'gmenu', 'board', 'timer', 'own', 'ownplay']:
+        m.evaluate(f"showScreen('{n}')"); m.wait_for_timeout(50)
+        check(f'Aus: Seite „{n}“ führt zur Startseite', m.locator('#home.show').count() == 1 and m.evaluate('screenName') == 'home')
+    m.click('#gcColl'); m.wait_for_timeout(300)
+    check('Aus: Spielesammlung geht', m.locator('#collScreen.show').count() == 1)
+    m.click('#btnCollBack'); m.wait_for_timeout(150); m.click('#gcPaed'); m.wait_for_timeout(200)
+    check('Aus: Pädagogischer Kram geht', m.locator('#paedScreen.show').count() == 1)
+    m.evaluate("localStorage.setItem('manna_gameshows','1')"); m.reload(); m.wait_for_timeout(400)
+    if m.locator('#clDialog.show').count(): m.click('#clX')
+    check('Test-Schalter: Gameshows wieder sichtbar', m.locator('#gcShows').is_visible() and m.locator('#perkShows').is_visible())
+    check('Gameshows aus: keine JavaScript-Fehler', not errs, errs)
+    b.close()
+
 def mobile_checks(p):
     print('Handy und Tablet')
     b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
@@ -979,7 +1009,7 @@ def mobile_checks(p):
     }
     for name, opts in geraete.items():
         opts.pop('default_browser_type', None)
-        ctx = b.new_context(**opts); m = ctx.new_page(); m.goto(URL); m.wait_for_timeout(400)
+        ctx = gameshows_an(b.new_context(**opts)); m = ctx.new_page(); m.goto(URL); m.wait_for_timeout(400)
         if m.locator('#clDialog.show').count(): m.click('#clX')
         for card, screen in [('#gcShows', '#showsScreen')]:
             m.click(card); m.wait_for_timeout(200)
@@ -1148,14 +1178,14 @@ def konto_checks(p):
     alle = lambda route, request: route.fulfill(status=200, content_type='application/javascript', body=sbjs)
     testphase = lambda route, request: route.fulfill(status=200, content_type='application/javascript', body=sbjs.replace('kontenFuerAlle: true', 'kontenFuerAlle: false'))
     # Testphase (falls wieder zurückgeschaltet wird): anmelden ja, registrieren nein
-    t = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'); t.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle); t.route('**/js/supabase.js', testphase)
+    t = gameshows_an(b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')); t.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle); t.route('**/js/supabase.js', testphase)
     tp = t.new_page(); tp.on('pageerror', lambda e: errs.append('Testphase: ' + str(e))); tp.goto(URL); tp.wait_for_timeout(400)
     if tp.locator('#clDialog.show').count(): tp.click('#clX')
     tp.click('#btnKonto'); tp.wait_for_timeout(200)
     check('Testphase: Anmelden möglich, „Konto erstellen“ ausgeblendet', tp.locator('#kForm').is_visible() and tp.locator('#btnKLogin').is_visible() and not tp.locator('#btnKReg').is_visible())
     t.close()
     def geraet():
-        ctx = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
+        ctx = gameshows_an(b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'))
         ctx.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle); ctx.route('**/js/supabase.js', alle)
         m = ctx.new_page(); m.on('pageerror', lambda e: errs.append(str(e))); m.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
         m.goto(URL); m.wait_for_timeout(400)
@@ -1382,7 +1412,7 @@ def konto_checks(p):
     spiel(B, 'zeitungsschlagen'); B.click('#btnDaumen'); B.wait_for_timeout(300)
     check('Daumen: nochmal tippen nimmt ihn zurück (kein Daumen runter)', (ben_id, 'zeitungsschlagen') not in sb.daumen and len(sb.daumen) == 1 and B.get_attribute('#btnDaumen', 'aria-pressed') == 'false')
     B.click('#btnDaumen'); B.wait_for_timeout(300)
-    gast = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'); gast.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
+    gast = gameshows_an(b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')); gast.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
     G = gast.new_page(); G.on('pageerror', lambda e: errs.append('Gast: ' + str(e))); G.goto(URL); G.wait_for_timeout(400)
     if G.locator('#clDialog.show').count(): G.click('#clX')
     n_vorher = len(sb.log)
@@ -1399,7 +1429,7 @@ def konto_checks(p):
     B.click('#dYes'); B.wait_for_timeout(400)
     check('Konto löschen: Konto und Daten weg, abgemeldet', 'ben@example.org' not in sb.users and not [k for k in sb.eintraege if k[0] == ben] and ben not in sb.profile and not [d for d in sb.daumen if d[0] == ben] and B.evaluate("localStorage.getItem('manna_konto')") is None)
 
-    v = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'); v.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
+    v = gameshows_an(b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')); v.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
     vp = v.new_page(); vp.on('pageerror', lambda e: errs.append('Zuschauer: ' + str(e))); vp.goto(URL + '#zuschauer'); vp.wait_for_timeout(400)
     check('Konto: Zuschaueransicht zeigt keinen Konto-Knopf', not vp.locator('#btnKonto').is_visible())
     v.close()
@@ -1418,6 +1448,7 @@ if __name__ == '__main__':
         spiele_checks()
         with sync_playwright() as p:
             browser_checks(p)
+            gameshows_aus_checks(p)
             mobile_checks(p)
             editor_checks(p)
             einreichen_checks(p)

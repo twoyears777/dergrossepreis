@@ -626,6 +626,9 @@ body.viewer .end-actions{display:none}
 #collSearchClear{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:none;border-radius:50%;background:transparent;color:var(--ink2);font-size:1.6rem;line-height:1;cursor:pointer}
 #collSearchClear:hover{background:#0000000f}
 #collSearchClear[hidden]{display:none}
+#gcShows[hidden],#perkShows[hidden]{display:none}
+/* Solange die Gameshows aus sind, steht unter „Wir wissen …“ nur eine Kachel: dann mittig */
+.perks:has(#perkShows[hidden]){grid-template-columns:minmax(0,400px);justify-content:center}
 .game-row mark{background:#f3d36b;color:inherit;padding:0 1px;border-radius:2px}
 .gfund{font-family:var(--sans);font-size:.9rem;color:var(--ink2);line-height:1.45;border-left:3px solid #e2c76a;padding-left:9px}
 .gfund b{font-family:var(--strong);font-weight:700;color:var(--ink)}

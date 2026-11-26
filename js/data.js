@@ -3,6 +3,13 @@
    Neue Vorlagen oder Changelog-Einträge nur hier eintragen. */
 
 /* ---------- Version & Changelog ---------- */
+/* ---------- Gameshows an/aus ----------
+   Gameshows (Der große Preis, Eigenes Spiel, Countdown) sind vorerst ausgeblendet. Der Code bleibt komplett drin.
+   Wieder einschalten: GAMESHOWS_AN auf true setzen.
+   Nur im eigenen Browser zum Testen einschalten: in der Konsole localStorage.manna_gameshows='1' und neu laden. */
+const GAMESHOWS_AN=false;
+const GAMESHOWS=GAMESHOWS_AN||(()=>{try{return localStorage.getItem('manna_gameshows')==='1';}catch(e){return false;}})();
+
 const APP_VERSION='1.32.0';
 const CHANGELOG=[
   {v:'1.32.0',d:'[Datum beim Veröffentlichen]',items:[
