@@ -1,5 +1,13 @@
 # Changelog – Manna
 
+## 1.29.0 – [Datum beim Veröffentlichen]
+- Neu: Konten (freiwillig). Mit Login werden Spielbrett, eigene Vorlagen, eigene Spiele mit Bildern, Favoriten und ausgeblendete Standard-Vorlagen automatisch zwischen Geräten abgeglichen. Ohne Login bleibt alles wie bisher im Browser
+- Konto: Registrieren mit E-Mail-Bestätigung, Anmelden, Passwort vergessen/ändern, Abmelden (wahlweise mit Entfernen der Daten vom Gerät), Konto löschen
+- Abgleich: geht nichts verloren. Ändern zwei Geräte dasselbe, bleibt die eigene Fassung als Kopie, Favoriten werden zusammengelegt, ein überschriebenes Spielbrett wird als Vorlage gesichert. Ein laufendes Spiel wird nie ausgetauscht, das neue Brett wartet im Gameshow-Menü. Offline wird nachgeholt
+- Sicherheit: anderes Konto auf demselben Gerät übernimmt nichts ungefragt; Anmeldelink aus der Mail wird sofort aus der Adresszeile entfernt; das Admin-Konto lässt sich in der App nicht löschen
+- Intern: Supabase-Tabellen `sync_eintraege` und `sync_bilder` mit Zugriffsregeln (nur eigene Zeilen), Obergrenzen (2000 Einträge, 500 Bilder bzw. 100 MB pro Konto), Funktion `konto_loeschen()`. SQL zum Nachlesen in `supabase/`. Abgleich lädt nur geänderte Inhalte (erst Zeitstempel, dann Inhalte)
+- Tests: neuer Testblock „Konto & Sync“ mit nachgebautem Supabase und zwei Geräten
+
 ## 1.28.1 – 26.11.2026
 - Fehlerbehebungen aus der Sicherheits- und Stabilitätsprüfung. Kein Eintrag im App-Changelog.
 - Import: kaputte Dateien (leere Einträge) stürzen nicht mehr still ab; Obergrenzen für Gruppen (8), Punktwerte, Kategorien, Textlängen, Vorlagen und Bilder aus Dateien

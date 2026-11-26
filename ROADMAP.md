@@ -81,8 +81,9 @@ Leitgedanke (siehe „Unsere Vision“ auf der Startseite): Ehrenamtliche sollen
 - Beamer-Spiele aufs Handy erst mit der App (→ Etappe 4)
 
 ### Zwischenschritt – Konto und Sync zwischen Geräten (vor der App)
+- **Umgesetzt in Version 1.29.0** (liegt auf `naechstes-update`, noch nicht veröffentlicht)
 - Ziel: Am PC oder Handy ein Spiel vorbereiten (z. B. Der große Preis) und es auf einem anderen Gerät nach der Anmeldung genauso abrufen
-- Anmeldung per E-Mail-Link, ohne Passwörter
+- Anmeldung mit E-Mail und Passwort (entschieden am 26.11.2026 statt E-Mail-Link: braucht weniger Mails, wichtig solange der eingebaute Mailversand von Supabase gilt)
 - Gespeichert werden Vorlagen, vorbereitete Spiele, eigene Spiele und Favoriten (Favoriten bis dahin nur auf dem Gerät, nicht in der Sicherung)
 - Manna bleibt offline nutzbar, abgeglichen wird bei Verbindung
 - Dienst: **Supabase**, Projekt in Frankfurt (entschieden am 24.11.2026). Kein eigener Server, Manna bleibt auf GitHub Pages

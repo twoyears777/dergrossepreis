@@ -55,7 +55,7 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
+    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
@@ -78,7 +78,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'img/shot-filter.jpg', 'img/shot-spiel.jpg']:
+    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/konto.js', 'img/shot-filter.jpg', 'img/shot-spiel.jpg']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
@@ -972,6 +972,262 @@ def mobile_checks(p):
         ctx.close()
     b.close()
 
+class FakeSupabaseKonten:
+    """Nachgebautes Supabase für Konten & Sync. Spielt die Zugriffsregeln nach: Jeder sieht nur seine eigenen Zeilen.
+    Zugangsschlüssel sind 'tok-<nutzer>-<n>', abgelaufene Schlüssel werden mit 401 abgelehnt."""
+    KEY = 'sb_publishable_XVvHrzG_pDKErkF37hsN4A_NYzt-Dc-'
+    def __init__(self):
+        self.users = {}; self.tokens = {}; self.refresh = {}; self.n = 0; self.t = 0
+        self.eintraege = {}; self.bilder = {}; self.offline = False; self.log = []; self.abgelaufen = set(); self.mails = []
+    def nutzer(self, mail, pw, bestaetigt=True):
+        uid = f'00000000-0000-4000-8000-{len(self.users) + 1:012d}'
+        self.users[mail] = {'id': uid, 'pw': pw, 'ok': bestaetigt}; return uid
+    def zeit(self):
+        self.t += 1; return f'2026-11-26T12:{self.t // 60:02d}:{self.t % 60:02d}.{self.t:06d}+00:00'
+    def sitzung(self, mail):
+        self.n += 1; u = self.users[mail]
+        tok = f'tok-{u["id"][-4:]}-{self.n}'; ref = f'ref-{u["id"][-4:]}-{self.n}'
+        self.tokens[tok] = u['id']; self.refresh[ref] = mail
+        return {'access_token': tok, 'refresh_token': ref, 'expires_in': 3600, 'user': {'id': u['id'], 'email': mail}}
+    def handle(self, route, request):
+        u = urlparse(request.url); path = u.path; q = parse_qs(u.query)
+        cors = {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': '*'}
+        js = lambda code, body: route.fulfill(status=code, content_type='application/json', body=json.dumps(body) if body is not None else '', headers=cors)
+        if request.method == 'OPTIONS': return route.fulfill(status=204, headers=cors)
+        if self.offline: return route.abort()
+        h = request.headers
+        if h.get('apikey') != self.KEY: return js(401, {'message': 'Invalid API key'})
+        body = json.loads(request.post_data) if request.post_data else {}
+        tok = (h.get('authorization') or '').replace('Bearer ', '')
+        me = None if tok in self.abgelaufen else self.tokens.get(tok)
+        self.log.append((request.method, path, u.query))
+        if path == '/auth/v1/token':
+            g = q.get('grant_type', [''])[0]
+            if g == 'password':
+                usr = self.users.get(body.get('email'))
+                if not usr or usr['pw'] != body.get('password'): return js(400, {'error_code': 'invalid_credentials', 'msg': 'Invalid login credentials'})
+                if not usr['ok']: return js(400, {'error_code': 'email_not_confirmed'})
+                return js(200, self.sitzung(body['email']))
+            if g == 'refresh_token':
+                mail = self.refresh.pop(body.get('refresh_token'), None)
+                if not mail: return js(400, {'error_code': 'refresh_token_not_found'})
+                return js(200, self.sitzung(mail))
+            return js(400, {'error_code': 'unsupported_grant_type'})
+        if path == '/auth/v1/signup':
+            self.mails.append(('signup', body.get('email'), q.get('redirect_to', [''])[0]))
+            if body.get('email') not in self.users: self.nutzer(body.get('email'), body.get('password'), bestaetigt=False)
+            return js(200, {'id': 'x', 'email': body.get('email'), 'identities': []})
+        if path == '/auth/v1/recover':
+            self.mails.append(('recover', body.get('email'), q.get('redirect_to', [''])[0])); return js(200, {})
+        if path == '/auth/v1/logout': return js(204, None)
+        if not me: return js(401, {'message': 'JWT expired'})
+        mail = next(m for m, x in self.users.items() if x['id'] == me)
+        if path == '/auth/v1/user':
+            if request.method == 'PUT':
+                if len(body.get('password', '')) < 8: return js(422, {'error_code': 'weak_password'})
+                self.users[mail]['pw'] = body['password']
+            return js(200, {'id': me, 'email': mail})
+        if path == '/rest/v1/rpc/konto_loeschen':
+            del self.users[mail]
+            self.eintraege = {k: v for k, v in self.eintraege.items() if k[0] != me}
+            self.bilder = {k: v for k, v in self.bilder.items() if k[0] != me}
+            self.tokens = {t: i for t, i in self.tokens.items() if i != me}
+            return js(204, None)
+        inliste = lambda key: [x for x in (q.get(key, [''])[0])[4:-1].split(',') if x]
+        if path == '/rest/v1/sync_eintraege':
+            if request.method == 'GET':
+                sel = q.get('select', [''])[0].split(','); nur = [k.strip('"') for k in inliste('schluessel')] if 'schluessel' in q else None
+                rows = [dict(v, schluessel=k[1]) for k, v in self.eintraege.items() if k[0] == me and (nur is None or k[1] in nur)]
+                return js(200, [{c: r[c] for c in sel} for r in rows])
+            if request.method == 'POST':
+                antw = []
+                for r in (body if isinstance(body, list) else [body]):
+                    if r.get('user_id') != me: return js(403, {'code': '42501', 'message': 'new row violates row-level security policy'})
+                    if not re.match(r'^(brett|favoriten|ausgeblendet|(vorlage|spiel):[A-Za-z0-9_-]{1,60})$', r['schluessel']): return js(400, {'code': '23514', 'message': 'check'})
+                    t = self.zeit()
+                    self.eintraege[(me, r['schluessel'])] = {'daten': None if r.get('geloescht') else r.get('daten'), 'geloescht': bool(r.get('geloescht')), 'geaendert_am': t}
+                    antw.append({'schluessel': r['schluessel'], 'geaendert_am': t})
+                return js(201, antw)
+        if path == '/rest/v1/sync_bilder':
+            if request.method == 'GET':
+                sel = q.get('select', [''])[0]; ids = inliste('bild_id') if 'bild_id' in q else None
+                rows = [{'bild_id': k[1], 'erstellt_am': v['erstellt_am'], 'daten': v['daten']} for k, v in self.bilder.items() if k[0] == me and (ids is None or k[1] in ids)]
+                return js(200, [{c: r[c] for c in sel.split(',')} for r in rows])
+            if request.method == 'POST':
+                if body.get('user_id') != me: return js(403, {'code': '42501', 'message': 'rls'})
+                self.bilder.setdefault((me, body['bild_id']), {'daten': body['daten'], 'erstellt_am': '2026-11-26T12:00:00Z'})
+                return js(201, None)
+            if request.method == 'DELETE':
+                for i in inliste('bild_id'): self.bilder.pop((me, i), None)
+                return js(204, None)
+        return js(404, {'message': 'not found'})
+
+def konto_checks(p):
+    print('Konto & Sync')
+    errs = []
+    sb = FakeSupabaseKonten()
+    sb.nutzer('anna@example.org', 'Geheim-123'); sb.nutzer('ben@example.org', 'Geheim-456')
+    b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
+    def geraet():
+        ctx = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
+        ctx.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
+        m = ctx.new_page(); m.on('pageerror', lambda e: errs.append(str(e))); m.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
+        m.goto(URL); m.wait_for_timeout(400)
+        if m.locator('#clDialog.show').count(): m.click('#clX')
+        return ctx, m
+    def sync(m):
+        m.evaluate("kontoSync('test')"); m.wait_for_function("!syncLaeuft"); m.wait_for_timeout(500); m.wait_for_function("!syncLaeuft")
+    def anmelden(m, mail, pw):
+        if not m.locator('#kontoScreen.show').count(): m.click('#btnKonto'); m.wait_for_timeout(150)
+        m.fill('#kMail', mail); m.fill('#kPass', pw); m.click('#btnKLogin'); m.wait_for_timeout(600); m.wait_for_function("!syncLaeuft")
+    bild = 'data:image/png;base64,' + base64.b64encode(tiny_png()).decode()
+    ctxA, A = geraet()
+    check('Konto: Knopf „Anmelden“ auf der Startseite', A.inner_text('#btnKonto') == 'Anmelden')
+    check('Konto: ohne Login keine Anfrage an Supabase', not sb.log)
+    A.click('#btnKonto'); A.wait_for_timeout(200)
+    check('Konto: Seite mit Anmeldeformular', A.locator('#kontoScreen.show').count() == 1 and A.locator('#kForm').is_visible() and not A.locator('#kontoAn').is_visible())
+    A.click('#btnKLogin'); A.wait_for_timeout(100)
+    check('Konto: leere Felder werden bemängelt', 'E-Mail und Passwort' in A.inner_text('#kMsg') and not sb.log)
+    A.fill('#kMail', 'anna@example.org'); A.fill('#kPass', 'falsch'); A.click('#btnKLogin'); A.wait_for_timeout(300)
+    check('Konto: falsches Passwort abgelehnt', 'stimmt nicht' in A.inner_text('#kMsg') and A.evaluate("localStorage.getItem('manna_konto')") is None)
+    A.fill('#kMail', 'neu@example.org'); A.fill('#kPass', 'kurz'); A.click('#btnKReg'); A.wait_for_timeout(100)
+    check('Konto: Registrieren verlangt 8 Zeichen', '8 Zeichen' in A.inner_text('#kMsg') and not any(x[0] == 'signup' for x in sb.mails))
+    A.fill('#kPass', 'Lang-genug-1'); A.click('#btnKReg'); A.wait_for_timeout(300)
+    check('Konto: Registrieren schickt Bestätigungsmail mit Rücksprung zur App', 'E-Mail geschickt' in A.inner_text('#kMsg') and sb.mails[-1][0] == 'signup' and sb.mails[-1][2].startswith('http://localhost') and A.input_value('#kPass') == '')
+    A.fill('#kMail', 'neu@example.org'); A.fill('#kPass', 'Lang-genug-1'); A.click('#btnKLogin'); A.wait_for_timeout(300)
+    check('Konto: unbestätigte E-Mail wird erklärt', 'bestätige' in A.inner_text('#kMsg'))
+    A.fill('#kMail', 'anna@example.org'); A.click('#btnKVergessen'); A.wait_for_timeout(300)
+    check('Konto: Passwort vergessen schickt Link', sb.mails[-1][:2] == ('recover', 'anna@example.org') and 'Link' in A.inner_text('#kMsg'))
+
+    # Gerät A hat schon Daten, bevor es ein Konto gibt
+    A.evaluate("""(async()=>{
+      await imgPut('img-test01', %s);
+      storeOwnGames([normOwn({id:'og-quiz1',name:'Bibelquiz',rounds:[{title:'Runde 1',text:'Wer baute die Arche?',img:'img-test01',extra:[]}]})]);
+      lsSet(TPL_KEY,JSON.stringify([{id:'own-tpl1',name:'Weihnachten',title:'Weihnachtsquiz',points:[10,20],desc:'',cats:[{name:'Krippe',items:[{type:'frage',text:'Wie viele Weise?',answer:'3'}]}]}]));
+      toggleFav('zeitungsschlagen');
+      S.title='Jugendabend Brett';save();
+    })()""" % json.dumps(bild))
+    anmelden(A, 'anna@example.org', 'Geheim-123')
+    a_id = sb.users['anna@example.org']['id']
+    keys = sorted(k[1] for k in sb.eintraege if k[0] == a_id)
+    check('Konto: nach dem Login angemeldet, Knopf heißt „Konto“', A.inner_text('#btnKonto') == 'Konto' and A.inner_text('#kWer') == 'anna@example.org' and A.locator('#kontoAn').is_visible())
+    check('Sync: vorhandene Daten landen im Konto', keys == ['brett', 'favoriten', 'spiel:og-quiz1', 'vorlage:own-tpl1'], keys)
+    check('Sync: Bild hochgeladen', (a_id, 'img-test01') in sb.bilder)
+    check('Sync: Spielstand gehört nicht dazu', 'used' not in sb.eintraege[(a_id, 'brett')]['daten'] and 'score' not in json.dumps(sb.eintraege[(a_id, 'brett')]['daten']))
+    check('Sync: Stand wird angezeigt', 'abgeglichen' in A.inner_text('#kStand'))
+    check('Sicherheit: Zugangsdaten nur als Schlüssel, kein Passwort gespeichert', 'Geheim-123' not in A.evaluate("JSON.stringify(localStorage)"))
+
+    # Zweites Gerät
+    ctxB, B = geraet()
+    anmelden(B, 'anna@example.org', 'Geheim-123')
+    B.wait_for_timeout(300)
+    check('Sync: zweites Gerät bekommt eigenes Spiel', B.evaluate("ownGames().map(g=>g.name)") == ['Bibelquiz'])
+    check('Sync: zweites Gerät bekommt das Bild', B.evaluate("imgGet('img-test01')") == bild)
+    check('Sync: zweites Gerät bekommt Vorlage und Favorit', B.evaluate("ownTpl().map(t=>t.name)") == ['Weihnachten'] and B.evaluate("favs") == ['zeitungsschlagen'])
+    check('Sync: unbenutztes Standard-Brett wird durch das vorbereitete ersetzt', B.evaluate("S.title") == 'Jugendabend Brett')
+    check('Sync: keine doppelten Einträge im Konto', len([k for k in sb.eintraege if k[0] == a_id]) == 4)
+
+    # Änderung auf B, Abgleich auf A
+    B.evaluate("(()=>{const g=ownGames();g[0].name='Bibelquiz XXL';storeOwnGames(g);})()")
+    B.wait_for_timeout(3200); B.wait_for_function("!syncLaeuft")
+    check('Sync: Änderung wird automatisch hochgeladen', sb.eintraege[(a_id, 'spiel:og-quiz1')]['daten']['name'] == 'Bibelquiz XXL')
+    sync(A)
+    check('Sync: Änderung kommt auf dem anderen Gerät an', A.evaluate("ownGames().map(g=>g.name)") == ['Bibelquiz XXL'])
+    n_post = len([x for x in sb.log if x[0] == 'POST' and x[1] == '/rest/v1/sync_eintraege'])
+    sync(A); sync(B)
+    gets = [x for x in sb.log if x[1] == '/rest/v1/sync_eintraege' and x[0] == 'GET']
+    check('Sync: ohne Änderung werden keine Inhalte geladen, nur Zeitstempel', all('daten' not in unquote(g[2]) for g in gets[-2:]), gets[-2:])
+    check('Sync: ohne Änderung wird nichts hochgeladen', len([x for x in sb.log if x[0] == 'POST' and x[1] == '/rest/v1/sync_eintraege']) == n_post)
+
+    # Beide ändern dasselbe Spiel: nichts darf verloren gehen
+    A.evaluate("(()=>{const g=ownGames();g[0].rounds[0].text='Fassung A';kStill(()=>storeOwnGames(g));})()")
+    B.evaluate("(()=>{const g=ownGames();g[0].rounds[0].text='Fassung B';kStill(()=>storeOwnGames(g));})()")
+    sync(A); sync(B); sync(A); sync(B)
+    ta = sorted(A.evaluate("ownGames().map(g=>g.name+'|'+g.rounds[0].text)")); tb = sorted(B.evaluate("ownGames().map(g=>g.name+'|'+g.rounds[0].text)"))
+    check('Sync: Konflikt – beide Fassungen bleiben erhalten', ta == tb == ['Bibelquiz XXL (Kopie)|Fassung B', 'Bibelquiz XXL|Fassung A'], (ta, tb))
+    check('Sync: Konflikt – Bild gilt für beide Fassungen', B.evaluate("imgGet('img-test01')") == bild)
+
+    # Favoriten auf beiden Geräten: zusammenlegen
+    A.evaluate("kStill(()=>toggleFav('mafia'))"); B.evaluate("kStill(()=>toggleFav('werwolf'))")
+    sync(A); sync(B); sync(A)
+    check('Sync: Favoriten von beiden Geräten werden zusammengelegt', A.evaluate("[...favs].sort()") == B.evaluate("[...favs].sort()") == ['mafia', 'werwolf', 'zeitungsschlagen'], (A.evaluate("favs"), B.evaluate("favs")))
+
+    # Löschen
+    A.evaluate("lsSet(TPL_KEY,'[]')"); A.wait_for_timeout(3200); A.wait_for_function("!syncLaeuft")
+    check('Sync: Löschen wird als „gelöscht“ markiert', sb.eintraege[(a_id, 'vorlage:own-tpl1')]['geloescht'] is True and sb.eintraege[(a_id, 'vorlage:own-tpl1')]['daten'] is None)
+    sync(B)
+    check('Sync: gelöschte Vorlage verschwindet auch auf dem anderen Gerät', B.evaluate("ownTpl().length") == 0)
+
+    # Spielbrett: nicht austauschen, während gespielt wird
+    B.evaluate("(()=>{S.used={'0-0':1};S.teams[0].score=20;kStill(()=>save());})()")
+    A.evaluate("S.title='Neues Brett von A';save()"); A.wait_for_timeout(3200); A.wait_for_function("!syncLaeuft")
+    B.evaluate("showScreen('gmenu')"); sync(B); B.evaluate("renderGMenu()")
+    check('Sync: laufendes Spiel wird nicht überschrieben', B.evaluate("S.title") == 'Jugendabend Brett' and B.evaluate("S.teams[0].score") == 20)
+    check('Sync: Hinweis im Gameshow-Menü, dass ein neues Brett wartet', B.locator('#gmList .konto-brett').count() == 1)
+    B.click('#gmList .konto-brett .primary'); B.wait_for_timeout(150); B.click('#dYes'); B.wait_for_timeout(300); B.wait_for_function("!syncLaeuft")
+    check('Sync: auf Wunsch wird das neue Brett übernommen', B.evaluate("S.title") == 'Neues Brett von A' and B.evaluate("S.teams[0].score") == 0 and B.evaluate("Object.keys(S.used).length") == 0)
+    check('Sync: Hinweis danach weg', B.locator('#gmList .konto-brett').count() == 0)
+
+    # Abgelaufene Anmeldung wird still erneuert
+    tok = A.evaluate("JSON.parse(localStorage.manna_konto).access"); sb.abgelaufen.add(tok)
+    A.evaluate("kStill(()=>toggleFav('ninja'))"); sync(A)
+    check('Konto: abgelaufene Anmeldung wird erneuert', A.evaluate("JSON.parse(localStorage.manna_konto).access") != tok and 'ninja' in sb.eintraege[(a_id, 'favoriten')]['daten'])
+
+    # Offline
+    sb.offline = True; A.evaluate("kStill(()=>toggleFav('stopp'))"); sync(A)
+    check('Sync: offline verständliche Meldung, nichts geht verloren', 'Offline' in A.evaluate("(showScreen('konto'),document.querySelector('#kStand').textContent)") and 'stopp' in A.evaluate("favs"))
+    sb.offline = False; A.evaluate("dispatchEvent(new Event('online'))"); A.wait_for_timeout(500); A.wait_for_function("!syncLaeuft")
+    check('Sync: wird nachgeholt, sobald das Internet wieder da ist', 'stopp' in sb.eintraege[(a_id, 'favoriten')]['daten'])
+
+    # Eintrag im Konto ganz verschwunden (z. B. von Hand in der Datenbank gelöscht): nicht auf dem Gerät löschen, wieder hochladen
+    sb.eintraege.pop((a_id, 'spiel:og-quiz1'), None); sync(A)
+    check('Sync: im Konto verschwundener Eintrag wird wieder hochgeladen statt gelöscht', (a_id, 'spiel:og-quiz1') in sb.eintraege and 'og-quiz1' in A.evaluate("ownGames().map(g=>g.id).join()"))
+    # Fremdes Konto auf demselben Gerät
+    B.evaluate("showScreen('konto')"); B.click('#btnKAbmelden'); B.wait_for_timeout(100); B.click('#dYes'); B.wait_for_timeout(200)
+    check('Konto: Abmelden behält die Daten auf dem Gerät', B.evaluate("localStorage.getItem('manna_konto')") is None and B.evaluate("ownGames().length") == 2 and B.inner_text('#btnKonto') == 'Anmelden')
+    B.fill('#kMail', 'ben@example.org'); B.fill('#kPass', 'Geheim-456'); B.click('#btnKLogin'); B.wait_for_timeout(400)
+    ben = sb.users['ben@example.org']['id']
+    check('Konto: anderes Konto – erst nachfragen, nichts hochladen', B.locator('#dialog.show').count() == 1 and 'anderen Konto' in B.inner_text('#dMsg') and not [k for k in sb.eintraege if k[0] == ben])
+    B.click('#dNo'); B.wait_for_timeout(300)
+    check('Konto: „Abbrechen“ meldet wieder ab, nichts landet im fremden Konto', B.evaluate("localStorage.getItem('manna_konto')") is None and not [k for k in sb.eintraege if k[0] == ben])
+    B.evaluate("document.querySelector('#dialog').classList.remove('show')")
+    B.fill('#kMail', 'anna@example.org'); B.fill('#kPass', 'Geheim-123'); B.click('#btnKLogin'); B.wait_for_timeout(300)
+    B.click('#btnKEntfernen'); B.wait_for_timeout(100); B.click('#dYes'); B.wait_for_timeout(300)
+    check('Konto: Abmelden und entfernen leert das Gerät', B.evaluate("ownGames().length") == 0 and B.evaluate("ownTpl().length") == 0 and B.evaluate("favs.length") == 0 and B.evaluate("S.title") == 'Der große Preis' and B.evaluate("localStorage.getItem('manna_sync')") is None)
+    check('Konto: das Konto selbst bleibt dabei erhalten', len([k for k in sb.eintraege if k[0] == a_id and not sb.eintraege[k]['geloescht']]) >= 4)
+    anmelden(B, 'ben@example.org', 'Geheim-456')
+    check('Sicherheit: anderes Konto sieht nichts von Anna', B.evaluate("ownGames().length") == 0 and B.evaluate("favs.length") == 0 and B.locator('#dialog.show').count() == 0)
+
+    # Passwort zurücksetzen über den Link aus der E-Mail
+    ctxC, C = geraet()
+    s = sb.sitzung('anna@example.org')
+    C.goto('about:blank'); C.goto(URL + f"#access_token={s['access_token']}&expires_in=3600&refresh_token={s['refresh_token']}&token_type=bearer&type=recovery"); C.wait_for_timeout(700)
+    check('Konto: Link aus der Mail wird aus der Adresszeile entfernt', 'access_token' not in C.url)
+    check('Konto: nach „Passwort vergessen“ wird ein neues Passwort verlangt', C.locator('#kontoScreen.show').count() == 1 and C.locator('#kNeuForm').is_visible())
+    C.fill('#kNeuPass', 'Ganz-neu-789'); C.click('#btnKNeu'); C.wait_for_timeout(300)
+    check('Konto: neues Passwort gespeichert', sb.users['anna@example.org']['pw'] == 'Ganz-neu-789' and not C.locator('#kNeuForm').is_visible())
+    C.goto('about:blank'); C.goto(URL + '#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid'); C.wait_for_timeout(500)
+    check('Konto: abgelaufener Link wird erklärt', 'abgelaufen' in C.inner_text('#kMsg') and 'error' not in C.url)
+    ctxC.close()
+
+    # Konto löschen
+    B.evaluate("showScreen('konto')"); B.click('#btnKLoeschen'); B.wait_for_timeout(100)
+    check('Konto löschen: deutliche Warnung', 'endgültig' in B.inner_text('#dMsg'))
+    B.click('#dYes'); B.wait_for_timeout(400)
+    check('Konto löschen: Konto und Daten weg, abgemeldet', 'ben@example.org' not in sb.users and not [k for k in sb.eintraege if k[0] == ben] and B.evaluate("localStorage.getItem('manna_konto')") is None)
+
+    v = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'); v.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle)
+    vp = v.new_page(); vp.on('pageerror', lambda e: errs.append('Zuschauer: ' + str(e))); vp.goto(URL + '#zuschauer'); vp.wait_for_timeout(400)
+    check('Konto: Zuschaueransicht zeigt keinen Konto-Knopf', not vp.locator('#btnKonto').is_visible())
+    v.close()
+    A.set_viewport_size({'width': 390, 'height': 844}); A.evaluate("showScreen('konto')"); A.wait_for_timeout(200)
+    check('Konto: Handy ohne seitliches Scrollen', not A.evaluate('document.documentElement.scrollWidth > innerWidth'))
+    A.evaluate("showScreen('home')"); A.wait_for_timeout(100)
+    box = A.evaluate("(()=>{const a=document.querySelector('#btnKonto').getBoundingClientRect(),b=document.querySelector('#homeBrand').getBoundingClientRect();return a.bottom<=b.top||a.right<=b.left||a.left>=b.right})()")
+    check('Konto: Knopf überdeckt auf dem Handy nicht das Logo', box)
+    check('Konto: keine JavaScript-Fehler (auch keine CSP-Verstöße)', not errs, '; '.join(errs))
+    ctxA.close(); ctxB.close(); b.close()
+
 if __name__ == '__main__':
     httpd = serve()
     try:
@@ -982,6 +1238,7 @@ if __name__ == '__main__':
             mobile_checks(p)
             editor_checks(p)
             einreichen_checks(p)
+            konto_checks(p)
     except Exception:
         traceback.print_exc(); results.append(('Testlauf ohne Absturz', False, ''))
     finally:

@@ -65,6 +65,7 @@
 <!-- ================= STARTMENÜ ================= -->
 <!-- Startseite ist von Anfang an sichtbar, damit beim Laden nicht kurz das Spielbrett von „Der große Preis“ aufblitzt -->
 <div class="screen show" id="home">
+  <button class="konto-btn" id="btnKonto" type="button">Anmelden</button>
   <h1 class="brand" id="homeBrand" aria-label="Manna"><img class="brand-mark" src="img/manna-mark.svg" alt=""><span class="brand-word" aria-hidden="true">anna</span></h1>
   <p class="home-intro" id="homeIntro">Manna wird ein richtig starkes Tool für die Jugendarbeit! Zahlreiche Spiele mit Anleitungen spontan immer verfügbar, Spieleshows inklusive interaktiver Slides direkt im Browser und mehr! <a href="#visionTitle" id="lnkVision">Warum es Manna gibt</a></p>
   <div class="gamegrid">
@@ -335,6 +336,41 @@
   <button class="back-link" id="btnSetBack">← Zurück</button>
 </div>
 
+<!-- ================= KONTO ================= -->
+<div class="screen" id="kontoScreen">
+  <h1 class="menu-title" id="kontoTitle">Konto</h1>
+  <div class="konto" id="kontoAus">
+    <p class="sub-intro">Mit einem Konto hast du deine eigenen Spiele, Vorlagen, Favoriten und dein Spielbrett auf jedem Gerät. Ohne Konto funktioniert Manna wie bisher.</p>
+    <form class="sec konto-form" id="kForm" novalidate>
+      <label class="f">E-Mail<input class="inp" id="kMail" type="email" maxlength="200" autocomplete="email" inputmode="email"></label>
+      <label class="f">Passwort<input class="inp" id="kPass" type="password" maxlength="72" autocomplete="current-password"></label>
+      <div class="row"><button type="submit" class="primary" id="btnKLogin">Anmelden</button><button type="button" class="btn" id="btnKReg">Konto erstellen</button></div>
+      <button type="button" class="konto-link" id="btnKVergessen">Passwort vergessen?</button>
+      <p class="sub-msg" id="kMsg" role="alert"></p>
+      <p class="hint">Für ein Konto speichern wir deine E-Mail-Adresse und das, was du in Manna anlegst, auf Servern in Frankfurt. Mehr dazu im <a href="rechtliches.html#datenschutz">Datenschutz</a>.</p>
+    </form>
+  </div>
+  <div class="konto" id="kontoAn" hidden>
+    <div class="sec konto-form">
+      <p>Angemeldet als <b id="kWer"></b></p>
+      <p class="hint" id="kStand"></p>
+      <p class="hint warn" id="kWarnung" hidden></p>
+      <div class="row"><button class="btn" id="btnKSync" type="button">Jetzt abgleichen</button><button class="btn" id="btnKPw" type="button">Passwort ändern</button></div>
+    </div>
+    <div class="menu-list">
+      <button class="mbtn" id="btnKAbmelden" type="button"><b>Abmelden</b></button>
+      <button class="mbtn" id="btnKEntfernen" type="button"><b>Abmelden und Daten von diesem Gerät entfernen</b><small>Sinnvoll an fremden oder geteilten Geräten</small></button>
+      <button class="mbtn konto-gefahr" id="btnKLoeschen" type="button"><b>Konto löschen</b></button>
+    </div>
+  </div>
+  <form class="sec konto-form" id="kNeuForm" novalidate hidden>
+    <label class="f">Neues Passwort (mindestens 8 Zeichen)<input class="inp" id="kNeuPass" type="password" maxlength="72" autocomplete="new-password"></label>
+    <div class="row"><button type="submit" class="primary" id="btnKNeu">Passwort speichern</button></div>
+    <p class="sub-msg" id="kMsg2" role="alert"></p>
+  </form>
+  <button class="back-link" id="btnKontoBack">← Zurück</button>
+</div>
+
 <!-- ================= ZUSCHAUER ================= -->
 <div id="vTimer"><div class="tm-stage" id="vtmStage"></div></div>
 <div id="vSplash"><div class="brand vs-brand" aria-label="Manna"><img class="brand-mark" src="img/manna-mark.svg" alt=""><span class="brand-word" aria-hidden="true">anna</span></div><div class="marquee"><div class="chrome vs-title" id="vsTitle">Der große Preis</div></div><div class="vs-sub">Gleich geht's los</div></div>
@@ -470,5 +506,6 @@
 <script src="js/einreichen.js"></script>
 <script src="js/countdown.js"></script>
 <script src="js/eigenes-spiel.js"></script>
+<script src="js/konto.js"></script>
 </body>
 </html>
