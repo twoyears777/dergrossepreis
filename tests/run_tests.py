@@ -78,7 +78,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'img/shot-filter.jpg', 'img/shot-spiel.jpg']:
+    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
@@ -187,9 +187,10 @@ def browser_checks(p):
     m.click('#btnArtBack'); m.wait_for_timeout(150); m.click('#paedScreen .back-top'); m.wait_for_timeout(150)
     check('Zurück-Knopf oben auf Unterseiten', m.locator('#home.show').count() == 1)
     check('Marke „Manna“ auf der Startseite', m.get_attribute('#homeBrand', 'aria-label') == 'Manna' and m.evaluate("document.querySelector('#homeBrand img').naturalWidth>0") and m.title() == 'Manna')
-    check('Screenshot-Collage mit 2 Bildern', m.locator('.collage .shot img').count() == 2)
-    loaded = m.evaluate("Promise.all([...document.querySelectorAll('.collage img')].map(i=>{i.loading='eager';return i.decode().then(()=>i.naturalWidth>0,()=>false)}))")
-    check('Screenshots laden', all(loaded), loaded)
+    m.locator('#gameCount').scroll_into_view_if_needed(); m.wait_for_timeout(1700)
+    n_games = m.evaluate('GAMES.length')
+    check('Zähler zeigt Anzahl der Spiele', n_games > 0 and m.inner_text('#gameCountNum') == str(n_games) and m.locator('#gameCount.leer').count() == 0, (m.inner_text('#gameCountNum'), n_games))
+    m.evaluate('scrollTo(0,0)')
     heads = m.locator('#home .hblock h2').all_inner_texts()
     check('Bereiche auf der Startseite', heads == ['Wir wissen, was es in der Jugendarbeit braucht!', 'Was wollen wir?'], heads)
     intro = m.inner_text('#homeIntro') if m.locator('#homeIntro').count() else ''

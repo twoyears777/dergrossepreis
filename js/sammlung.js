@@ -17,8 +17,27 @@ function loadGames(){
   if(!GAMES.length)gamesState='laden';
   return gamesLoading=fetch('spiele/alle.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}).then(d=>{
     GAMES=(d&&Array.isArray(d.spiele)?d.spiele:[]).filter(validGame).map(g=>Object.assign({risiken:[]},g));gamesState='ok';
-  }).catch(()=>{if(!GAMES.length)gamesState='fehler';}).then(()=>{gamesLoading=null;if(screenName==='coll')renderColl();});
+  }).catch(()=>{if(!GAMES.length)gamesState='fehler';}).then(()=>{gamesLoading=null;showGameCount();if(screenName==='coll')renderColl();});
 }
+/* Zähler auf der Startseite: wie viele Spiele online sind. Zählt einmal hoch, sobald er ins Bild kommt.
+   Ohne geladene Spiele bleibt er versteckt (lieber nichts als eine falsche 0). */
+let countShown=0,countSeen=false;
+function showGameCount(){
+  const box=document.getElementById('gameCount'),num=document.getElementById('gameCountNum');
+  if(!box||!num)return;
+  const n=GAMES.length;
+  box.classList.toggle('leer',!n);box.hidden=!n&&gamesState==='fehler';
+  if(!n)return;
+  if(!countSeen)return;
+  if(n===countShown||matchMedia('(prefers-reduced-motion: reduce)').matches){num.textContent=n;countShown=n;return;}
+  const from=countShown,t0=performance.now(),dur=Math.min(1400,500+Math.abs(n-from)*12);
+  countShown=n;
+  (function step(t){const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);num.textContent=Math.round(from+(n-from)*e);if(k<1)requestAnimationFrame(step);})(t0);
+}
+if(!VIEW&&'IntersectionObserver' in window){
+  const el=document.getElementById('gameCount');
+  if(el)new IntersectionObserver((es,o)=>{if(es.some(x=>x.isIntersecting)){countSeen=true;o.disconnect();showGameCount();}},{threshold:.6}).observe(el);
+}else countSeen=true;
 document.addEventListener('visibilitychange',()=>{if(!VIEW&&document.visibilityState==='visible')loadGames();});
 if(!VIEW)loadGames();
 const FILTER_KEY='grosserPreis_filter';
