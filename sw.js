@@ -25,6 +25,8 @@ const FILES = [
   './js/countdown.js',
   './js/eigenes-spiel.js',
   './js/konto.js',
+  './js/sync.js',
+  './js/konto-seite.js',
   './js/zaehler.js',
   './img/manna-mark.svg',
   './manifest.webmanifest',

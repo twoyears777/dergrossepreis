@@ -9,6 +9,9 @@
 - Intern: Supabase-Tabellen `sync_eintraege` und `sync_bilder` mit Zugriffsregeln (nur eigene Zeilen), Obergrenzen (2000 Einträge, 500 Bilder bzw. 100 MB pro Konto), Funktion `konto_loeschen()`. SQL zum Nachlesen in `supabase/`. Abgleich lädt nur geänderte Inhalte (erst Zeitstempel, dann Inhalte)
 - Intern: Wach-Halter für den kostenlosen Supabase-Tarif: GitHub Action ruft alle 3 Tage `wach()` auf, damit das Projekt nicht pausiert (läuft erst, wenn es auf main ist)
 - Tests: neuer Testblock „Konto & Sync“ mit nachgebautem Supabase und zwei Geräten
+- Aufräumen: Konto-Code in drei Dateien getrennt (js/konto.js Anmeldung, js/sync.js Abgleich, js/konto-seite.js Oberfläche). Statt die Speicherfunktionen heimlich zu umhüllen, melden sie Änderungen jetzt sichtbar über datenGeaendert()/seiteGewechselt() (js/kern.js)
+- Stabilität: alle Supabase-Anfragen haben ein Zeitlimit (45 s), damit Anmeldung und Abgleich nie hängen bleiben; Rückkehr aus einer E-Mail wird erst behandelt, wenn alle Skripte geladen sind
+- Sicherheit: Rechte auf sync_eintraege/sync_bilder gehärtet (authenticated hatte aus den Supabase-Standardrechten noch TRUNCATE, das die Zugriffsregeln umgangen hätte); zusätzlicher Test, dass ein Anmelde-Link für ein fremdes Konto nichts ungefragt hochlädt
 
 ## 1.28.1 – 26.11.2026
 - Fehlerbehebungen aus der Sicherheits- und Stabilitätsprüfung. Kein Eintrag im App-Changelog.

@@ -24,7 +24,7 @@ function normOwn(g){
   };
 }
 function ownGames(){const a=jget(OWN_KEY,[]);return Array.isArray(a)?a.map(normOwn):[];}
-function storeOwnGames(a){try{localStorage.setItem(OWN_KEY,JSON.stringify(a));return true;}catch(e){toast('Speichern nicht möglich – der Speicher des Browsers ist voll.');return false;}}
+function storeOwnGames(a){try{localStorage.setItem(OWN_KEY,JSON.stringify(a));}catch(e){toast('Speichern nicht möglich – der Speicher des Browsers ist voll.');return false;}datenGeaendert();return true;}
 function ownImgRefs(g){const r=[];((g&&g.rounds)||[]).forEach(x=>{if(x.img)r.push(x.img);(x.extra||[]).forEach(e=>{if(e.img)r.push(e.img);});});return r;}
 // Punkte je Platz in Runde ri (Index 0 = Platz 1)
 function roundPts(g,ri){

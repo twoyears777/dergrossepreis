@@ -363,7 +363,7 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 
 - Z. 28: rotate(…deg) translateY(…px)
 - Z. 39: Der große Preis
-- Z. 135: Diese Funktion ist aktuell nur auf einem Laptop oder PC verfügbar.
+- Z. 141: Diese Funktion ist aktuell nur auf einem Laptop oder PC verfügbar.
 
 ## js/preis.js
 
@@ -447,43 +447,43 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 - Z. 12: Hilf uns beim Content!
 - Z. 13: Pädagogischer Kram
 - Z. 27: Der große Preis
-- Z. 64: Unter welchem Namen soll das aktuelle Spielbrett als Vorlage gespeichert werden?
-- Z. 66: Vorlage „…“ ist gespeichert. Willst du sie gleich auch als Datei sichern? Dann geht sie nicht verloren, falls der Browser-Speicher gelöscht wird.
-- Z. 91: Download nicht möglich – Sicherung in die Zwischenablage kopiert.
-- Z. 91: Sicherung nicht möglich.
-- Z. 107: … Vorlage… exportiert.
-- Z. 108: Download nicht möglich – Vorlagen in die Zwischenablage kopiert.
-- Z. 108: Export nicht möglich.
-- Z. 111: Die Datei ist keine gültige Vorlagen-Datei.
-- Z. 116: Der große Preis
-- Z. 124: … eigene… eingespielt.
-- Z. 131: Speichern nicht möglich – der Speicher des Browsers ist voll.
-- Z. 133: … Vorlage… importiert.
-- Z. 133: Du findest sie unter „Vorlagen“.
-- Z. 133: Dazu … eigene….
-- Z. 135: Die Datei ist keine gültige Vorlagen-Datei.
-- Z. 143: Du hast Änderungen, die noch nicht als Datei gesichert sind. Wenn der Browser-Speicher gelöscht wird, wären sie weg.
-- Z. 150: Der große Preis
-- Z. 157: Neues Spiel starten? Alle Punkte gehen auf 0 und alle Felder werden wieder geöffnet. Fragen & Gruppen bleiben.
-- Z. 176: Vorlage „
-- Z. 176: “ geladen.
-- Z. 177: Vorlage löschen
-- Z. 177: Vorlage „
-- Z. 177: “ löschen
-- Z. 178: Vorlage „…“ löschen?
-- Z. 178: Sie ist dann weg (außer du hast sie exportiert).
-- Z. 178: Du kannst Standard-Vorlagen später wiederherstellen.
-- Z. 178: Vorlage gelöscht.
-- Z. 189: Tipp: Speichere ein fertiges Spielbrett als Vorlage und exportiere es. Die Datei kannst du über „Vorlagen importieren“ wieder einfügen.
-- Z. 196: Achtung: Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.
-- Z. 216: ……
-- Z. 228: ← Zurück zum Spiel
-- Z. 228: ← Pädagogischer Kram
-- Z. 230: …
-- Z. 230: …
-- Z. 231: ………
-- Z. 253: Spiel jetzt beenden? … … noch offen. Danach kommt die Siegerehrung.
-- Z. 253: Spiel beenden und Siegerehrung zeigen?
+- Z. 65: Unter welchem Namen soll das aktuelle Spielbrett als Vorlage gespeichert werden?
+- Z. 67: Vorlage „…“ ist gespeichert. Willst du sie gleich auch als Datei sichern? Dann geht sie nicht verloren, falls der Browser-Speicher gelöscht wird.
+- Z. 93: Download nicht möglich – Sicherung in die Zwischenablage kopiert.
+- Z. 93: Sicherung nicht möglich.
+- Z. 109: … Vorlage… exportiert.
+- Z. 110: Download nicht möglich – Vorlagen in die Zwischenablage kopiert.
+- Z. 110: Export nicht möglich.
+- Z. 113: Die Datei ist keine gültige Vorlagen-Datei.
+- Z. 118: Der große Preis
+- Z. 126: … eigene… eingespielt.
+- Z. 133: Speichern nicht möglich – der Speicher des Browsers ist voll.
+- Z. 136: … Vorlage… importiert.
+- Z. 136: Du findest sie unter „Vorlagen“.
+- Z. 136: Dazu … eigene….
+- Z. 138: Die Datei ist keine gültige Vorlagen-Datei.
+- Z. 146: Du hast Änderungen, die noch nicht als Datei gesichert sind. Wenn der Browser-Speicher gelöscht wird, wären sie weg.
+- Z. 153: Der große Preis
+- Z. 160: Neues Spiel starten? Alle Punkte gehen auf 0 und alle Felder werden wieder geöffnet. Fragen & Gruppen bleiben.
+- Z. 180: Vorlage „
+- Z. 180: “ geladen.
+- Z. 181: Vorlage löschen
+- Z. 181: Vorlage „
+- Z. 181: “ löschen
+- Z. 182: Vorlage „…“ löschen?
+- Z. 182: Sie ist dann weg (außer du hast sie exportiert).
+- Z. 182: Du kannst Standard-Vorlagen später wiederherstellen.
+- Z. 182: Vorlage gelöscht.
+- Z. 193: Tipp: Speichere ein fertiges Spielbrett als Vorlage und exportiere es. Die Datei kannst du über „Vorlagen importieren“ wieder einfügen.
+- Z. 200: Achtung: Als Home-Bildschirm-App öffnet sich das zweite Fenster in Safari und ist dann nicht verbunden. Für die Zuschaueransicht die Seite direkt im Browser öffnen.
+- Z. 220: ……
+- Z. 232: ← Zurück zum Spiel
+- Z. 232: ← Pädagogischer Kram
+- Z. 234: …
+- Z. 234: …
+- Z. 235: ………
+- Z. 257: Spiel jetzt beenden? … … noch offen. Danach kommt die Siegerehrung.
+- Z. 257: Spiel beenden und Siegerehrung zeigen?
 
 ## js/zuschauer.js
 
@@ -594,29 +594,29 @@ Automatisch erzeugt mit `node tools/texte-liste.js`. Nicht von Hand bearbeiten.
 
 ## js/konto.js
 
-- Z. 22: Keine Verbindung. Bist du online?
-- Z. 23: Da ist etwas schiefgelaufen. Versuch es bitte später noch einmal.
-- Z. 27: Bitte bestätige zuerst deine E-Mail-Adresse. Schau in dein Postfach.
-- Z. 32: Neue Konten können gerade nicht erstellt werden.
-- Z. 37: Fast geschafft! Wir haben dir eine E-Mail geschickt. Klick auf den Link darin, dann ist dein Konto fertig.
-- Z. 39: Deine E-Mail-Adresse ist bestätigt. Du bist jetzt angemeldet.
-- Z. 41: Falls es ein Konto mit dieser E-Mail-Adresse gibt, haben wir dir einen Link zum Zurücksetzen geschickt.
-- Z. 42: Wähle jetzt ein neues Passwort.
-- Z. 44: Abmelden? Deine Spiele und Vorlagen bleiben auf diesem Gerät.
-- Z. 46: Abmelden und alle Spiele, Vorlagen, Favoriten und das Spielbrett von diesem Gerät entfernen? In deinem Konto bleibt alles erhalten.
-- Z. 49: Du bist abgemeldet. Die Daten wurden von diesem Gerät entfernt.
-- Z. 50: Konto wirklich löschen? Alle Daten in deinem Konto werden endgültig gelöscht. Das kann man nicht rückgängig machen. Auf diesem Gerät bleibt alles erhalten.
-- Z. 51: Konto endgültig löschen
-- Z. 52: Dein Konto wurde gelöscht.
-- Z. 53: Auf diesem Gerät liegen Spiele oder Vorlagen, die zuletzt mit einem anderen Konto abgeglichen wurden. Sollen sie in dein Konto übernommen werden?
-- Z. 55: Du wurdest wieder abgemeldet. Nutze im anderen Konto „Abmelden und Daten von diesem Gerät entfernen“, dann kannst du dich hier anmelden.
-- Z. 56: Wird abgeglichen …
-- Z. 61: Der Bilderspeicher deines Kontos ist voll. Neue Bilder bleiben nur auf diesem Gerät.
-- Z. 62: Ein Eintrag ist zu groß für den Abgleich und bleibt nur auf diesem Gerät:
-- Z. 64: Spielbrett von diesem Gerät
-- Z. 65: Auf einem anderen Gerät wurde das Spielbrett geändert.
-- Z. 66: Neues Spielbrett übernehmen
-- Z. 67: Neues Spielbrett übernehmen? Der aktuelle Spielstand wird dabei zurückgesetzt. Dein bisheriges Spielbrett wird als Vorlage gesichert.
+- Z. 14: Keine Verbindung. Bist du online?
+- Z. 15: Da ist etwas schiefgelaufen. Versuch es bitte später noch einmal.
+- Z. 19: Bitte bestätige zuerst deine E-Mail-Adresse. Schau in dein Postfach.
+- Z. 24: Neue Konten können gerade nicht erstellt werden.
+- Z. 29: Fast geschafft! Wir haben dir eine E-Mail geschickt. Klick auf den Link darin, dann ist dein Konto fertig.
+- Z. 31: Deine E-Mail-Adresse ist bestätigt. Du bist jetzt angemeldet.
+- Z. 33: Falls es ein Konto mit dieser E-Mail-Adresse gibt, haben wir dir einen Link zum Zurücksetzen geschickt.
+- Z. 34: Wähle jetzt ein neues Passwort.
+- Z. 36: Abmelden? Deine Spiele und Vorlagen bleiben auf diesem Gerät.
+- Z. 38: Abmelden und alle Spiele, Vorlagen, Favoriten und das Spielbrett von diesem Gerät entfernen? In deinem Konto bleibt alles erhalten.
+- Z. 41: Du bist abgemeldet. Die Daten wurden von diesem Gerät entfernt.
+- Z. 42: Konto wirklich löschen? Alle Daten in deinem Konto werden endgültig gelöscht. Das kann man nicht rückgängig machen. Auf diesem Gerät bleibt alles erhalten.
+- Z. 43: Konto endgültig löschen
+- Z. 44: Dein Konto wurde gelöscht.
+- Z. 45: Auf diesem Gerät liegen Spiele oder Vorlagen, die zuletzt mit einem anderen Konto abgeglichen wurden. Sollen sie in dein Konto übernommen werden?
+- Z. 47: Du wurdest wieder abgemeldet. Nutze im anderen Konto „Abmelden und Daten von diesem Gerät entfernen“, dann kannst du dich hier anmelden.
+- Z. 48: Wird abgeglichen …
+- Z. 53: Der Bilderspeicher deines Kontos ist voll. Neue Bilder bleiben nur auf diesem Gerät.
+- Z. 54: Ein Eintrag ist zu groß für den Abgleich und bleibt nur auf diesem Gerät:
+- Z. 56: Spielbrett von diesem Gerät
+- Z. 57: Auf einem anderen Gerät wurde das Spielbrett geändert.
+- Z. 58: Neues Spielbrett übernehmen
+- Z. 59: Neues Spielbrett übernehmen? Der aktuelle Spielstand wird dabei zurückgesetzt. Dein bisheriges Spielbrett wird als Vorlage gesichert.
 
 ## js/data.js
 

@@ -30,6 +30,7 @@ function showScreen(n){
   if(d){if(d.title)ransom($(d.el).querySelector('.menu-title'),d.title);if(d.show)d.show();}
   document.querySelectorAll('.screen.show').forEach(x=>x.scrollTop=0);
   pushState();
+  seiteGewechselt(n);
 }
 function hasContent(){return S.categories.some(c=>c.items.some(it=>(it.text||'').trim()));}
 function confirmReplace(fn){
@@ -62,7 +63,7 @@ function boardToTpl(name){
 }
 function saveAsTemplate(){
   ask('Unter welchem Namen soll das aktuelle Spielbrett als Vorlage gespeichert werden?','Speichern',name=>{
-    const a=ownTpl();a.push(boardToTpl(name));lsSet(TPL_KEY,JSON.stringify(a));renderTpl();markUnsaved();
+    const a=ownTpl();a.push(boardToTpl(name));lsSet(TPL_KEY,JSON.stringify(a));datenGeaendert();renderTpl();markUnsaved();
     setTimeout(()=>ask(`Vorlage „${name}“ ist gespeichert. Willst du sie gleich auch als Datei sichern? Dann geht sie nicht verloren, falls der Browser-Speicher gelöscht wird.`,'Als Datei sichern',()=>backupNow()),250);
   },{input:true,value:S.title||'',placeholder:'z. B. Weihnachtsquiz 2026'});
 }
@@ -70,6 +71,7 @@ function deleteTemplate(tp){
   if(tp.own)markUnsaved();
   if(tp.own)lsSet(TPL_KEY,JSON.stringify(ownTpl().filter(t=>t.id!==tp.id)));
   else{const h=hiddenTpl();if(!h.includes(tp.id))h.push(tp.id);lsSet(HID_KEY,JSON.stringify(h));}
+  datenGeaendert();
 }
 /* ---------- Sicherung ---------- */
 const UNSAVED_KEY='grosserPreis_unsaved',BACKUP_KEY='grosserPreis_lastBackup',SNOOZE_KEY='grosserPreis_backupLater';
@@ -129,6 +131,7 @@ function importTemplates(txt){
     own.push({id:'own-'+uid(),name:String(t.name||t.title||'Importierte Vorlage').slice(0,60),title:n.title,points:n.points,
       desc:String(t.desc||n.categories.map(c=>c.name).join(', ')).slice(0,300),cats:n.categories});});
   if(!lsSet(TPL_KEY,JSON.stringify(own))){toast('Speichern nicht möglich – der Speicher des Browsers ist voll.');return;}
+  datenGeaendert();
   renderTpl();
   toast(`${arr.length} Vorlage${arr.length>1?'n':''} importiert.`+(d&&d.typ==='sicherung'?' Du findest sie unter „Vorlagen“.':'')+(nOwn?` Dazu ${nOwn} eigene${nOwn>1?' Spiele':'s Spiel'}.`:''));
 }
@@ -163,6 +166,7 @@ function renderGMenu(){
   menuBtn(list,'Erklärung',()=>showScreen('help'),'sub');
   if(running)menuBtn(list,'Spiel beenden',()=>finishGame());
   menuBtn(list,'Einstellungen',()=>showScreen('set'),'sub');
+  if(typeof brettHinweis==='function')brettHinweis();   // Konto & Sync (js/sync.js): Hinweis, wenn ein neues Spielbrett wartet
 }
 function renderTpl(){
   ransom($('#tplTitle'),'Vorlagen');
@@ -183,7 +187,7 @@ function renderTpl(){
   tb('Aktuelles Brett als Vorlage speichern',saveAsTemplate);
   tb('Eigene Vorlagen exportieren',exportTemplates);
   tb('Vorlagen importieren',()=>$('#tplFile').click());
-  if(hiddenTpl().length)tb('Standard-Vorlagen wiederherstellen',()=>{lsSet(HID_KEY,'[]');renderTpl();toast('Standard-Vorlagen sind wieder da.');});
+  if(hiddenTpl().length)tb('Standard-Vorlagen wiederherstellen',()=>{lsSet(HID_KEY,'[]');datenGeaendert();renderTpl();toast('Standard-Vorlagen sind wieder da.');});
   list.appendChild(tools);
   const tip=document.createElement('p');tip.className='mhint';
   tip.textContent='Tipp: Speichere ein fertiges Spielbrett als Vorlage und exportiere es. Die Datei kannst du über „Vorlagen importieren“ wieder einfügen.';

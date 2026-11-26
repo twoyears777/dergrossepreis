@@ -55,7 +55,7 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
+    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
@@ -78,7 +78,7 @@ def static_checks():
     check('Version in data.js und sw.js gleich', v1 == v2, f'{v1} / {v2}')
     md = open(os.path.join(ROOT, 'CHANGELOG.md'), encoding='utf-8').read()
     check('CHANGELOG.md enthält aktuelle Version', f'## {v1}' in md)
-    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/konto.js']:
+    for f in ['rechtliches.html', 'css/app.css', 'js/spielformat.js', 'js/artikel.js', 'js/data.js', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js']:
         check(f'Service Worker cached {f}', f"'./{f}'" in sw)
         check(f'Datei vorhanden: {f}', os.path.exists(os.path.join(ROOT, f)))
 
@@ -1164,7 +1164,7 @@ def konto_checks(p):
     check('Sync: Favoriten von beiden Geräten werden zusammengelegt', A.evaluate("[...favs].sort()") == B.evaluate("[...favs].sort()") == ['mafia', 'werwolf', 'zeitungsschlagen'], (A.evaluate("favs"), B.evaluate("favs")))
 
     # Löschen
-    A.evaluate("lsSet(TPL_KEY,'[]')"); A.wait_for_timeout(3200); A.wait_for_function("!syncLaeuft")
+    A.evaluate("lsSet(TPL_KEY,'[]');datenGeaendert()"); A.wait_for_timeout(3200); A.wait_for_function("!syncLaeuft")
     check('Sync: Löschen wird als „gelöscht“ markiert', sb.eintraege[(a_id, 'vorlage:own-tpl1')]['geloescht'] is True and sb.eintraege[(a_id, 'vorlage:own-tpl1')]['daten'] is None)
     sync(B)
     check('Sync: gelöschte Vorlage verschwindet auch auf dem anderen Gerät', B.evaluate("ownTpl().length") == 0)
@@ -1220,6 +1220,20 @@ def konto_checks(p):
     C.goto('about:blank'); C.goto(URL + '#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid'); C.wait_for_timeout(500)
     check('Konto: abgelaufener Link wird erklärt', 'abgelaufen' in C.inner_text('#kMsg') and 'error' not in C.url)
     ctxC.close()
+
+    # Sicherheit: Anmelde-Link (z. B. Passwort zurücksetzen) für ein FREMDES Konto auf einem Gerät,
+    # das zu einem anderen Konto gehört: nichts darf ungefragt in das fremde Konto hochgeladen werden
+    sb.nutzer('cora@example.org', 'Geheim-999')
+    ctxD, D = geraet()
+    D.evaluate("storeOwnGames([normOwn({id:'og-privat',name:'Annas Spiel'})])")
+    D.evaluate("lsSet('manna_sync',JSON.stringify({user:%s,base:{},zuletzt:1}))" % json.dumps(sb.users['anna@example.org']['id']))
+    s2 = sb.sitzung('cora@example.org')
+    D.goto('about:blank'); D.goto(URL + f"#access_token={s2['access_token']}&expires_in=3600&refresh_token={s2['refresh_token']}&token_type=bearer&type=recovery"); D.wait_for_timeout(800)
+    cora = sb.users['cora@example.org']['id']
+    check('Sicherheit: Anmelde-Link für fremdes Konto lädt nichts ungefragt hoch', D.locator('#dialog.show').count() == 1 and 'anderen Konto' in D.inner_text('#dMsg') and not [k for k in sb.eintraege if k[0] == cora])
+    D.click('#dNo'); D.wait_for_timeout(500)
+    check('Sicherheit: Abbrechen meldet den Link wieder ab', D.evaluate("localStorage.getItem('manna_konto')") is None and not [k for k in sb.eintraege if k[0] == cora])
+    ctxD.close()
 
     # Konto löschen
     B.evaluate("showScreen('konto')"); B.click('#btnKLoeschen'); B.wait_for_timeout(100)

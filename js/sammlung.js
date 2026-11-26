@@ -44,7 +44,7 @@ const FILTER_KEY='grosserPreis_filter';
 const FAV_KEY='manna_favoriten';
 let favs=(()=>{const a=jget(FAV_KEY,[]);return Array.isArray(a)?a.filter(x=>typeof x==='string'):[];})();
 const isFav=id=>favs.includes(id);
-function toggleFav(id){const i=favs.indexOf(id);if(i>=0)favs.splice(i,1);else favs.push(id);lsSet(FAV_KEY,JSON.stringify(favs));}
+function toggleFav(id){const i=favs.indexOf(id);if(i>=0)favs.splice(i,1);else favs.push(id);lsSet(FAV_KEY,JSON.stringify(favs));datenGeaendert();}
 const FILTER_DEFS=[
   {key:'alter',label:'Alter',opts:()=>AGE_GROUPS.map(a=>({id:a.id,label:a.label}))},
   {key:'groesse',label:'Personen',opts:()=>SIZE_GROUPS.map(g=>({id:g.id,label:g.label}))},

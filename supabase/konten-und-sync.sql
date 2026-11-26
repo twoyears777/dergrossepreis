@@ -81,3 +81,11 @@ create or replace function public.wach() returns boolean
 language sql stable security invoker set search_path = '' as $$ select true $$;
 revoke all on function public.wach() from public;
 grant execute on function public.wach() to anon, authenticated;
+
+-- Härtung der Rechte (Migration „konten_rechte_haerten“, 26.11.2026):
+-- authenticated hatte aus den Supabase-Standardrechten noch TRUNCATE/TRIGGER/REFERENCES. TRUNCATE umgeht die
+-- Zugriffsregeln. Deshalb zurücksetzen auf genau das Nötige (Bilder werden nie geändert, nur angelegt/gelöscht).
+revoke all on public.sync_eintraege from authenticated;
+revoke all on public.sync_bilder from authenticated;
+grant select, insert, update, delete on public.sync_eintraege to authenticated;
+grant select, insert, delete on public.sync_bilder to authenticated;

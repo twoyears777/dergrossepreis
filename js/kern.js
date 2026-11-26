@@ -76,8 +76,14 @@ function normalize(d){
   if(!(o.turn>=0&&o.turn<o.teams.length))o.turn=0;
   return o;
 }
+/* Änderungs-Meldungen: Bereiche wie Konto & Sync (js/sync.js) tragen sich hier ein und erfahren so,
+   wenn Daten gespeichert werden oder die Seite wechselt. Die Aufrufe von datenGeaendert() stehen sichtbar
+   in den Speicherfunktionen (save, storeOwnGames, Vorlagen, Favoriten), seiteGewechselt() in showScreen. */
+const APP_HOOKS={aenderung:[],seite:[]};
+function datenGeaendert(){APP_HOOKS.aenderung.forEach(f=>{try{f();}catch(e){}});}
+function seiteGewechselt(n){APP_HOOKS.seite.forEach(f=>{try{f(n);}catch(e){}});}
 function load(){try{const r=localStorage.getItem(KEY);if(r)return normalize(JSON.parse(r));}catch(e){}return sample();}
-function save(){if(VIEW)return;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function save(){if(VIEW)return;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}datenGeaendert();}
 let S=load();
 
 /* ---------- Sound ---------- */
