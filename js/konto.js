@@ -50,6 +50,9 @@ const KT={
   fremdeDaten:'Auf diesem Gerät liegen Spiele oder Vorlagen, die zuletzt mit einem anderen Konto abgeglichen wurden. Sollen sie in dein Konto übernommen werden?',
   fremdeJa:'Übernehmen',
   fremdeNein:'Du wurdest wieder abgemeldet. Nutze im anderen Konto „Abmelden und Daten von diesem Gerät entfernen“, dann kannst du dich hier anmelden.',
+  // ENTWURF (neu, Lukas formuliert noch): Anmeldung über einen Link aus einer E-Mail, auf dem Gerät liegen schon Daten
+  linkFrage:'Du bist jetzt als {mail} angemeldet. Sollen die Spiele, Vorlagen und Favoriten auf diesem Gerät in dieses Konto übernommen werden?',
+  linkNein:'Du wurdest wieder abgemeldet. Deine Daten bleiben nur auf diesem Gerät.',
   standLaeuft:'Wird abgeglichen …',
   standOk:'Alles abgeglichen',
   standOffline:'Offline. Der Abgleich wird nachgeholt, sobald du wieder Internet hast.',
@@ -213,15 +216,20 @@ async function kontoNeuesPasswort(pass){
 let kFrage=false;   // solange die Frage offen ist, wird nichts abgeglichen
 /* Nach JEDEM Login (Formular, Bestätigungslink, Passwort-Link): Gehört dieses Gerät gerade zu einem anderen
    Konto? Dann erst fragen, sonst würden fremde Daten ungefragt in das neue Konto hochgeladen. */
-function kontoNachLogin(k,msg,dann){
+/* Anmeldung über einen Link (ausLink): Den Link kann auch ein Fremder gebaut haben, mit den Zugangsdaten SEINES Kontos.
+   Wer draufklickt, wäre dann in diesem fremden Konto angemeldet und würde seine Daten ungefragt dorthin hochladen.
+   Deshalb wird nach einem Link immer gefragt (mit der E-Mail-Adresse des Kontos), sobald auf dem Gerät Daten liegen,
+   die noch nicht mit genau diesem Konto abgeglichen wurden. */
+function kontoNachLogin(k,msg,dann,ausLink){
   const st=syncState();
-  const fremd=st.user&&st.user!==k.id&&hatLokaleDaten();
+  const fremd=st.user!==k.id&&(!!st.user||!!ausLink)&&hatLokaleDaten();
   kontoSave(k);kMsg('');kontoUI();
   const weiter=()=>{toast(msg);if(dann)dann();kontoSync('login');};
   if(!fremd){weiter();return;}
   kFrage=true;
-  ask(KT.fremdeDaten,KT.fremdeJa,()=>{kFrage=false;weiter();});
-  $('#dNo').onclick=()=>{$('#dialog').classList.remove('show');kFrage=false;kontoAbmelden(false,true);notice(KT.fremdeNein);};
+  const frage=st.user?KT.fremdeDaten:KT.linkFrage.replace('{mail}',k.email||'?');
+  ask(frage,KT.fremdeJa,()=>{kFrage=false;weiter();});
+  $('#dNo').onclick=()=>{$('#dialog').classList.remove('show');kFrage=false;kontoAbmelden(false,true);notice(st.user?KT.fremdeNein:KT.linkNein);};
 }
 function kontoAbmelden(entfernen,leise){
   const k=konto;
@@ -266,8 +274,8 @@ function kontoAusLink(){
   // Wer angemeldet ist, steht im Zugangsschlüssel selbst; die E-Mail holen wir beim Server ab
   kAuth('user',null,{method:'GET',token:k.access}).then(u=>{
     k.id=u.id;k.email=u.email||'';k.wunsch=kWunsch(u);
-    if(typ==='recovery'){showScreen('konto');kontoNachLogin(k,KT.neuesPw,()=>{kontoZeigeNeuesPw(true);kMsg(KT.neuesPw);});}
-    else{kontoNachLogin(k,KT.bestaetigt);showScreen('konto');}
+    if(typ==='recovery'){showScreen('konto');kontoNachLogin(k,KT.neuesPw,()=>{kontoZeigeNeuesPw(true);kMsg(KT.neuesPw);},true);}
+    else{showScreen('konto');kontoNachLogin(k,KT.bestaetigt,null,true);}
   }).catch(e=>{setTimeout(()=>{showScreen('konto');kMsg(e.status===0?KT.offline:KT.linkKaputt);},50);});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',kontoAusLink);else kontoAusLink();

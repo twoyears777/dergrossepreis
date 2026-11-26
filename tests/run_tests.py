@@ -1389,6 +1389,25 @@ def konto_checks(p):
     check('Sicherheit: Abbrechen meldet den Link wieder ab', D.evaluate("localStorage.getItem('manna_konto')") is None and not [k for k in sb.eintraege if k[0] == cora])
     ctxD.close()
 
+    # Sicherheit: präparierter Link mit den Zugangsdaten eines FREMDEN Kontos auf einem Gerät, das noch nie abgeglichen hat
+    # (Login-CSRF). Vorher wurden die Daten des Geräts ungefragt in das fremde Konto hochgeladen.
+    ctxE, E = geraet()
+    E.evaluate("storeOwnGames([normOwn({id:'og-meins',name:'Mein Spiel'})])")
+    s3 = sb.sitzung('cora@example.org')
+    E.goto('about:blank'); E.goto(URL + f"#access_token={s3['access_token']}&expires_in=3600&refresh_token={s3['refresh_token']}&token_type=bearer&type=signup"); E.wait_for_timeout(800)
+    check('Sicherheit: fremder Link auf neuem Gerät fragt erst (mit E-Mail des Kontos), lädt nichts hoch',
+          E.locator('#dialog.show').count() == 1 and 'cora@example.org' in E.inner_text('#dMsg') and not [k for k in sb.eintraege if k[0] == cora])
+    E.click('#dNo'); E.wait_for_timeout(500)
+    check('Sicherheit: Abbrechen meldet ab, die eigenen Daten bleiben auf dem Gerät',
+          E.evaluate("localStorage.getItem('manna_konto')") is None and E.evaluate("ownGames().length") == 1 and not [k for k in sb.eintraege if k[0] == cora])
+    ctxE.close()
+    # Gerät ohne eigene Daten: Bestätigungslink meldet ohne Rückfrage an
+    ctxF, Fp = geraet()
+    s4 = sb.sitzung('cora@example.org')
+    Fp.goto('about:blank'); Fp.goto(URL + f"#access_token={s4['access_token']}&expires_in=3600&refresh_token={s4['refresh_token']}&token_type=bearer&type=signup"); Fp.wait_for_timeout(800)
+    check('Konto: Bestätigungslink auf leerem Gerät meldet ohne Rückfrage an', Fp.locator('#dialog.show').count() == 0 and Fp.evaluate("JSON.parse(localStorage.getItem('manna_konto')||'{}').email") == 'cora@example.org')
+    ctxF.close()
+
     # Username & Daumen hoch
     def spiel(m, gid):
         m.evaluate("showScreen('coll')"); m.wait_for_timeout(300); m.evaluate("openGame(%s)" % json.dumps(gid)); m.wait_for_timeout(150)

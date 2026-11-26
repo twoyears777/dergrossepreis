@@ -11,6 +11,9 @@
 --     (aus dem Login und der Tabelle profile), die App kann sie nicht fälschen.
 --   - Name und E-Mail werden nicht mehr gespeichert (das Konto reicht für Rückfragen).
 --   - Wird das Konto gelöscht, verschwinden auch seine noch offenen Einreichungen.
+--   - Obergrenze pro Konto: höchstens 5 Einreichungen in 24 Stunden. Die alte Grenze (30 pro Stunde für ALLE zusammen)
+--     konnte ein einzelner Störer ausreizen und damit alle anderen aussperren. Sie bleibt nur als Notbremse,
+--     hochgesetzt auf 200 pro Stunde. Beide Grenzen melden „limit_erreicht“ (die App zeigt dann „zu viele Einsendungen“).
 
 alter table public.einreichungen
   add column if not exists user_id uuid references auth.users(id) on delete cascade,
@@ -23,11 +26,28 @@ begin
   new.user_id := auth.uid();
   new.username := (select p.username from public.profile p where p.user_id = auth.uid());
   if new.username is null then raise exception 'kein_username' using errcode = 'P0001'; end if;
+  -- Obergrenze pro Konto. Die Sperre sorgt dafür, dass gleichzeitige Anfragen desselben Kontos nacheinander gezählt werden.
+  perform pg_advisory_xact_lock(hashtext('einreichung:' || auth.uid()::text));
+  if (select count(*) from public.einreichungen e
+      where e.user_id = auth.uid() and e.erstellt_am > now() - interval '24 hours') >= 5 then
+    raise exception 'limit_erreicht' using errcode = 'P0001';
+  end if;
   new.name := null;
   new.email := null;
   return new;
 end $$;
 revoke all on function privat.einreichung_von() from public, anon, authenticated;
+
+-- Notbremse für alle zusammen (vorher 30 pro Stunde, siehe oben)
+create or replace function privat.einreichung_limit() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  if (select count(*) from public.einreichungen where erstellt_am > now() - interval '1 hour') >= 200 then
+    raise exception 'limit_erreicht' using errcode = 'P0001';
+  end if;
+  return new;
+end $$;
+revoke all on function privat.einreichung_limit() from public, anon, authenticated;
 
 -- läuft nach einreichung_limit (Trigger laufen in alphabetischer Reihenfolge)
 drop trigger if exists einreichung_von on public.einreichungen;
