@@ -1,6 +1,6 @@
 # Changelog – Manna
 
-## 1.31.0 – [Datum beim Veröffentlichen]
+## 1.31.0 – 26.11.2026
 - Neu: Registrieren für alle (`kontenFuerAlle: true` in js/supabase.js). Eigene Ansicht „Konto erstellen“ mit E-Mail, Username und Passwort; der Username wird vorab geprüft (Funktion `username_frei()`) und beim ersten Login als Profil angelegt
 - Neu: Bestätigen per Code: Nach dem Registrieren und bei „Passwort vergessen?“ kann man den Code aus der Mail in Manna eintippen (zusätzlich zum Link). Hilft, wenn Virenscanner bei Dienstadressen den Link schon automatisch öffnen. „Code nochmal schicken“ und „Zurück zur Anmeldung“
 - Wer sich mit einem noch nicht bestätigten Konto anmeldet, landet direkt bei der Code-Eingabe
