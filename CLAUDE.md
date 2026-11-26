@@ -11,6 +11,9 @@
   - „Noch nicht“: liegen lassen
 - Gesammelt wird auf dem Zweig `naechstes-update`. Pushes dorthin sind erlaubt: Die Tests laufen mit, veröffentlicht wird nur von `main`. Beim Einbauen wird `naechstes-update` nach `main` übernommen. Vorher `main` hineinholen, damit nichts verloren geht.
 - Zu Beginn einer Sitzung prüfen, ob auf `naechstes-update` schon gesammelte Änderungen liegen.
+- Datenbank-Änderungen beim Einbauen: In `supabase/` nach SQL-Dateien mit „NOCH NICHT EINGESPIELT“ suchen. Sie gehören zum Update und werden
+  direkt NACH dem Push auf `main` im Supabase-Projekt „manna“ eingespielt (Reihenfolge steht oben in der Datei). Danach in der Datei
+  „NOCH NICHT EINGESPIELT“ durch „Eingespielt am …“ ersetzen und `supabase/README.md` anpassen. Lukas Bescheid geben, dass es erledigt ist.
 
 ## Arbeitsweise
 - Immer erst schreiben, was gemacht werden soll, bevor etwas startet.
