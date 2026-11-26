@@ -1400,6 +1400,11 @@ def konto_checks(p):
     E.goto('about:blank'); E.goto(URL + f"#access_token={s3['access_token']}&expires_in=3600&refresh_token={s3['refresh_token']}&token_type=bearer&type=signup"); E.wait_for_timeout(800)
     check('Sicherheit: fremder Link auf neuem Gerät fragt erst (mit E-Mail des Kontos), lädt nichts hoch',
           E.locator('#dialog.show').count() == 1 and 'cora@example.org' in E.inner_text('#dMsg') and not [k for k in sb.eintraege if k[0] == cora])
+    E.reload(); E.wait_for_timeout(1500)
+    check('Sicherheit: App bei offener Frage geschlossen – danach nicht angemeldet, nichts hochgeladen',
+          E.evaluate("localStorage.getItem('manna_konto')") is None and not [k for k in sb.eintraege if k[0] == cora])
+    s3 = sb.sitzung('cora@example.org')
+    E.goto('about:blank'); E.goto(URL + f"#access_token={s3['access_token']}&expires_in=3600&refresh_token={s3['refresh_token']}&token_type=bearer&type=signup"); E.wait_for_timeout(800)
     E.click('#dNo'); E.wait_for_timeout(500)
     check('Sicherheit: Abbrechen meldet ab, die eigenen Daten bleiben auf dem Gerät',
           E.evaluate("localStorage.getItem('manna_konto')") is None and E.evaluate("ownGames().length") == 1 and not [k for k in sb.eintraege if k[0] == cora])

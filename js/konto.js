@@ -223,13 +223,17 @@ let kFrage=false;   // solange die Frage offen ist, wird nichts abgeglichen
 function kontoNachLogin(k,msg,dann,ausLink){
   const st=syncState();
   const fremd=st.user!==k.id&&(!!st.user||!!ausLink)&&hatLokaleDaten();
-  kontoSave(k);kMsg('');kontoUI();
-  const weiter=()=>{toast(msg);if(dann)dann();kontoSync('login');};
+  const weiter=()=>{kontoSave(k);kMsg('');kontoUI();toast(msg);if(dann)dann();kontoSync('login');};
   if(!fremd){weiter();return;}
-  kFrage=true;
+  // Erst nach „Übernehmen“ speichern: Wird die App geschlossen, während die Frage offen ist, ist man danach nicht angemeldet
+  kFrage=true;kMsg('');
   const frage=st.user?KT.fremdeDaten:KT.linkFrage.replace('{mail}',k.email||'?');
   ask(frage,KT.fremdeJa,()=>{kFrage=false;weiter();});
-  $('#dNo').onclick=()=>{$('#dialog').classList.remove('show');kFrage=false;kontoAbmelden(false,true);notice(st.user?KT.fremdeNein:KT.linkNein);};
+  $('#dNo').onclick=()=>{
+    $('#dialog').classList.remove('show');kFrage=false;
+    fetch(K_DB.url+'/auth/v1/logout',{method:'POST',headers:{apikey:K_DB.key,Authorization:'Bearer '+k.access}}).catch(()=>{});
+    kontoUI();notice(st.user?KT.fremdeNein:KT.linkNein);
+  };
 }
 function kontoAbmelden(entfernen,leise){
   const k=konto;
