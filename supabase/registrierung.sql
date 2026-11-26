@@ -1,5 +1,5 @@
 -- Manna – Registrierung für alle (Migration „registrierung“, ab Version 1.31.0)
--- NOCH NICHT EINGESPIELT. Wird erst beim Veröffentlichen von 1.31.0 eingespielt.
+-- Eingespielt am 26.11.2026.
 --
 -- Funktion username_frei(): Prüft beim Registrieren, ob ein Username noch frei ist, bevor das Konto angelegt wird.
 --   Für alle aufrufbar (auch ohne Konto), gibt aber nur 'frei', 'vergeben', 'gesperrt' oder 'ungueltig' zurück,

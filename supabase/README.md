@@ -9,7 +9,7 @@ nicht von hier aus.
 - `username-und-daumen.sql` – Username & Daumen hoch (ab Version 1.30.0): Tabellen `profile` und `daumen`, Zugriffsregeln
   (nur eigene Zeilen), Funktion `daumen_zahlen()` (Anzahl pro Spiel, für alle). Eingespielt am 26.11.2026.
 - `registrierung.sql` – Registrierung für alle (ab Version 1.31.0): Funktion `username_frei()` (ist ein Username noch frei?).
-  Noch nicht eingespielt.
+  Eingespielt am 26.11.2026.
 
 ## Einstellungen im Dashboard für die Registrierung (ab Version 1.31.0)
 
