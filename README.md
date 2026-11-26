@@ -1,6 +1,6 @@
 # Manna
 
-Spiele und Werkzeuge für die Jugendarbeit: die Quiz-Gameshow „Der große Preis“, eigene Spiele mit Folien und Punktestand, ein Countdown und eine Spielesammlung. Gemacht für Laptop und Beamer, mit Zuschaueransicht auf dem zweiten Bildschirm.
+Spiele und Werkzeuge für die Jugendarbeit. Kern ist die Spielesammlung, dazu der Bereich „Pädagogischer Kram“, freiwillige Konten (Abgleich zwischen Geräten, Username, Daumen hoch) und „Spiel einreichen“. Die Gameshows (Der große Preis, eigene Spiele mit Folien und Punktestand, Countdown, Zuschaueransicht für den Beamer) sind vorerst ausgeblendet, der Code bleibt drin (Schalter `GAMESHOWS_AN` in `js/data.js`).
 
 ## Installieren (iPad)
 1. **https://manna-games.de** in **Safari** öffnen.
@@ -36,18 +36,41 @@ Settings → **Pages** → Build and deployment → Source: **GitHub Actions**. 
 Wohin es geht und welche Ideen gesammelt sind, steht in der [ROADMAP.md](ROADMAP.md).
 
 ## Aufbau
-- `index.html` – Aufbau der Seiten
-- `css/app.css` – Aussehen
-- `js/data.js` – Versionsnummer, Changelog, Vorlagen, Filter der Spielesammlung
-- `js/kern.js`, `js/preis.js`, `js/system.js`, `js/menues.js`, `js/zuschauer.js`, `js/sammlung.js`, `js/countdown.js`, `js/eigenes-spiel.js` – App-Logik, nach Bereichen aufgeteilt (in dieser Reihenfolge geladen)
-- `js/artikel.js` – Artikel für „Pädagogischer Kram“ (neuer Artikel = neuer Eintrag)
-- `js/spielformat.js` – liest und schreibt das Textformat der Spiele (App, Editor und Bau-Schritt)
+Logik, Inhalte und Einstellungen liegen getrennt:
+
+**Einstellungen**
+- `js/data.js` – Versionsnummer, Changelog, Schalter für die Gameshows, Filter der Spielesammlung
+- `js/supabase.js` – Adresse und öffentlicher Schlüssel der Datenbank, Schalter „Konten für alle“
+
+**Inhalte**
 - `spiele/*.txt` – die Spiele der Spielesammlung (`spiele/alle.json` wird beim Veröffentlichen daraus gebaut)
-- `editor/` – Editor für die Spiele
+- `rohfassungen/*.txt` – Spiele in Arbeit, nur im Editor sichtbar (im öffentlichen Repo aber lesbar)
+- `js/artikel.js` – Artikel für „Pädagogischer Kram“ (neuer Artikel = neuer Eintrag)
+- `js/gameshow-vorlagen.js` – fertige Vorlagen für „Der große Preis“
+- Texte, die Nutzer sehen: in `index.html` und je Bereich gesammelt oben in der Datei (z. B. `KT` in `js/konto.js`);
+  Übersicht aller Texte in `TEXTE.md` (wird mit `node tools/texte-liste.js` erzeugt)
+
+**App-Logik** (in `index.html` in fester Reihenfolge geladen, die Dateien teilen sich globale Variablen)
+- `js/spielformat.js` – liest und schreibt das Textformat der Spiele (App, Editor und Bau-Schritt)
+- `js/kern.js` – Grundlagen: Speichern, Spielbrett-Modell, Dialoge, Änderungs-Meldungen
+- `js/system.js` – Changelog, Offline-Betrieb und Updates
+- `js/menues.js` – Seiten und Navigation, Menüs, Vorlagen, Sicherung, Pädagogischer Kram
+- `js/sammlung.js` – Spielesammlung (Suche, Filter, Spielseite)
+- `js/einreichen.js` – Spiel einreichen
+- `js/preis.js`, `js/zuschauer.js`, `js/countdown.js`, `js/eigenes-spiel.js` – Gameshows (vorerst ausgeblendet)
+- `js/konto.js`, `js/sync.js`, `js/konto-seite.js` – Konto: Anmeldung, Abgleich zwischen Geräten, Konto-Seite
+- `js/daumen.js`, `js/klicks.js` – Username und Daumen hoch, Klicks pro Spiel und „Empfehlung für dich“
+- `js/zaehler.js` – Besucherzähler (GoatCounter)
+- `css/app.css` – Aussehen
+- `sw.js` – Offline-Modus und automatische Updates
+
+**Sonstiges**
+- `editor/` – Editor für die Spiele (eigene Seite, ohne Service Worker)
+- `supabase/` – alles, was in der Datenbank eingerichtet ist, zum Nachlesen (siehe `supabase/README.md`)
 - `tools/build-spiele.js` – baut `spiele/alle.json` und prüft alle Spieldateien
 - `tools/neue-spiele.py` – listet die Spiele, die seit der letzten Version dazugekommen sind
-- `img/` – Screenshots für die Startseite
-- `sw.js` – Offline-Modus und automatische Updates
+- `tools/texte-liste.js` – erzeugt `TEXTE.md`
+- `img/` – Logo
 - `tests/run_tests.py` – automatische Tests (laufen bei jedem Push auf GitHub, mit festen Testspielen aus `tests/testspiele/`)
 
 ## Ein Update veröffentlichen

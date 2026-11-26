@@ -14,6 +14,7 @@ const FILES = [
   './js/spielformat.js',
   './js/artikel.js',
   './js/data.js',
+  './js/gameshow-vorlagen.js',
   './js/kern.js',
   './js/preis.js',
   './js/system.js',

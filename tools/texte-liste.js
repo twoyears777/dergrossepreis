@@ -35,7 +35,7 @@ function jsTexte(f) {
 const section = (title, rows) => { if (!rows.length) return; out.push('## ' + title, ''); rows.forEach(([n, t]) => out.push(`- Z. ${n}: ${t}`)); out.push(''); };
 
 ['index.html', 'rechtliches.html', 'editor/index.html'].forEach(f => section(f, htmlTexte(f)));
-const jsFiles = ['js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'js/data.js', 'js/artikel.js', 'editor/editor.js'];
+const jsFiles = ['js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'js/data.js', 'js/gameshow-vorlagen.js', 'js/artikel.js', 'editor/editor.js'];
 jsFiles.forEach(f => section(f, jsTexte(f)));
 fs.writeFileSync(path.join(ROOT, 'TEXTE.md'), out.join('\n') + '\n');
 console.log('TEXTE.md geschrieben:', out.filter(l => l.startsWith('- ')).length, 'Texte');
