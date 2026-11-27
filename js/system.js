@@ -2,26 +2,17 @@
    Teil von app.js, aufgeteilt nach Bereichen. Die Dateien werden in index.html in fester Reihenfolge geladen
    und teilen sich dieselben globalen Variablen. Reihenfolge nicht ändern. */
 /* ---------- Changelog ---------- */
-function showChangelog(onlyNew,since){
-  const last=onlyNew?since:null;
-  const list=onlyNew&&last?CHANGELOG.filter(e=>cmpVer(e.v,last)>0):CHANGELOG;
-  $('#clTitle').textContent=onlyNew?'Neu in Version '+APP_VERSION:'Changelog';
-  $('#clBody').innerHTML=list.map(e=>`<h3>Version ${esc(e.v)}</h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
+function showChangelog(){
+  $('#clBody').innerHTML=CHANGELOG.map(e=>`<h3>Version ${esc(e.v)}</h3><ul>${e.items.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`).join('');
   $('#clDialog').classList.add('show');
 }
 $('#clClose').onclick=$('#clX').onclick=()=>$('#clDialog').classList.remove('show');
 $('#clDialog').onclick=e=>{if(e.target.id==='clDialog')$('#clDialog').classList.remove('show');};
-$('#btnChangelog').onclick=()=>showChangelog(false);
-function cmpVer(a,b){const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return (x[i]||0)-(y[i]||0);}return 0;}
+$('#btnChangelog').onclick=()=>showChangelog();
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);return true;}catch(e){return false;}}
-(function whatsNew(){
-  if(VIEW)return;
-  const seen=lsGet('grosserPreis_seenVersion');
-  // nur anzeigen, wenn es seit der zuletzt gesehenen Version wirklich neue Einträge gibt (kleine Updates ohne Eintrag zeigen nichts)
-  if(seen&&cmpVer(APP_VERSION,seen)>0&&CHANGELOG.some(e=>cmpVer(e.v,seen)>0))setTimeout(()=>showChangelog(true,seen),600);
-  lsSet('grosserPreis_seenVersion',APP_VERSION);
-})();
+// Früher ging nach einem Update der Changelog von selbst auf. Das gibt es nicht mehr (ab 1.32.1); den alten Merker räumen wir weg.
+try{localStorage.removeItem('grosserPreis_seenVersion');}catch(e){}
 
 /* ---------- Offline & automatische Updates ---------- */
 const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;

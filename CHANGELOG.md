@@ -4,7 +4,9 @@
 - Kein Eintrag im App-Changelog (nur Feinschliff)
 - „Empfehlung für dich“ ist jetzt klein und unauffällig (grauer Text in der Ecke statt gelbem Schild)
 - Lange Spielnamen sprengen auf dem Handy nicht mehr den Bildschirm: Der Titel auf der Spielseite schrumpft nach derselben Regel wie alle anderen Überschriften (eigene Größenregel für `#gameTitle` entfernt)
-- Besucherzählung: Die Bildschirmbreite wird nicht mehr ausgelesen und nicht mehr an GoatCounter geschickt (Datenschutztext nennt sie noch, Lukas formuliert neu)
+- Besucherzählung: Die Bildschirmbreite wird nicht mehr ausgelesen und nicht mehr an GoatCounter geschickt 
+- Entfernt: Der Changelog geht nach einem Update nicht mehr von selbst als Fenster auf („Was ist neu“). Er bleibt über die Einstellungen und die Versionsnummer erreichbar; alter Merker `grosserPreis_seenVersion` wird gelöscht
+- Datenschutz angepasst: Username, Daumen hoch und Klickzahlen pro Konto, Einreichen mit Konto statt Name/E-Mail, Mailversand über Strato, Bildschirmbreite gestrichen
 - Erlebnispädagogik ist nicht mehr gelb: Label in der Übersicht und Schild auf der Spielseite sehen aus wie die anderen
 
 ## 1.32.0 – [Datum beim Veröffentlichen]

@@ -573,11 +573,8 @@ def browser_checks(p):
 
     print('Update-Hinweis')
     m.evaluate("localStorage.setItem('grosserPreis_seenVersion','1.0.0')"); m.reload(); m.wait_for_timeout(1100)
-    check('„Was ist neu“ nach Update gefüllt', m.locator('#clDialog.show').count() == 1 and m.locator('#clBody li').count() > 3)
-    m.evaluate("document.querySelector('#clDialog').classList.remove('show')")
-    neueste = m.evaluate("CHANGELOG[0].v")
-    m.evaluate(f"localStorage.setItem('grosserPreis_seenVersion','{neueste}')"); m.reload(); m.wait_for_timeout(1100)
-    check('kein leeres „Was ist neu“ bei kleinem Update ohne Eintrag', m.locator('#clDialog.show').count() == 0 or m.locator('#clBody li').count() > 0)
+    check('Nach einem Update geht kein Changelog-Fenster von selbst auf', m.locator('#clDialog.show').count() == 0)
+    check('Alter Merker für „Was ist neu“ wird weggeräumt', m.evaluate("localStorage.getItem('grosserPreis_seenVersion')") is None)
 
     # Sicherheit: präparierte Gruppenfarbe beim Import wird verworfen
     m.evaluate(r"""(()=>{window.__xss=0;const d={categories:[{name:'K',items:[]}],points:[10],teams:[{name:'A',color:'#123456\\"><img src=x onerror=window.__xss=1>'},{name:'B',color:'#00ff00'}]};

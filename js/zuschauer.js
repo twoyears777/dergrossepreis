@@ -84,7 +84,7 @@ onMsg(m=>{
   else if(m.t==='hello'||m.t==='ping'){viewerSeen=m.vis===false?0:Date.now();updViewerStatus();if(m.t==='hello')pushState();}
   else if(m.t==='bye'){viewerSeen=0;updViewerStatus();}
 });
-['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' – was ist neu?';$(id).onclick=()=>showChangelog(false);});
+['#homeVer','#gmVer'].forEach(id=>{$(id).textContent='Version '+APP_VERSION+' – was ist neu?';$(id).onclick=()=>showChangelog();});
 if(VIEW){
   document.title='Manna – Zuschaueransicht';
   $('#home').classList.remove('show'); // Startseite ist im HTML sichtbar, die Zuschaueransicht braucht sie nicht
