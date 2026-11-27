@@ -129,6 +129,15 @@ legend{font-family:var(--strong);font-weight:700;font-size:1.05rem;padding-right
   .who{display:none}
   .bar{padding-left:16px;padding-right:16px}
   .bar .primary,.bar .danger{padding:.6em 1em}
+  /* Leiste unten: zwei Reihen, damit „Veröffentlichen“ auf dem Handy immer sichtbar bleibt */
+  .bar{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;padding-top:8px}
+  .bar .top-gap{display:none}
+  .bar .link{grid-row:1;grid-column:1;justify-self:start}
+  .bar .danger{grid-row:1;grid-column:2;justify-self:end;min-height:36px;padding:.4em 1em;font-size:.9rem}
+  .bar #btnRoh,.bar #btnPublish{grid-row:2;align-self:stretch;min-width:0;white-space:normal;text-align:center;padding-left:.8em;padding-right:.8em}
+  .bar #btnRoh{grid-column:1}
+  .bar #btnPublish{grid-column:2}
+  #vEdit{padding-bottom:70px}
 }
 /* Rohfassungen: nur im Editor sichtbar */
 .list-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
