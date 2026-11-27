@@ -643,6 +643,10 @@ body.viewer .end-actions{display:none}
   .coll-head{flex-wrap:wrap;gap:10px 12px}
   #collCount{white-space:nowrap}
   #btnFilterReset[style*="hidden"]{display:none}
+  /* „Zufälliges Spiel“ und „Selbst ein Spiel einreichen“ nebeneinander in einer Zeile, „Filter zurücksetzen“ darunter */
+  .coll-tools{width:100%;gap:8px}
+  .coll-tools .btn{flex:1 1 auto;font-size:.85rem;padding:.6em .7em;white-space:nowrap}
+  .coll-tools #btnFilterReset{flex-basis:100%}
 }
 .filters{background:var(--grain-soft),var(--paper);color:var(--ink);padding:20px 22px 12px;box-shadow:0 6px 16px #0006;border-radius:2px;transform:rotate(-.3deg)}
 .fgroup{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:start;padding:8px 0;border-bottom:1px dashed #1d1d1b30}
@@ -881,7 +885,6 @@ body.viewer #ownPlay{padding-bottom:3vh}
 #paedScreen .menu-title{margin-bottom:6vh}
 
 /* ---------- Spiel einreichen ---------- */
-.coll-submit{display:flex;justify-content:center;margin:26px 0 4px}
 .sub-form{width:min(760px,100%);margin-top:14px}
 .sub-form[hidden],.sub-done[hidden],.sub-gate[hidden]{display:none}
 .sub-gate{text-align:center;color:#d8d2c4;line-height:1.45;max-width:58ch;margin:24px auto}
