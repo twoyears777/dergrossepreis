@@ -1,5 +1,5 @@
 -- Manna – Spiel einreichen nur mit Konto (Migration „einreichen_mit_konto“, ab Version 1.32.0)
--- NOCH NICHT EINGESPIELT. Erst nach Lukas' Okay, zusammen mit dem Veröffentlichen von 1.32.0.
+-- Eingespielt am 27.11.2026 (direkt nach dem Veröffentlichen von 1.32.0).
 --
 -- Reihenfolge: Die App 1.32.0 schickt Einreichungen schon mit Anmeldung und ohne Name/E-Mail. Das klappt auch mit der
 -- alten Datenbank. Umgekehrt nicht: Wird dieses SQL vor der App eingespielt, scheitern Einreichungen aus der alten App

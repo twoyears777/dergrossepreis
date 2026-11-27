@@ -1,5 +1,5 @@
 -- Manna – Klicks pro Spiel und Nutzer (Migration „klicks“, ab Version 1.32.0)
--- NOCH NICHT EINGESPIELT. Erst nach Lukas' Okay, zusammen mit dem Veröffentlichen von 1.32.0.
+-- Eingespielt am 27.11.2026 (direkt nach dem Veröffentlichen von 1.32.0).
 --
 -- Reihenfolge: egal. Die App 1.32.0 kommt ohne diese Tabelle klar (Zählen scheitert still, es gibt nur keine
 -- Empfehlung). Die alte App fragt die Tabelle gar nicht ab.
