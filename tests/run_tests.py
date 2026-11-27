@@ -1300,6 +1300,7 @@ def konto_checks(p):
     check('Code: richtiger Code bestätigt und meldet an', A.locator('#kontoAn').is_visible() and A.inner_text('#kWer') == 'neu@example.org' and sb.users['neu@example.org']['ok'])
     A.wait_for_timeout(300)
     check('Registrierung: Username wird beim ersten Login angelegt', '00000000-0000-4000-8000-000000000003' in sb.profile and sb.profile['00000000-0000-4000-8000-000000000003'] == 'Neuling' and A.input_value('#kName') == 'Neuling')
+    check('Konto: „Angemeldet als“ zeigt erst den Username, dann die E-Mail', A.evaluate("document.querySelector('#kWerZeile').innerText.replace(/\\s+/g,' ').trim()") == 'Angemeldet als Neuling (neu@example.org)')
     check('Registrierung: Wunsch-Username danach nicht mehr gespeichert', A.evaluate("JSON.parse(localStorage.manna_konto).wunsch") == '')
     A.evaluate("showScreen('konto')"); A.click('#btnKAbmelden'); A.wait_for_timeout(100); A.click('#dYes'); A.wait_for_timeout(200)
     check('Konto: nach dem Abmelden wieder die Anmeldung', A.locator('#kForm').is_visible() and not A.locator('#kCodeForm').is_visible())

@@ -29,10 +29,17 @@ function kontoUI(){
   if(an&&kAnsicht!=='login')kZeige('login');
   if(!an)$('#kNeuForm').hidden=true;
   if(an)$('#kWer').textContent=konto.email||'';
+  kWerUI();
   kontoStandUI();
   if(typeof daumenKontoGewechselt==='function')daumenKontoGewechselt();   // js/daumen.js
   if(typeof klicksKontoGewechselt==='function')klicksKontoGewechselt();   // js/klicks.js
   if(typeof statistikKontoGewechselt==='function')statistikKontoGewechselt();   // js/statistik.js
+}
+/* „Angemeldet als“: erst der Username, dahinter in Klammern die E-Mail (ab 1.34.1); ohne Username nur die E-Mail */
+function kWerUI(){
+  const z=$('#kWerZeile'),n=$('#kWerName');if(!z||!n)return;
+  const name=konto&&typeof username==='string'?username:'';   // username: js/daumen.js
+  n.textContent=name;z.classList.toggle('ohne-name',!name);
 }
 function kontoStandUI(){
   const el=$('#kStand');if(!el)return;

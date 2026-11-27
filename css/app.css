@@ -918,6 +918,7 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .konto>.konto-form{width:100%}
 .konto-form p.hint{margin:0;font-size:.88rem;line-height:1.45}
 .konto-form p.hint.warn{color:#ffcf7a}
+#kWerZeile.ohne-name .k-klammer{display:none}
 /* Statistik für den Admin (js/statistik.js) */
 .stat .konto-h{margin-bottom:-4px}
 .stat-zahlen{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}

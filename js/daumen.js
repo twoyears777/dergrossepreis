@@ -166,6 +166,7 @@ function usernameUI(){
   if(s)s.hidden=!!username;
   const z=$('#nameZwang');if(z&&(username||!konto))z.hidden=true;   // Pflicht-Fenster zu, sobald es einen Username gibt
   if(typeof subKontoUI==='function')subKontoUI();   // js/einreichen.js: „Eingereicht als …“
+  if(typeof kWerUI==='function')kWerUI();   // js/konto-seite.js: „Angemeldet als …“
 }
 
 /* ---------- Konto-Seite: Username festlegen ---------- */
