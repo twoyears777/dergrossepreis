@@ -1,6 +1,6 @@
 # Changelog – Manna
 
-## 1.32.1 – [Datum beim Veröffentlichen]
+## 1.32.1 – 27.11.2026
 - Kein Eintrag im App-Changelog (nur Feinschliff)
 - „Empfehlung für dich“ ist jetzt klein und unauffällig (grauer Text in der Ecke statt gelbem Schild)
 - Lange Spielnamen sprengen auf dem Handy nicht mehr den Bildschirm: Der Titel auf der Spielseite schrumpft nach derselben Regel wie alle anderen Überschriften (eigene Größenregel für `#gameTitle` entfernt)
@@ -9,7 +9,7 @@
 - Datenschutz angepasst: Username, Daumen hoch und Klickzahlen pro Konto, Einreichen mit Konto statt Name/E-Mail, Mailversand über Strato, Bildschirmbreite gestrichen
 - Erlebnispädagogik ist nicht mehr gelb: Label in der Übersicht und Schild auf der Spielseite sehen aus wie die anderen
 
-## 1.32.0 – [Datum beim Veröffentlichen]
+## 1.32.0 – 27.11.2026
 - Spiel einreichen nur noch mit Konto: Ohne Anmeldung zeigt die Seite einen Hinweis mit „Anmelden“ statt des Formulars. Ohne Username kommt die Bitte, erst einen festzulegen
 - „Eingereicht von …“: Jede Einreichung merkt sich Konto und Username (setzt die Datenbank selbst, nicht fälschbar). Das Formular zeigt „Du reichst ein als @…“
 - Die freiwilligen Felder Name und E-Mail sind weg, das Konto reicht für Rückfragen
@@ -38,7 +38,7 @@
 - Intern: Supabase-Tabellen `profile` und `daumen` mit Zugriffsregeln (nur eigene Zeilen), Funktion `daumen_zahlen()` (für alle, nur Zahlen), Obergrenze 3000 Daumen pro Konto. SQL in `supabase/username-und-daumen.sql`. Neue Datei js/daumen.js
 - Tests: Username (zu kurz, vergeben, reserviert) und Daumen (ohne Username, setzen, zurücknehmen, Anzahl für andere und für Gäste)
 
-## 1.29.0 – [Datum beim Veröffentlichen]
+## 1.29.0 – 26.11.2026
 - Testphase: Kein Eintrag im App-Changelog. Anmelden ist sichtbar, Registrieren ausgeblendet (`kontenFuerAlle: false` in js/supabase.js); Testkonten werden von Hand im Supabase-Dashboard angelegt. Der App-Changelog-Eintrag kommt mit der Freischaltung für alle
 - Neu: Konten (freiwillig). Mit Login werden Spielbrett, eigene Vorlagen, eigene Spiele mit Bildern, Favoriten und ausgeblendete Standard-Vorlagen automatisch zwischen Geräten abgeglichen. Ohne Login bleibt alles wie bisher im Browser
 - Konto: Registrieren mit E-Mail-Bestätigung, Anmelden, Passwort vergessen/ändern, Abmelden (wahlweise mit Entfernen der Daten vom Gerät), Konto löschen

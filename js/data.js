@@ -13,7 +13,7 @@ const GAMESHOWS=GAMESHOWS_AN||(()=>{try{return localStorage.getItem('manna_games
 
 const APP_VERSION='1.32.1';
 const CHANGELOG=[
-  {v:'1.32.0',d:'[Datum beim Veröffentlichen]',items:[
+  {v:'1.32.0',d:'27.11.2026',items:[
     'Spiele einreichen geht jetzt mit deinem Konto. So wissen wir, von wem ein Spiel kommt'
   ]},
   {v:'1.31.0',d:'26.11.2026',items:[
