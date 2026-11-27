@@ -641,6 +641,8 @@ class FakeSupabase:
         if path == '/rest/v1/rpc/daumen_zahlen': return js(200, [])
         if path == '/rest/v1/daumen': return js(200, [])
         if path == '/rest/v1/profile':
+            if request.method == 'POST' and nutzer:
+                nutzer['username'] = body.get('username'); return js(201, [{'username': nutzer['username']}])
             return js(200, [{'username': nutzer['username']}] if nutzer and nutzer['username'] else [])
         if path != '/rest/v1/einreichungen': return js(404, {'message': 'not found'})
         if request.method == 'POST':
@@ -686,6 +688,15 @@ def einreichen_checks(p):
     konto = lambda token, uid: m.evaluate("([t,u])=>{localStorage.setItem('manna_konto',JSON.stringify({access:t,refresh:'rr',exp:Math.floor(Date.now()/1000)+3600,id:u,email:u+'@example.org'}));}", [token, uid])
     konto('user-noname', 'u-2'); m.reload(); m.wait_for_timeout(500)
     if m.locator('#clDialog.show').count(): m.click('#clX')
+    check('Username Pflicht: Konto ohne Username bekommt das Fenster', m.locator('#nameZwang:not([hidden])').count() == 1 and 'Username' in m.inner_text('#nzText'))
+    m.keyboard.press('Escape'); m.wait_for_timeout(100)
+    check('Username Pflicht: Escape schließt das Fenster nicht', m.locator('#nameZwang:not([hidden])').count() == 1)
+    m.click('#nzOk'); m.wait_for_timeout(150)
+    check('Username Pflicht: leer speichern geht nicht', m.locator('#nameZwang:not([hidden])').count() == 1 and m.inner_text('#nzMsg') != '')
+    m.fill('#nzName', 'a'); m.click('#nzOk'); m.wait_for_timeout(150)
+    check('Username Pflicht: ungültiger Name wird abgelehnt', m.locator('#nameZwang:not([hidden])').count() == 1 and '3 bis 20' in m.inner_text('#nzMsg'))
+    # Für die folgenden Prüfungen (Einreichen ohne Username) das Fenster ausblenden, wie es ein Trickser tun könnte
+    m.evaluate("document.querySelector('#nameZwang').hidden=true")
     m.click('#gcColl'); m.wait_for_timeout(200); m.click('#btnSubmitOpen'); m.wait_for_timeout(300)
     check('Einreichen ohne Username: Formular da, kein „Du reichst ein als“', m.locator('#subForm:not([hidden])').count() == 1 and m.inner_text('#subVon') == '')
     m.fill('#sName', 'X'); m.fill('#sKurz', 'Y'); m.fill('#sAblauf', 'Z'); m.check('#sRechte'); m.evaluate('subOpened=Date.now()-10000')
@@ -693,6 +704,13 @@ def einreichen_checks(p):
     check('Einreichen ohne Username: Bitte, erst einen festzulegen, nichts geschickt', m.locator('#dialog.show').count() == 1 and 'Username' in m.inner_text('#dMsg') and not sb.posts)
     m.click('#dYes'); m.wait_for_timeout(300)
     check('Einreichen ohne Username: führt zum Konto', m.locator('#kontoScreen.show').count() == 1)
+    m.evaluate("nameZwang('')"); m.wait_for_timeout(100)
+    m.click('#nzAbmelden'); m.wait_for_timeout(400)
+    check('Username Pflicht: „Abmelden“ meldet ab und schließt das Fenster', m.locator('#nameZwang[hidden]').count() == 1 and m.evaluate('!konto'))
+    konto('user-noname', 'u-2'); m.reload(); m.wait_for_timeout(500)
+    m.fill('#nzName', 'neu_hier'); m.click('#nzOk'); m.wait_for_timeout(400)
+    check('Username Pflicht: Speichern legt den Username an und schließt das Fenster', m.locator('#nameZwang[hidden]').count() == 1 and sb.nutzer['Bearer user-noname']['username'] == 'neu_hier')
+    sb.nutzer['Bearer user-noname']['username'] = None
     konto('user-1', 'u-1'); m.reload(); m.wait_for_timeout(500)
     if m.locator('#clDialog.show').count(): m.click('#clX')
     m.click('#gcColl'); m.wait_for_timeout(200); m.click('#btnSubmitOpen'); m.wait_for_timeout(300)
@@ -1159,6 +1177,10 @@ class FakeSupabaseKonten:
             self.klicks[(me, sid)] = self.klicks.get((me, sid), 0) + 1; return js(200, self.klicks[(me, sid)])
         if path == '/rest/v1/rpc/bin_aktiv':   # Konto aus dem Login, Zeit setzt die Datenbank
             self.aktiv[me] = self.aktiv.get(me, 0) + 1; return js(204, None)
+        if path == '/rest/v1/rpc/admin_nutzer':   # Admin prüft die Datenbank; keine E-Mail-Adressen
+            if me not in self.admins: return js(403, {'code': '42501', 'message': 'kein_admin'})
+            return js(200, [{'username': self.profile.get(x['id']), 'registriert': '2026-11-26T10:00:00+00:00',
+                             'zuletzt': '2026-11-27T08:00:00+00:00' if x['id'] in self.aktiv else None} for x in self.users.values()])
         if path == '/rest/v1/rpc/admin_statistik':   # Admin prüft die Datenbank, nicht die App
             if me not in self.admins: return js(403, {'code': '42501', 'message': 'kein_admin'})
             z = {}
@@ -1224,6 +1246,9 @@ def konto_checks(p):
     def geraet():
         ctx = gameshows_an(b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block'))
         ctx.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', sb.handle); ctx.route('**/js/supabase.js', alle)
+        # Viele Prüfungen hier nutzen Konten ohne Username. Das Pflicht-Fenster (geprüft unter „Spiel einreichen“)
+        # wird deshalb nur unsichtbar gemacht; ob es aufgeht, prüfen wir hier am hidden-Attribut.
+        ctx.add_init_script("document.addEventListener('DOMContentLoaded',()=>{const s=document.createElement('style');s.textContent='#nameZwang{display:none!important}';document.head.appendChild(s);});")
         m = ctx.new_page(); m.on('pageerror', lambda e: errs.append(str(e))); m.on('console', (lambda c: errs.append('CSP: ' + c.text) if 'Content Security Policy' in c.text else None))
         m.goto(URL); m.wait_for_timeout(400)
         if m.locator('#clDialog.show').count(): m.click('#clX')
@@ -1281,8 +1306,7 @@ def konto_checks(p):
     # Username ist inzwischen vergeben (zwischen Registrierung und erstem Login)
     sb.nutzer('spaet@example.org', 'Lang-genug-2', bestaetigt=True); sb.users['spaet@example.org']['meta'] = {'username': 'neuling'}
     anmelden(A, 'spaet@example.org', 'Lang-genug-2'); A.wait_for_timeout(300)
-    check('Registrierung: inzwischen vergebener Username wird erklärt', A.locator('#dialog.show').count() == 1 and 'inzwischen' in A.inner_text('#dMsg') and A.input_value('#kName') == 'neuling')
-    A.evaluate("document.querySelector('#dialog').classList.remove('show')")
+    check('Registrierung: inzwischen vergebener Username wird im Pflicht-Fenster erklärt', A.locator('#nameZwang:not([hidden])').count() == 1 and 'inzwischen' in A.evaluate("document.querySelector('#nzText').textContent") and A.input_value('#nzName') == 'neuling' and A.input_value('#kName') == 'neuling')
     A.evaluate("showScreen('konto')"); A.click('#btnKAbmelden'); A.wait_for_timeout(100); A.click('#dYes'); A.wait_for_timeout(200)
     # Passwort vergessen per Code
     A.fill('#kMail', 'anna@example.org'); A.click('#btnKVergessen'); A.wait_for_timeout(300)
@@ -1450,6 +1474,7 @@ def konto_checks(p):
         m.evaluate("document.querySelector('#dialog').classList.remove('show')")
     spiel(B, 'zeitungsschlagen'); B.click('#btnDaumen'); B.wait_for_timeout(200)
     check('Daumen: ohne Username Hinweis statt Daumen', B.locator('#dialog.show').count() == 1 and 'Username' in B.inner_text('#dMsg') and not sb.daumen)
+    check('Username Pflicht: Konto ohne Username bekommt das Fenster', B.locator('#nameZwang:not([hidden])').count() == 1)
     zu(B); B.evaluate("showScreen('konto')"); B.wait_for_timeout(100)
     check('Username: Feld auf der Konto-Seite', B.locator('#kNameForm').is_visible() and B.input_value('#kName') == '')
     B.fill('#kName', 'b'); B.click('#btnKName'); B.wait_for_timeout(200)
@@ -1457,6 +1482,7 @@ def konto_checks(p):
     B.fill('#kName', 'Ben_77'); B.click('#btnKName'); B.wait_for_timeout(300)
     ben_id = sb.users['ben@example.org']['id']
     check('Username: wird gespeichert', sb.profile.get(ben_id) == 'Ben_77' and B.inner_text('#kNameMsg') == '')
+    check('Username Pflicht: Fenster zu, sobald ein Username gespeichert ist', B.locator('#nameZwang[hidden]').count() == 1)
     A.evaluate("showScreen('konto')"); A.wait_for_timeout(200); A.fill('#kName', 'ben_77'); A.click('#btnKName'); A.wait_for_timeout(300)
     check('Username: schon vergeben (Groß-/Kleinschreibung egal)', 'gibt es schon' in A.inner_text('#kNameMsg') and a_id not in sb.profile)
     A.fill('#kName', 'Manna'); A.click('#btnKName'); A.wait_for_timeout(300)
@@ -1523,6 +1549,16 @@ def konto_checks(p):
     check('Statistik: Admin sieht die Zahlen auf der Konto-Seite', 'Statistik' in st and 'Registrierte Nutzer' in st and 'Aktiv in den letzten 24 Stunden' in st and 'Meiste Likes' in st, st[:200])
     n_vorher = len(sb.log); A.click('#btnStatNeu'); A.wait_for_timeout(300)
     check('Statistik: „Neu laden“ fragt frisch ab', [x for x in sb.log[n_vorher:] if x[1] == '/rest/v1/rpc/admin_statistik'])
+    check('Nutzerliste: zu Beginn zugeklappt, nichts geladen', A.locator('#statNutzer').is_hidden() and not [x for x in sb.log if x[1] == '/rest/v1/rpc/admin_nutzer'])
+    sb.nutzer('still@example.org', 'Lang-genug-9')   # nie angemeldet
+    A.click('#btnStatNutzer'); A.wait_for_timeout(300)
+    nl = A.inner_text('#statNutzer') if A.locator('#statNutzer').is_visible() else ''
+    check('Nutzerliste: Klick auf „Registrierte Nutzer“ zeigt Usernames und zuletzt online', 'Ben_77' in nl and 'Anna' in nl and 'Zuletzt online' in nl and 'noch kein Username' in nl and A.get_attribute('#btnStatNutzer', 'aria-expanded') == 'true', nl[:200])
+    check('Nutzerliste: keine E-Mail-Adressen', '@' not in nl)
+    check('Nutzerliste: wer nie aktiv war, steht als „noch nie“', 'noch nie' in nl)
+    A.click('#btnStatNutzer'); A.wait_for_timeout(100)
+    check('Nutzerliste: zweiter Klick klappt wieder zu', A.locator('#statNutzer').is_hidden())
+    check('Nutzerliste: kein Admin bekommt nichts', B.evaluate("kRest('/rest/v1/rpc/admin_nutzer',{method:'POST',body:{}}).then(()=>'ok',e=>e.code||e.status)") in ('42501', 403))
     A.evaluate("showScreen('home')")
 
     # Klicks & „Empfehlung für dich“

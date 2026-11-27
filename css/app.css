@@ -270,6 +270,10 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:.85rem;color:var(--
 /* ---------- Dialog & Toast ---------- */
 #dialog{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:#000a;padding:20px}
 #dialog.show{display:flex}
+#nameZwang{position:fixed;inset:0;z-index:92;display:flex;align-items:center;justify-content:center;background:#000c;padding:20px}
+#nameZwang[hidden]{display:none}
+#nameZwang .inp{width:calc(100% - 48px);box-sizing:border-box;display:block}
+#nameZwang .sub-msg{margin:8px 24px 0;font-size:.9rem;color:#a3261b;min-height:1.2em}
 .dbox{max-width:460px;width:100%}
 .dbox p{font-size:1.05rem;line-height:1.45;margin-bottom:20px}
 .dbox .row{justify-content:flex-end}
@@ -919,6 +923,16 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .stat-zahlen dt{font-size:.8rem;line-height:1.3;color:#c9c3b6}
 .stat-zahlen dd{margin:0;font-family:var(--serif);font-weight:700;font-size:1.5rem}
 .stat-h{margin:4px 0 -6px;font-size:.95rem}
+.stat-klick{cursor:pointer}
+.stat-klick:hover{border-color:#ffffff66}
+.stat-klick dt button{all:unset;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.stat-klick dt button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.stat-tab{width:100%;border-collapse:collapse;font-size:.9rem}
+.stat-tab th{text-align:left;font-weight:600;color:#c9c3b6;font-size:.8rem;padding:4px 6px;border-bottom:1px solid #ffffff2a}
+.stat-tab td{padding:6px;border-bottom:1px solid #ffffff14;vertical-align:top}
+.stat-tab td:last-child{white-space:nowrap;text-align:right}
+.stat-tab td span{display:block;overflow-wrap:anywhere}
+.stat-tab td small{color:#c9c3b6;font-size:.75rem}
 .stat-top{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:4px}
 .stat-top li span{overflow-wrap:anywhere}
 .stat-top li b{float:right;margin-left:1em;font-family:var(--serif)}

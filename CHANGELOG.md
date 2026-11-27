@@ -2,6 +2,9 @@
 
 ## 1.34.0 – noch nicht veröffentlicht
 - Neu: Auf der Konto-Seite die Box „Spiele empfehlen: An/Aus“. Bei „Aus“ steht oben in der Spielesammlung keine „Empfehlung für dich“, die Liste ist normal sortiert. Gemerkt pro Browser (`manna_empfehlen`), Standard An. Klicks werden weiter gezählt
+- Neu: Username ist Pflicht. Wer angemeldet ist und noch keinen Username hat (alte Testkonten, oder der Wunschname war beim ersten Login schon vergeben), bekommt ein Fenster, das sich nicht wegklicken lässt: Username festlegen oder abmelden. Offline kommt das Fenster nicht. Bei der Registrierung war der Username schon Pflicht
+- Neu (nur Admin): In der Statistik ist „Registrierte Nutzer“ anklickbar und klappt eine Liste aller Konten auf: Username (oder „noch kein Username“), registriert am, zuletzt online (das Spätere aus „zuletzt aktiv“ und letztem Login). Keine E-Mail-Adressen. Die Datenbank prüft selbst, ob man Admin ist (`admin_nutzer()`)
+- Intern: SQL in `supabase/nutzerliste.sql` (Reihenfolge egal)
 - Dazu die Editor-Änderungen von 1.33.1 (nicht separat veröffentlicht):
 
 ## 1.33.1 – in 1.34.0 enthalten

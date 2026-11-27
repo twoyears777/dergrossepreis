@@ -1,7 +1,8 @@
 /* Manna – Username und Daumen hoch (ab Version 1.30.0)
    Teil von app.js, wird NACH den Konto-Dateien geladen (braucht konto, kRest, kErr aus js/konto.js).
    Username: steht in der Tabelle „profile“ (einer pro Konto, eindeutig). Wird bei der Registrierung gewählt
-   (ab Version 1.31.0) und beim ersten Login angelegt; ändern auf der Konto-Seite.
+   (ab Version 1.31.0) und beim ersten Login angelegt; ändern auf der Konto-Seite. Ab Version 1.34.0 Pflicht:
+   Konten ohne Username bekommen ein Fenster, das erst nach dem Festlegen (oder Abmelden) verschwindet.
    Daumen hoch: nur mit Konto und Username, ein Daumen pro Spiel, kein Daumen runter.
    Die Anzahl pro Spiel sieht jeder (auch ohne Konto), wer welches Spiel mag, sieht nur der Nutzer selbst.
    Sicherheit: Was erlaubt ist, regeln die Zugriffsregeln in supabase/username-und-daumen.sql. */
@@ -20,6 +21,8 @@ const DT={
   nameGespeichert:'Dein Username ist gespeichert.',
   nameGleich:'Das ist schon dein Username.',
   nameGesperrt:'Dieser Username ist leider nicht möglich. Such dir bitte einen anderen aus.',
+  zwangText:'Bitte leg einen Username fest, damit du Manna mit deinem Konto nutzen kannst. Du kannst ihn später im Konto ändern.',
+  zwangLeer:'Bitte gib einen Username ein.',
   nameDochVergeben:'Dein gewünschter Username „{name}“ ist inzwischen leider vergeben. Such dir im Konto bitte einen anderen aus.'
 };
 const NAME_MUSTER=/^[A-Za-z0-9ÄÖÜäöüß][A-Za-z0-9ÄÖÜäöüß_.-]{1,18}[A-Za-z0-9ÄÖÜäöüß]$/;
@@ -62,19 +65,45 @@ async function profilLaden(){
     meineDaumen=new Set((Array.isArray(d)?d:[]).map(x=>x.spiel_id));
     // Erster Login nach der Registrierung: den dort gewählten Username jetzt als Profil anlegen
     const w=konto.wunsch;
+    let offline=false,grund='';
     if(!username&&w&&NAME_MUSTER.test(w)){
       let ok=true;
       try{await usernameSpeichern(w);}
       catch(e){
-        if(e.status===0)ok=false;   // offline: beim nächsten Mal nochmal versuchen
-        else if(konto&&konto.id===id){notice(DT.nameDochVergeben.replace('{name}',w));nameVorschlag=w;}
+        if(e.status===0){ok=false;offline=true;}   // offline: beim nächsten Mal nochmal versuchen
+        else if(konto&&konto.id===id){grund=DT.nameDochVergeben.replace('{name}',w);nameVorschlag=w;}
       }
       // Nur einmal versuchen, damit die Meldung nicht bei jedem Login kommt
       if(ok&&konto&&konto.id===id)kontoSave(Object.assign({},konto,{wunsch:''}));
     }
+    // Username ist Pflicht (ab Version 1.34.0): Wer noch keinen hat, muss erst einen festlegen
+    if(!offline&&konto&&konto.id===id&&!username)nameZwang(grund);
   }catch(e){/* offline: alter Stand bleibt */}
   usernameUI();daumenNeuZeichnen();
 }
+
+/* ---------- Username ist Pflicht (ab Version 1.34.0) ----------
+   Fenster, das sich nicht wegklicken lässt: Username festlegen oder abmelden.
+   Betrifft nur Konten ohne Username (z. B. alte Testkonten oder wenn der Wunschname inzwischen vergeben war). */
+function nameZwang(grund){
+  const box=$('#nameZwang');if(!box||VIEW)return;
+  if(!konto||username){box.hidden=true;return;}
+  $('#nzText').textContent=grund||DT.zwangText;
+  const f=$('#nzName');if(!box.hidden&&document.activeElement===f)return;
+  f.value=nameVorschlag||'';$('#nzMsg').textContent='';
+  box.hidden=false;setTimeout(()=>{f.focus();f.select();},60);
+}
+(()=>{const form=$('#nzForm');if(!form||VIEW)return;
+  form.addEventListener('submit',e=>{e.preventDefault();kBusy($('#nzOk'),async()=>{
+    const m=$('#nzMsg');m.textContent='';
+    const name=$('#nzName').value.trim();
+    if(!name){m.textContent=DT.zwangLeer;return;}
+    if(!NAME_MUSTER.test(name)){m.textContent=DT.nameUngueltig;return;}
+    try{await usernameSpeichern(name);}catch(x){m.textContent=x.message||KT.fehler;return;}
+    $('#nameZwang').hidden=true;toast(DT.nameGespeichert);
+  })();});
+  $('#nzAbmelden').onclick=()=>{$('#nameZwang').hidden=true;kontoAbmelden(false);};
+})();
 async function usernameSpeichern(name){
   name=String(name||'').trim();
   if(!NAME_MUSTER.test(name))throw kErr(DT.nameUngueltig,400);
@@ -135,6 +164,7 @@ function usernameUI(){
   const f=$('#kName'),s=$('#kNameStand');if(!f)return;
   if(document.activeElement!==f)f.value=username||nameVorschlag||'';
   if(s)s.hidden=!!username;
+  const z=$('#nameZwang');if(z&&(username||!konto))z.hidden=true;   // Pflicht-Fenster zu, sobald es einen Username gibt
   if(typeof subKontoUI==='function')subKontoUI();   // js/einreichen.js: „Eingereicht als …“
 }
 
@@ -153,7 +183,7 @@ let dKontoId=null;
 function daumenKontoGewechselt(){
   if(VIEW)return;
   const id=konto?konto.id:null;
-  if(id!==dKontoId){dKontoId=id;nameVorschlag='';if(!id)username=null;profilLaden();}
+  if(id!==dKontoId){dKontoId=id;nameVorschlag='';if(!id)username=null;const z=$('#nameZwang');if(z)z.hidden=true;profilLaden();}
   usernameUI();
 }
 APP_HOOKS.seite.push(()=>{if(screenName==='coll')daumenZahlenLaden();});
