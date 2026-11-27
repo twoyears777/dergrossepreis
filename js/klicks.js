@@ -4,11 +4,15 @@
    Spiel um 1 hoch. In der Spielesammlung steht dann (ohne Suche) das Spiel ganz oben, das man selbst am häufigsten
    geöffnet hat, mit dem kleinen Hinweis „Empfehlung für dich“.
    Ohne Konto wird nichts gezählt und nichts an Supabase geschickt.
+   Ab 1.34.0: Auf der Konto-Seite lässt sich „Spiele empfehlen“ an- und ausschalten (Box #kEmpfehlen). Bei „Aus“
+   steht kein Spiel als Empfehlung oben, die Liste ist ganz normal sortiert. Gemerkt wird das im Browser
+   (manna_empfehlen, Standard: An).
    Sicherheit: Gezählt wird nur über die Funktion klick_zaehlen(), lesen darf jeder nur seine eigenen Zahlen
    (siehe supabase/klicks.sql). */
 /* ================= KLICKS ================= */
 
-const KL_TXT={empfehlung:'Empfehlung für dich'};   // Text von Lukas
+const KL_TXT={empfehlung:'Empfehlung für dich',an:'An',aus:'Aus'};   // Texte von Lukas
+const KL_EMPF_KEY='manna_empfehlen';   // '0' = Aus, sonst An
 const KL_KEY='manna_klicks';   // {user, zahlen:{spiel_id:anzahl}} – damit die Empfehlung auch offline und sofort da ist
 
 let meineKlicks={};
@@ -42,8 +46,13 @@ function klickZaehlen(id){
 }
 
 /* Das am häufigsten geöffnete Spiel aus der Liste (bei Gleichstand das alphabetisch erste), sonst null */
+function empfehlenAn(){try{return localStorage.getItem(KL_EMPF_KEY)!=='0';}catch(e){return true;}}
+function empfehlenUI(){
+  const an=empfehlenAn(),b=$('#kEmpfehlen'),t=$('#kEmpfehlenStand');
+  if(b)b.checked=an;if(t)t.textContent=an?KL_TXT.an:KL_TXT.aus;
+}
 function empfehlungAus(hits){
-  if(VIEW||!konto)return null;
+  if(VIEW||!konto||!empfehlenAn())return null;
   let best=null,n=0;
   hits.forEach(g=>{const z=klZahl(g.id);if(z>n){n=z;best=g;}});
   return best;
@@ -56,4 +65,12 @@ function klicksKontoGewechselt(){
   const id=konto?konto.id:null;
   if(id!==klKontoId){klKontoId=id;klicksLaden();}
 }
-if(!VIEW)klicksKontoGewechselt();
+if(!VIEW){
+  klicksKontoGewechselt();
+  const b=$('#kEmpfehlen');
+  if(b)b.addEventListener('change',()=>{
+    if(b.checked){try{localStorage.removeItem(KL_EMPF_KEY);}catch(e){}}else lsSet(KL_EMPF_KEY,'0');
+    empfehlenUI();
+  });
+  empfehlenUI();
+}

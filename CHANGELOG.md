@@ -1,6 +1,10 @@
 # Changelog – Manna
 
-## 1.33.1 – noch nicht veröffentlicht
+## 1.34.0 – noch nicht veröffentlicht
+- Neu: Auf der Konto-Seite die Box „Spiele empfehlen: An/Aus“. Bei „Aus“ steht oben in der Spielesammlung keine „Empfehlung für dich“, die Liste ist normal sortiert. Gemerkt pro Browser (`manna_empfehlen`), Standard An. Klicks werden weiter gezählt
+- Dazu die Editor-Änderungen von 1.33.1 (nicht separat veröffentlicht):
+
+## 1.33.1 – in 1.34.0 enthalten
 - Kein Eintrag im App-Changelog (nur Editor)
 - Neu im Editor: kleiner Fortschritt oben in der Liste: „Heute neue Spiele auf Manna: …“ (sonst „😢 Wir brauchen Spiiiele“), „Diese Woche: N“ (ab Montag) und Zähler mit Balken bis 100 Spiele, danach bis 500, dann in 500er-Schritten
 - Neu: Feld „Veröffentlicht: JJJJ-MM-TT“ im Spielformat. Der Editor setzt es, wenn ein Spiel neu in die Spielesammlung kommt (neu oder aus Rohfassung); beim Bearbeiten und Umbenennen bleibt es erhalten, Rohfassungen haben keins. Die App zeigt es nicht an, es dient der Auswertung
