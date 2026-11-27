@@ -26,3 +26,7 @@
   Format wie die vorhandenen (Überschrift „X.Y.Z Titel“, kurzer Text, UMSETZUNG, GEPRÜFT, OFFEN) und oben „Stand“ aktualisieren.
   Gilt zusätzlich zu CHANGELOG.md, nicht statt. Eine Änderung ist erst fertig vorbereitet, wenn sie im Doc steht.
 - Vor dem Einbauen: `python3 tests/run_tests.py` muss komplett grün sein.
+- **Einbauen ist erst fertig, wenn das Release-Plan-Doc stimmt (Regel!):** Nach Push und Datenbank-Änderungen im Doc der Version
+  oben die Statuszeile auf „LIVE seit …“ setzen und am Ende einen Abschnitt „X.Y.Z Veröffentlicht“ (UMSETZUNG / GEPRÜFT / OFFEN)
+  anhängen. Danach das Doc neu lesen und prüfen, dass es wirklich drinsteht: Die Statuszeile enthält geschützte Leerzeichen,
+  daran scheitert „Text ersetzen“ ohne Fehlermeldung. Erst dann Lukas Bescheid geben.
