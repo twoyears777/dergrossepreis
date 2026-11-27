@@ -18,6 +18,8 @@ const K_KEY_RE=/^(brett|favoriten|ausgeblendet|(vorlage|spiel):[A-Za-z0-9_-]{1,6
 const K_BILD_RE=/^img-[a-z0-9]{1,40}$/;
 const K_IMG_RE=/^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/;
 const K_MAX_EINTRAG=1e6,K_MAX_BILD=3e6;
+// Antwort der Datenbank als Liste; alles andere zählt als leer (ab 1.34.2, vorher konnte der Abgleich hier abstürzen)
+const kListe=v=>Array.isArray(v)?v:[];
 
 /* ---------- Was wird abgeglichen? ---------- */
 // Prüfsumme über einen „sortierten“ Text: Die Datenbank (jsonb) ändert die Reihenfolge der Felder
@@ -98,13 +100,13 @@ async function syncLauf(){
 
   // 1. Stand im Konto holen: erst nur Namen und Zeitstempel (klein), dann die Inhalte nur von dem, was sich geändert hat.
   //    So bleibt der Datenverbrauch klein, auch wenn oft abgeglichen wird.
-  const meta=await kRest('/rest/v1/sync_eintraege?select=schluessel,geloescht,geaendert_am')||[];
+  const meta=kListe(await kRest('/rest/v1/sync_eintraege?select=schluessel,geloescht,geaendert_am'));
   if(!noch())return;
   const R={};meta.forEach(r=>{if(r&&K_KEY_RE.test(r.schluessel))R[r.schluessel]=r;});
   const brauche=Object.keys(R).filter(k=>!R[k].geloescht&&(!B[k]||B[k].t!==R[k].geaendert_am));
   for(let i=0;i<brauche.length;i+=40){
     const teil=brauche.slice(i,i+40).map(k=>encodeURIComponent('"'+k+'"')).join(',');
-    const rows=await kRest('/rest/v1/sync_eintraege?select=schluessel,daten,geloescht,geaendert_am&schluessel=in.('+teil+')')||[];
+    const rows=kListe(await kRest('/rest/v1/sync_eintraege?select=schluessel,daten,geloescht,geaendert_am&schluessel=in.('+teil+')'));
     if(!noch())return;
     rows.forEach(r=>{if(r&&R[r.schluessel])R[r.schluessel]=r;});
   }
@@ -221,7 +223,7 @@ async function syncLauf(){
 
   // 4. Bilder hochladen, BEVOR die Spiele hochgeladen werden: Dann findet ein anderes Gerät die Bilder schon vor
   const gamesJetzt=ownGames();
-  const rem=await kRest('/rest/v1/sync_bilder?select=bild_id,erstellt_am')||[];
+  const rem=kListe(await kRest('/rest/v1/sync_bilder?select=bild_id,erstellt_am')).filter(x=>x&&typeof x.bild_id==='string');
   if(!noch())return;
   const remIds=new Set(rem.map(x=>x.bild_id));
   const meine=new Set(gamesJetzt.flatMap(ownImgRefs).filter(i=>K_BILD_RE.test(i)));
@@ -244,8 +246,8 @@ async function syncLauf(){
   const senden=async()=>{
     if(!paket.length)return;
     const body=paket.map(p=>({user_id:ich,schluessel:p.key,daten:p.daten,geloescht:p.daten===null}));
-    const antw=await kRest('/rest/v1/sync_eintraege?on_conflict=user_id,schluessel&select=schluessel,geaendert_am',{method:'POST',body,prefer:'resolution=merge-duplicates,return=representation'})||[];
-    const zeit={};antw.forEach(a=>{zeit[a.schluessel]=a.geaendert_am;});
+    const antw=await kRest('/rest/v1/sync_eintraege?on_conflict=user_id,schluessel&select=schluessel,geaendert_am',{method:'POST',body,prefer:'resolution=merge-duplicates,return=representation'});
+    const zeit={};kListe(antw).forEach(a=>{if(a&&typeof a.schluessel==='string')zeit[a.schluessel]=a.geaendert_am;});
     paket.forEach(p=>{
       if(!zeit[p.key])return;
       if(p.daten===null)delete B[p.key];else B[p.key]={h:p.h,t:zeit[p.key]};
@@ -267,7 +269,7 @@ async function syncLauf(){
   for(const id of meine){if(remIds.has(id)&&!(await imgGet(id)))fehlt.push(id);}
   for(let i=0;i<fehlt.length;i+=4){
     const teil=fehlt.slice(i,i+4);
-    const b=await kRest('/rest/v1/sync_bilder?select=bild_id,daten&bild_id=in.('+teil.join(',')+')')||[];
+    const b=kListe(await kRest('/rest/v1/sync_bilder?select=bild_id,daten&bild_id=in.('+teil.join(',')+')'));
     if(!noch())return;
     for(const x of b){if(x&&K_BILD_RE.test(x.bild_id)&&typeof x.daten==='string'&&x.daten.length<=K_MAX_BILD&&K_IMG_RE.test(x.daten))await imgPut(x.bild_id,x.daten);}
   }

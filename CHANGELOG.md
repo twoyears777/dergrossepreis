@@ -1,5 +1,8 @@
 # Changelog – Manna
 
+## 1.34.2 – 27.11.2026
+- Stabilität verbessert
+
 ## 1.34.1 – 27.11.2026
 - Design angepasst
 

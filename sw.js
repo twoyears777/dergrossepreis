@@ -2,7 +2,7 @@
    Macht die App offline-fähig und lädt Updates automatisch.
    WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in js/data.js).
    Die Spiele (spiele/alle.json) brauchen kein Update: Sie werden immer zuerst frisch geladen. */
-const VERSION = '1.34.1';
+const VERSION = '1.34.2';
 const CACHE = 'grosser-preis-' + VERSION;
 const GAMES_CACHE = 'manna-spiele';
 const GAMES_FILE = './spiele/alle.json';
@@ -79,7 +79,7 @@ self.addEventListener('fetch', event => {
   if (url.pathname === scope.pathname + 'spiele/alle.json') {
     event.respondWith(caches.open(GAMES_CACHE).then(cache =>
       fetch(new Request(GAMES_FILE, { cache: 'no-cache' })).then(r => {
-        if (r.ok) cache.put(GAMES_FILE, r.clone());
+        if (r.ok) cache.put(GAMES_FILE, r.clone()).catch(() => {});
         return r.ok ? r : cache.match(GAMES_FILE).then(hit => hit || r);
       }).catch(() => cache.match(GAMES_FILE).then(hit => hit || Response.error()))
     ));
@@ -100,7 +100,8 @@ self.addEventListener('fetch', event => {
   }
   event.respondWith(
     caches.match(req, { ignoreSearch: true }).then(hit => hit || fetch(req).then(r => {
-      if (r.ok) { const copy = r.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
+      // Nur vollständige Antworten speichern (Teilantworten 206 lassen sich nicht speichern und würden einen Fehler werfen)
+      if (r.ok && r.status === 200 && r.type === 'basic') { const copy = r.clone(); caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {}); }
       return r;
     }))
   );

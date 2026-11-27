@@ -128,8 +128,14 @@ function kRefresh(erzwingen){
     if(!konto)throw kErr(KT.abgemeldet,401);
     // schon von einer anderen Registerkarte erneuert?
     if(konto.exp*1000>Date.now()+60e3&&(!erzwingen||konto.access!==alt))return;
-    try{kontoSave(kSession(await kAuth('token?grant_type=refresh_token',{refresh_token:konto.refresh}),konto));}
-    catch(e){if(e.status>=400&&e.status<500){kontoSave(null);kontoUI();toast(KT.sitzungWeg);e.status=401;e.message=KT.sitzungWeg;}throw e;}
+    try{
+      const d=await kAuth('token?grant_type=refresh_token',{refresh_token:konto.refresh});
+      // Antwort ohne neue Zugangsdaten (z. B. Störung unterwegs): nicht abmelden, später nochmal versuchen (ab 1.34.2)
+      if(!d||!d.access_token||!d.refresh_token)throw kErr(KT.fehler,502);
+      kontoSave(kSession(d,konto));
+    }
+    // Abmelden nur, wenn der Server die Sitzung wirklich ablehnt; „zu viele Anfragen“ (429) ist nur eine Bremse (ab 1.34.2)
+    catch(e){if(e.status>=400&&e.status<500&&e.status!==429){kontoSave(null);kontoUI();toast(KT.sitzungWeg);e.status=401;e.message=KT.sitzungWeg;}throw e;}
   };
   const p=(navigator.locks&&navigator.locks.request)?navigator.locks.request('manna-konto-refresh',run):run();
   kRefreshP=p.finally(()=>{kRefreshP=null;});
@@ -154,7 +160,8 @@ async function kRest(path,opt,nochmal){
     throw kErr(d.code==='P0001'&&d.message?d.message:KT.fehler,r.status,String(d.code||''));
   }
   const t=await r.text();
-  return t?JSON.parse(t):null;
+  // Kommt statt Daten etwas anderes zurück (z. B. die Anmeldeseite eines WLANs), sauber als Fehler melden (ab 1.34.2)
+  try{return t?JSON.parse(t):null;}catch(e){throw kErr(KT.fehler,502);}
 }
 const kRedirect=()=>location.origin+location.pathname;
 
@@ -162,6 +169,7 @@ const kRedirect=()=>location.origin+location.pathname;
 const kMailOk=m=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m);
 async function kontoAnmelden(mail,pass){
   const d=await kAuth('token?grant_type=password',{email:mail,password:pass});
+  if(!d||!d.access_token||!d.refresh_token)throw kErr(KT.fehler,502);   // ab 1.34.2: keine halbe Sitzung speichern
   const k=kSession(d);
   kontoNachLogin(k,KT.angemeldet);
 }
@@ -183,7 +191,7 @@ async function usernameFrei(name){
 async function kontoRegistrieren(mail,pass,name){
   const d=await kAuth('signup?redirect_to='+encodeURIComponent(kRedirect()),{email:mail,password:pass,data:{username:name}});
   // Ohne E-Mail-Bestätigung kommt sofort eine Sitzung zurück, sonst nur der (noch unbestätigte) Nutzer
-  if(d.access_token){kontoNachLogin(kSession(d),KT.angemeldet);return 'an';}
+  if(d.access_token&&d.refresh_token){kontoNachLogin(kSession(d),KT.angemeldet);return 'an';}
   kWartet={mail,typ:'signup'};
   return 'mail';
 }
@@ -277,6 +285,7 @@ function kontoAusLink(){
   if(!k.access||!k.refresh)return;
   // Wer angemeldet ist, steht im Zugangsschlüssel selbst; die E-Mail holen wir beim Server ab
   kAuth('user',null,{method:'GET',token:k.access}).then(u=>{
+    if(!u||typeof u.id!=='string'||!u.id)throw kErr(KT.linkKaputt,400);   // ab 1.34.2
     k.id=u.id;k.email=u.email||'';k.wunsch=kWunsch(u);
     if(typ==='recovery'){showScreen('konto');kontoNachLogin(k,KT.neuesPw,()=>{kontoZeigeNeuesPw(true);kMsg(KT.neuesPw);},true);}
     else{showScreen('konto');kontoNachLogin(k,KT.bestaetigt,null,true);}

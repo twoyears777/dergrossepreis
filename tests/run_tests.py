@@ -1594,6 +1594,42 @@ def konto_checks(p):
     check('Konto: keine JavaScript-Fehler (auch keine CSP-Verstöße)', not errs, '; '.join(errs))
     ctxA.close(); ctxB.close(); b.close()
 
+def stabilitaet_checks(p):
+    """Ab 1.34.2: Seltsame Antworten von Supabase dürfen die App nicht abstürzen lassen und niemanden grundlos abmelden."""
+    print('Stabilität (Konto und Abgleich)')
+    b = p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox'])
+    errs = []
+    def lauf(modus, abgelaufen=False):
+        exp = 'Math.floor(Date.now()/1000)' + ('-10' if abgelaufen else '+3600')
+        ctx = b.new_context(viewport={'width': 1280, 'height': 900}, service_workers='block')
+        ctx.add_init_script("try{localStorage.setItem('manna_konto',JSON.stringify({access:'a1',refresh:'r1',exp:" + exp + ",id:'00000000-0000-4000-8000-0000000000aa',email:'test@example.org'}))}catch(e){}")
+        def handle(route, request):
+            cors = {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods': '*'}
+            if request.method == 'OPTIONS': return route.fulfill(status=204, headers=cors)
+            path = urlparse(request.url).path
+            if path == '/auth/v1/token' and modus == 'bremse':
+                return route.fulfill(status=429, content_type='application/json', body='{"error_code":"over_request_rate_limit"}', headers=cors)
+            if path.startswith('/rest/v1/') and modus == 'html':
+                return route.fulfill(status=200, content_type='text/html', body='<html><body>WLAN-Anmeldung</body></html>', headers=cors)
+            if path.startswith('/rest/v1/') and modus == 'objekt':
+                return route.fulfill(status=200, content_type='application/json', body='{}', headers=cors)
+            return route.fulfill(status=200, content_type='application/json', body='[]', headers=cors)
+        ctx.route('https://atdfiktajxmhjqrhwgbb.supabase.co/**', handle)
+        m = ctx.new_page(); m.on('pageerror', lambda e: errs.append(modus + ': ' + str(e)))
+        m.goto(URL); m.wait_for_timeout(500)
+        m.evaluate("kontoSync('test')"); m.wait_for_function("!syncLaeuft"); m.wait_for_timeout(300)
+        st = m.evaluate("({art:kStand.art,text:kStand.text,an:!!localStorage.getItem('manna_konto')})")
+        ctx.close()
+        return st
+    st = lauf('html')
+    check('Stabilität: Webseite statt Daten (z. B. WLAN-Anmeldung) gibt eine verständliche Meldung', st['art'] == 'fehler' and 'schiefgelaufen' in st['text'] and 'JSON' not in st['text'] and st['an'], str(st))
+    st = lauf('objekt')
+    check('Stabilität: Antwort ohne Liste lässt den Abgleich nicht abstürzen', st['art'] == 'ok' and st['an'], str(st))
+    st = lauf('bremse', abgelaufen=True)
+    check('Stabilität: „zu viele Anfragen“ beim Erneuern der Sitzung meldet nicht ab', st['an'] and st['art'] == 'fehler', str(st))
+    check('Stabilität: keine JavaScript-Fehler', not errs, '; '.join(errs[:3]))
+    b.close()
+
 if __name__ == '__main__':
     httpd = serve()
     try:
@@ -1606,6 +1642,7 @@ if __name__ == '__main__':
             editor_checks(p)
             einreichen_checks(p)
             konto_checks(p)
+            stabilitaet_checks(p)
     except Exception:
         traceback.print_exc(); results.append(('Testlauf ohne Absturz', False, ''))
     finally:

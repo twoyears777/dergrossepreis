@@ -11,8 +11,11 @@
 const GAMESHOWS_AN=false;
 const GAMESHOWS=GAMESHOWS_AN||(()=>{try{return localStorage.getItem('manna_gameshows')==='1';}catch(e){return false;}})();
 
-const APP_VERSION='1.34.1';
+const APP_VERSION='1.34.2';
 const CHANGELOG=[
+  {v:'1.34.2',d:'27.11.2026',items:[
+    'Stabilität verbessert'
+  ]},
   {v:'1.34.1',d:'27.11.2026',items:[
     'Design angepasst'
   ]},

@@ -84,7 +84,8 @@
       const body = await r.json().catch(() => ({}));
       const er = new Error(body.message || ('Fehler ' + r.status)); er.status = r.status; er.body = body; throw er;
     }
-    return r.status === 204 ? null : r.json();
+    if (r.status === 204) return null;
+    try { return await r.json(); } catch (e) { const er = new Error('Fehler ' + r.status); er.status = 502; throw er; }
   }
   function explain(e) {
     if (e.status === 401) return 'Der Zugangsschlüssel ist ungültig oder abgelaufen. Melde dich ab und trag einen neuen ein.';
@@ -530,7 +531,8 @@
   async function sbRefresh() {
     if (!sb) throw Object.assign(new Error('Nicht angemeldet.'), { status: 401 });
     try { sbSave(await sbAuth('refresh_token', { refresh_token: sb.refresh })); }
-    catch (e) { if (e.status) { sbSave(null); e.status = 401; } throw e; }
+    // Nur abmelden, wenn Supabase die Sitzung ablehnt (4xx außer 429); bei Störungen angemeldet bleiben (ab 1.34.2)
+    catch (e) { if (e.status >= 400 && e.status < 500 && e.status !== 429) { sbSave(null); e.status = 401; } throw e; }
   }
   async function sbFetch(path, opts, again) {
     opts = opts || {};
@@ -545,7 +547,7 @@
     if (r.status === 401 && !again) { await sbRefresh(); return sbFetch(path, opts, true); }
     if (!r.ok) { const d = await r.json().catch(() => ({})); throw Object.assign(new Error(d.message || ('Fehler ' + r.status)), { status: r.status }); }
     const t = await r.text();
-    return t ? JSON.parse(t) : null;
+    try { return t ? JSON.parse(t) : null; } catch (e) { throw Object.assign(new Error('Fehler ' + r.status), { status: 502 }); }
   }
   async function sbLogin(ev) {
     if (ev) ev.preventDefault();
