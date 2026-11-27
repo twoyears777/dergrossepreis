@@ -11,8 +11,11 @@
 const GAMESHOWS_AN=false;
 const GAMESHOWS=GAMESHOWS_AN||(()=>{try{return localStorage.getItem('manna_gameshows')==='1';}catch(e){return false;}})();
 
-const APP_VERSION='1.32.2';
+const APP_VERSION='1.33.0';
 const CHANGELOG=[
+  {v:'1.33.0',d:'',items:[
+    'Neu: In der Spielesammlung kannst du nach „Meiste Likes“ sortieren'
+  ]},
   {v:'1.32.0',d:'27.11.2026',items:[
     'Spiele einreichen geht jetzt mit deinem Konto. So wissen wir, von wem ein Spiel kommt'
   ]},

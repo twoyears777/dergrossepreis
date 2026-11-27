@@ -57,6 +57,13 @@ const FILTER_DEFS=[
 let filter=(()=>{const f=jget(FILTER_KEY,null);const e={alter:[],groesse:[],ort:[],material:[],phase:[],erlebnis:[],fav:[]};
   if(f&&typeof f==='object')Object.keys(e).forEach(k=>{if(Array.isArray(f[k]))e[k]=f[k];});return e;})();
 function saveFilter(){lsSet(FILTER_KEY,JSON.stringify(filter));}
+/* Sortierung ohne Suche: alphabetisch oder nach den meisten Daumen hoch (ab 1.33.0). Bei einer Suche zählt immer die Trefferqualität. */
+const SORT_KEY='manna_sortierung';
+let sortierung=jget(SORT_KEY,'az')==='likes'?'likes':'az';
+const likesVon=g=>typeof daumenZahl==='function'?daumenZahl(g.id):0;   // js/daumen.js
+function sortUI(){
+  document.querySelectorAll('#collSort [data-sort]').forEach(b=>{const on=b.dataset.sort===sortierung;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});
+}
 function gameMatches(g,f){
   if(f.alter.length&&!f.alter.some(a=>g.alter.includes(a)))return false;
   if(f.groesse.length&&!f.groesse.some(id=>{const s=SIZE_GROUPS.find(x=>x.id===id);return s&&g.spieler.min<=s.max&&g.spieler.max>=s.min;}))return false;
@@ -199,7 +206,9 @@ function renderColl(){
   const suche=u=>{const t=new Map();GAMES.forEach(g=>{const r=sucheIn(g,collQuery,u);if(r)t.set(g.id,r);});return t;};
   if(sucht){treffer=suche(false);if(!treffer.size){treffer=suche(true);unscharf=treffer.size>0;}}
   const hits=GAMES.filter(g=>gameMatches(g,filter)&&(!sucht||treffer.has(g.id)))
-    .sort((a,b)=>sucht?(treffer.get(b.id).score-treffer.get(a.id).score)||a.name.localeCompare(b.name,'de'):a.name.localeCompare(b.name,'de'));
+    .sort((a,b)=>sucht?(treffer.get(b.id).score-treffer.get(a.id).score)||a.name.localeCompare(b.name,'de'):
+      (sortierung==='likes'?likesVon(b)-likesVon(a):0)||a.name.localeCompare(b.name,'de'));
+  sortUI();$('#collSort').hidden=sucht;   // bei der Suche zählt die Trefferqualität
   // Angemeldet und ohne Suche: das selbst am häufigsten geöffnete Spiel nach oben (js/klicks.js)
   const empf=!sucht&&typeof empfehlungAus==='function'?empfehlungAus(hits):null;
   if(empf){hits.splice(hits.indexOf(empf),1);hits.unshift(empf);}
@@ -294,6 +303,7 @@ function openGame(id){
   showScreen('game');
 }
 $('#btnRandom').onclick=randomGame;
+document.querySelectorAll('#collSort [data-sort]').forEach(b=>{b.onclick=()=>{sortierung=b.dataset.sort;lsSet(SORT_KEY,JSON.stringify(sortierung));renderColl();};});
 /* Den Browser bitten, die gespeicherten Daten nicht von selbst zu löschen (z. B. Safari nach längerer Nichtnutzung).
    Einmal beim ersten Tippen, ohne Rückmeldung. */
 function askPersist(){try{if(VIEW||!navigator.storage||!navigator.storage.persist)return;navigator.storage.persisted().then(p=>{if(!p)return navigator.storage.persist();}).catch(()=>{});}catch(e){}}

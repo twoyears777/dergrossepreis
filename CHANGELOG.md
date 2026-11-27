@@ -1,5 +1,12 @@
 # Changelog – Manna
 
+## 1.33.0 – (Datum beim Veröffentlichen)
+- Neu: Sortieren in der Spielesammlung: Umschalter „A–Z“ / „Meiste Likes“ über der Liste. Bei Gleichstand alphabetisch, „Empfehlung für dich“ bleibt ganz oben. Die Auswahl merkt sich der Browser (`manna_sortierung`). Bei einer Suche ist der Umschalter ausgeblendet, dort zählt die Trefferqualität
+- Neu: Statistik auf der Konto-Seite, nur für den Admin: registrierte Nutzer (bestätigt, mit Username, neu in 7 Tagen), aktiv in 24 Stunden / 7 Tagen, Daumen hoch, geöffnete Spiele, offene Einreichungen, Top 5 nach Likes und nach Aufrufen. Ob jemand Admin ist, prüft die Datenbank (`admin_statistik()` mit `privat.ist_admin()`), die App zeigt nur an, was zurückkommt. Neue Datei js/statistik.js
+- Neu: „Zuletzt aktiv“: Angemeldete melden höchstens einmal pro Stunde `bin_aktiv()`. Gespeichert wird pro Konto nur ein Zeitpunkt (Tabelle `aktiv`), wird mit dem Konto gelöscht. Ohne Konto wird nichts geschickt
+- Datenschutz: „zuletzt aktiv“ bei den Konto-Daten ergänzt
+- Intern: SQL in `supabase/statistik.sql` (Reihenfolge egal)
+
 ## 1.32.2 – 27.11.2026
 - Kein Eintrag im App-Changelog (kleiner Hotfix)
 - Editor auf dem Handy: Die Leiste unten ist zweireihig, „Veröffentlichen“ bleibt immer sichtbar

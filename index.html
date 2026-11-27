@@ -219,7 +219,7 @@
     </div>
     <button type="button" class="btn filter-toggle" id="btnFilterToggle" aria-expanded="false" aria-controls="filters">Filter</button>
     <div class="filters" id="filters" role="group" aria-label="Filter"></div>
-    <div class="coll-head"><span id="collCount"></span><span class="coll-tools"><button class="btn" id="btnRandom">Zufälliges Spiel</button><button class="btn" id="btnFilterReset">Filter zurücksetzen</button></span></div>
+    <div class="coll-head"><span id="collCount"></span><span class="coll-sort" id="collSort" role="group" aria-label="Sortieren"><button type="button" class="sort-btn" data-sort="az" aria-pressed="true">A–Z</button><button type="button" class="sort-btn" data-sort="likes" aria-pressed="false">Meiste Likes</button></span><span class="coll-tools"><button class="btn" id="btnRandom">Zufälliges Spiel</button><button class="btn" id="btnFilterReset">Filter zurücksetzen</button></span></div>
     <ul class="games" id="gameList"></ul>
     <div class="coll-submit"><button class="btn" id="btnSubmitOpen">Selbst ein Spiel einreichen</button></div>
   </div>
@@ -382,6 +382,7 @@
       <div class="row"><button type="submit" class="primary" id="btnKName">Username speichern</button></div>
       <p class="sub-msg" id="kNameMsg" role="alert"></p>
     </form>
+    <div class="sec konto-form stat" id="kStat" hidden aria-live="polite"></div>
     <div class="menu-list">
       <button class="mbtn" id="btnKAbmelden" type="button"><b>Abmelden</b></button>
       <button class="mbtn" id="btnKEntfernen" type="button"><span><b>Abmelden und Daten von diesem Gerät entfernen</b><small>Sinnvoll an fremden oder geteilten Geräten</small></span></button>
@@ -537,5 +538,6 @@
 <script src="js/konto-seite.js"></script>
 <script src="js/daumen.js"></script>
 <script src="js/klicks.js"></script>
+<script src="js/statistik.js"></script>
 </body>
 </html>

@@ -61,7 +61,7 @@ def static_checks():
     print('Statische Prüfungen')
     emoji = re.compile('[\U0001F000-\U0001FAFF☀-⛿✀-➿️]')
     allowed = set('✕✓★')
-    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/gameshow-vorlagen.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'js/daumen.js', 'js/klicks.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
+    for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/gameshow-vorlagen.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'js/daumen.js', 'js/klicks.js', 'js/statistik.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
         found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
         check(f'keine Emojis in {f}', not found, ''.join(found))
@@ -1038,7 +1038,7 @@ class FakeSupabaseKonten:
     KEY = 'sb_publishable_XVvHrzG_pDKErkF37hsN4A_NYzt-Dc-'
     def __init__(self):
         self.users = {}; self.tokens = {}; self.refresh = {}; self.n = 0; self.t = 0
-        self.eintraege = {}; self.bilder = {}; self.profile = {}; self.daumen = set(); self.klicks = {}; self.offline = False; self.log = []; self.abgelaufen = set(); self.mails = []
+        self.eintraege = {}; self.bilder = {}; self.profile = {}; self.daumen = set(); self.klicks = {}; self.aktiv = {}; self.admins = set(); self.offline = False; self.log = []; self.abgelaufen = set(); self.mails = []
         self.codes = {}; self.code_n = 0   # (mail, typ) -> zuletzt verschickter Code
     def neuer_code(self, mail, typ):
         self.code_n += 1; c = f'{123450 + self.code_n}'; self.codes[(mail, typ)] = c; return c
@@ -1118,7 +1118,7 @@ class FakeSupabaseKonten:
             del self.users[mail]
             self.eintraege = {k: v for k, v in self.eintraege.items() if k[0] != me}
             self.bilder = {k: v for k, v in self.bilder.items() if k[0] != me}
-            self.profile.pop(me, None); self.daumen = {d for d in self.daumen if d[0] != me}; self.klicks = {k: v for k, v in self.klicks.items() if k[0] != me}
+            self.profile.pop(me, None); self.aktiv.pop(me, None); self.daumen = {d for d in self.daumen if d[0] != me}; self.klicks = {k: v for k, v in self.klicks.items() if k[0] != me}
             self.tokens = {t: i for t, i in self.tokens.items() if i != me}
             return js(204, None)
         if path == '/rest/v1/profile':
@@ -1137,6 +1137,16 @@ class FakeSupabaseKonten:
             sid = body.get('spiel') or ''
             if not re.match(r'^[a-z0-9-]{1,60}$', sid): return js(400, {'code': 'P0001', 'message': 'ungueltig'})
             self.klicks[(me, sid)] = self.klicks.get((me, sid), 0) + 1; return js(200, self.klicks[(me, sid)])
+        if path == '/rest/v1/rpc/bin_aktiv':   # Konto aus dem Login, Zeit setzt die Datenbank
+            self.aktiv[me] = self.aktiv.get(me, 0) + 1; return js(204, None)
+        if path == '/rest/v1/rpc/admin_statistik':   # Admin prüft die Datenbank, nicht die App
+            if me not in self.admins: return js(403, {'code': '42501', 'message': 'kein_admin'})
+            z = {}
+            for _, sid in self.daumen: z[sid] = z.get(sid, 0) + 1
+            return js(200, {'stand': '2026-11-27T08:00:00+00:00', 'nutzer': len(self.users), 'bestaetigt': sum(1 for x in self.users.values() if x['ok']),
+                            'mit_username': len(self.profile), 'neu_7_tage': len(self.users), 'aktiv_24h': len(self.aktiv), 'aktiv_7_tage': len(self.aktiv),
+                            'daumen': len(self.daumen), 'aufrufe': sum(self.klicks.values()), 'einreichungen_offen': 0,
+                            'top_daumen': [{'spiel_id': k, 'anzahl': v} for k, v in sorted(z.items(), key=lambda x: -x[1])[:5]], 'top_aufrufe': []})
         if path == '/rest/v1/daumen':
             if request.method == 'GET': return js(200, [{'spiel_id': s} for u, s in self.daumen if u == me])
             if request.method == 'POST':
@@ -1455,7 +1465,45 @@ def konto_checks(p):
     check('Klicks: ohne Konto nichts gezählt', not [x for x in sb.log[n_vorher:] if 'klick' in x[1]])
     G.evaluate("showScreen('coll')"); G.wait_for_timeout(300)
     check('Klicks: ohne Konto keine Empfehlung, alphabetisch', G.locator('.gempf').count() == 0)
+    check('Aktiv: ohne Konto nichts gemeldet', not [x for x in sb.log[n_vorher:] if 'aktiv' in x[1] or 'statistik' in x[1]])
+
+    # Sortieren nach „Meiste Likes“
+    zu(G)
+    namen = lambda m: m.evaluate("[...document.querySelectorAll('#gameList .gname')].map(x=>x.textContent.trim())")
+    az = namen(G)
+    check('Sortieren: Standard ist A–Z', az == sorted(az, key=lambda s: s.lower()) and G.get_attribute('#collSort [data-sort="az"]', 'aria-pressed') == 'true')
+    G.evaluate("daumenZahlen={'nachts-in-palermo':5,'simon-says':2,'zeitungsschlagen':2};renderColl()")
+    G.click('#collSort [data-sort="likes"]'); G.wait_for_timeout(150)
+    nl = namen(G)
+    check('Sortieren: Meiste Likes zuerst, bei Gleichstand alphabetisch', 'Palermo' in nl[0] and 'Simon' in nl[1] and 'Zeitung' in nl[2] and len(nl) == len(az), nl[:3])
+    check('Sortieren: Auswahl wird gespeichert', G.evaluate("localStorage.getItem('manna_sortierung')") == '"likes"' and G.get_attribute('#collSort [data-sort="likes"]', 'aria-pressed') == 'true')
+    G.fill('#collSearch', 'zeitung'); G.wait_for_timeout(200)
+    check('Sortieren: bei der Suche ausgeblendet', not G.locator('#collSort').is_visible())
+    G.fill('#collSearch', ''); G.wait_for_timeout(200)
+    G.click('#collSort [data-sort="az"]'); G.wait_for_timeout(150)
+    check('Sortieren: zurück zu A–Z', namen(G) == az)
     gast.close()
+
+    # Zuletzt aktiv & Statistik (nur Admin)
+    check('Aktiv: angemeldet gemeldet (einmal, nicht bei jedem Seitenwechsel)', sb.aktiv.get(a_id, 0) >= 1 and sb.aktiv.get(ben_id, 0) == 1, str(sb.aktiv))
+    vorher = sb.aktiv.get(ben_id, 0)
+    for s in ['coll', 'konto', 'home', 'coll']: B.evaluate("showScreen('%s')" % s); B.wait_for_timeout(60)
+    check('Aktiv: Seitenwechsel melden nicht jedes Mal', sb.aktiv.get(ben_id) == vorher)
+    B.evaluate("lsSet(ST_AKTIV_KEY,JSON.stringify({user:konto.id,zeit:Date.now()-2*3600e3}))"); B.evaluate("showScreen('home')"); B.wait_for_timeout(200)
+    check('Aktiv: nach einer Stunde wieder gemeldet', sb.aktiv.get(ben_id) == vorher + 1)
+    n_vorher = len(sb.log)
+    B.evaluate("showScreen('konto')"); B.wait_for_timeout(300); B.evaluate("showScreen('home')"); B.evaluate("showScreen('konto')"); B.wait_for_timeout(300)
+    stat_anfragen = [x for x in sb.log[n_vorher:] if x[1] == '/rest/v1/rpc/admin_statistik']
+    check('Statistik: kein Admin sieht nichts und fragt nur einmal', not B.locator('#kStat').is_visible() and B.inner_html('#kStat') == '' and len(stat_anfragen) <= 1 and any(x[1] == '/rest/v1/rpc/admin_statistik' for x in sb.log), str(len(stat_anfragen)))
+    sb.admins.add(a_id)
+    A.reload(); A.wait_for_timeout(500)   # neu geladen: die App fragt die Datenbank wieder
+    if A.locator('#clDialog.show').count(): A.click('#clX')
+    A.evaluate("showScreen('konto')"); A.wait_for_timeout(400)
+    st = A.inner_text('#kStat') if A.locator('#kStat').is_visible() else ''
+    check('Statistik: Admin sieht die Zahlen auf der Konto-Seite', 'Statistik' in st and 'Registrierte Nutzer' in st and 'Aktiv in den letzten 24 Stunden' in st and 'Meiste Likes' in st, st[:200])
+    n_vorher = len(sb.log); A.click('#btnStatNeu'); A.wait_for_timeout(300)
+    check('Statistik: „Neu laden“ fragt frisch ab', [x for x in sb.log[n_vorher:] if x[1] == '/rest/v1/rpc/admin_statistik'])
+    A.evaluate("showScreen('home')")
 
     # Klicks & „Empfehlung für dich“
     for _ in range(3): spiel(A, 'simon-says'); A.wait_for_timeout(100)

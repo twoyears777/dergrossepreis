@@ -658,6 +658,13 @@ body.viewer .end-actions{display:none}
 .fchip.on{background:var(--marker);border-color:var(--ink)}
 .fchip:focus-visible,.game-row:focus-visible{outline:3px solid var(--marker);outline-offset:3px}
 .coll-head{display:flex;align-items:center;justify-content:space-between;margin:24px 2px 12px;color:#d8d2c4;font-family:var(--strong);font-weight:700}
+.coll-sort[hidden]{display:none}
+.coll-sort{display:inline-flex;border:1px solid #ffffff3a;border-radius:3px;overflow:hidden;margin-left:auto;margin-right:12px}
+.sort-btn{background:transparent;color:#d8d2c4;border:none;padding:.4em .8em;font-family:var(--sans);font-size:.88rem;font-weight:700;cursor:pointer}
+.sort-btn+.sort-btn{border-left:1px solid #ffffff3a}
+.sort-btn:hover{color:#fff;background:#ffffff12}
+.sort-btn.on{background:var(--marker);color:var(--ink)}
+.sort-btn:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
 .games{list-style:none;padding:0;display:grid;gap:14px}
 .game-row{width:100%;text-align:left;background:var(--paper);color:var(--ink);border:none;border-radius:2px;box-shadow:0 3px 8px #0005;padding:16px 20px;display:grid;gap:6px;transition:transform .12s}
 .game-row:hover{transform:translateX(3px);background:#f6f1e6}
@@ -904,6 +911,17 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .konto>.konto-form{width:100%}
 .konto-form p.hint{margin:0;font-size:.88rem;line-height:1.45}
 .konto-form p.hint.warn{color:#ffcf7a}
+/* Statistik für den Admin (js/statistik.js) */
+.stat .konto-h{margin-bottom:-4px}
+.stat-zahlen{margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.stat-zahlen div{border:1px solid #ffffff2a;border-radius:3px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.stat-zahlen dd{order:-1}
+.stat-zahlen dt{font-size:.8rem;line-height:1.3;color:#c9c3b6}
+.stat-zahlen dd{margin:0;font-family:var(--serif);font-weight:700;font-size:1.5rem}
+.stat-h{margin:4px 0 -6px;font-size:.95rem}
+.stat-top{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:4px}
+.stat-top li span{overflow-wrap:anywhere}
+.stat-top li b{float:right;margin-left:1em;font-family:var(--serif)}
 .konto-form a{color:#f1ede4}
 #kontoScreen>.konto-form{margin-top:14px}
 .konto-link{align-self:flex-start;background:none;border:none;padding:0;color:#d8d2c4;text-decoration:underline;text-underline-offset:3px;font-size:.92rem}

@@ -32,6 +32,7 @@ function kontoUI(){
   kontoStandUI();
   if(typeof daumenKontoGewechselt==='function')daumenKontoGewechselt();   // js/daumen.js
   if(typeof klicksKontoGewechselt==='function')klicksKontoGewechselt();   // js/klicks.js
+  if(typeof statistikKontoGewechselt==='function')statistikKontoGewechselt();   // js/statistik.js
 }
 function kontoStandUI(){
   const el=$('#kStand');if(!el)return;
