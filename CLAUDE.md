@@ -21,6 +21,9 @@
 - Wünsche werden gesammelt (ROADMAP.md, Todoist-Projekt „Manna Roadmap“), umgesetzt wird auf Ansage.
 - Neue Funktion = neue Version: `APP_VERSION` in `js/data.js` und `VERSION` in `sw.js` gleich hochzählen, Eintrag in `CHANGELOG` (js/data.js) und `CHANGELOG.md`.
 - Neue Spiele in der Spielesammlung ändern die Version nicht und kommen nicht in den Changelog.
+- **Öffentliche Changelogs sehr kurz (Regel!):** `CHANGELOG.md` und `CHANGELOG` in js/data.js sind öffentlich. Dort nur kurze
+  Zeilen wie „Neues Feature implementiert“, „Technische Optimierung“, „Stabilität verbessert“, „Bug-Fix“, „Design angepasst“,
+  ohne Funktionen zu nennen. Details stehen nur im Release-Plan-Doc.
 - **Release-Plan-Doc (Regel!):** Jede vorbereitete Änderung sofort auch im Release-Plan der Version eintragen: Google Drive,
   Ordner „Manna – Release-Pläne“, Doc „Manna – Release-Plan X.Y.Z“ (fehlt es, anlegen). Pro Änderung ein Abschnitt im gleichen
   Format wie die vorhandenen (Überschrift „X.Y.Z Titel“, kurzer Text, UMSETZUNG, GEPRÜFT, OFFEN) und oben „Stand“ aktualisieren.
