@@ -13,7 +13,7 @@ const GAMESHOWS=GAMESHOWS_AN||(()=>{try{return localStorage.getItem('manna_games
 
 const APP_VERSION='1.33.0';
 const CHANGELOG=[
-  {v:'1.33.0',d:'',items:[
+  {v:'1.33.0',d:'27.11.2026',items:[
     'Neu: In der Spielesammlung kannst du nach „Meiste Likes“ sortieren'
   ]},
   {v:'1.32.0',d:'27.11.2026',items:[
