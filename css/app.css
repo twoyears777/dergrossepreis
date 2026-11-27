@@ -538,6 +538,7 @@ body.mod .mcopt.hint-right:not(.right):not(.locked)::after{content:"richtig (nur
 .perks .note:nth-child(3n){transform:rotate(-.4deg);background:var(--grain-soft),#d9ded0}
 .note.vision{max-width:720px;margin:0 auto;transform:rotate(-.6deg);padding:34px 34px 30px}
 .note.vision p{font-family:var(--serif);font-size:1.12rem;line-height:1.65;color:var(--ink)}
+.note.vision mark{color:inherit;font-weight:700;padding:0 .12em;margin:0 -.04em;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:linear-gradient(transparent 60%,rgba(242,223,107,.6) 60%,rgba(242,223,107,.6) 92%,transparent 92%)}
 /* Erklärung im Spielmenü */
 .help{width:min(720px,100%);display:grid;gap:34px;margin-top:18px}
 .help .note:nth-child(odd){transform:rotate(-.5deg)}
