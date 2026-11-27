@@ -1,5 +1,11 @@
 # Changelog – Manna
 
+## 1.32.1 – [Datum beim Veröffentlichen]
+- Kein Eintrag im App-Changelog (nur Feinschliff)
+- „Empfehlung für dich“ ist jetzt klein und unauffällig (grauer Text in der Ecke statt gelbem Schild)
+- Lange Spielnamen sprengen auf dem Handy nicht mehr den Bildschirm: Der Titel auf der Spielseite schrumpft nach derselben Regel wie alle anderen Überschriften (eigene Größenregel für `#gameTitle` entfernt)
+- Erlebnispädagogik ist nicht mehr gelb: Label in der Übersicht und Schild auf der Spielseite sehen aus wie die anderen
+
 ## 1.32.0 – [Datum beim Veröffentlichen]
 - Spiel einreichen nur noch mit Konto: Ohne Anmeldung zeigt die Seite einen Hinweis mit „Anmelden“ statt des Formulars. Ohne Username kommt die Bitte, erst einen festzulegen
 - „Eingereicht von …“: Jede Einreichung merkt sich Konto und Username (setzt die Datenbank selbst, nicht fälschbar). Das Formular zeigt „Du reichst ein als @…“

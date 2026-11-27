@@ -297,7 +297,6 @@ body{font-family:var(--sans);color:#f1ede4;background:var(--grain),radial-gradie
 .ransom .rsp{display:inline-block;width:.35em}
 .ransom .rw{display:inline-flex;flex-wrap:nowrap;gap:.06em;align-items:center}
 .ransom{row-gap:.12em}
-#gameTitle{font-size:clamp(1.6rem,5.5vh,3.2rem)}
 
 /* Kopfzeile */
 .marquee{background:none;box-shadow:none;padding:0;border-radius:0}
@@ -666,10 +665,11 @@ body.viewer .end-actions{display:none}
 .gname{font-family:var(--strong);font-weight:700;font-size:1.15rem}
 .gshort{font-family:var(--sans);color:var(--ink2);line-height:1.45}
 .game-row.empf{position:relative}
-.gempf{position:absolute;top:-8px;right:12px;font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.02em;background:var(--marker);color:var(--ink);padding:.15em .55em;border-radius:2px;box-shadow:0 1px 3px #0004;transform:rotate(1.5deg);pointer-events:none}
+/* „Empfehlung für dich“: bewusst klein und unauffällig, nur der Transparenz wegen */
+.gempf{position:absolute;top:5px;right:9px;font-family:var(--sans);font-size:.6rem;font-weight:400;color:var(--ink2);opacity:.65;pointer-events:none}
+.game-row.empf{padding-top:20px}
 .gtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .gtags span{font-family:var(--sans);font-size:.82rem;font-weight:700;background:#1d1d1b12;padding:.2em .6em;border-radius:2px}
-.gtags .gtag-ep{background:var(--marker)}
 .games-empty{color:#d8d2c4;font-family:var(--serif);font-style:italic;text-align:center;padding:30px 10px}
 .game-sheet{width:min(760px,100%);display:flex;flex-direction:column;align-items:center}
 .game-lead{color:#e6e0d3;font-family:var(--serif);font-style:italic;font-size:1.1rem;text-align:center;max-width:56ch;line-height:1.5;margin:4px 0 22px}
@@ -862,8 +862,6 @@ body.viewer #ownPlay{padding-bottom:3vh}
 .gp-label{color:#d8d2c4;font-family:var(--strong);font-weight:700;font-size:.95rem}
 .phase-chip{background:var(--sage);color:var(--ink);font-family:var(--strong);font-weight:700;font-size:.9rem;padding:6px 12px;border-radius:2px;box-shadow:0 2px 5px #0005}
 .phase-chip:hover{background:var(--marker)}
-.phase-chip.ep-chip{background:var(--marker)}
-.phase-chip.ep-chip:hover{background:var(--sage)}
 .gp-label~.ep-chip{margin-left:10px}
 .note.paed{border-left:6px solid var(--sage)}
 /* Kacheln: gut lesbarer Text, einzelne Kacheln nicht über die ganze Breite ziehen */
