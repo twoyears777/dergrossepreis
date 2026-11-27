@@ -2,7 +2,7 @@
    Macht die App offline-fähig und lädt Updates automatisch.
    WICHTIG: Bei jedem Update VERSION hochzählen (gleiche Nummer wie APP_VERSION in js/data.js).
    Die Spiele (spiele/alle.json) brauchen kein Update: Sie werden immer zuerst frisch geladen. */
-const VERSION = '1.34.0';
+const VERSION = '1.34.1';
 const CACHE = 'grosser-preis-' + VERSION;
 const GAMES_CACHE = 'manna-spiele';
 const GAMES_FILE = './spiele/alle.json';
