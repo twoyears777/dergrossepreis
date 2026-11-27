@@ -7,6 +7,7 @@ Ort: drinnen, draußen
 Dauer: 5-10
 Gruppenphasen: Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase
 Erlebnispädagogik: ja
+Veröffentlicht: 2026-11-25
 
 Material:
 - keins

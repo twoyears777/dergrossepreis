@@ -177,7 +177,29 @@
       b.onclick = () => openEdit(g);
       li.appendChild(b); ul.appendChild(li);
     });
-    renderNotices();
+    renderNotices(); renderFortschritt();
+  }
+
+  /* ---------- Fortschritt: neue Spiele heute / diese Woche, Zähler bis zum nächsten Ziel ---------- */
+  // Datum als JJJJ-MM-TT in deutscher Zeit (so steht es auch in „Veröffentlicht:“)
+  const tag = d => d.toLocaleDateString('sv-SE', { timeZone: 'Europe/Berlin' });
+  const heute = () => tag(new Date());
+  function wochenStart() {
+    const [y, m, d] = heute().split('-').map(Number), t = new Date(Date.UTC(y, m - 1, d));
+    t.setUTCDate(t.getUTCDate() - (t.getUTCDay() + 6) % 7);
+    return t.toISOString().slice(0, 10);
+  }
+  const ziel = n => n < 100 ? 100 : n < 500 ? 500 : (Math.floor(n / 500) + 1) * 500;
+  function renderFortschritt() {
+    const box = $('#fortschritt'); if (!box) return;
+    const live = games.filter(g => !g.roh), h = heute(), w = wochenStart();
+    const neu = live.filter(g => g.spiel.veroeffentlicht === h).map(g => g.spiel.name || g.id).sort((a, b) => a.localeCompare(b, 'de'));
+    const woche = live.filter(g => (g.spiel.veroeffentlicht || '') >= w).length;
+    const n = live.length, z = ziel(n);
+    box.innerHTML = '<p class="fs-heute">' + (neu.length ? 'Heute neue Spiele auf Manna: <b>' + neu.map(esc).join(', ') + '</b>' : '😢 Wir brauchen Spiiiele') + '</p>' +
+      '<p class="fs-zahlen"><span>Diese Woche: ' + woche + '</span><span>' + n + ' / ' + z + ' Spiele</span></p>' +
+      '<div class="fs-balken" role="progressbar" aria-label="Spiele bis zum Ziel" aria-valuemin="0" aria-valuemax="' + z + '" aria-valuenow="' + n + '"><i style="width:' + Math.min(100, n / z * 100).toFixed(1) + '%"></i></div>';
+    box.hidden = false;
   }
   async function start() {
     updateTop();
@@ -313,6 +335,8 @@
     if (g.name && !id) miss.push(['name', 'ein Name mit Buchstaben oder Zahlen']);
     const other = games.find(x => x.id === id && (!ED.orig || x.id !== ED.orig.id));
     if (id && other) miss.push(['name', 'ein anderer Name – „' + (other.spiel.name || other.id) + '“ gibt es schon']);
+    // Veröffentlicht-Datum bleibt beim Bearbeiten und Umbenennen erhalten
+    if (ED.orig && ED.orig.spiel.veroeffentlicht) g.veroeffentlicht = ED.orig.spiel.veroeffentlicht;
     let text = '', fehler = [];
     if (!miss.length) {
       text = F.serialize(g);
@@ -414,6 +438,8 @@
     if (res.miss.length) { toast('Bitte noch ergänzen: ' + res.miss.map(m => m[1]).join(', ') + '.'); markBad(res.miss); return; }
     if (res.fehler.length) { toast('Das Spiel passt nicht ins Format: ' + res.fehler.join('; ')); return; }
     const orig = ED.orig, path = (alsRoh ? ROH : DIR) + '/' + res.id + '.txt';
+    // Kommt ein Spiel neu in die Spielesammlung (neu oder aus Rohfassung), bekommt es das heutige Datum
+    if (!alsRoh && !res.g.veroeffentlicht && (!orig || orig.roh)) { res.g.veroeffentlicht = heute(); res.text = F.serialize(res.g); }
     if (orig && orig.text === res.text && orig.path === path) { toast(alsRoh ? 'Keine Änderungen zum Speichern.' : 'Keine Änderungen zum Veröffentlichen.'); return; }
     const changes = [{ path, content: res.text }];
     if (orig && orig.path !== path) changes.push({ path: orig.path, del: true });

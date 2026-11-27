@@ -6,6 +6,7 @@ Personen: ab 10
 Ort: drinnen, draußen
 Dauer: 5-10
 Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase
+Veröffentlicht: 2026-11-27
 
 Material:
 - Pro Person ein Luftballon

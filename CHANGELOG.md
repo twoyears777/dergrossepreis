@@ -1,5 +1,10 @@
 # Changelog – Manna
 
+## 1.33.1 – noch nicht veröffentlicht
+- Kein Eintrag im App-Changelog (nur Editor)
+- Neu im Editor: kleiner Fortschritt oben in der Liste: „Heute neue Spiele auf Manna: …“ (sonst „😢 Wir brauchen Spiiiele“), „Diese Woche: N“ (ab Montag) und Zähler mit Balken bis 100 Spiele, danach bis 500, dann in 500er-Schritten
+- Neu: Feld „Veröffentlicht: JJJJ-MM-TT“ im Spielformat. Der Editor setzt es, wenn ein Spiel neu in die Spielesammlung kommt (neu oder aus Rohfassung); beim Bearbeiten und Umbenennen bleibt es erhalten, Rohfassungen haben keins. Die App zeigt es nicht an, es dient der Auswertung
+- Alle 41 vorhandenen Spiele haben das Datum aus dem Git-Verlauf bekommen (Tag, an dem sie zum ersten Mal in spiele/ lagen)
 ## 1.33.0 – 27.11.2026
 - Neu: Sortieren in der Spielesammlung: Umschalter „A–Z“ / „Meiste Likes“ über der Liste. Bei Gleichstand alphabetisch, „Empfehlung für dich“ bleibt ganz oben. Die Auswahl merkt sich der Browser (`manna_sortierung`). Bei einer Suche ist der Umschalter ausgeblendet, dort zählt die Trefferqualität
 - Neu: Statistik auf der Konto-Seite, nur für den Admin: registrierte Nutzer (bestätigt, mit Username, neu in 7 Tagen), aktiv in 24 Stunden / 7 Tagen, Daumen hoch, geöffnete Spiele, offene Einreichungen, Top 5 nach Likes und nach Aufrufen. Ob jemand Admin ist, prüft die Datenbank (`admin_statistik()` mit `privat.ist_admin()`), die App zeigt nur an, was zurückkommt. Neue Datei js/statistik.js

@@ -6,6 +6,7 @@ Personen: ab 20
 Ort: drinnen, draußen
 Dauer: 5
 Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase, Ablösungsphase
+Veröffentlicht: 2026-11-24
 
 Material:
 Crepband oder Seil zum Markieren der Seiten

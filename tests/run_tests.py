@@ -63,7 +63,8 @@ def static_checks():
     allowed = set('✕✓★')
     for f in ['index.html', 'rechtliches.html', 'css/app.css', 'js/kern.js', 'js/preis.js', 'js/system.js', 'js/menues.js', 'js/zuschauer.js', 'js/sammlung.js', 'js/countdown.js', 'js/eigenes-spiel.js', 'js/artikel.js', 'js/data.js', 'js/gameshow-vorlagen.js', 'js/spielformat.js', 'js/supabase.js', 'js/einreichen.js', 'js/konto.js', 'js/sync.js', 'js/konto-seite.js', 'js/daumen.js', 'js/klicks.js', 'js/statistik.js', 'editor/index.html', 'editor/editor.js', 'editor/editor.css']:
         txt = open(os.path.join(ROOT, f), encoding='utf-8').read()
-        found = sorted(set(c for c in emoji.findall(txt) if c not in allowed))
+        # Ausnahme: der traurige Smiley im Fortschritt des Editors („Wir brauchen Spiiiele“), auf Lukas' Wunsch
+        found = sorted(set(c for c in emoji.findall(txt) if c not in allowed and not (f == 'editor/editor.js' and c == '😢')))
         check(f'keine Emojis in {f}', not found, ''.join(found))
         check(f'keine Schreibmaschinen-/Handschrift in {f}', not re.search('Courier|Typewriter|Marker Felt|Comic Sans', txt))
     idx = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
@@ -140,6 +141,9 @@ def format_checks(m):
         ep:(()=>{const q=F.parse(t.replace('Dauer: -','Dauer: -\nErlebnispädagogik: ja'));return {f:q.fehler,ja:q.spiel.erlebnis===true,txt:F.serialize(q.spiel)};})(),
         epNein:'erlebnis' in p.spiel||'erlebnis' in F.parse(t.replace('Dauer: -','Dauer: -\nErlebnispädagogik: nein')).spiel,
         epErr:F.parse(t.replace('Dauer: -','Dauer: -\nErlebnispädagogik: vielleicht')).fehler,
+        vd:(()=>{const q=F.parse(t.replace('Dauer: -','Dauer: -\nVeröffentlicht: 2026-11-27'));return {f:q.fehler,d:q.spiel.veroeffentlicht,txt:F.serialize(q.spiel)};})(),
+        vdOhne:'veroeffentlicht' in p.spiel,
+        vdErr:F.parse(t.replace('Dauer: -','Dauer: -\nVeröffentlicht: gestern')).fehler,
         freiRisk:F.serialize(F.parse(t.replace('- Nicht rennen.','Nicht rennen.')).spiel).includes('Gefahren und Risiken:\nNicht rennen.\n')}})()""")
     g = res['g']
     check('Format: lesen ohne Fehler', res['fehler'] == [], res['fehler'])
@@ -156,6 +160,9 @@ def format_checks(m):
     check('Format: Erlebnispädagogik lesen und schreiben', res['ep']['f'] == [] and res['ep']['ja'] and 'Dauer: -\nErlebnispädagogik: ja\n' in res['ep']['txt'], res['ep'])
     check('Format: ohne Angabe oder „nein“ kein Erlebnispädagogik', not res['epNein'])
     check('Format: unklare Angabe bei Erlebnispädagogik meldet Fehler', any('Erlebnispädagogik' in f for f in res['epErr']), res['epErr'])
+    check('Format: Veröffentlicht-Datum lesen und schreiben', res['vd']['f'] == [] and res['vd']['d'] == '2026-11-27' and 'Dauer: -\nVeröffentlicht: 2026-11-27\n\n' in res['vd']['txt'], res['vd'])
+    check('Format: ohne Veröffentlicht-Datum kein Feld', not res['vdOhne'])
+    check('Format: falsches Veröffentlicht-Datum meldet Fehler', any('Veröffentlicht' in f for f in res['vdErr']), res['vdErr'])
     check('Format: Rollen-Tabelle', res['palermo'] == {'liste': [], 'tabelle': {'kopf': ['A', 'B'], 'zeilen': [['1', '2']]}}, res['palermo'])
     check('Format: Dateiname aus Namen', res['slug'] == 'aechz-uebung-gross', res['slug'])
     check('Format: Pflichtangaben werden geprüft', res['bad'] >= 5)
@@ -842,7 +849,10 @@ def editor_checks(p):
     e.fill('#inToken', 'falsch'); e.click('#btnLogin'); e.wait_for_timeout(300)
     check('Editor: falscher Schlüssel abgelehnt', 'ungültig' in e.inner_text('#loginMsg') and e.evaluate("localStorage.getItem('manna-editor-token')") is None)
     e.fill('#inToken', 'testtoken'); e.click('#btnLogin'); e.wait_for_timeout(600)
+    heute = e.evaluate("new Date().toLocaleDateString('sv-SE',{timeZone:'Europe/Berlin'})")
+    fs = lambda: e.inner_text('#fortschritt')
     names = e.locator('.game b').all_inner_texts()
+    check('Editor: Fortschritt ohne neue Spiele heute', 'Wir brauchen Spiiiele' in fs() and 'Diese Woche: 0' in fs() and '3 / 100 Spiele' in fs(), fs())
     check('Editor: Spiele gelistet', names == ['Nachts in Palermo', 'Simon Says', 'Zeitungsschlagen'], names)
     e.reload(); e.wait_for_timeout(600)
     check('Editor: Schlüssel bleibt gespeichert', e.locator('#vList:not([hidden])').count() == 1)
@@ -878,11 +888,12 @@ def editor_checks(p):
     txt = gh.files.get('spiele/ochs-am-berg.txt', '')
     check('Editor: neues Spiel als Textdatei veröffentlicht', gh.log == ['Neues Spiel: Ochs am Berg'] and txt == (
         'MANNA-SPIEL v1\nName: Ochs am Berg\nKurzbeschreibung: Anschleichen,solange niemand hinschaut .\nAlter: Jugendliche (13–17)\n'
-        'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\nGruppenphasen: Anfangsphase\nErlebnispädagogik: ja\n\nMaterial:\n- keins\n\nAblauf:\n- Eine Person steht an der Wand.\n'
+        'Personen: ab 6\nOrt: drinnen, draußen\nDauer: -\nGruppenphasen: Anfangsphase\nErlebnispädagogik: ja\nVeröffentlicht: ' + heute + '\n\nMaterial:\n- keins\n\nAblauf:\n- Eine Person steht an der Wand.\n'
         '2. Die anderen schleichen sich an.\nwer sich bewegt muss zurück\n\nGefahren und Risiken:\nNicht rennen, wenn der Boden rutschig ist.\n'), txt)
     check('Editor: keine automatischen Aufzählungszeichen bei Gefahren', '\n- Nicht rennen' not in txt)
     check('Editor: Wortlaut unverändert (keine Korrekturen)', 'wer sich bewegt muss zurück' in txt and 'Anschleichen,solange' in txt)
     check('Editor: zurück in der Liste, Spiel ist online', e.locator('.game b', has_text='Ochs am Berg').count() == 1 and 'ist online' in e.inner_text('#notices'))
+    check('Editor: Fortschritt zeigt das neue Spiel', 'Heute neue Spiele auf Manna: Ochs am Berg' in fs() and 'Diese Woche: 1' in fs() and '4 / 100 Spiele' in fs(), fs())
     check('Editor: Entwurf nach Veröffentlichen gelöscht', e.evaluate("localStorage.getItem('manna-editor-entwurf')") is None)
     r = build_text(txt)
     check('Editor: Datei besteht den Bau-Schritt', r.returncode == 0, r.stderr)
@@ -896,13 +907,19 @@ def editor_checks(p):
     e.locator('.game', has_text='Ochs am Berg').click(); e.wait_for_timeout(200)
     e.fill('#fName', 'Ochs am Berg (Variante)'); e.click('#btnPublish'); e.wait_for_timeout(800)
     check('Editor: umbenennen in einem Commit', len(gh.log) == 2 and 'spiele/ochs-am-berg-variante.txt' in gh.files and 'spiele/ochs-am-berg.txt' not in gh.files, gh.log)
+    gh.change_elsewhere('spiele/ochs-am-berg-variante.txt', gh.files['spiele/ochs-am-berg-variante.txt'].replace('Veröffentlicht: ' + heute, 'Veröffentlicht: 2026-01-05'))
+    e.reload(); e.wait_for_timeout(700)
+    e.locator('.game', has_text='Variante').click(); e.wait_for_timeout(200)
+    e.fill('#fTipp', 'Alter Termin bleibt.'); e.click('#btnPublish'); e.wait_for_timeout(800)
+    check('Editor: Bearbeiten behält das Veröffentlicht-Datum', 'Veröffentlicht: 2026-01-05\n' in gh.files['spiele/ochs-am-berg-variante.txt'] and 'Alter Termin bleibt.' in gh.files['spiele/ochs-am-berg-variante.txt'], gh.files['spiele/ochs-am-berg-variante.txt'][:300])
+    check('Editor: älteres Spiel zählt nicht als heute neu', 'Wir brauchen Spiiiele' in fs() and '4 / 100 Spiele' in fs(), fs())
 
     e.locator('.game', has_text='Zeitungsschlagen').click(); e.wait_for_timeout(200)
     gh.change_elsewhere('spiele/zeitungsschlagen.txt', gh.files['spiele/zeitungsschlagen.txt'].replace('ca. 10 Minuten', 'ca. 12 Minuten'))
     e.fill('#fDauer', 'ca. 15 Minuten'); e.click('#btnPublish'); e.wait_for_timeout(500)
     check('Editor: Warnung bei Änderung auf anderem Gerät', 'anderen Gerät geändert' in e.inner_text('#mMsg'))
     e.locator('#mBtns button', has_text='Abbrechen').click(); e.wait_for_timeout(300)
-    check('Editor: abgebrochen, nichts überschrieben', 'ca. 12 Minuten' in gh.files['spiele/zeitungsschlagen.txt'] and len(gh.log) == 2)
+    check('Editor: abgebrochen, nichts überschrieben', 'ca. 12 Minuten' in gh.files['spiele/zeitungsschlagen.txt'] and len(gh.log) == 3)
     check('Editor: Entwurf bleibt', 'ca. 15 Minuten' in (e.evaluate("localStorage.getItem('manna-editor-entwurf')") or ''))
     e.click('#btnBack'); e.wait_for_timeout(200); e.locator('#mBtns button', has_text='Zur Liste').click(); e.wait_for_timeout(200)
     e.locator('.game', has_text='Simon').click(); e.wait_for_timeout(200)
@@ -939,11 +956,14 @@ def editor_checks(p):
     e.fill('#fTipp', 'Geht auch zu zweit.'); e.click('#btnRoh'); e.wait_for_timeout(800)
     check('Editor: Rohfassung speichern bleibt im Ordner rohfassungen', len(gh.log) == n + 1 and gh.log[-1] == 'Rohfassung überarbeitet: Rohes Spiel'
           and 'Geht auch zu zweit.' in gh.files['rohfassungen/rohes-spiel.txt'] and 'spiele/rohes-spiel.txt' not in gh.files, gh.log)
+    check('Editor: Rohfassung bekommt kein Veröffentlicht-Datum', 'Veröffentlicht:' not in gh.files['rohfassungen/rohes-spiel.txt'])
     check('Editor: Rohfassung speichern meldet nichts als veröffentlicht', 'Rohfassung' in toast() and 'Rohes Spiel' not in e.inner_text('#notices'), toast())
     e.locator('.game', has_text='Rohes Spiel').click(); e.wait_for_timeout(200)
     e.click('#btnPublish'); e.wait_for_timeout(800)
     check('Editor: Rohfassung veröffentlichen verschiebt nach spiele/ in einem Commit', len(gh.log) == n + 2 and gh.log[-1] == 'Neues Spiel aus Rohfassung: Rohes Spiel'
           and 'spiele/rohes-spiel.txt' in gh.files and 'rohfassungen/rohes-spiel.txt' not in gh.files, gh.log)
+    check('Editor: Rohfassung veröffentlichen setzt das heutige Datum', 'Veröffentlicht: ' + heute + '\n' in gh.files['spiele/rohes-spiel.txt'])
+    check('Editor: Fortschritt zählt nur veröffentlichte Spiele', 'Heute neue Spiele auf Manna: Rohes Spiel' in fs() and '4 / 100 Spiele' in fs(), fs())
     check('Editor: veröffentlichtes Spiel ohne Rohfassungs-Knopf', (e.locator('.game', has_text='Rohes Spiel').click() or e.wait_for_timeout(200) or True) and not e.is_visible('#btnRoh') and not e.is_visible('#rohInfo'))
     e.click('#btnBack'); e.wait_for_timeout(200)
     e.click('#btnNew'); e.wait_for_timeout(200)

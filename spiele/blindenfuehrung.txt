@@ -7,6 +7,7 @@ Ort: drinnen, draußen
 Dauer: 20
 Gruppenphasen: Vertrautheitsphase, Differenzierungsphase
 Erlebnispädagogik: ja
+Veröffentlicht: 2026-11-26
 
 Material:
 - Augenbinden

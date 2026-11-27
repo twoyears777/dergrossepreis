@@ -6,6 +6,7 @@ Personen: ab 4
 Ort: drinnen, draußen
 Dauer: 10
 Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase
+Veröffentlicht: 2026-11-26
 
 Material:
 - Tücher oder Seile zum Zusammenbinden

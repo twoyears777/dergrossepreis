@@ -6,6 +6,7 @@ Personen: ab 2
 Ort: draußen
 Dauer: 10
 Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase, Ablösungsphase
+Veröffentlicht: 2026-11-26
 
 Material:
 - Ein markierter Kreis (Seil, Crepband, ...)

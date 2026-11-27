@@ -6,6 +6,7 @@ Personen: 14 bis 30
 Ort: drinnen
 Dauer: 10
 Gruppenphasen: Anfangsphase, Rollenfindungsphase
+Veröffentlicht: 2026-11-24
 
 Material:
 - keins

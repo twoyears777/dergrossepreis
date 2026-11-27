@@ -6,6 +6,7 @@ Personen: 5 bis 25
 Ort: drinnen, draußen
 Dauer: 5-10
 Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase
+Veröffentlicht: 2026-11-25
 
 Material:
 - keins

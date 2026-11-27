@@ -6,6 +6,7 @@ Personen: 6 bis 15
 Ort: drinnen
 Dauer: 10
 Gruppenphasen: Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase
+Veröffentlicht: 2026-11-24
 
 Material:
 - Ein rundes Brett

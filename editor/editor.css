@@ -160,3 +160,10 @@ legend{font-family:var(--strong);font-weight:700;font-size:1.05rem;padding-right
 .einr-item .row{margin-top:auto;padding-top:6px}
 .einr-info p{margin:0;overflow-wrap:anywhere}
 .einr-item .row .primary,.einr-item .row .btn{padding:.5em 1em;min-height:40px;font-size:.92rem}
+/* Fortschritt: klein und unauffällig oben in der Liste */
+.fortschritt{font-size:.82rem;color:var(--muted);margin:2px 0 14px;max-width:520px}
+.fortschritt b{color:var(--paper);font-weight:600}
+.fs-heute{margin:0 0 4px}
+.fs-zahlen{display:flex;justify-content:space-between;gap:12px;margin:0 0 4px;font-size:.78rem}
+.fs-balken{height:5px;border-radius:999px;background:#ffffff1a;overflow:hidden}
+.fs-balken i{display:block;height:100%;background:var(--marker);border-radius:999px;transition:width .4s}

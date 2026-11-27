@@ -6,6 +6,7 @@ Personen: ab 4
 Ort: drinnen
 Dauer: 15-30
 Gruppenphasen: Anfangsphase, Rollenfindungsphase, Vertrautheitsphase, Differenzierungsphase, Ablösungsphase
+Veröffentlicht: 2026-11-25
 
 Material:
 - Flipchart, großes Papier, oder auch ein an Beamer angeschlossenes iPad

@@ -33,7 +33,7 @@
   }
   // einzeilige Angaben „Schlüssel: Wert“
   const FELDER = { 'Name': 'name', 'Kurzbeschreibung': 'kurz', 'Alter': 'alter', 'Personen': 'personen',
-    'Ort': 'ort', 'Dauer': 'dauer', 'Gruppenphasen': 'phasen', 'Erlebnispädagogik': 'erlebnis', 'Rollen-Hinweis': 'rollenHinweis', 'Tipp': 'hinweis' };
+    'Ort': 'ort', 'Dauer': 'dauer', 'Gruppenphasen': 'phasen', 'Erlebnispädagogik': 'erlebnis', 'Veröffentlicht': 'veroeffentlicht', 'Rollen-Hinweis': 'rollenHinweis', 'Tipp': 'hinweis' };
   // Listen „Überschrift:“ und darunter eine Zeile pro Eintrag
   const LISTEN = { 'Material': 'material', 'Ablauf': 'ablauf', 'Rollen': 'rollen', 'Rollen-Tabelle': 'tabelle',
     'Varianten': 'varianten', 'Pädagogische Gedanken': 'paedagogik', 'Fragen zum Nachgespräch': 'nachgespraech', 'Gefahren und Risiken': 'risiken' };
@@ -196,6 +196,13 @@
     const pg = list('paedagogik'); if (pg.length) { g.paedagogik = pg; g.paedagogikZeilen = frei('paedagogik'); }
     const ng = list('nachgespraech'); if (ng.length) { g.nachgespraech = ng; g.nachgespraechZeilen = frei('nachgespraech'); }
     if (clean(raw.hinweis)) g.hinweis = clean(raw.hinweis);
+    // Veröffentlicht (optional): Tag, an dem das Spiel in die Spielesammlung kam, z. B. „2026-11-27“.
+    // Setzt der Editor beim ersten Veröffentlichen. Nur für die Auswertung, die App zeigt es nicht an.
+    if (clean(raw.veroeffentlicht)) {
+      const d = clean(raw.veroeffentlicht);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d) && !isNaN(Date.parse(d + 'T12:00:00Z'))) g.veroeffentlicht = d;
+      else err('Veröffentlicht: „' + d + '“ nicht verstanden (z. B. „2026-11-27“)');
+    }
     if ('erlebnis' in raw && parseJaNein('Erlebnispädagogik', raw.erlebnis, err)) g.erlebnis = true;
     pflicht(g).forEach(m => fehler.push('Es fehlt: ' + m));
     if (!g.spieler) g.spieler = { min: 1, max: OHNE_MAX };
@@ -227,6 +234,7 @@
     L.push('Dauer: ' + (one(g.dauer) || '-'));
     if (g.phasen && g.phasen.length) L.push('Gruppenphasen: ' + PHASEN.filter(x => g.phasen.includes(x.id)).map(x => x.label).join(', '));
     if (g.erlebnis) L.push('Erlebnispädagogik: ja');
+    if (g.veroeffentlicht) L.push('Veröffentlicht: ' + one(g.veroeffentlicht));
     const block = (title, a, num, leer) => {
       a = (a || []).map(one).filter(Boolean);
       if (!a.length && !leer) return;
