@@ -1,5 +1,5 @@
 -- Manna – Liste der registrierten Nutzer für den Admin (Migration „nutzerliste“, ab Version 1.34.0)
--- NOCH NICHT EINGESPIELT
+-- Eingespielt am 27.11.2026
 --
 -- Reihenfolge: egal. Ohne diese Funktion zeigt die App beim Klick auf „Registrierte Nutzer“ nur
 -- „konnte nicht geladen werden“, sonst läuft alles weiter. Die alte App ruft sie gar nicht auf.
