@@ -1,5 +1,9 @@
 # Changelog – Manna
 
+## 1.32.2 – 27.11.2026
+- Kein Eintrag im App-Changelog (kleiner Hotfix)
+- Editor auf dem Handy: Die Leiste unten ist zweireihig, „Veröffentlichen“ bleibt immer sichtbar
+
 ## 1.32.1 – 27.11.2026
 - Kein Eintrag im App-Changelog (nur Feinschliff)
 - „Empfehlung für dich“ ist jetzt klein und unauffällig (grauer Text in der Ecke statt gelbem Schild)
