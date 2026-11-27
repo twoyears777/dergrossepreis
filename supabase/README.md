@@ -14,9 +14,9 @@ nicht von hier aus.
   Eingespielt am 26.11.2026.
 - `einreichen-mit-konto.sql` – Einreichen nur mit Konto (ab Version 1.32.0): Spalten `user_id` und `username`,
   Trigger setzt beides aus dem Login, nur Angemeldete mit Username dürfen einreichen, höchstens 5 pro Konto in 24 Stunden.
-  Noch nicht eingespielt.
+  Eingespielt am 27.11.2026.
 - `klicks.sql` – Klicks pro Spiel und Konto (ab Version 1.32.0): Tabelle `klicks`, Funktion `klick_zaehlen()`,
-  jeder liest nur seine eigenen Zahlen. Noch nicht eingespielt.
+  jeder liest nur seine eigenen Zahlen. Eingespielt am 27.11.2026.
 
 ## Einstellungen im Dashboard für die Registrierung (ab Version 1.31.0)
 
