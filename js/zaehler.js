@@ -11,7 +11,6 @@
     var q = 'p=' + encodeURIComponent(location.pathname) +
       '&r=' + encodeURIComponent(document.referrer) +
       '&t=' + encodeURIComponent(document.title) +
-      '&s=' + encodeURIComponent(screen.width) +
       '&rnd=' + Math.random().toString(36).slice(2);
     new Image().src = 'https://twoyears.goatcounter.com/count?' + q;
   } catch (e) { /* Zählung ist unwichtig, Manna läuft immer weiter */ }

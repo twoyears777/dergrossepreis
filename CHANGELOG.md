@@ -4,6 +4,7 @@
 - Kein Eintrag im App-Changelog (nur Feinschliff)
 - „Empfehlung für dich“ ist jetzt klein und unauffällig (grauer Text in der Ecke statt gelbem Schild)
 - Lange Spielnamen sprengen auf dem Handy nicht mehr den Bildschirm: Der Titel auf der Spielseite schrumpft nach derselben Regel wie alle anderen Überschriften (eigene Größenregel für `#gameTitle` entfernt)
+- Besucherzählung: Die Bildschirmbreite wird nicht mehr ausgelesen und nicht mehr an GoatCounter geschickt (Datenschutztext nennt sie noch, Lukas formuliert neu)
 - Erlebnispädagogik ist nicht mehr gelb: Label in der Übersicht und Schild auf der Spielseite sehen aus wie die anderen
 
 ## 1.32.0 – [Datum beim Veröffentlichen]
