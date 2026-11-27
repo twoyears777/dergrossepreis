@@ -18,7 +18,7 @@ nicht von hier aus.
 - `klicks.sql` – Klicks pro Spiel und Konto (ab Version 1.32.0): Tabelle `klicks`, Funktion `klick_zaehlen()`,
   jeder liest nur seine eigenen Zahlen. Eingespielt am 27.11.2026.
 - `statistik.sql` – Zuletzt aktiv & Admin-Statistik (ab Version 1.33.0): Tabelle `aktiv` (ein Zeitpunkt pro Konto),
-  Funktionen `bin_aktiv()` und `admin_statistik()` (nur für Admins, prüft die Datenbank selbst). NOCH NICHT EINGESPIELT.
+  Funktionen `bin_aktiv()` und `admin_statistik()` (nur für Admins, prüft die Datenbank selbst). Eingespielt am 27.11.2026.
 
 ## Einstellungen im Dashboard für die Registrierung (ab Version 1.31.0)
 

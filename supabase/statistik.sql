@@ -1,5 +1,5 @@
 -- Manna – „zuletzt aktiv“ und Statistik für den Admin (Migration „statistik“, ab Version 1.33.0)
--- NOCH NICHT EINGESPIELT. Direkt nach dem Veröffentlichen von 1.33.0 im Supabase-Projekt „manna“ ausführen.
+-- Eingespielt am 27.11.2026 (direkt nach dem Veröffentlichen von 1.33.0).
 --
 -- Reihenfolge: egal. Die App 1.33.0 kommt ohne diese Datenbank-Teile klar (Aktiv-Meldung scheitert still,
 -- die Statistik zeigt „konnte nicht geladen werden“). Die alte App ruft beides gar nicht auf.
